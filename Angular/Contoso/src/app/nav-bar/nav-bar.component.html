@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="null" onclick="return false;"  (click)="doNothing()">
+    <ng-container *ngIf="navBar">{{navBar.brandText}}</ng-container>
+  </a>
+  <button (click)="isCollapsed = !isCollapsed" class="navbar-toggler hidden-sm-up" type="button" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul *ngIf="navBar" class="navbar-nav mr-auto">
+        <li *ngFor="let item of navBar.menuItems" [ngClass]="{'active': item.targetModule === navBar.targetModule}" class="nav-item">
+          <a [@itemState]="item.targetModule === navBar.currentModule ? 'active' : 'inactive'" [attr.href]="item.targetModule === navBar.currentModule ? null : '#'" 
+          onclick="return false;" 
+          class="nav-link" 
+          (click)="item.targetModule === navBar.currentModule ? doNothing() : menuItemClick(item.targetModule, item.initialModule)">{{item.text}}</a>
+        </li>
+      </ul>
+  </div>
+</nav>

@@ -1,0 +1,88 @@
+import { Component, OnInit, ViewChild, Input, TemplateRef } from '@angular/core';
+import { IDetailFormSettings, detailKind, IDetailFieldSetting, IDetailListSetting } from '../../stuctures/screens/detail/i-detail-form-settings';
+import { ICommandButton } from '../../stuctures/i-command-button';
+import { GenericService } from '../../http/generic.service';
+import { UiNotificationService } from '../../common/ui-notification.service';
+import { EntityType } from '../../stuctures/screens/i-base-model';
+import { DataSourceRequestState } from '@progress/kendo-data-query';
+import { ObjectHelper } from '../../common/object-helper';
+import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
+import { IDeleteRequest } from '../../stuctures/screens/requests/i-requests-base';
+
+@Component({
+  selector: 'app-generic-delete',
+  templateUrl: './generic-delete.component.html',
+  styleUrls: ['./generic-delete.component.css']
+})
+export class GenericDeleteComponent implements OnInit {
+  @ViewChild('currencyTemplate') currencyTemplate: TemplateRef<any>;
+  @ViewChild('textTemplate') textTemplate: TemplateRef<any>;
+  @ViewChild('dateTemplate') dateTemplate: TemplateRef<any>;
+  @ViewChild('listTemplate') listTemplate: TemplateRef<any>;
+
+  @Input() settings: IDetailFormSettings;
+  @Input() public commandButtons: ICommandButton[];
+
+  constructor(private _genericService: GenericService,
+    private _uiNotificationService: UiNotificationService) { }
+
+  public detailType = detailKind;
+  public entity: EntityType;
+  public errorMessage: string;
+  private formSettings: IDetailFormSettings;
+
+  public getTemplate(templateName: string) {
+    return this[templateName];
+  }
+
+  public getFieldContext(entity: EntityType, fieldSetting: IDetailFieldSetting) {
+    return {
+      $implicit: entity,
+      fieldSetting: fieldSetting
+    }
+  }
+
+  public getListContext(entity: EntityType, fieldSetting: IDetailListSetting) {
+    return {
+      $implicit: entity[fieldSetting.field],
+      fieldSetting: fieldSetting
+    }
+  }
+
+  ngOnInit() {
+    this.formSettings = this.settings;
+    this.getItem();
+  }
+
+  getItem() {
+    this._genericService.getItem(this.getState(), this.formSettings.requestDetails).subscribe(
+      itm => {
+        this.entity = itm;
+      },
+      error => this.errorMessage = <any>error);
+  }
+
+  private getState(): DataSourceRequestState {
+    return {
+      filter: ObjectHelper.getCompositeFilter(this.formSettings.filterGroup)
+    }
+  }
+
+  submitClick(button: ICommandButton) {
+    this._genericService.deleteItem(this.getState(), this.formSettings.requestDetails)
+      .subscribe(response => {
+        this._uiNotificationService.navigateNext({
+          viewType: ViewTypeEnum.Delete,
+          commandButtonRequest: { newSelection: button.shortString, cancel: button.cancel }
+        });
+      },
+        error => this.errorMessage = <any>error);
+  }
+
+  navigateNext(button: ICommandButton) {
+    this._uiNotificationService.navigateNext({
+      viewType: ViewTypeEnum.Delete,
+      commandButtonRequest: { newSelection: button.shortString, cancel: button.cancel }
+    });
+  }
+}

@@ -1,0 +1,11 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+
+namespace Enrollment.Domain.Entities
+{
+    public enum #Name#
+    {
+#Values#
+    }
+}

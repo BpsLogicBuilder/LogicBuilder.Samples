@@ -1,0 +1,133 @@
+<div class="card" *ngIf="formSettings">
+  <div class="card-header bg-primary text-white h6">
+    {{formSettings.title}} {{(entity ? entity[formSettings.displayField] : '')}}
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row" *ngFor="let setting of formSettings.fieldSettings">
+          <ng-container *ngIf="entity && entity[setting.field] && setting.detailType === detailType.field">
+            <div class="col-md-3">{{setting.title}}</div>
+            <div class="col-md-6">
+                <ng-container *ngIf="setting.fieldTemplate">
+                    <ng-container *ngTemplateOutlet="getTemplate(setting.fieldTemplate.templateName); context: getFieldContext(entity, setting)">
+                      </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="setting.valueTextTemplate">
+                      <ng-container *ngTemplateOutlet="getTemplate(setting.valueTextTemplate.templateName); context: getFieldContext(entity, setting)">
+                      </ng-container>
+                  </ng-container>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="entity && setting.detailType === detailType.group">
+            <ng-container *ngIf="entity">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.groupTemplate.templateName); context: getGroupContext(entity, setting)">
+              </ng-container>
+            </ng-container>
+          </ng-container>
+          <ng-container *ngIf="entity && setting.detailType === detailType.list">
+            <div class="col-md-3">{{setting.title}}</div>
+            <div class="col-md-9">
+              <ng-container *ngIf="entity">
+                <ng-container *ngTemplateOutlet="getTemplate(setting.listTemplate.templateName); context: getListContext(entity, setting)">
+                </ng-container>
+              </ng-container>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class='has-error' *ngIf='errorMessage'>{{errorMessage}}</div>
+  </div>
+  <div class="card-footer">
+    <ng-container *ngFor="let button of commandButtons">
+      <button *ngIf="button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="navigateNext(button)">
+        <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+      </button>
+      <button *ngIf="!button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="submitClick(button)">
+        <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+      </button>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template let-entity let-fieldSetting="fieldSetting" #groupTemplate>
+  <div class="card col-md-12 pl-0 pr-0 mt-3">
+    <div class="card-header">
+        {{fieldSetting.title}}
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row {{entity && entity[setting.field] ? 'border border-left-0 border-bottom-0 border-right-0' : ''}}" *ngFor="let setting of fieldSetting.fieldSettings">
+            <ng-container *ngIf="entity && entity[setting.field] && setting.detailType === detailType.field">
+              <div class="col-md-3">{{setting.title}}</div>
+              <div class="col-md-6">
+                <ng-container *ngIf="entity">
+                  <ng-container *ngIf="setting.fieldTemplate">
+                    <ng-container *ngTemplateOutlet="getTemplate(setting.fieldTemplate.templateName); context: getFieldContext(entity, setting)">
+                    </ng-container>
+                  </ng-container>
+                  <ng-container *ngIf="setting.valueTextTemplate">
+                    <ng-container *ngTemplateOutlet="getTemplate(setting.valueTextTemplate.templateName); context: getFieldContext(entity, setting)">
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="entity && setting.detailType === detailType.group">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.groupTemplate.templateName); context: getGroupContext(entity, setting)">
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="entity && setting.detailType === detailType.list">
+              <div class="col-md-3">{{setting.title}}</div>
+              <div class="col-md-9">
+                <ng-container *ngIf="entity">
+                  <ng-container *ngTemplateOutlet="getTemplate(setting.listTemplate.templateName); context: getListContext(entity, setting)">
+                  </ng-container>
+                </ng-container>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template let-entity let-fieldSetting="fieldSetting" #currencyTemplate>
+  {{entity[fieldSetting.field] | currency:'USD':'symbol':'1.2-2'}}
+</ng-template>
+<ng-template let-entity let-fieldSetting="fieldSetting" #dateTemplate>
+  {{entity[fieldSetting.field] | date: 'MM/dd/yyyy'}}
+</ng-template>
+<ng-template let-entity let-fieldSetting="fieldSetting" #textTemplate>
+  {{entity[fieldSetting.field]}}
+</ng-template>
+<ng-template let-entity let-fieldSetting="fieldSetting" #booleanTemplate>
+    <i *ngIf='entity[fieldSetting.field]' class="fa fa-angular fa-check"></i>
+  </ng-template>
+<ng-template let-entity let-fieldSetting="fieldSetting" #valueTextTemplate>
+  <div app-display-dropdown-value [selectedValue]="entity[fieldSetting.field]" [valueTextTemplate]="fieldSetting.valueTextTemplate"
+    [filterValueSourceItem]="entity">
+</div>
+</ng-template>
+<ng-template let-list let-fieldSetting="fieldSetting" #listTemplate>
+  <table class="table" *ngIf='list && list.length'>
+    <tr>
+      <th *ngFor='let fieldSetting of fieldSetting.fieldSettings'>{{fieldSetting.title}}</th>
+    </tr>
+    <tr *ngFor='let item of list'>
+      <td *ngFor='let fieldSetting of fieldSetting.fieldSettings'>
+        <ng-container *ngIf="fieldSetting.fieldTemplate">
+          <ng-container *ngTemplateOutlet="getTemplate(fieldSetting.fieldTemplate.templateName); context: getFieldContext(item, fieldSetting)">
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="fieldSetting.valueTextTemplate">
+          <ng-container *ngTemplateOutlet="getTemplate(fieldSetting.valueTextTemplate.templateName); context: getFieldContext(item, fieldSetting)">
+          </ng-container>
+        </ng-container>
+      </td>
+    </tr>
+  </table>
+</ng-template>

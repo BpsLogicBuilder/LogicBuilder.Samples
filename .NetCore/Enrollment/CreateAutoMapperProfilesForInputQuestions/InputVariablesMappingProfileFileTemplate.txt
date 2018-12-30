@@ -1,0 +1,24 @@
+﻿using AutoMapper;
+using Enrollment.Domain.Entities;
+using Enrollment.Forms.Parameters.Input;
+using Enrollment.Forms.ViewModels.Input;
+using LogicBuilder.Forms.Parameters;
+using System;
+using System.Collections.Generic;
+
+namespace Enrollment.AutoMapperProfiles
+{
+    public class InputVariablesMappingProfile : Profile
+    {
+        public InputVariablesMappingProfile()
+        {
+#Mappings#
+
+            CreateMap<BaseInputViewModel, BaseInputQuestionParameters>()
+                .ForMember(dest => dest.QuestionData, opt => opt.Ignore())
+#ViewModelToParameterIncludes#
+            .ReverseMap()
+#ParameterToViewModelIncludes#;
+        }
+    }
+}

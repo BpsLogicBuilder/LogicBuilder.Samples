@@ -1,0 +1,16 @@
+﻿using AutoMapper;
+using Contoso.Forms.Parameters.Common;
+using Contoso.Forms.View.Common;
+using System;
+using System.Collections.Generic;
+
+namespace Contoso.AutoMapperProfiles
+{
+    public class CommonParametersMappingProfile : Profile
+    {
+        public CommonParametersMappingProfile()
+        {
+#CommonParameterToViewIncludes#
+        }
+    }
+}

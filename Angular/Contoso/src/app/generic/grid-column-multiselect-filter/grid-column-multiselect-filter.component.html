@@ -1,0 +1,20 @@
+<ul>
+  <li *ngIf="showFilter">
+    <input class="k-textbox" (input)="onInput($event)" />
+  </li>
+  <li
+    *ngFor="let item of currentData; let i = index;"
+    (click)="onSelectionChange(valueAccessor(item))"
+    [ngClass]="{'k-state-selected': isItemSelected(item)}">
+    <input
+      type="checkbox"
+      id="chk-{{valueAccessor(item)}}"
+      class="k-checkbox"
+      [checked]="isItemSelected(item)" />
+    <label
+      class="k-multiselect-checkbox k-checkbox-label"
+      for="chk-{{valueAccessor(item)}}">
+        {{ textAccessor(item) }}
+    </label>
+  </li>
+</ul>

@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="1.0.0" />
+    <PackageReference Include="LogicBuilder.Forms.Parameters" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Data\Contoso.Data.csproj" />
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+    <ProjectReference Include="..\Contoso.Forms.Parameters\Contoso.Forms.Parameters.csproj" />
+    <ProjectReference Include="..\Contoso.Forms.View\Contoso.Forms.View.csproj" />
+    <ProjectReference Include="..\Contoso.Utils\Contoso.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

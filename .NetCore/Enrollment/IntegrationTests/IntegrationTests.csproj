@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="2.1.4" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.AutoMapperProfiles\Enrollment.AutoMapperProfiles.csproj" />
+    <ProjectReference Include="..\Enrollment.Contexts\Enrollment.Contexts.csproj" />
+    <ProjectReference Include="..\Enrollment.Kemdo.AutoMapperProfiles\Enrollment.Kemdo.AutoMapperProfiles.csproj" />
+    <ProjectReference Include="..\Enrollment.Repositories\Enrollment.Repositories.csproj" />
+    <ProjectReference Include="..\Enrollment.Stores\Enrollment.Stores.csproj" />
+    <ProjectReference Include="..\Enrollment.Web.Utils\Enrollment.Web.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DropDowns.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

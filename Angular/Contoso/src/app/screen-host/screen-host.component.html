@@ -1,0 +1,18 @@
+<ng-container *ngIf="screenSettings">
+  <ng-container [ngSwitch]="screenSettings.viewType">
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Grid"><app-generic-grid [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-grid></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Create"><app-generic-create [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-create></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Edit"><app-generic-edit [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-edit></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Detail"><app-generic-detail [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-detail></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Delete"><app-generic-delete [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-delete></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Html"><app-html-page [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-html-page></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.About"><app-about [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-about></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.InputForm"><app-input-form [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-input-form></div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.FlowComplete">FlowComplete</div>
+    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Exception">
+      <div class="alert alert-danger">
+        <strong>{{screenSettings.settings.message}}</strong>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

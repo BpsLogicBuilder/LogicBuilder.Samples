@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="Telerik.UI.for.AspNet.Core" Version="2018.3.1017" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+    <ProjectReference Include="..\Contoso.Kendo.ViewModels\Contoso.Kendo.ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

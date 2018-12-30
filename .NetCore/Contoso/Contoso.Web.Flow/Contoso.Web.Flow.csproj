@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="1.0.0" />
+    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="1.0.0" />
+    <PackageReference Include="LogicBuilder.RulesDirector.AspNetCore" Version="1.0.0" />
+    <PackageReference Include="LogicBuilder.Workflow.Activities.Rules" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+    <ProjectReference Include="..\Contoso.Forms.Parameters\Contoso.Forms.Parameters.csproj" />
+    <ProjectReference Include="..\Contoso.Forms.View\Contoso.Forms.View.csproj" />
+    <ProjectReference Include="..\Contoso.Repositories\Contoso.Repositories.csproj" />
+    <ProjectReference Include="..\Contoso.Utils\Contoso.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

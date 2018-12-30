@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Json\JsonTypeConverter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogicBuilder.Attributes" Version="1.0.0" />
+    <PackageReference Include="LogicBuilder.Domain" Version="1.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Utils\Contoso.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

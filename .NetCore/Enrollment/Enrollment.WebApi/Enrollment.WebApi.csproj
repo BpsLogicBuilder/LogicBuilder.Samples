@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="1.0.5" />
+    <PackageReference Include="LogicBuilder.DataContracts" Version="1.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.AutoMapperProfiles\Enrollment.AutoMapperProfiles.csproj" />
+    <ProjectReference Include="..\Enrollment.Kemdo.AutoMapperProfiles\Enrollment.Kemdo.AutoMapperProfiles.csproj" />
+    <ProjectReference Include="..\Enrollment.Repositories\Enrollment.Repositories.csproj" />
+    <ProjectReference Include="..\Enrollment.Stores\Enrollment.Stores.csproj" />
+    <ProjectReference Include="..\Enrollment.Web.Flow\Enrollment.Web.Flow.csproj" />
+    <ProjectReference Include="..\Enrollment.Web.Utils\Enrollment.Web.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>
