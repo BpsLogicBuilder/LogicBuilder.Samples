@@ -1,0 +1,137 @@
+﻿<UserControl
+    x:Class="CheckMySymptoms.Screens.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:CheckMySymptoms.Screens"
+    xmlns:utils="using:CheckMySymptoms.Utils"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <utils:HasAdFreeVisibilityConverter x:Key="HasAdFreeVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.ChildrenTransitions>
+            <TransitionCollection>
+                <EntranceThemeTransition />
+            </TransitionCollection>
+        </Grid.ChildrenTransitions>
+        <ScrollViewer
+            x:Name="contentSV"
+            Grid.Row="1"
+            Padding="20,0,0,0"
+            IsTabStop="False"
+            UseSystemFocusVisuals="False"
+            VerticalScrollBarVisibility="Auto"
+            VerticalScrollMode="Auto">
+            <StackPanel HorizontalAlignment="Left">
+                <TextBlock
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Margin="0,4,0,0"
+                    FontWeight="Normal"
+                    Text="App" />
+                <StackPanel x:Name="appSatePanel" Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Button Margin="0" x:Name="btnReset" x:Uid="btnReset" Click="BtnReset_Click" />
+                        <TextBlock x:Name="txtReset" Style="{StaticResource OutputTextBlockStyle}" FontFamily="Global User Interface" />
+                    </StackPanel>
+                    <Button Margin="0, 10" x:Name="btnGetAdFree" x:Uid="btnGetAdFree" Click="BtnGetAdFree_Click" Visibility="{x:Bind uiNotificationService.HasAdFree, Converter={StaticResource HasAdFreeVisibilityConverter}}" />
+                </StackPanel>
+                <TextBlock
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Margin="0,40,0,0"
+                    FontWeight="Normal"
+                    Text="Sound" />
+                <StackPanel Margin="0,10,0,0">
+                    <ToggleSwitch x:Name="soundToggle" Toggled="SoundToggle_Toggled"  OffContent="Off" OnContent="On"/>
+                    <CheckBox x:Name="spatialSoundBox" Unchecked="SpatialSoundBox_Unchecked"  Checked="SpatialSoundBox_Checked"  IsEnabled="False" Content="Spatial Audio"/>
+                </StackPanel>
+                <TextBlock
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Margin="0,40,0,0"
+                    FontWeight="Normal"
+                    Text="Voice" />
+                <StackPanel Margin="0,10,0,0">
+                    <ToggleSwitch x:Name="voiceToggle" Toggled="Voice_Toggled"  OffContent="Off" OnContent="On"/>
+                    <TextBlock x:Uid="voiceLangaugeInstructions" Style="{ThemeResource CaptionTextBlockStyle}" FontStyle="Italic" Margin="0,8,0,0"/>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox x:Name="listboxVoiceChooser"
+                                  x:Uid="listboxVoiceChooser"
+                                  SelectedValue="{x:Bind SettingsViewModel.SelectedVoice, Mode=TwoWay}"
+                                  DisplayMemberPath="DisplayName"
+                                  SelectedValuePath="Id"
+                                  HorizontalAlignment="Left"
+                                  ItemsSource="{x:Bind SettingsViewModel.Voices}" />
+                        <TextBlock x:Name="txtVoice" Style="{StaticResource OutputTextBlockStyle}" FontFamily="Global User Interface" />
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Margin="0,40,0,0"
+                    FontWeight="Normal"
+                    Text="About" />
+                <RichTextBlock MaxWidth="840" Margin="0,10,0,0" IsTextSelectionEnabled="True" FontFamily="Segoe UI">
+                    <Paragraph FontFamily="Segoe UI">
+                        The source code to this app is available on
+                        <Hyperlink NavigateUri="https://github.com/BlaiseD/LogicBuilder.Samples">
+                            https://github.com/BlaiseD/LogicBuilder.Samples
+                        </Hyperlink>.
+                    </Paragraph>
+                    <Paragraph FontFamily="Segoe UI">
+                        To contact the author,
+                        <Hyperlink NavigateUri="mailto:info@bPolicySolutions.com">mailto:info@bPolicySolutions.com</Hyperlink>.
+                    </Paragraph>
+                </RichTextBlock>
+                <TextBlock Margin="0,10,0,0">
+                    Version: 
+                    <Run Text="{x:Bind Version}" />
+                </TextBlock>
+                <Button x:Name="FeedbackButtin"  Click="FeedbackButton_Click"  Content="Feedback" Margin="0,8,0,0" Visibility="Collapsed" />
+
+                <TextBlock
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Margin="0,40,0,0"
+                    FontWeight="Normal"
+                    Text="Dependencies and Tools" />
+                <RichTextBlock IsTextSelectionEnabled="True" MaxWidth="840" Margin="0,10,0,0">
+                    <Paragraph Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://www.microsoft.com/en-us/p/bps-logic-builder-32-bit-visio/9ngkp83g750j">BPS Logic Builder (32 bit Visio)</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+                <RichTextBlock IsTextSelectionEnabled="True" MaxWidth="840" Margin="0,10,0,0">
+                    <Paragraph Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://www.microsoft.com/en-us/p/bps-logic-builder-64-bit-visio/9pbq81mnwhlx">BPS Logic Builder (64 bit Visio)</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+                <RichTextBlock IsTextSelectionEnabled="True" MaxWidth="840" Margin="0,10,0,0">
+                    <Paragraph Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://www.nuget.org/packages/LogicBuilder.Workflow.Activities.Rules/">LogicBuilder.Workflow.Activities.Rules</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+                <RichTextBlock IsTextSelectionEnabled="True" MaxWidth="840" Margin="0,10,0,0">
+                    <Paragraph Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://www.nuget.org/packages/LogicBuilder.RulesDirector/">LogicBuilder.RulesDirector</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+
+                <TextBlock
+                    Style="{StaticResource TitleTextBlockStyle}"
+                    Margin="0,40,0,0"
+                    FontWeight="Normal"
+                    Text="Disclaimer" FontFamily="Segoe UI" />
+                <RichTextBlock MaxWidth="840" Margin="0,10,0,50" IsTextSelectionEnabled="True" FontFamily="Segoe UI">
+                    <Paragraph FontFamily="Segoe UI">THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</Paragraph>
+                    <Paragraph FontFamily="Segoe UI">
+                        <LineBreak /> Copyright (c) Business Policy Solutions. All rights reserved.
+                    </Paragraph>
+                    <Paragraph Margin="0,10,0,10">
+                        <Hyperlink NavigateUri="https://bpolicysolutions.com/pages/privacypolicy.aspx">Privacy Policy</Hyperlink>
+                    </Paragraph>
+                </RichTextBlock>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

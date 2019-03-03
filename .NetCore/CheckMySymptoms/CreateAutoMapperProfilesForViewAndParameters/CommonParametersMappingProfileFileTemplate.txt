@@ -1,0 +1,16 @@
+﻿using AutoMapper;
+using CheckMySymptoms.Forms.Parameters.Common;
+using CheckMySymptoms.Forms.View.Common;
+using System;
+using System.Collections.Generic;
+
+namespace CheckMySymptoms.AutoMapperProfiles
+{
+    public class CommonParametersMappingProfile : Profile
+    {
+        public CommonParametersMappingProfile()
+        {
+#CommonParameterToViewIncludes#
+        }
+    }
+}

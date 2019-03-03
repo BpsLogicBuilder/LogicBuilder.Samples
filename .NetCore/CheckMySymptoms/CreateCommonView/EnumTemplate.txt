@@ -1,0 +1,8 @@
+﻿
+namespace CheckMySymptoms.Forms.View.Common
+{
+    public enum #Name#
+    {
+#Values#
+    }
+}
