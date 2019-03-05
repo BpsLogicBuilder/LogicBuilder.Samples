@@ -19,7 +19,7 @@ namespace CheckMySymptoms.Repositories
         }
 
         #region Constants
-        private const string PATIENTTABLE = "Patient";
+        private const string PATIENTTABLE = "Patient01";
         #endregion Constants
 
         StorageFolder roamingFolder = ApplicationData.Current.RoamingFolder;
@@ -38,7 +38,7 @@ namespace CheckMySymptoms.Repositories
                 if (!data.ContainsKey(SEX) || !data.ContainsKey(AGE))
                 {
                     data.Add(AGE, new VariableInfo(AGE, typeof(int).FullName, 30));
-                    data.Add(SEX, new VariableInfo(SEX, typeof(char).FullName, 'F'));
+                    data.Add(SEX, new VariableInfo(SEX, typeof(string).FullName, "F"));
                     await SaveData(data);
                 }
 
@@ -90,7 +90,7 @@ namespace CheckMySymptoms.Repositories
 
         public async Task SaveData(Dictionary<string, VariableInfo> variables)
         {
-            Dictionary<string, VariableMetadata> metaData = this.variableMetadataRepository.GetMetadata().ToDictionary(m => m.VariableName);
+            Dictionary<string, VariableMetadata> metaData = this.variableMetadataRepository.GetMetadata(PATIENTTABLE).ToDictionary(m => m.VariableName);
             StorageFile file = await roamingFolder.CreateFileAsync(string.Concat(PATIENTTABLE, ext), CreationCollisionOption.ReplaceExisting);
 
             try

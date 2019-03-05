@@ -10,12 +10,12 @@ namespace CheckMySymptoms.Repositories
 {
     public class VariableMetadataRepository : IVariableMetadataRepository
     {
-        public ICollection<VariableMetadata> GetMetadata()
+        public ICollection<VariableMetadata> GetMetadata(string tableName)
         {
             return new List<VariableMetadata>
             {
-                new VariableMetadata("Patient.Age", typeof(int).FullName, string.Empty, "Patient"),
-                new VariableMetadata("Patient.Sex", typeof(char).FullName, string.Empty, "Patient")
+                new VariableMetadata("Patient.Age", typeof(int).FullName, string.Empty, tableName),
+                new VariableMetadata("Patient.Sex", typeof(char).FullName, string.Empty, tableName)
             };
         }
     }

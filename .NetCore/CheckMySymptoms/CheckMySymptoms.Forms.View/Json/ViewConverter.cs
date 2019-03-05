@@ -5,11 +5,11 @@ using System.Text;
 
 namespace CheckMySymptoms.Forms.View.Json
 {
-    public class ViewConverter : JsonTypeConverter<ViewBase>
-    {
-        public override string TypePropertyName => "TypeFullName";
+    //public class ViewConverter : JsonTypeConverter<ViewBase>
+    //{
+    //    public override string TypePropertyName => "TypeFullName";
 
-        protected override Type GetDerivedType(string typeName)
-            => Type.GetType(typeName, false);
-    }
+    //    protected override Type GetDerivedType(string typeName)
+    //        => Type.GetType(typeName, false);
+    //}
 }

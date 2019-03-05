@@ -23,17 +23,23 @@ namespace CheckMySymptoms.Forms.View.Input
 
         public override void UpdateFields(object fields)
         {
-            if (!(fields is Dictionary<int, object> dict))
+            if (!(fields is object[] list))
                 return;
 
-            this.UpdateAllQuestions(dict);
+            this.UpdateAllQuestions(list.Aggregate(new Dictionary<int, object>(), (dic, next) =>
+            {
+                if (next is KeyValuePair<int, object> kvp)
+                    dic.Add(kvp.Key, kvp.Value);
+
+                return dic;
+            }));
         }
 
-        public Dictionary<int, object> GetFields()
+        public KeyValuePair<int, object>[] GetFields()
         {
             return this.GetAllQuestions()
-                .Select(q => new { q.Id, Val = q.GetInputResponse()?.Answer })
-                .ToDictionary(k => k.Id, k => k.Val);
+                .Select(q => new KeyValuePair<int, object>(q.Id, q.GetInputResponse()?.Answer))
+                .ToArray();
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

@@ -1,10 +1,8 @@
-﻿using CheckMySymptoms.Forms.View.Json;
-using CheckMySymptoms.Utils;
-using Newtonsoft.Json;
+﻿using CheckMySymptoms.Utils;
 
 namespace CheckMySymptoms.Forms.View
 {
-    [JsonConverter(typeof(ViewConverter))]
+    //[JsonConverter(typeof(ViewConverter))]
     public abstract class ViewBase
     {
         public string TypeFullName { get { return this.GetType().ToTypeString(); } }

@@ -10,7 +10,7 @@ namespace CheckMySymptoms.Forms.View
 {
     public interface IVariableMetadataRepository
     {
-        ICollection<VariableMetadata> GetMetadata();
+        ICollection<VariableMetadata> GetMetadata(string tableName);
     }
 
     public interface IPatientDataRepository
@@ -53,8 +53,8 @@ namespace CheckMySymptoms.Forms.View
 
         private static readonly LookUpsViewModel[] Cache = new LookUpsViewModel[]
             {
-                new  LookUpsViewModel { ListName = "sex", Text="Male", CharValue='M' },
-                new  LookUpsViewModel { ListName = "sex", Text="Female", CharValue='F' },
+                new  LookUpsViewModel { ListName = "sex", Text="Male", Value="M" },
+                new  LookUpsViewModel { ListName = "sex", Text="Female", Value="F" },
 
                 new  LookUpsViewModel { ListName = "age", Text="Zero",      IntegerValue=0 },
                 new  LookUpsViewModel { ListName = "age", Text="One",       IntegerValue=1 },

@@ -1,13 +1,11 @@
 ﻿using CheckMySymptoms.Forms.View.Common;
-using CheckMySymptoms.Forms.View.Json;
 using LogicBuilder.RulesDirector;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
 namespace CheckMySymptoms.Forms.View.Input
 {
-    [JsonConverter(typeof(InputViewConverter))]
+    //[JsonConverter(typeof(InputViewConverter))]
     public abstract class BaseInputView
     {
         //LogicBuilder.Forms.Parameters
@@ -48,6 +46,7 @@ namespace CheckMySymptoms.Forms.View.Input
 
                 return _itemsSource;
             }
+            set { _itemsSource = value; }
         }
 
         //Validation

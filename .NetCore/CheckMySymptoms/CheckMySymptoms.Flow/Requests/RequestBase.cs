@@ -1,11 +1,9 @@
-﻿using CheckMySymptoms.Flow.Requests.Json;
-using CheckMySymptoms.Flow.ScreenSettings.Views;
+﻿using CheckMySymptoms.Flow.ScreenSettings.Views;
 using CheckMySymptoms.Forms.View;
-using Newtonsoft.Json;
 
 namespace CheckMySymptoms.Flow.Requests
 {
-    [JsonConverter(typeof(RequestConverter))]
+    //[JsonConverter(typeof(RequestConverter))]
     abstract public class RequestBase
     {
         public CommandButtonRequest CommandButtonRequest { get; set; }
