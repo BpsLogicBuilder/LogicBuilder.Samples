@@ -79,7 +79,7 @@ namespace UnitTests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfiles(typeof(ConnectorProfile));
+                cfg.AddMaps(typeof(ConnectorProfile));
             });
             config.AssertConfigurationIsValid<ConnectorProfile>();
             mapper = config.CreateMapper();

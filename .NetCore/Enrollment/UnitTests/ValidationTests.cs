@@ -1152,8 +1152,8 @@ namespace UnitTests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfiles(typeof(InputFormMappingProfile));
-                cfg.AddProfiles(typeof(InputVariablesMappingProfile));
+                cfg.AddMaps(typeof(InputFormMappingProfile));
+                cfg.AddMaps(typeof(InputVariablesMappingProfile));
             });
 
             config.AssertConfigurationIsValid<InputFormMappingProfile>();

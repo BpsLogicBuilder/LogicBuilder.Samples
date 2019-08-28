@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="2.0.0" />
-    <PackageReference Include="LogicBuilder.Data" Version="1.0.0" />
-    <PackageReference Include="LogicBuilder.Domain" Version="1.0.0" />
-    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="1.0.0" />
-    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="1.0.0" />
-    <PackageReference Include="LogicBuilder.Kendo.ExpressionExtensions" Version="1.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="3.0.1" />
+    <PackageReference Include="LogicBuilder.Data" Version="2.0.0" />
+    <PackageReference Include="LogicBuilder.Domain" Version="2.0.0" />
+    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="2.0.0" />
+    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="2.0.0" />
+    <PackageReference Include="LogicBuilder.Kendo.ExpressionExtensions" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

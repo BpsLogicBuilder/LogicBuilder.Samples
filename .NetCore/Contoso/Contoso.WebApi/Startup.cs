@@ -49,8 +49,8 @@ namespace Contoso.WebApi
                 (
                     new MapperConfiguration(cfg =>
                     {
-                        cfg.AddProfiles(typeof(SchoolProfile).Assembly);
-                        cfg.AddProfiles(typeof(GroupingProfile).Assembly);
+                        cfg.AddMaps(typeof(SchoolProfile).Assembly);
+                        cfg.AddMaps(typeof(GroupingProfile).Assembly);
                         cfg.AllowNullCollections = true;
                     })
                 )

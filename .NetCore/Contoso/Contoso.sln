@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2035
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29001.49
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{B394E062-7ABF-47D1-9F8D-6C45F398168C}"
 EndProject
@@ -53,7 +53,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeedTheDatabase", "SeedTheD
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Web.Flow", "Contoso.Web.Flow\Contoso.Web.Flow.csproj", "{D262949D-E06B-4A0C-9D84-D195FCCD828D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.WebApi", "Contoso.WebApi\Contoso.WebApi.csproj", "{4E886DD5-A876-40E9-8A2A-7477D6E4F943}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.WebApi", "Contoso.WebApi\Contoso.WebApi.csproj", "{4E886DD5-A876-40E9-8A2A-7477D6E4F943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

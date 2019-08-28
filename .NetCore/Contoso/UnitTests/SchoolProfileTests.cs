@@ -63,7 +63,7 @@ namespace UnitTests
         {
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.AddProfiles(typeof(SchoolProfile));
+                cfg.AddMaps(typeof(SchoolProfile));
             });
             config.AssertConfigurationIsValid<SchoolProfile>();
             config.AssertConfigurationIsValid<FilterGroupProfile>();

@@ -47,7 +47,8 @@ namespace Contoso.AutoMapperProfiles
 			CreateMap<GridSettingsParameters, GridSettingsView>().ReverseMap();
 			CreateMap<GroupParameters, GroupView>().ReverseMap();
 			CreateMap<HtmlPageSettingsParameters, HtmlPageSettingsView>().ReverseMap();
-			CreateMap<MessageTemplateParameters, MessageTemplateView>().ReverseMap();
+            CreateMap<AboutFormSettingsParameters, AboutFormSettingsView>().ReverseMap();
+            CreateMap<MessageTemplateParameters, MessageTemplateView>().ReverseMap();
 			CreateMap<MultiSelectFormControlSettingsParameters, MultiSelectFormControlSettingsView>().ReverseMap();
 			CreateMap<MultiSelectTemplateParameters, MultiSelectTemplateView>().ReverseMap();
 			CreateMap<RequestDetailsParameters, RequestDetailsView>().ReverseMap();

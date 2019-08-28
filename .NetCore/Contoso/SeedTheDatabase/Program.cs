@@ -30,7 +30,7 @@ namespace SeedTheDatabase
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient)
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()
-                .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddProfiles(typeof(SchoolProfile).GetTypeInfo().Assembly)))
+                .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddMaps(typeof(SchoolProfile).GetTypeInfo().Assembly)))
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .BuildServiceProvider();
 

@@ -145,7 +145,7 @@ namespace CheckMySymptoms
             (
                 new MapperConfiguration(cfg =>
                 {
-                    cfg.AddProfiles(typeof(BaseClassMappings).Assembly);
+                    cfg.AddMaps(typeof(BaseClassMappings).Assembly);
                     cfg.AllowNullCollections = true;
                 })
             )

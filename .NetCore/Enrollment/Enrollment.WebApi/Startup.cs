@@ -48,8 +48,8 @@ namespace Enrollment.WebApi
                 (
                     new MapperConfiguration(cfg =>
                     {
-                        cfg.AddProfiles(typeof(EnrollmentProfile).Assembly);
-                        cfg.AddProfiles(typeof(GroupingProfile).Assembly);
+                        cfg.AddMaps(typeof(EnrollmentProfile).Assembly);
+                        cfg.AddMaps(typeof(GroupingProfile).Assembly);
                         cfg.AllowNullCollections = true;
                     })
                 )

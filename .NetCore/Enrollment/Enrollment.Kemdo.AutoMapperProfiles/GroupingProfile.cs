@@ -11,6 +11,10 @@ namespace Enrollment.Kemdo.AutoMapperProfiles
     {
         public GroupingProfile()
         {
+            CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<ResidencyModel>>()
+                .ConstructUsing(Helpers.Converter<ResidencyModel>)
+                .ForMember(d => d.Items, opt => opt.Ignore());
+
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<LookUpsModel>>()
                 .ConstructUsing(Helpers.Converter<LookUpsModel>)
                 .ForMember(d => d.Items, opt => opt.Ignore());

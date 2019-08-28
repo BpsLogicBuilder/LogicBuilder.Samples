@@ -46,7 +46,7 @@ namespace IntegrationTests
                 )
                 .AddTransient<IEnrollmentStore, EnrollmentStore>()
                 .AddTransient<IEnrollmentRepository, EnrollmentRepository>()
-                .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddProfiles(typeof(EnrollmentProfile).GetTypeInfo().Assembly)))
+                .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddMaps(typeof(EnrollmentProfile).GetTypeInfo().Assembly)))
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .BuildServiceProvider();
 

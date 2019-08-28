@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="1.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.1.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

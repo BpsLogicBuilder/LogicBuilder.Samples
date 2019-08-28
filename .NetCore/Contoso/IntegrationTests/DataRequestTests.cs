@@ -56,8 +56,8 @@ namespace IntegrationTests
                 (
                     new MapperConfiguration(cfg =>
                     {
-                        cfg.AddProfiles(typeof(SchoolProfile).GetTypeInfo().Assembly);
-                        cfg.AddProfiles(typeof(GroupingProfile).GetTypeInfo().Assembly);
+                        cfg.AddMaps(typeof(SchoolProfile).GetTypeInfo().Assembly);
+                        cfg.AddMaps(typeof(GroupingProfile).GetTypeInfo().Assembly);
                     })
                 )
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))

@@ -205,8 +205,8 @@ namespace IntegrationTests
                 (
                     new MapperConfiguration(cfg =>
                     {
-                        cfg.AddProfiles(typeof(EnrollmentProfile).GetTypeInfo().Assembly);
-                        cfg.AddProfiles(typeof(GroupingProfile).GetTypeInfo().Assembly);
+                        cfg.AddMaps(typeof(EnrollmentProfile).GetTypeInfo().Assembly);
+                        cfg.AddMaps(typeof(GroupingProfile).GetTypeInfo().Assembly);
                     })
                 )
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
