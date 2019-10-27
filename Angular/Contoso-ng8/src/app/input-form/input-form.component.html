@@ -1,0 +1,153 @@
+<form novalidate [formGroup]="itemForm" class="k-form">
+  <div class="card" *ngIf='formSettings'>
+    <div class="card-header bg-primary text-white h6">
+      {{formSettings.title}}
+    </div>
+    <div class="card-body">
+      <ng-container *ngFor="let row of formSettings.rows">
+        <ng-container *ngTemplateOutlet="getTemplate('rowTemplate'); context: getRowContext(row, itemForm)">
+        </ng-container>
+      </ng-container>
+    </div>
+    <div class="card-footer">
+      <ng-container *ngFor="let button of commandButtons">
+        <button *ngIf="button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="cancelClick(button)">
+          <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+        </button>
+        <button *ngIf="!button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="saveClick(button)"
+          [disabled]='!(this.itemForm.dirty && this.itemForm.valid)'>
+          <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</form>
+
+<ng-template let-rowSetting let-formGroup="formGroup" #rowTemplate>
+  <div class="row card" *ngIf="rowSetting.showTitle">
+    <div class="card-header">{{rowSetting.title}}</div>
+    <div class="card-body col-md-12">
+      <ng-container *ngFor="let column of rowSetting.columns">
+        <ng-container *ngTemplateOutlet="getTemplate('columnTemplate'); context: getColumnContext(column, formGroup)">
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="mb-3" *ngIf="!rowSetting.showTitle">
+    <ng-container *ngFor="let column of rowSetting.columns">
+      <ng-container *ngTemplateOutlet="getTemplate('columnTemplate'); context: getColumnContext(column, formGroup)">
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template let-columnSetting let-formGroup="formGroup" #columnTemplate>
+  <div class="card text-dark bg-light pl-0 pr-0 {{columnSetting.columnShare}}">
+    <div *ngIf="columnSetting.showTitle" class="card-header">{{columnSetting.title}}</div>
+    <div class="card-body">
+      <fieldset *ngIf="columnSetting?.questions?.length" class="pt-2">
+        <ng-container *ngFor="let setting of columnSetting.questions">
+          <div *ngIf="formGroup.controls[setting.variableId]" class="form-group row">
+            <ng-container *ngIf="setting.textTemplate">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroup)">
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="setting.dropDownTemplate">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, formGroup)">
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="setting.multiSelectTemplate">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, formGroup)">
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+      </fieldset>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #hiddenTemplate>
+  <div class="col-md-8">
+    <input class="form-control" hidden [attr.name]="questionSetting.variableId" [id]="questionSetting.variableId" [type]="hidden"
+      [placeholder]="questionSetting.placeholder" [formControl]="formGroup.controls[questionSetting.variableId]" />
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #labelTemplate>
+  <label class="col-md-3 col-form-label" attr.for="{{questionSetting.variableId}}">{{questionSetting.text}}</label>
+  <div class="col-md-8">
+    <div class="form-control" readonly>{{formGroup.controls[questionSetting.variableId] ? formGroup.controls[questionSetting.variableId].value : ''}}</div>
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #textTemplate>
+  <label class="col-md-3 col-form-label" attr.for="{{questionSetting.variableId}}">{{questionSetting.text}}</label>
+  <div class="col-md-8">
+    <input class="form-control" [attr.name]="questionSetting.variableId" [id]="questionSetting.variableId" [type]="questionSetting.htmlType"
+      [placeholder]="questionSetting.placeholder" [formControl]="formGroup.controls[questionSetting.variableId]" />
+    <small class="form-text text-muted" *ngIf="displayMessage[questionSetting.variableId]">
+      {{displayMessage[questionSetting.variableId]}}
+    </small>
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #dateTemplate>
+  <label class="col-md-3 col-form-label" attr.for="{{questionSetting.variableId}}">{{questionSetting.text}}</label>
+  <div class="col-md-8">
+    <kendo-datepicker class="form-control" 
+      [attr.name]="questionSetting.variableId" 
+      [id]="questionSetting.variableId"
+      [id]="questionSetting.variableId"
+      [formControl]="formGroup.controls[questionSetting.variableId]">
+    </kendo-datepicker>
+      <small class="form-text text-muted" *ngIf="displayMessage[questionSetting.variableId]">
+        {{displayMessage[questionSetting.variableId]}}
+      </small>
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #checkBoxTemplate>
+  <div class="col-md-8">
+    <div class="form-check">
+      <label class="form-check-label">
+        <input class="form-check-input"
+              [attr.name]="questionSetting.variableId"
+              [id]="questionSetting.variableId"
+                type="checkbox"
+                [formControl]="formGroup.controls[questionSetting.variableId]">{{questionSetting.text}}
+      </label>
+    </div>
+    <small class="form-text text-muted" *ngIf="displayMessage[questionSetting.variableId]">
+      {{displayMessage[questionSetting.variableId]}}
+    </small>
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #dropDownTemplate>
+  <label class="col-md-3 col-form-label" attr.for="{{questionSetting.variableId}}">{{questionSetting.text}}</label>
+  <div class="col-md-8">
+    <app-form-field-dropdown [id]="questionSetting.variableId" [dropDownTemplate]="questionSetting.dropDownTemplate"
+      [textField]="questionSetting.dropDownTemplate.textField" [valueField]="questionSetting.dropDownTemplate.valueField"
+      [formControl]="formGroup.controls[questionSetting.variableId]" [reload]="questionSetting.dropDownTemplate.reload"
+      [clear]="questionSetting.dropDownTemplate.clear" [filterValueSourceItem]="formGroup.value">
+    </app-form-field-dropdown>
+    <small class="form-text text-muted" *ngIf="displayMessage[questionSetting.variableId]">
+      {{displayMessage[questionSetting.variableId]}}
+    </small>
+  </div>
+</ng-template>
+
+<ng-template let-questionSetting let-formGroup="formGroup" #multiSelectTemplate>
+  <label class="col-md-3 col-form-label" attr.for="{{questionSetting.variableId}}">{{questionSetting.text}}</label>
+  <div class="col-md-8">
+    <app-form-field-multiselect [id]="questionSetting.variableId" 
+      [multiSelectTemplate]="questionSetting.multiSelectTemplate"
+      [textField]="questionSetting.multiSelectTemplate.textField" [valueField]="questionSetting.multiSelectTemplate.valueField"
+      [formControl]="formGroup.controls[questionSetting.variableId]" [filterValueSourceItem]="formGroup.value">
+    </app-form-field-multiselect>
+    <small class="form-text text-muted" *ngIf="displayMessage[questionSetting.variableId]">
+      {{displayMessage[questionSetting.variableId]}}
+    </small>
+  </div>
+</ng-template>

@@ -1,0 +1,206 @@
+<div class="card">
+  <div class="card-header bg-primary text-white">
+      {{gridSettings.title}}
+  </div>
+  <div class="card-body">
+    <kendo-grid [data]="items" 
+    [pageSize]="state.take" 
+    [skip]="state.skip" 
+    [sort]="state.sort" 
+    [sortable]="gridSettings.sortable"
+    [pageable]="gridSettings.pageable" 
+    [scrollable]="gridSettings.scrollable" 
+    [groupable]="gridSettings.groupable" 
+    [group]="state.group"
+    [filterable]="gridSettings.filterable" 
+    [filter]="state.filter" 
+    (dataStateChange)="dataStateChange($event)" 
+    (filterChange)="filterChange($event)"
+    [height]="gridSettings.height">
+      <kendo-grid-column 
+      *ngFor="let columnSetting of gridSettings.columns" 
+      [field]="columnSetting.field" 
+      [title]="columnSetting.title" 
+      [format]="columnSetting.format" 
+      [filter]="columnSetting.type"
+      [width]="columnSetting.width ? columnSetting.width : null"
+      [groupable]="columnSetting.groupable == undefined ? true : columnSetting.groupable">
+        <ng-template kendoGridGroupHeaderTemplate *ngIf="columnSetting.groupHeaderTemplate" let-aggregates>
+            <ng-container *ngTemplateOutlet="getTemplate(columnSetting.groupHeaderTemplate.templateName); context: getGroupHeaderContext(aggregates, columnSetting)">
+            </ng-container>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="columnSetting.cellTemplate">
+          <ng-container *ngTemplateOutlet="getTemplate(columnSetting.cellTemplate.templateName); context: getContext(dataItem, columnSetting)">
+          </ng-container>
+        </ng-template>
+        <ng-template kendoGridFilterCellTemplate let-filter *ngIf="columnSetting.filterRowTemplate">
+          <ng-container *ngTemplateOutlet="getTemplate(columnSetting.filterRowTemplate.templateName); context: getRowFilterContext(filter, columnSetting)">
+          </ng-container>
+        </ng-template>
+        <ng-template kendoGridFilterMenuTemplate let-filter let-filterService="filterService" *ngIf="columnSetting.filterMenuTemplate">
+          <ng-container *ngTemplateOutlet="getTemplate(columnSetting.filterMenuTemplate.templateName); context: getMenuFilterContext(filter, columnSetting, filterService)">
+          </ng-container>
+        </ng-template>
+        <ng-template kendoGridCellTemplate let-dataItem *ngIf="columnSetting.cellListTemplate">
+            <ng-container *ngTemplateOutlet="getTemplate(columnSetting.cellListTemplate.templateName); context: getListContext(dataItem, columnSetting)">
+            </ng-container>
+          </ng-template>
+        <ng-template kendoGridGroupFooterTemplate *ngIf="columnSetting.groupFooterTemplate" let-aggregates>
+          <ng-container *ngTemplateOutlet="getTemplate(columnSetting.groupFooterTemplate.templateName); context: getGroupFooterContext(aggregates, columnSetting)">
+          </ng-container>
+        </ng-template>
+        <ng-template kendoGridFooterTemplate *ngIf="columnSetting.gridFooterTemplate && aggregateResult">
+          <ng-container *ngTemplateOutlet="getTemplate(columnSetting.gridFooterTemplate.templateName); context: getGridFooterContext(aggregateResult, columnSetting)">
+          </ng-container>
+        </ng-template>
+      </kendo-grid-column>
+      <kendo-grid-command-column *ngIf="gridSettings.commandColumn" [title]="gridSettings.commandColumn.title" [width]="gridSettings.commandColumn.width">
+        <ng-template kendoGridCellTemplate let-dataItem>
+          <ng-container *ngFor="let button of gridButtons; let idx = index">
+            <ng-container *ngIf="button.gridId === gridSettings.gridId">
+              <span *ngIf="idx !== 0"> | </span><a class="text-primary" href="#" onclick="return false;" (click)="gridCommandClick(dataItem, button)">{{button.longString}}</a>
+            </ng-container>
+          </ng-container>
+        </ng-template>
+    </kendo-grid-command-column>
+    <ng-container *ngIf="gridSettings.detailGridSettings">
+      <div *kendoGridDetailTemplate="let dataItem">
+        <app-generic-grid [settings]="gridSettings.detailGridSettings" [filterValueSourceItem]="dataItem" [commandButtons]="commandButtons"></app-generic-grid>
+      </div>
+    </ng-container>
+    <ng-template #filterRowTemplateDropDown let-filter let-filterRowTemplate="filterRowTemplate" let-textField="textField" let-valueField="valueField">
+      <app-grid-column-dropdown-filter
+          [filter]="filter"
+          [filterRowTemplate]="filterRowTemplate"
+          [textField]="textField"
+          [valueField]="valueField">
+      </app-grid-column-dropdown-filter>
+    </ng-template>
+    </kendo-grid>
+  </div>
+  <div class="card-footer">
+    <ng-container *ngFor="let button of commandButtons">
+      <button *ngIf="!button.gridCommandButton && (button.gridId == gridSettings.gridId)" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="formCommandClick(button)">
+        <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+      </button>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template let-dataItem let-field="field" #gridCellTemplate_Date>
+  {{ dataItem[field] | date }}
+</ng-template>
+
+<ng-template let-dataItem let-field="field" #gridCellTemplate_Currency>
+    {{ dataItem[field] | currency:'USD':'symbol':'1.2-2' }}
+</ng-template>
+
+<ng-template #filterMenuTemplateMultiSelect let-filter let-field="field" let-filterService="filterService" let-isPrimitive="isPrimitive" let-filterMenuTemplate="filterMenuTemplate" let-textField="textField" let-valueField="valueField">
+  <app-grid-column-multiselect-filter
+    [isPrimitive]="isPrimitive"
+    [field]="field"
+    [currentFilter]="filter"
+    [filterService]="filterService"
+    [filterMenuTemplate]="filterMenuTemplate"
+    [textField]="textField"
+    [valueField]="valueField">
+  </app-grid-column-multiselect-filter>
+</ng-template>
+
+<ng-template let-dataItem let-field="field" let-displayMember="displayMember" #itemListTemplate>
+    <div *ngIf='dataItem && dataItem[field] && dataItem[field].length'>
+      <span *ngFor='let item of dataItem[field]'>{{displayMember ? item[displayMember] : item}}
+        <br>
+      </span>
+    </div>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-groupAggregates="groupAggregates"
+  #groupHeaderTemplate>
+  <span *ngFor="let agg of aggregates; let idx = index"><span *ngIf="idx !== 0">, </span>{{agg.label}} {{columnTitle}}: {{groupAggregates[field][agg.function]}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-groupAggregates="groupAggregates"
+  #groupHeaderTemplate_Date>
+  <span *ngFor="let agg of aggregates; let idx = index"><span *ngIf="idx !== 0">, </span>{{agg.label}} {{columnTitle}}: {{groupAggregates[field][agg.function] | date}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-groupAggregates="groupAggregates"
+  #groupHeaderTemplate_Currency>
+  <span *ngFor="let agg of aggregates; let idx = index"><span *ngIf="idx !== 0">, </span>{{agg.label}} {{columnTitle}}: {{groupAggregates[field][agg.function] | currency:'USD':'symbol':'1.2-2'}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-groupAggregates="groupAggregates"
+  #groupFooterTemplate>
+  <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{groupAggregates[field][agg.function]}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-groupAggregates="groupAggregates"
+  #groupFooterTemplate_Date>
+  <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{groupAggregates[field][agg.function] | date}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-groupAggregates="groupAggregates"
+  #groupFooterTemplate_Currency>
+  <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{groupAggregates[field][agg.function] | currency:'USD':'symbol':'1.2-2'}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-gridAggregateResult="gridAggregateResult"
+  #gridFooterTemplate>
+  <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{gridAggregateResult[field][agg.function]}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-gridAggregateResult="gridAggregateResult"
+  #gridFooterTemplate_Date>
+  <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{gridAggregateResult[field][agg.function] | date}}</span>
+</ng-template>
+
+<ng-template 
+  let-label="label" 
+  let-columnTitle="columnTitle" 
+  let-field="field" 
+  let-aggregates="aggregates" 
+  let-gridAggregateResult="gridAggregateResult"
+  #gridFooterTemplate_Currency>
+  <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{gridAggregateResult[field][agg.function] | currency:'USD':'symbol':'1.2-2'}}</span>
+</ng-template>
