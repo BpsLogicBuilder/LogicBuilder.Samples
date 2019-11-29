@@ -28,10 +28,7 @@ namespace Contoso.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<DataSourceResult>("GetData", this._schoolRepository)
-                    )
+                    await request.InvokeGenericMethod<DataSourceResult>("GetData", this._schoolRepository)
                 );
             }
             catch (Exception ex)
@@ -47,10 +44,7 @@ namespace Contoso.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._schoolRepository)
-                    )
+                    await request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._schoolRepository)
                 );
             }
             catch (Exception ex)
@@ -66,10 +60,7 @@ namespace Contoso.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._schoolRepository)
-                    )
+                    await request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._schoolRepository)
                 );
             }
             catch (Exception ex)
@@ -86,7 +77,7 @@ namespace Contoso.WebApi.Controllers
 
             try
             {
-                if (await Task.Run(() => postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._schoolRepository)))
+                if (await postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._schoolRepository))
                 {
                     return Created($"/api/[controller]", postModelRequest.Model);
                 }
@@ -109,7 +100,7 @@ namespace Contoso.WebApi.Controllers
 
             try
             {
-                if (await Task.Run(() => postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._schoolRepository)))
+                if (await postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._schoolRepository))
                 {
                     return NoContent();
                 }
@@ -129,7 +120,7 @@ namespace Contoso.WebApi.Controllers
         {
             try
             {
-                if (await Task.Run(() => request.InvokeGenericDeleteMethod("Delete", this._schoolRepository)))
+                if (await request.InvokeGenericDeleteMethod("Delete", this._schoolRepository))
                 {
                     return NoContent();
                 }

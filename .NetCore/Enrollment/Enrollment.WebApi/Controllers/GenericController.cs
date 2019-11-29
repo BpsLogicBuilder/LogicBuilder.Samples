@@ -28,10 +28,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<DataSourceResult>("GetData", this._enrollmentRepository)
-                    )
+                    await request.InvokeGenericMethod<DataSourceResult>("GetData", this._enrollmentRepository)
                 );
             }
             catch (Exception ex)
@@ -47,10 +44,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._enrollmentRepository)
-                    )
+                    await request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._enrollmentRepository)
                 );
             }
             catch (Exception ex)
@@ -66,10 +60,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._enrollmentRepository)
-                    )
+                    await request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._enrollmentRepository)
                 );
             }
             catch (Exception ex)
@@ -85,10 +76,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await Task.Run
-                    (
-                        () => request.InvokeGenericMethod<BaseModelClass>("GetSingleOrDefault", this._enrollmentRepository)
-                    )
+                    await request.InvokeGenericMethod<BaseModelClass>("GetSingleOrDefault", this._enrollmentRepository)
                 );
             }
             catch (Exception ex)
@@ -105,7 +93,7 @@ namespace Enrollment.WebApi.Controllers
 
             try
             {
-                if (await Task.Run(() => postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._enrollmentRepository)))
+                if (await postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._enrollmentRepository))
                 {
                     return Created($"/api/[controller]", postModelRequest.Model);
                 }
@@ -128,7 +116,7 @@ namespace Enrollment.WebApi.Controllers
 
             try
             {
-                if (await Task.Run(() => postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._enrollmentRepository)))
+                if (await postModelRequest.InvokeGenericSaveMethod("Save", postModelRequest.Model, this._enrollmentRepository))
                 {
                     return NoContent();
                 }
@@ -148,7 +136,7 @@ namespace Enrollment.WebApi.Controllers
         {
             try
             {
-                if (await Task.Run(() => request.InvokeGenericDeleteMethod("Delete", this._enrollmentRepository)))
+                if (await request.InvokeGenericDeleteMethod("Delete", this._enrollmentRepository))
                 {
                     return NoContent();
                 }
