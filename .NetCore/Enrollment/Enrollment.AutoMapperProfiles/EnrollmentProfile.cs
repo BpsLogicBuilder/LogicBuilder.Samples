@@ -24,7 +24,9 @@ namespace Enrollment.AutoMapperProfiles
             CreateMap<StateLivedIn, StateLivedInModel>().ReverseMap();
             CreateMap<User, UserModel>().ReverseMap();
             CreateMap<LookUps, LookUpsModel>().ReverseMap();
-            CreateMap<RulesModule, RulesModuleModel>().ReverseMap();
+            CreateMap<RulesModule, RulesModuleModel>()
+                .ForMember(dest => dest.NamePlusApplication, opts => opts.MapFrom(x => x.Name + "|" + x.Application))
+                .ReverseMap();
             CreateMap<VariableMetaData, VariableMetaDataModel>().ReverseMap();
         }
     }

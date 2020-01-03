@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Enrollment.AutoMapperProfiles;
 using Enrollment.Contexts;
 using Enrollment.Kemdo.AutoMapperProfiles;
 using Enrollment.Repositories;
 using Enrollment.Stores;
+using Enrollment.Utils;
 using Enrollment.Web.Flow;
 using Enrollment.Web.Flow.Cache;
 using Enrollment.Web.Flow.Options;
@@ -15,11 +12,11 @@ using Enrollment.Web.Flow.Rules;
 using LogicBuilder.RulesDirector;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+using Newtonsoft.Json.Serialization;
 
 namespace Enrollment.WebApi
 {
@@ -36,7 +33,10 @@ namespace Enrollment.WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc();
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0).AddNewtonsoftJson(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCaseExceptDictionaryKeysResolver();
+            });
 
             services.AddDbContext<RulesContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddDbContext<EnrollmentContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -72,15 +72,26 @@ namespace Enrollment.WebApi
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
-            app.UseMvc();
+            // Runs matching. An endpoint is selected and set on the HttpContext if a match is found.
+            app.UseRouting();
+
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
+
+            // Executes the endpoint that was selected by routing.
+            app.UseEndpoints(endpoints =>
+            {
+                // Mapping of endpoints goes here:
+                endpoints.MapControllers();
+                //endpoints.MapRazorPages();
+            });
         }
     }
 }

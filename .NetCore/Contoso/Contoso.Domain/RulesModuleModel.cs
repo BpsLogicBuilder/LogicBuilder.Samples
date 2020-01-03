@@ -19,5 +19,7 @@ namespace Contoso.Domain.Entities
         public string LoggedInUserId { get; set; }
 
         public System.DateTime LastUpdated { get; set; }
+
+        public string NamePlusApplication { get; set; }
     }
 }

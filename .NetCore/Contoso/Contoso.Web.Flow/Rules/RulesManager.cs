@@ -46,8 +46,8 @@ namespace Contoso.Web.Flow.Rules
             if (modules.Count < 1)
                 return;
 
-            List<string> queryItems = modules.Select(item => string.Concat(item, PIPE, this._applicationOptions.ApplicationName).ToUpperInvariant()).ToList();
-            ICollection<RulesModuleModel> rulesModules = (await this._repository.GetItemsAsync<RulesModuleModel, RulesModule>(item => queryItems.Contains(string.Concat(item.Name, PIPE, item.Application).ToUpperInvariant())));
+            List<string> queryItems = modules.Select(item => string.Concat(item, PIPE, this._applicationOptions.ApplicationName)).ToList();
+            ICollection<RulesModuleModel> rulesModules = (await this._repository.GetItemsAsync<RulesModuleModel, RulesModule>(item => queryItems.Contains(item.NamePlusApplication)));
 
             this._rulesCache = rulesModules.Aggregate(this._rulesCache, (cache, next) =>
             {

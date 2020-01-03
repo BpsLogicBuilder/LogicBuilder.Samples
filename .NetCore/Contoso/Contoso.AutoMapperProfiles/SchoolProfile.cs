@@ -57,7 +57,9 @@ namespace Contoso.AutoMapperProfiles
 
             CreateMap<LookUpsModel, LookUps>().ReverseMap();
 
-            CreateMap<RulesModuleModel, RulesModule>().ReverseMap();
+            CreateMap<RulesModuleModel, RulesModule>()
+                .ReverseMap()
+                .ForMember(dest => dest.NamePlusApplication, opts => opts.MapFrom(x => x.Name + "|" + x.Application));
 
             CreateMap<VariableMetaDataModel, VariableMetaData>().ReverseMap();
         }

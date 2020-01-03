@@ -37,5 +37,7 @@ namespace Enrollment.Domain.Entities
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("RulesModule_LastUpdated")]
 		public System.DateTime LastUpdated { get; set; }
-    }
+
+		public string NamePlusApplication { get; set; }
+	}
 }

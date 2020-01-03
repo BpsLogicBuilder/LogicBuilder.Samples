@@ -43,7 +43,9 @@ namespace IntegrationTests
             {
                 Options = new DataSourceRequestOptions
                 {
-                    Aggregate = "listName-count~value-min",
+                    //Queryable.Min<TSource, string> throws System.ArgumentException against In-Memory DB
+                    //Aggregate = "listName-count~value-min",
+                    Aggregate = "listName-count~numericValue-min",
                     Filter = null,
                     Group = null,
                     Page = 1,
@@ -74,7 +76,9 @@ namespace IntegrationTests
             {
                 Options = new DataSourceRequestOptions
                 {
-                    Aggregate = "listName-count~value-min",
+                    //Queryable.Min<TSource, string> throws System.ArgumentException against In-Memory DB
+                    //Aggregate = "listName-count~value-min",
+                    Aggregate = "listName-count~booleanValue-min",
                     Filter = null,
                     Group = "listName-asc",
                     Page = 1,
@@ -105,7 +109,9 @@ namespace IntegrationTests
             {
                 Options = new DataSourceRequestOptions
                 {
-                    Aggregate = "citizenshipStatus-count~countryOfCitizenship-min",
+                    //Queryable.Min<TSource, string> throws System.ArgumentException against In-Memory DB
+                    //Aggregate = "citizenshipStatus-count~countryOfCitizenship-min",
+                    Aggregate = "citizenshipStatus-count~countryOfCitizenship-count",
                     Filter = null,
                     Group = null,
                     Page = 1,
