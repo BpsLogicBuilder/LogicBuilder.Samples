@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="3.0.0" />
-    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="2.0.0" />
+    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="4.1.0" />
+    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="4.1.0" />
     <PackageReference Include="LogicBuilder.RulesDirector.AspNetCore" Version="1.0.0" />
     <PackageReference Include="LogicBuilder.Workflow.Activities.Rules" Version="1.0.2" />
   </ItemGroup>

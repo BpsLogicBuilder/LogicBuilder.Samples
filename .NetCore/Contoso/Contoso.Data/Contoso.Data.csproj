@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.Data" Version="2.0.0" />
+    <PackageReference Include="LogicBuilder.Data" Version="4.1.0" />
   </ItemGroup>
 
 </Project>
