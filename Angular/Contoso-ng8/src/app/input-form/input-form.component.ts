@@ -47,11 +47,11 @@ export class InputFormComponent implements OnInit, AfterViewInit
   public errorMessage: string;
   public itemForm: FormGroup;
   public displayMessage: { [key: string]: string } = {};
+  public formSettings: IInputForm;
 
   private validationMessages: { [key: string]: { [key: string]: string } };
   private conditionalDirectives: { [key: string]: IDirective[] };
   private genericValidator: GenericValidator;
-  private formSettings: IInputForm;
 
   public getTemplate(templateName: string)
   {

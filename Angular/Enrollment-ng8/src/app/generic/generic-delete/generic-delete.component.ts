@@ -29,7 +29,7 @@ export class GenericDeleteComponent implements OnInit {
   public detailType = detailKind;
   public entity: EntityType;
   public errorMessage: string;
-  private formSettings: IDetailFormSettings;
+  public formSettings: IDetailFormSettings;
 
   public getTemplate(templateName: string) {
     return this[templateName];

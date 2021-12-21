@@ -32,9 +32,10 @@ export class FormFieldMultiselectComponent implements OnInit, ControlValueAccess
 
   public data: any;
   public placeholder: string;
+  public onChange: Function; 
+  
   private selectedItems: any;
   private disabled: boolean;
-  private onChange: Function; 
   private onTouched: Function;
 
   ngOnInit() {

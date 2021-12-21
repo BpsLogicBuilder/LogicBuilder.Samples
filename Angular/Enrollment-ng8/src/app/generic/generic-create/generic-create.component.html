@@ -216,7 +216,7 @@
   #dateTemplate>
   <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
   <div class="col-md-8">
-    <kendo-datepicker class="form-control" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
+    <kendo-datepicker class="form-control nopadding fillparent" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
       [formControl]="formGroup.controls[fieldSetting.field]"></kendo-datepicker>
     <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
       {{groupData.displayMessages[fieldSetting.field]}}
@@ -227,7 +227,7 @@
 <ng-template #dropDownTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex">
   <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
   <div class="col-md-8">
-    <app-form-field-dropdown id="{{fieldSetting.domElementId + strIndex}}" [dropDownTemplate]="fieldSetting.dropDownTemplate"
+    <app-form-field-dropdown class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [dropDownTemplate]="fieldSetting.dropDownTemplate"
       [textField]="fieldSetting.dropDownTemplate.textField" [valueField]="fieldSetting.dropDownTemplate.valueField"
       [formControl]="formGroup.controls[fieldSetting.field]" [reload]="fieldSetting.dropDownTemplate.reload"
       [clear]="fieldSetting.dropDownTemplate.clear" [filterValueSourceItem]="formGroup.value">
@@ -241,7 +241,7 @@
 <ng-template #multiSelectTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex">
   <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
   <div class="col-md-8">
-    <app-form-field-multiselect id="{{fieldSetting.domElementId + strIndex}}" [multiSelectTemplate]="fieldSetting.multiSelectTemplate"
+    <app-form-field-multiselect class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [multiSelectTemplate]="fieldSetting.multiSelectTemplate"
       [textField]="fieldSetting.multiSelectTemplate.textField" [valueField]="fieldSetting.multiSelectTemplate.valueField"
       [formControl]="formGroup.controls[fieldSetting.field]" [filterValueSourceItem]="formGroup.value">
     </app-form-field-multiselect>

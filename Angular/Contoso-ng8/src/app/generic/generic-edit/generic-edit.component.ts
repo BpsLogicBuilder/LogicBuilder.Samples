@@ -45,9 +45,9 @@ export class GenericEditComponent implements OnInit, AfterViewInit
   public entity: EntityType;
   public errorMessage: string;
   public itemForm: FormGroup;
+  public formSettings: IEditFormSettings;
 
   private formGroupData?: IFormGroupData;
-  private formSettings: IEditFormSettings;
   private isInsert: boolean = false;
 
   public getTemplate(templateName: string)
