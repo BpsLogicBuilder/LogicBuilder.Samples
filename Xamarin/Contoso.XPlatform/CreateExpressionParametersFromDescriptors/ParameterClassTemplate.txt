@@ -1,0 +1,10 @@
+﻿using System.Collections.Generic;
+
+
+namespace Contoso.Parameters.Expressions
+{
+    public class #Declaration#
+    {
+#Constructors##Properties#
+    }
+}

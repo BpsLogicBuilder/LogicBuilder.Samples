@@ -1,0 +1,7 @@
+﻿#NameSpaces#namespace Contoso.Forms.Parameters#Folder#
+{
+    public enum #Name#
+    {
+#Values#
+    }
+}

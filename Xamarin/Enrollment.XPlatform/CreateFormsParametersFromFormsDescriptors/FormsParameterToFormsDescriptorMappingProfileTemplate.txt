@@ -1,0 +1,45 @@
+﻿using AutoMapper;
+using Enrollment.Forms.Configuration;
+using Enrollment.Forms.Configuration.Bindings;
+using Enrollment.Forms.Configuration.Directives;
+using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.Forms.Configuration.ListForm;
+using Enrollment.Forms.Configuration.Navigation;
+using Enrollment.Forms.Configuration.SearchForm;
+using Enrollment.Forms.Configuration.TextForm;
+using Enrollment.Forms.Configuration.Validation;
+using Enrollment.Forms.Parameters;
+using Enrollment.Forms.Parameters.Bindings;
+using Enrollment.Forms.Parameters.Directives;
+using Enrollment.Forms.Parameters.DataForm;
+using Enrollment.Forms.Parameters.ListForm;
+using Enrollment.Forms.Parameters.Navigation;
+using Enrollment.Forms.Parameters.SearchForm;
+using Enrollment.Forms.Parameters.TextForm;
+using Enrollment.Forms.Parameters.Validation;
+
+namespace Enrollment.XPlatform.AutoMapperProfiles
+{
+    public class FormsParameterToFormsDescriptorMappingProfile : Profile
+    {
+        public FormsParameterToFormsDescriptorMappingProfile()
+        {
+#Mappings#
+
+            CreateMap<FormItemSettingsParameters, FormItemSettingsDescriptor>()
+#FormItemSettingsIncludes#
+
+            CreateMap<SearchFilterParametersBase, SearchFilterDescriptorBase>()
+#SearchFilterParametersBaseIncludes#
+
+            CreateMap<LabelItemParametersBase, LabelItemDescriptorBase>()
+#LabelItemParametersBaseIncludes#
+
+            CreateMap<SpanItemParametersBase, SpanItemDescriptorBase>()
+#SpanItemParametersBaseIncludes#
+
+            CreateMap<ItemBindingParameters, ItemBindingDescriptor>()
+#ItemBindingParametersBaseIncludes#
+        }
+    }
+}

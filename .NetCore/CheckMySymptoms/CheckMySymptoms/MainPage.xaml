@@ -5,7 +5,6 @@
     xmlns:local="using:CheckMySymptoms"
     xmlns:ViewModels="using:CheckMySymptoms.ViewModels"
     xmlns:muxcontrols="using:Microsoft.UI.Xaml.Controls"
-    xmlns:ads="using:Microsoft.Advertising.WinRT.UI"
     xmlns:fa="using:FontAwesome.UWP"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -100,7 +99,6 @@
                 <Grid Margin="0, 60, 0, 10" x:Name="navContentGrid">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" />
-                        <RowDefinition  Height="Auto" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
@@ -114,10 +112,6 @@
                         </Grid>
                     </ScrollViewer>
                     <Border x:Name="rightColumn" Grid.Column="2" Grid.RowSpan="2"></Border>
-                    <ads:AdControl Grid.Column="1" Grid.Row="1" x:Name="adControl" ApplicationId="3f83fe91-d6be-434d-a0ae-7351c5a997f1"
-                    AdUnitId="test"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"/>
                 </Grid>
             </muxcontrols:NavigationView.Content>
         </muxcontrols:NavigationView>

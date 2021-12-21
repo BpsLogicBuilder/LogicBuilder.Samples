@@ -1,0 +1,31 @@
+﻿using AutoMapper;
+using Enrollment.Common.Configuration.ExpressionDescriptors;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Arithmetic;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Cacnonical;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Collection;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Conversions;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.DateTimeOperators;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Logical;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.Operand;
+using LogicBuilder.Expressions.Utils.ExpressionBuilder.StringOperators;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System;
+
+namespace Enrollment.AutoMapperProfiles
+{
+    public class DescriptorToOperatorMappingProfile : Profile
+    {
+        const string PARAMETERS_KEY = "parameters";
+
+        public DescriptorToOperatorMappingProfile()
+        {
+#Mappings#
+
+            CreateMap<IExpressionOperatorDescriptor, IExpressionPart>()
+#DescriptorToPartIncludes#
+        }
+    }
+}

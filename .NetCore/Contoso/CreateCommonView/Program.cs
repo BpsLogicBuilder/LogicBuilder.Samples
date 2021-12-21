@@ -13,6 +13,6 @@ namespace CreateCommonView
 
     internal struct Constants
     {
-        internal const string BASEPATH = @"C:\.NetStandardGit\Samples\.NetCore\Contoso";
+        internal const string BASEPATH = @"C:\.github\BlaiseD\LogicBuilder.Samples\.NetCore\Contoso";
     }
 }

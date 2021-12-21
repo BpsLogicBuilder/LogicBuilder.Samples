@@ -1,0 +1,7 @@
+﻿#NameSpaces#namespace Contoso.Common.Configuration.ExpressionDescriptors
+{
+    #Modifier#public class #Name##Base#
+    {
+#Properties#
+    }
+}

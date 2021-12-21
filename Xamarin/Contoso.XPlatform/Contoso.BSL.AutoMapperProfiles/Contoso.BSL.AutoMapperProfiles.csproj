@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Common.Configuration\Contoso.Common.Configuration.csproj" />
+    <ProjectReference Include="..\Contoso.Contexts\Contoso.Contexts.csproj" />
+    <ProjectReference Include="..\Contoso.Data\Contoso.Data.csproj" />
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+    <ProjectReference Include="..\Contoso.Parameters\Contoso.Parameters.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,7 @@
+﻿#NameSpaces#namespace Enrollment.Common.Configuration.ExpressionDescriptors
+{
+    #Modifier#public class #Name##Base#
+    {
+#Properties#
+    }
+}

@@ -1,0 +1,103 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Rulesets\comparisontest.module" />
+    <None Remove="Rulesets\comparisontest.resources" />
+    <None Remove="Rulesets\deletecourse.module" />
+    <None Remove="Rulesets\deletecourse.resources" />
+    <None Remove="Rulesets\deletedepartment.module" />
+    <None Remove="Rulesets\deletedepartment.resources" />
+    <None Remove="Rulesets\deleteinstructor.module" />
+    <None Remove="Rulesets\deleteinstructor.resources" />
+    <None Remove="Rulesets\deletestudent.module" />
+    <None Remove="Rulesets\deletestudent.resources" />
+    <None Remove="Rulesets\justloop.module" />
+    <None Remove="Rulesets\justloop.resources" />
+    <None Remove="Rulesets\justloopnoboxing.module" />
+    <None Remove="Rulesets\justloopnoboxing.resources" />
+    <None Remove="Rulesets\savecourse.module" />
+    <None Remove="Rulesets\savecourse.resources" />
+    <None Remove="Rulesets\savedepartment.module" />
+    <None Remove="Rulesets\savedepartment.resources" />
+    <None Remove="Rulesets\saveinstructor.module" />
+    <None Remove="Rulesets\saveinstructor.resources" />
+    <None Remove="Rulesets\savestudent.module" />
+    <None Remove="Rulesets\savestudent.resources" />
+    <None Remove="Rulesets\validatecourse.module" />
+    <None Remove="Rulesets\validatecourse.resources" />
+    <None Remove="Rulesets\validatedepartment.module" />
+    <None Remove="Rulesets\validatedepartment.resources" />
+    <None Remove="Rulesets\validateinstructor.module" />
+    <None Remove="Rulesets\validateinstructor.resources" />
+    <None Remove="Rulesets\validatestudent.module" />
+    <None Remove="Rulesets\validatestudent.resources" />
+    <None Remove="Rulesets\VariablesMetadata.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Rulesets\comparisontest.module" />
+    <EmbeddedResource Include="Rulesets\comparisontest.resources" />
+    <EmbeddedResource Include="Rulesets\deletecourse.module" />
+    <EmbeddedResource Include="Rulesets\deletecourse.resources" />
+    <EmbeddedResource Include="Rulesets\deletedepartment.module" />
+    <EmbeddedResource Include="Rulesets\deletedepartment.resources" />
+    <EmbeddedResource Include="Rulesets\deleteinstructor.module" />
+    <EmbeddedResource Include="Rulesets\deleteinstructor.resources" />
+    <EmbeddedResource Include="Rulesets\deletestudent.module" />
+    <EmbeddedResource Include="Rulesets\deletestudent.resources" />
+    <EmbeddedResource Include="Rulesets\justloop.module" />
+    <EmbeddedResource Include="Rulesets\justloop.resources" />
+    <EmbeddedResource Include="Rulesets\justloopnoboxing.module" />
+    <EmbeddedResource Include="Rulesets\justloopnoboxing.resources" />
+    <EmbeddedResource Include="Rulesets\savecourse.module" />
+    <EmbeddedResource Include="Rulesets\savecourse.resources" />
+    <EmbeddedResource Include="Rulesets\savedepartment.module" />
+    <EmbeddedResource Include="Rulesets\savedepartment.resources" />
+    <EmbeddedResource Include="Rulesets\saveinstructor.module" />
+    <EmbeddedResource Include="Rulesets\saveinstructor.resources" />
+    <EmbeddedResource Include="Rulesets\savestudent.module" />
+    <EmbeddedResource Include="Rulesets\savestudent.resources" />
+    <EmbeddedResource Include="Rulesets\validatecourse.module" />
+    <EmbeddedResource Include="Rulesets\validatecourse.resources" />
+    <EmbeddedResource Include="Rulesets\validatedepartment.module" />
+    <EmbeddedResource Include="Rulesets\validatedepartment.resources" />
+    <EmbeddedResource Include="Rulesets\validateinstructor.module" />
+    <EmbeddedResource Include="Rulesets\validateinstructor.resources" />
+    <EmbeddedResource Include="Rulesets\validatestudent.module" />
+    <EmbeddedResource Include="Rulesets\validatestudent.resources" />
+    <EmbeddedResource Include="Rulesets\VariablesMetadata.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Bsl.Business\Contoso.Bsl.Business.csproj" />
+    <ProjectReference Include="..\Contoso.Bsl.Utils\Contoso.Bsl.Utils.csproj" />
+    <ProjectReference Include="..\Contoso.Parameters\Contoso.Parameters.csproj" />
+    <ProjectReference Include="..\Contoso.Repositories\Contoso.Repositories.csproj" />
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

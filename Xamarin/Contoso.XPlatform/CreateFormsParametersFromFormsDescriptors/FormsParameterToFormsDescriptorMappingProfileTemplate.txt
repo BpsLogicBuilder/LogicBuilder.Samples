@@ -1,0 +1,45 @@
+﻿using AutoMapper;
+using Contoso.Forms.Configuration;
+using Contoso.Forms.Configuration.Bindings;
+using Contoso.Forms.Configuration.Directives;
+using Contoso.Forms.Configuration.DataForm;
+using Contoso.Forms.Configuration.ListForm;
+using Contoso.Forms.Configuration.Navigation;
+using Contoso.Forms.Configuration.SearchForm;
+using Contoso.Forms.Configuration.TextForm;
+using Contoso.Forms.Configuration.Validation;
+using Contoso.Forms.Parameters;
+using Contoso.Forms.Parameters.Bindings;
+using Contoso.Forms.Parameters.Directives;
+using Contoso.Forms.Parameters.DataForm;
+using Contoso.Forms.Parameters.ListForm;
+using Contoso.Forms.Parameters.Navigation;
+using Contoso.Forms.Parameters.SearchForm;
+using Contoso.Forms.Parameters.TextForm;
+using Contoso.Forms.Parameters.Validation;
+
+namespace Contoso.XPlatform.AutoMapperProfiles
+{
+    public class FormsParameterToFormsDescriptorMappingProfile : Profile
+    {
+        public FormsParameterToFormsDescriptorMappingProfile()
+        {
+#Mappings#
+
+            CreateMap<FormItemSettingsParameters, FormItemSettingsDescriptor>()
+#FormItemSettingsIncludes#
+
+            CreateMap<SearchFilterParametersBase, SearchFilterDescriptorBase>()
+#SearchFilterParametersBaseIncludes#
+
+            CreateMap<LabelItemParametersBase, LabelItemDescriptorBase>()
+#LabelItemParametersBaseIncludes#
+
+            CreateMap<SpanItemParametersBase, SpanItemDescriptorBase>()
+#SpanItemParametersBaseIncludes#
+
+            CreateMap<ItemBindingParameters, ItemBindingDescriptor>()
+#ItemBindingParametersBaseIncludes#
+        }
+    }
+}

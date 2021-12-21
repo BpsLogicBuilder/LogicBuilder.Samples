@@ -1,0 +1,7 @@
+﻿#NameSpaces#namespace Contoso.Parameters.Expressions
+{
+    #Modifier#public class #Name##Base#
+    {
+#Constructors##Properties#
+    }
+}

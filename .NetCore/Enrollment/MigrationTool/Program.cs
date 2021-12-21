@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace MigrationTool
 {
@@ -7,6 +8,11 @@ namespace MigrationTool
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-        }
+            using (MigrationContext context = new MigrationContext())
+            {
+                context.Database.Migrate();
+                context.Database.EnsureCreated();
+            }
+         }
     }
 }

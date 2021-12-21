@@ -1,0 +1,12 @@
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using LogicBuilder.Attributes;
+
+
+namespace Contoso.Domain.Entities
+{
+    public class #Name#Model : EntityModelBase
+    {
+#Properties#
+    }
+}

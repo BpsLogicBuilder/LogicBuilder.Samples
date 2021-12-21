@@ -1,0 +1,18 @@
+﻿using AutoMapper;
+using Enrollment.Parameters.Expressions;
+using Enrollment.Common.Configuration.ExpressionDescriptors;
+using System;
+
+namespace Enrollment.AutoMapperProfiles
+{
+    public class ParameterToDescriptorMappingProfile : Profile
+    {
+        public ParameterToDescriptorMappingProfile()
+        {
+#Mappings#
+
+            CreateMap<IExpressionParameter, OperatorDescriptorBase>()
+#DescriptorToPartIncludes#
+        }
+    }
+}

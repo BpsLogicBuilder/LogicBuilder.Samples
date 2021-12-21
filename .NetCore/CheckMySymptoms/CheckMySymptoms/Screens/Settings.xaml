@@ -11,7 +11,7 @@
     d:DesignWidth="400">
 
     <UserControl.Resources>
-        <utils:HasAdFreeVisibilityConverter x:Key="HasAdFreeVisibilityConverter" />
+
     </UserControl.Resources>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.ChildrenTransitions>
@@ -38,7 +38,7 @@
                         <Button Margin="0" x:Name="btnReset" x:Uid="btnReset" Click="BtnReset_Click" />
                         <TextBlock x:Name="txtReset" Style="{StaticResource OutputTextBlockStyle}" FontFamily="Global User Interface" />
                     </StackPanel>
-                    <Button Margin="0, 10" x:Name="btnGetAdFree" x:Uid="btnGetAdFree" Click="BtnGetAdFree_Click" Visibility="{x:Bind uiNotificationService.HasAdFree, Converter={StaticResource HasAdFreeVisibilityConverter}}" />
+                    <!--<Button Margin="0, 10" x:Name="btnGetAdFree" x:Uid="btnGetAdFree" Click="BtnGetAdFree_Click" Visibility="{x:Bind uiNotificationService.HasAdFree, Converter={StaticResource HasAdFreeVisibilityConverter}}" />-->
                 </StackPanel>
                 <TextBlock
                     Style="{StaticResource TitleTextBlockStyle}"

@@ -84,10 +84,10 @@ namespace CheckMySymptoms
         {
             if (hasAdFree)
             {
-                UIElement element = navContentGrid.Children.FirstOrDefault(c => c is Microsoft.Advertising.WinRT.UI.AdControl);
-                if (element != null)
-                    navContentGrid.Children.Remove(element);
-                svDialog.SetValue(Grid.RowSpanProperty, 2);
+                //UIElement element = navContentGrid.Children.FirstOrDefault(c => c is Microsoft.Advertising.WinRT.UI.AdControl);
+                //if (element != null)
+                //    navContentGrid.Children.Remove(element);
+                //svDialog.SetValue(Grid.RowSpanProperty, 2);
             }
         }
 

@@ -1,0 +1,7 @@
+﻿#NameSpaces#namespace Contoso.Forms.Parameters#Folder#
+{
+    #Modifier#public class #Name##Base#
+    {
+#Constructors##Properties#
+    }
+}

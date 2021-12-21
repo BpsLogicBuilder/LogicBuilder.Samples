@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Contoso.XPlatform.Views.SearchPageView"
+             xmlns:behaviour="clr-namespace:Contoso.XPlatform.Behaviours"
+             Title="Page 4">
+    <ContentPage.Resources>
+        <DataTemplate x:Key="TextDetailTemplate">
+            <Grid Style="{StaticResource TextDetailListItemStyle}">
+                <StackLayout Margin="2" Padding="7" BackgroundColor="{DynamicResource ResultListBackgroundColor}">
+                    <Label Text="{Binding FullName}" 
+                       FontAttributes="Bold" />
+                    <Label Text="{Binding EnrollmentDate, StringFormat='{0:MMMM dd, yyyy}'}"
+                       FontAttributes="Italic" />
+                </StackLayout>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="HeaderTextDetailTemplate">
+            <Grid Style="{StaticResource HeaderTextDetailListItemStyle}">
+                <StackLayout Margin="2" Padding="7" BackgroundColor="{DynamicResource ResultListBackgroundColor}">
+                    <Label Text="{Binding ID, StringFormat='ID: {0}'}" 
+                       FontAttributes="Bold" />
+                    <Label Text="{Binding FullName}" />
+                    <Label Text="{Binding EnrollmentDate, StringFormat='{0:MMMM dd, yyyy}'}"
+                       FontAttributes="Italic"  />
+                </StackLayout>
+            </Grid>
+        </DataTemplate>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid>
+            <StackLayout x:Name="page" Grid.Row="0" Padding="30"
+                         VerticalOptions="CenterAndExpand">
+                <Label Text="{Binding FormSettings.Title}"
+                      Style="{StaticResource HeaderStyle}"/>
+                <SearchBar x:Name="searchBar"
+                           Text="{Binding SearchText}"
+                           Placeholder="{Binding FormSettings.FilterPlaceholder}">
+                    <SearchBar.Behaviors>
+                        <behaviour:EventToCommandBehavior 
+                                EventName="TextChanged" 
+                                Command="{Binding TextChangedCommand}" />
+                    </SearchBar.Behaviors>
+                </SearchBar>
+                <RefreshView IsRefreshing="{Binding IsRefreshing}"
+                             Command="{Binding RefreshCommand}">
+                    <CollectionView Style="{StaticResource SearchFormCollectionViewStyle}"
+                                    ItemsSource="{Binding Items}"
+                                    SelectionChangedCommand="{Binding SelectionChangedCommand}"
+                                    SelectedItem="{Binding SelectedItem}"
+                                    ItemTemplate="{StaticResource HeaderTextDetailTemplate}" />
+                </RefreshView>
+            </StackLayout>
+            <Grid Grid.Row="0" x:Name="transitionGrid" BackgroundColor="{DynamicResource PageBackgroundColor}" />
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>
