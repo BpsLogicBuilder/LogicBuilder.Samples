@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GenericDeleteComponent } from './generic-delete.component';
 
@@ -6,7 +6,7 @@ describe('GenericDeleteComponent', () => {
   let component: GenericDeleteComponent;
   let fixture: ComponentFixture<GenericDeleteComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GenericDeleteComponent ]
     })

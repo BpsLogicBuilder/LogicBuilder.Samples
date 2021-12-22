@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { FormFieldMultiselectComponent } from './form-field-multiselect.component';
 
@@ -6,7 +6,7 @@ describe('FormFieldMultiselectComponent', () => {
   let component: FormFieldMultiselectComponent;
   let fixture: ComponentFixture<FormFieldMultiselectComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ FormFieldMultiselectComponent ]
     })

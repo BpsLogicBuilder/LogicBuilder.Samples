@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { GridColumnDropdownFilterComponent } from './grid-column-dropdown-filter.component';
 
@@ -6,7 +6,7 @@ describe('GridColumnDropdownFilterComponent', () => {
   let component: GridColumnDropdownFilterComponent;
   let fixture: ComponentFixture<GridColumnDropdownFilterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ GridColumnDropdownFilterComponent ]
     })
