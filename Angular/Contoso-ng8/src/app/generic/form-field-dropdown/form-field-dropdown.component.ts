@@ -126,6 +126,12 @@ export class FormFieldDropdownComponent implements OnInit, ControlValueAccessor
 
   getDropDownData(): any
   {
+    if (this.dropDownTemplate.state 
+      && this.dropDownTemplate.state.filterGroup 
+      && ObjectHelper.FilterRequiresValueSource(this.dropDownTemplate.state.filterGroup)
+      && !this.filterValueSourceItem)
+      return;
+      
     let state: DataSourceRequestState = {
       skip: this.dropDownTemplate.state ? this.dropDownTemplate.state.skip : null,
       take: this.dropDownTemplate.state ? this.dropDownTemplate.state.take : null,

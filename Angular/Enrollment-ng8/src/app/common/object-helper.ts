@@ -65,6 +65,29 @@ export class ObjectHelper {
         return list;
     }
 
+    static FilterRequiresValueSource(filterGroup: IFilterGroup): boolean {
+        let requiresValueSource: boolean = false;
+        if (filterGroup.filters && filterGroup.filters.length) {
+            filterGroup.filters.forEach(filter => {
+                if (filter.valueSourceMember)
+                {
+                    requiresValueSource = true;
+                }
+            });
+        }
+
+        if (requiresValueSource) return true;
+
+        if (filterGroup.filterGroups && filterGroup.filterGroups.length) {
+            filterGroup.filterGroups.forEach(fg => {
+                if (ObjectHelper.FilterRequiresValueSource(fg))
+                    requiresValueSource = true;
+            });
+        }
+
+        return requiresValueSource;
+    }
+
     static getCompositeFilter(filterGroup: IFilterGroup, valueSource?: any): CompositeFilterDescriptor {
         let compositeFilter: CompositeFilterDescriptor = { logic: filterGroup.logic, filters: [] };
         if (filterGroup.filters && filterGroup.filters.length) {

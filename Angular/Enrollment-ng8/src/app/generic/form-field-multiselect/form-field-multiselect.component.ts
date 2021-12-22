@@ -68,6 +68,12 @@ export class FormFieldMultiselectComponent implements OnInit, ControlValueAccess
   }
 
   getDropDownData(): any {
+    if (this.multiSelectTemplate.state 
+      && this.multiSelectTemplate.state.filterGroup 
+      && ObjectHelper.FilterRequiresValueSource(this.multiSelectTemplate.state.filterGroup)
+      && !this.filterValueSourceItem)
+      return;
+
     let state: DataSourceRequestState = {
       skip: this.multiSelectTemplate.state ? this.multiSelectTemplate.state.skip : null,
       take: this.multiSelectTemplate.state ? this.multiSelectTemplate.state.take : null,

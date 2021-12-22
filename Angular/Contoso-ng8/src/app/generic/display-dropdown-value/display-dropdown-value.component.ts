@@ -27,6 +27,12 @@ export class DisplayDropdownValueComponent implements OnInit {
 
   getDropDownData(): any
   {
+    if (this.valueTextTemplate.state 
+      && this.valueTextTemplate.state.filterGroup 
+      && ObjectHelper.FilterRequiresValueSource(this.valueTextTemplate.state.filterGroup)
+      && !this.filterValueSourceItem)
+      return;
+
     let state: DataSourceRequestState = {
       skip: this.valueTextTemplate.state ? this.valueTextTemplate.state.skip : null,
       take: this.valueTextTemplate.state ? this.valueTextTemplate.state.take : null,
