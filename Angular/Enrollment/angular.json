@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "Enrollment": {
+    "enrollment": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -14,7 +14,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "outputPath": "dist/Enrollment",
+            "outputPath": "dist/enrollment",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -65,18 +65,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "Enrollment:build"
+            "browserTarget": "enrollment:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "Enrollment:build:production"
+              "browserTarget": "enrollment:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Enrollment:build"
+            "browserTarget": "enrollment:build"
           }
         },
         "test": {
@@ -113,7 +113,7 @@
         }
       }
     },
-    "Enrollment-e2e": {
+    "enrollment-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "prefix": "",
@@ -122,11 +122,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "Enrollment:serve"
+            "devServerTarget": "enrollment:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "Enrollment:serve:production"
+              "devServerTarget": "enrollment:serve:production"
             }
           }
         },
@@ -142,5 +142,5 @@
       }
     }
   },
-  "defaultProject": "Enrollment"
+  "defaultProject": "enrollment"
 }
