@@ -39,7 +39,7 @@
     "@progress/kendo-drawing": "^1.16.0",
     "@progress/kendo-licensing": "^1.2.1",
     "@progress/kendo-theme-default": "latest",
-    "bootstrap": "^4.3.1",
+    "bootstrap": "^4.6.1",
     "core-js": "^2.6.10",
     "font-awesome": "^4.7.0",
     "rxjs": "~6.5.3",
