@@ -1,9 +1,5 @@
 ﻿using Contoso.Utils;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Contoso.Domain.Json
 {

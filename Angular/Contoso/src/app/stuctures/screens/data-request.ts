@@ -6,4 +6,5 @@ export interface DataRequest
     includes?: string[];
     selects?: any;
     distinct?: boolean;
+    selectExpandDefinition?: any;
 }

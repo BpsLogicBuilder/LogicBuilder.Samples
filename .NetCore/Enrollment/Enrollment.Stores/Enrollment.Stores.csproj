@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="4.1.0" />
+    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="5.0.2-alpha.0.1" />
   </ItemGroup>
 
   <ItemGroup>

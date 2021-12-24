@@ -17,51 +17,59 @@ namespace Contoso.AutoMapperProfiles
                 .ReverseMap()
                 .ForMember(dest => dest.CourseTitle, opts => opts.MapFrom(x => x.Course.Title))
                 .ForMember(dest => dest.CourseNumberAndTitle, opts => opts.MapFrom(x => x.Course.CourseID.ToString() + " " + x.Course.Title))
-                .ForMember(dest => dest.Department, opts => opts.MapFrom(x => x.Course.Department.Name));
+                .ForMember(dest => dest.Department, opts => opts.MapFrom(x => x.Course.Department.Name))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<CourseModel, Course>()
                 .ForMember(dest => dest.Department, opts => opts.Ignore())
                 .ForMember(dest => dest.Enrollments, opts => opts.Ignore())
                 .ReverseMap()
-                .ForMember(dest => dest.DepartmentName, opts => opts.MapFrom(x => x.Department.Name));
+                .ForMember(dest => dest.DepartmentName, opts => opts.MapFrom(x => x.Department.Name))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<DepartmentModel, Department>()
                 .ForMember(dest => dest.Administrator, opts => opts.Ignore())
                 .ReverseMap()
-                //.ForMember(dest => dest.StartDate, opts => opts.MapFrom(x => x.StartDate.Date)) This works in .Net Core
-                //.ForMember(dest => dest.AdministratorName, opts => opts.MapFrom(x => string.Concat(x.Administrator.FirstMidName, " ", x.Administrator.LastName)));
-                //Format functions cause clientside evaluation in EF Core - use + instead.
-                .ForMember(dest => dest.AdministratorName, opts => opts.MapFrom(x => x.Administrator.FirstName + " " + x.Administrator.LastName));
+                .ForMember(dest => dest.AdministratorName, opts => opts.MapFrom(x => x.Administrator.FirstName + " " + x.Administrator.LastName))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
-            CreateMap<EnrollmentModel, Contoso.Data.Entities.Enrollment>()
+            CreateMap<EnrollmentModel, Enrollment>()
                 .ForMember(dest => dest.Student, opts => opts.Ignore())
                 .ForMember(dest => dest.Course, opts => opts.Ignore())
                 .ReverseMap()
                 .ForMember(dest => dest.CourseTitle, opts => opts.MapFrom(x => x.Course.Title))
                 .ForMember(dest => dest.StudentName, opts => opts.MapFrom(x => x.Student.FirstName + " " + x.Student.LastName))
-                .ForMember(dest => dest.GradeLetter, opts => opts.MapFrom(x => x.Grade.HasValue ? x.Grade.Value.ToString() : string.Empty));
+                .ForMember(dest => dest.Grade, opts => opts.MapFrom(x => x.Grade.HasValue ? (Contoso.Domain.Entities.Grade?)(int)x.Grade.Value : null))
+                .ForMember(dest => dest.GradeLetter, opts => opts.MapFrom(x => x.Grade.HasValue ? x.Grade.Value.ToString() : string.Empty))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<InstructorModel, Instructor>()
                 .ReverseMap()
-                //.ForMember(dest => dest.FullName, opts => opts.MapFrom(x => string.Concat(x.FirstMidName, " ", x.LastName)));
-                //Format functions cause clientside evaluation in EF Core - use + instead.
-                .ForMember(dest => dest.FullName, opts => opts.MapFrom(x => x.FirstName + " " + x.LastName));
+                .ForMember(dest => dest.FullName, opts => opts.MapFrom(x => x.FirstName + " " + x.LastName))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<OfficeAssignmentModel, OfficeAssignment>()
                 .ForMember(dest => dest.Instructor, opts => opts.Ignore())
-                .ReverseMap();
+                .ReverseMap()
+                .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<StudentModel, Student>()
                 .ReverseMap()
-            .ForMember(dest => dest.FullName, opts => opts.MapFrom(x => x.FirstName + " " + x.LastName));
+                .ForMember(dest => dest.FullName, opts => opts.MapFrom(x => x.FirstName + " " + x.LastName))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
-            CreateMap<LookUpsModel, LookUps>().ReverseMap();
+            CreateMap<LookUpsModel, LookUps>()
+                .ReverseMap()
+                .ForAllMembers(o => o.ExplicitExpansion());
 
             CreateMap<RulesModuleModel, RulesModule>()
                 .ReverseMap()
-                .ForMember(dest => dest.NamePlusApplication, opts => opts.MapFrom(x => x.Name + "|" + x.Application));
+                .ForMember(dest => dest.NamePlusApplication, opts => opts.MapFrom(x => x.Name + "|" + x.Application))
+                .ForAllMembers(o => o.ExplicitExpansion());
 
-            CreateMap<VariableMetaDataModel, VariableMetaData>().ReverseMap();
+            CreateMap<VariableMetaDataModel, VariableMetaData>()
+                .ReverseMap()
+                .ForAllMembers(o => o.ExplicitExpansion());
         }
     }
 }

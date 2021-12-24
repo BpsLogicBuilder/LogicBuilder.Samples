@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Enrollment.Forms.View.Expansions;
+using System.Collections.Generic;
 
 namespace Enrollment.Forms.View.Common
 {
@@ -14,5 +15,6 @@ namespace Enrollment.Forms.View.Common
 		public string[] Includes { get; set; }
 		public Dictionary<string, string> Selects { get; set; }
 		public bool? Distinct { get; set; }
-    }
+		public SelectExpandDefinitionView SelectExpandDefinition { get; set; }
+	}
 }

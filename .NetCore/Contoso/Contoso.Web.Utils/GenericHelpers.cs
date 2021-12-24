@@ -1,4 +1,5 @@
-﻿using Contoso.Data;
+﻿using AutoMapper;
+using Contoso.Data;
 using Contoso.Domain;
 using Kendo.Mvc;
 using Kendo.Mvc.UI;
@@ -19,18 +20,19 @@ namespace Contoso.Web.Utils
     #region Helpers
     public static class GenericHelpers
     {
-        public static async Task<DataSourceResult> GetData<TModel, TData>(this DataRequest request, IContextRepository contextRepository)
+        public static async Task<DataSourceResult> GetData<TModel, TData>(this DataRequest request, IContextRepository contextRepository, IMapper mapper)
             where TModel : BaseModelClass
             where TData : BaseDataClass
         {
             return await request.Options.CreateDataSourceRequest().GetDataSourceResult<TModel, TData>
             (
                 contextRepository,
+                mapper.MapExpansion(request.SelectExpandDefinition),
                 request.Includes.BuildIncludesExpressionCollection<TModel>()
             );
         }
 
-        public static async Task<IEnumerable<dynamic>> GetDynamicSelect<TModel, TData>(this DataRequest request, IContextRepository contextRepository)
+        public static async Task<IEnumerable<dynamic>> GetDynamicSelect<TModel, TData>(this DataRequest request, IContextRepository contextRepository, IMapper mapper)
             where TModel : BaseModelClass
             where TData : BaseDataClass
         {
@@ -47,26 +49,24 @@ namespace Contoso.Web.Utils
             return await contextRepository.QueryAsync<TModel, TData, IEnumerable<dynamic>, IEnumerable<dynamic>>
             (
                 exp,
-                request.Includes.BuildIncludesExpressionCollection<TModel>()
+                mapper.MapExpansion(request.SelectExpandDefinition)
             );
         }
 
-        public static async Task<BaseModelClass> GetSingle<TModel, TData>(this DataRequest request, IContextRepository contextRepository)
+        public static async Task<BaseModelClass> GetSingle<TModel, TData>(this DataRequest request, IContextRepository contextRepository, IMapper mapper)
             where TModel : BaseModelClass
             where TData : BaseDataClass
         {
-            Expression<Func<IQueryable<TModel>, TModel>> exp = Expression.Parameter(typeof(IQueryable<TModel>), "q").BuildLambdaExpression<IQueryable<TModel>, TModel>
-            (
-                p => request.Options.CreateDataSourceRequest()
-                        .CreateUngroupedMethodExpression(p)
-                        .GetSingle()
-            );
+            Expression<Func<IQueryable<TModel>, IQueryable<TModel>>> exp = request.Options.CreateDataSourceRequest().CreateUngroupedQueryableExpression<TModel>();
 
-            return await contextRepository.QueryAsync<TModel, TData, TModel, TData>
+            return
+            (
+                await contextRepository.QueryAsync<TModel, TData, IQueryable<TModel>, IQueryable<TData>>
                 (
                     exp,
-                    request.Includes.BuildIncludesExpressionCollection<TModel>()
-                );
+                    mapper.MapExpansion(request.SelectExpandDefinition)
+                )
+            ).Single();
         }
 
         public static async Task<bool> Save<TModel, TData>(TModel item, IContextRepository contextRepository)
@@ -89,10 +89,10 @@ namespace Contoso.Web.Utils
                 .GetGenericMethod(methodName)
                 .Invoke(null, new object[] { request, contextRepository });
 
-        public static Task<TReturn> InvokeGenericMethod<TReturn>(this DataRequest request, string methodName, IContextRepository contextRepository)
+        public static Task<TReturn> InvokeGenericMethod<TReturn>(this DataRequest request, string methodName, IContextRepository contextRepository, IMapper mapper)
             => (Task<TReturn>)request
                 .GetGenericMethod(methodName)
-                .Invoke(null, new object[] { request, contextRepository });
+                .Invoke(null, new object[] { request, contextRepository, mapper });
 
         private static MethodInfo GetMethod(this string methodName)
             => typeof(GenericHelpers).GetMethod(methodName, BindingFlags.Public | BindingFlags.Static);

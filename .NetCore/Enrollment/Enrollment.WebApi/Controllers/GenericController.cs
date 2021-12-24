@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Enrollment.Domain;
 using Enrollment.Repositories;
 using Enrollment.Web.Utils;
 using Kendo.Mvc.UI;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Enrollment.WebApi.Controllers
 {
@@ -16,9 +15,11 @@ namespace Enrollment.WebApi.Controllers
     public class GenericController : Controller
     {
         readonly IEnrollmentRepository _enrollmentRepository;
-        public GenericController(IEnrollmentRepository enrollmentRepository)
+        readonly IMapper _mapper;
+        public GenericController(IEnrollmentRepository schoolRepository, IMapper mapper)
         {
-            this._enrollmentRepository = enrollmentRepository;
+            this._enrollmentRepository = schoolRepository;
+            this._mapper = mapper;
         }
 
         [HttpPost("GetData")]
@@ -28,7 +29,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<DataSourceResult>("GetData", this._enrollmentRepository)
+                    await request.InvokeGenericMethod<DataSourceResult>("GetData", this._enrollmentRepository, this._mapper)
                 );
             }
             catch (Exception ex)
@@ -44,7 +45,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._enrollmentRepository)
+                    await request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._enrollmentRepository, this._mapper)
                 );
             }
             catch (Exception ex)
@@ -60,7 +61,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._enrollmentRepository)
+                    await request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._enrollmentRepository, this._mapper)
                 );
             }
             catch (Exception ex)
@@ -76,7 +77,7 @@ namespace Enrollment.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<BaseModelClass>("GetSingleOrDefault", this._enrollmentRepository)
+                    await request.InvokeGenericMethod<BaseModelClass>("GetSingleOrDefault", this._enrollmentRepository, this._mapper)
                 );
             }
             catch (Exception ex)

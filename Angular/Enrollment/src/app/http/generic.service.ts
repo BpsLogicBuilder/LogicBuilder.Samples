@@ -70,7 +70,8 @@ export class GenericService {
       modelType: requestDetails.modelType,
       dataType: requestDetails.dataType,
       includes: requestDetails.includes,
-      selects: requestDetails.selects
+      selects: requestDetails.selects,
+      selectExpandDefinition: requestDetails.selectExpandDefinition
     };
   }
 

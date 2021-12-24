@@ -56,6 +56,8 @@ namespace Contoso.WebApi
                     {
                         cfg.AddMaps(typeof(SchoolProfile).Assembly);
                         cfg.AddMaps(typeof(GroupingProfile).Assembly);
+                        cfg.AddProfile<ExpansionParameterToViewMappingProfile>();
+                        cfg.AddProfile<ExpansionViewToOperatorMappingProfile>();
                         cfg.AllowNullCollections = true;
                     })
                 )

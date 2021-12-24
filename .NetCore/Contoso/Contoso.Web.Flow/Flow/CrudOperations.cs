@@ -32,7 +32,7 @@ namespace Contoso.Web.Flow.Flow
             string[] includes = null,
 
             [ParameterEditorControl(ParameterControlType.TypeAutoComplete)]
-            [NameValue(AttributeNames.DEFAULTVALUE, "Enrollment.Domain.Entities")]
+            [NameValue(AttributeNames.DEFAULTVALUE, "Contoso.Domain.Entities")]
             [Comments("Fully qualified class name for the model type.")]
             string modelType = null
         )

@@ -1,4 +1,5 @@
-﻿using LogicBuilder.Attributes;
+﻿using Contoso.Forms.Parameters.Expansions;
+using LogicBuilder.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,7 +36,10 @@ namespace Contoso.Forms.Parameters.Common
 
                 [ListEditorControl(ListControlType.HashSetForm)]
                 List<SelectParameters> selects = null,
-                bool? distinct = null
+                bool? distinct = null,
+
+                [Comments("Defines and navigation properties to include in the edit model")]
+                SelectExpandDefinitionParameters selectExpandDefinition = null
             )
         {
             ModelType = modelType;
@@ -48,6 +52,7 @@ namespace Contoso.Forms.Parameters.Common
             Includes = includes;
             Selects = selects?.ToDictionary(s => s.FieldName, s => s.SourceMember);
             Distinct = distinct;
+            SelectExpandDefinition = selectExpandDefinition;
         }
 
         public string ModelType { get; set; }
@@ -60,5 +65,6 @@ namespace Contoso.Forms.Parameters.Common
         public string[] Includes { get; set; }
         public Dictionary<string, string> Selects { get; set; }
         public bool? Distinct { get; set; }
+        public SelectExpandDefinitionParameters SelectExpandDefinition { get; set; }
     }
 }

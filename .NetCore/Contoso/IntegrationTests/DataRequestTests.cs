@@ -1,26 +1,22 @@
 ﻿using AutoMapper;
 using Contoso.AutoMapperProfiles;
 using Contoso.Contexts;
-using Contoso.Data;
 using Contoso.Data.Entities;
 using Contoso.Domain;
 using Contoso.Domain.Entities;
+using Contoso.Forms.View.Expansions;
 using Contoso.Kemdo.AutoMapperProfiles;
 using Contoso.Kendo.ViewModels;
 using Contoso.Repositories;
 using Contoso.Stores;
 using Contoso.Web.Utils;
 using Kendo.Mvc.UI;
-using LogicBuilder.EntityFrameworkCore.SqlServer.Repositories;
-using LogicBuilder.Expressions.EntityFrameworkCore;
-using LogicBuilder.Expressions.Utils;
 using LogicBuilder.Kendo.ExpressionExtensions.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Xunit;
@@ -58,6 +54,8 @@ namespace IntegrationTests
                     {
                         cfg.AddMaps(typeof(SchoolProfile).GetTypeInfo().Assembly);
                         cfg.AddMaps(typeof(GroupingProfile).GetTypeInfo().Assembly);
+                        cfg.AddProfile<ExpansionParameterToViewMappingProfile>();
+                        cfg.AddProfile<ExpansionViewToOperatorMappingProfile>();
                     })
                 )
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
@@ -93,7 +91,7 @@ namespace IntegrationTests
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(11, result.Total);
             Assert.Equal(5, ((IEnumerable<StudentModel>)result.Data).Count());
@@ -124,7 +122,7 @@ namespace IntegrationTests
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(11, result.Total);
             Assert.Equal(3, ((IEnumerable<AggregateFunctionsGroupModel<StudentModel>>)result.Data).Count());
@@ -151,13 +149,13 @@ namespace IntegrationTests
                 },
                 ModelType = "Contoso.Domain.Entities.DepartmentModel",
                 DataType = "Contoso.Data.Entities.Department",
-                Includes = new string[] { "administratorName" },
+                Includes = null,
                 Selects = null,
                 Distinct = false
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(4, result.Total);
             Assert.Equal(4, ((IEnumerable<DepartmentModel>)result.Data).Count());
@@ -186,13 +184,13 @@ namespace IntegrationTests
                 },
                 ModelType = "Contoso.Domain.Entities.DepartmentModel",
                 DataType = "Contoso.Data.Entities.Department",
-                Includes = new string[] { "administratorName" },
+                Includes = null,
                 Selects = null,
                 Distinct = false
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(4, result.Total);
             Assert.Equal(2, ((IEnumerable<AggregateFunctionsGroupModel<DepartmentModel>>)result.Data).Count());
@@ -203,7 +201,144 @@ namespace IntegrationTests
         }
 
         [Fact]
-        public void Get__single_student_with_navigation_property_of_navigation_property()
+        public void Get_courses_ungrouped_with_aggregates()
+        {
+            DataRequest request = new DataRequest
+            {
+                Options = new DataSourceRequestOptions
+                {
+                    Aggregate = "credits-sum",
+                    Filter = null,
+                    Group = null,
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = "Contoso.Domain.Entities.CourseModel",
+                DataType = "Contoso.Data.Entities.Course",
+                //Includes = new string[] { "departmentName" },
+                Selects = null,
+                Distinct = false
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
+
+            Assert.Equal(7, result.Total);
+            Assert.Equal(5, ((IEnumerable<CourseModel>)result.Data).Count());
+            Assert.Single(result.AggregateResults);
+            Assert.Equal("Calculus", ((IEnumerable<CourseModel>)result.Data).First().Title);
+        }
+
+        [Fact]
+        public void Get_instructors_ungrouped_with_aggregates()
+        {
+            DataRequest request = new DataRequest
+            {
+                Options = new DataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~hireDate-min",
+                    Filter = null,
+                    Group = null,
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = "Contoso.Domain.Entities.InstructorModel",
+                DataType = "Contoso.Data.Entities.Instructor",
+                SelectExpandDefinition = new SelectExpandDefinitionView
+                {
+                    ExpandedItems = new List<SelectExpandItemView>
+                    {
+                        new SelectExpandItemView
+                        {
+                            MemberName = "courses"
+                        },
+                        new SelectExpandItemView
+                        {
+                            MemberName = "officeAssignment"
+                        }
+                    }
+                },
+                Selects = null,
+                Distinct = false
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
+
+            Assert.Equal(5, result.Total);
+            Assert.Equal(5, ((IEnumerable<InstructorModel>)result.Data).Count());
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Roger Zheng", ((IEnumerable<InstructorModel>)result.Data).First().FullName);
+        }
+
+        [Fact]
+        public void Get_instructors_grouped_with_aggregates_and_includes()
+        {
+            DataRequest request = new DataRequest
+            {
+                Options = new DataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~hireDate-min",
+                    Filter = null,
+                    Group = "hireDate-asc",
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = "Contoso.Domain.Entities.InstructorModel",
+                DataType = "Contoso.Data.Entities.Instructor",
+                Includes = new string[] { "courses.courseTitle", "officeAssignment" },
+                Selects = null,
+                Distinct = false
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
+
+            Assert.Equal(5, result.Total);
+            Assert.Equal(5, ((IEnumerable<AggregateFunctionsGroupModel<InstructorModel>>)result.Data).Count());
+            Assert.NotEmpty(((IEnumerable<AggregateFunctionsGroupModel<InstructorModel>>)result.Data).First().Items.Cast<InstructorModel>().First().Courses);
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Count", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal(5, (int)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_instructors_grouped_with_aggregates_without_includes()
+        {
+            DataRequest request = new DataRequest
+            {
+                Options = new DataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~hireDate-min",
+                    Filter = null,
+                    Group = "hireDate-asc",
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = "Contoso.Domain.Entities.InstructorModel",
+                DataType = "Contoso.Data.Entities.Instructor",
+                Selects = null,
+                Distinct = false
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
+
+            Assert.Equal(5, result.Total);
+            Assert.Equal(5, ((IEnumerable<AggregateFunctionsGroupModel<InstructorModel>>)result.Data).Count());
+            Assert.Empty(((IEnumerable<AggregateFunctionsGroupModel<InstructorModel>>)result.Data).First().Items.Cast<InstructorModel>().First().Courses);
+            Assert.Null(((IEnumerable<AggregateFunctionsGroupModel<InstructorModel>>)result.Data).First().Items.Cast<InstructorModel>().First().OfficeAssignment);
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Count", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal(5, (int)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_single_student_with_navigation_property_of_navigation_property()
         {
             DataRequest request = new DataRequest
             {
@@ -218,13 +353,22 @@ namespace IntegrationTests
                 },
                 ModelType = "Contoso.Domain.Entities.StudentModel",
                 DataType = "Contoso.Data.Entities.Student",
-                Includes = new string[] { "enrollments.courseTitle" },
+                SelectExpandDefinition = new SelectExpandDefinitionView
+                {
+                    ExpandedItems = new List<SelectExpandItemView>
+                    {
+                        new SelectExpandItemView
+                        {
+                            MemberName = "enrollments"
+                        }
+                    }
+                },
                 Selects = null,
                 Distinct = false
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            StudentModel result = (StudentModel)Task.Run(() => request.InvokeGenericMethod<BaseModelClass>("GetSingle", repository)).Result;
+            StudentModel result = (StudentModel)Task.Run(() => request.InvokeGenericMethod<BaseModelClass>("GetSingle", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal("Chemistry", result.Enrollments.First(e => !e.Grade.HasValue).CourseTitle);
             Assert.Equal("Arturo Anand", result.FullName);
@@ -252,7 +396,7 @@ namespace IntegrationTests
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            DepartmentModel result = (DepartmentModel)Task.Run(() => request.InvokeGenericMethod<BaseModelClass>("GetSingle", repository)).Result;
+            DepartmentModel result = (DepartmentModel)Task.Run(() => request.InvokeGenericMethod<BaseModelClass>("GetSingle", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal("Mathematics", result.Name);
         }
@@ -279,7 +423,7 @@ namespace IntegrationTests
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
-            IEnumerable<dynamic> result = Task.Run(() => request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", repository)).Result;
+            IEnumerable<dynamic> result = Task.Run(() => request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal("Roger Zheng", result.First().fullName);
         }

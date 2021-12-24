@@ -23,7 +23,8 @@ export class GridService {
       modelType: requestDetails.modelType,
       dataType: requestDetails.dataType,
       includes: requestDetails.includes,
-      selects: requestDetails.selects
+      selects: requestDetails.selects,
+      selectExpandDefinition: requestDetails.selectExpandDefinition
     };
 
     return this._http
@@ -53,7 +54,8 @@ export class GridService {
       dataType: requestDetails.dataType,
       includes: requestDetails.includes,
       selects: requestDetails.selects,
-      distinct: requestDetails.distinct
+      distinct: requestDetails.distinct,
+      selectExpandDefinition: requestDetails.selectExpandDefinition
     };
 
     return this._http

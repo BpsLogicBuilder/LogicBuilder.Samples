@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Contoso.Domain;
 using Contoso.Repositories;
 using Contoso.Web.Utils;
 using Kendo.Mvc.UI;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Contoso.WebApi.Controllers
 {
@@ -16,9 +15,11 @@ namespace Contoso.WebApi.Controllers
     public class GenericController : Controller
     {
         readonly ISchoolRepository _schoolRepository;
-        public GenericController(ISchoolRepository schoolRepository)
+        readonly IMapper _mapper;
+        public GenericController(ISchoolRepository schoolRepository, IMapper mapper)
         {
             this._schoolRepository = schoolRepository;
+            this._mapper = mapper;
         }
 
         [HttpPost("GetData")]
@@ -28,7 +29,7 @@ namespace Contoso.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<DataSourceResult>("GetData", this._schoolRepository)
+                    await request.InvokeGenericMethod<DataSourceResult>("GetData", this._schoolRepository, this._mapper)
                 );
             }
             catch (Exception ex)
@@ -44,7 +45,7 @@ namespace Contoso.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._schoolRepository)
+                    await request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", this._schoolRepository, this._mapper)
                 );
             }
             catch (Exception ex)
@@ -60,7 +61,7 @@ namespace Contoso.WebApi.Controllers
             {
                 return Json
                 (
-                    await request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._schoolRepository)
+                    await request.InvokeGenericMethod<BaseModelClass>("GetSingle", this._schoolRepository, this._mapper)
                 );
             }
             catch (Exception ex)

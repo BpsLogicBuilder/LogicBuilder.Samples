@@ -4,6 +4,7 @@ using Enrollment.Contexts;
 using Enrollment.Data.Entities;
 using Enrollment.Domain;
 using Enrollment.Domain.Entities;
+using Enrollment.Forms.View.Expansions;
 using Enrollment.Kemdo.AutoMapperProfiles;
 using Enrollment.Kendo.ViewModels;
 using Enrollment.Repositories;
@@ -60,7 +61,7 @@ namespace IntegrationTests
             };
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(466, result.Total);
             Assert.Equal(5, ((IEnumerable<LookUpsModel>)result.Data).Count());
@@ -93,7 +94,7 @@ namespace IntegrationTests
             };
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(466, result.Total);
             Assert.Equal(2, ((IEnumerable<AggregateFunctionsGroupModel<LookUpsModel>>)result.Data).Count());
@@ -120,13 +121,23 @@ namespace IntegrationTests
                 },
                 ModelType = "Enrollment.Domain.Entities.ResidencyModel",
                 DataType = "Enrollment.Data.Entities.Residency",
-                Includes = new string[] { "StatesLivedIn" },
+                //Includes = new string[] { "StatesLivedIn" },
+                SelectExpandDefinition = new SelectExpandDefinitionView
+                {
+                    ExpandedItems = new List<SelectExpandItemView>
+                    {
+                        new SelectExpandItemView
+                        {
+                            MemberName = "StatesLivedIn"
+                        }
+                    }
+                },
                 Selects = null,
                 Distinct = false
             };
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
-            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository)).Result;
+            DataSourceResult result = Task.Run(() => request.InvokeGenericMethod<DataSourceResult>("GetData", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(2, result.Total);
             Assert.Equal(2, ((IEnumerable<ResidencyModel>)result.Data).Count());
@@ -152,13 +163,30 @@ namespace IntegrationTests
                 },
                 ModelType = "Enrollment.Domain.Entities.UserModel",
                 DataType = "Enrollment.Data.Entities.User",
-                Includes = new string[] { "residency.statesLivedIn" },
+                //Includes = new string[] { "residency.statesLivedIn" },
+                SelectExpandDefinition = new SelectExpandDefinitionView
+                {
+                    ExpandedItems = new List<SelectExpandItemView>
+                    {
+                        new SelectExpandItemView
+                        {
+                            MemberName = "residency",
+                            ExpandedItems = new List<SelectExpandItemView>
+                            {
+                                new SelectExpandItemView
+                                {
+                                    MemberName = "statesLivedIn"
+                                }
+                            }
+                        }
+                    }
+                },
                 Selects = null,
                 Distinct = false
             };
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
-            UserModel result = (UserModel)Task.Run(() => request.InvokeGenericMethod<BaseModelClass>("GetSingle", repository)).Result;
+            UserModel result = (UserModel)Task.Run(() => request.InvokeGenericMethod<BaseModelClass>("GetSingle", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal(2, result.Residency.StatesLivedIn.Count());
             Assert.Equal("ForeignStudent01", result.UserName);
@@ -186,7 +214,7 @@ namespace IntegrationTests
             };
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
-            IEnumerable<dynamic> result = Task.Run(() => request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", repository)).Result;
+            IEnumerable<dynamic> result = Task.Run(() => request.InvokeGenericMethod<IEnumerable<dynamic>>("GetDynamicSelect", repository, serviceProvider.GetRequiredService<IMapper>())).Result;
 
             Assert.Equal("AK", result.First().value);
             Assert.Equal(60, result.Count());
@@ -213,6 +241,8 @@ namespace IntegrationTests
                     {
                         cfg.AddMaps(typeof(EnrollmentProfile).GetTypeInfo().Assembly);
                         cfg.AddMaps(typeof(GroupingProfile).GetTypeInfo().Assembly);
+                        cfg.AddProfile<ExpansionParameterToViewMappingProfile>();
+                        cfg.AddProfile<ExpansionViewToOperatorMappingProfile>();
                     })
                 )
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))

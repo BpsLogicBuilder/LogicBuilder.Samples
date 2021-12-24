@@ -1,7 +1,5 @@
 ﻿using Enrollment.Utils;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Enrollment.Domain.Json
 {

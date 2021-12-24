@@ -10,6 +10,7 @@ export interface IRequestDetails
     includes?: string[];
     selects?: Select;
     distinct?: boolean;
+    selectExpandDefinition?: any;
 }
 
 //i.e. Dictionary where key is the anonymous type's member name

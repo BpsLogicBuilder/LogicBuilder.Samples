@@ -50,6 +50,8 @@ namespace Enrollment.WebApi
                     {
                         cfg.AddMaps(typeof(EnrollmentProfile).Assembly);
                         cfg.AddMaps(typeof(GroupingProfile).Assembly);
+                        cfg.AddProfile<ExpansionParameterToViewMappingProfile>();
+                        cfg.AddProfile<ExpansionViewToOperatorMappingProfile>();
                         cfg.AllowNullCollections = true;
                     })
                 )
