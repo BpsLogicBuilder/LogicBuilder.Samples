@@ -61,8 +61,8 @@ namespace Enrollment.Api.Web.Tests
                                             HighestDegreeEarned = "CT",
                                             StartYear = "2017",
                                             EndYear = "2020",
-                                            InstitutionName = "Florida Institution 1",
-                                            InstitutionState = "FL",
+                                            InstitutionName = "I1",
+                                            InstitutionState = "floridaInstitutions",
                                             MonthYearGraduated = new DateTime(2020, 10, 10)
                                         }
                                     }

@@ -93,8 +93,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests
                                 HighestDegreeEarned = "BD",
                                 StartYear = "2015",
                                 EndYear = "2018",
-                                InstitutionName = "Florida Institution 1",
-                                InstitutionState = "FL",
+                                InstitutionName = "I1",
+                                InstitutionState = "floridaInstitutions",
                                 MonthYearGraduated = new DateTime(2020, 10, 10)
                             }
                         }
@@ -165,7 +165,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests
                         CitizenshipStatus = "RA",
                         CountryOfCitizenship = "AA",
                         DriversLicenseNumber = "GA12345",
-                        DriversLicenseState = "DA",
+                        DriversLicenseState = "GA",
                         EntityState = LogicBuilder.Domain.EntityStateType.Added,
                         HasValidDriversLicense = true,
                         ImmigrationStatus = "BB",
@@ -194,8 +194,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests
                                 HighestDegreeEarned = "CT",
                                 StartYear = "2016",
                                 EndYear = "2019",
-                                InstitutionName = "Florida Institution 1",
-                                InstitutionState = "FL",
+                                InstitutionName = "I1",
+                                InstitutionState = "floridaInstitutions",
                                 MonthYearGraduated = new DateTime(2020, 10, 10)
                             }
                         }

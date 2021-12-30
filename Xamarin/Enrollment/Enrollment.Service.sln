@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31702.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BSL", "BSL", "{6EA83F86-8ACA-4150-801D-E1BBF30C7D13}"
 EndProject
@@ -59,7 +59,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enrollment.Bsl.Flow.Integra
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enrollment.Api", "Enrollment.Api\Enrollment.Api.csproj", "{9DDC5B2D-EEA7-46B2-9CB0-A462507DE67C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enrollment.Api.Web.Tests", "Enrollment.Api.Web.Tests\Enrollment.Api.Web.Tests.csproj", "{9642BA1D-CC45-461B-A078-3722546E7948}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Enrollment.Api.Web.Tests", "Enrollment.Api.Web.Tests\Enrollment.Api.Web.Tests.csproj", "{9642BA1D-CC45-461B-A078-3722546E7948}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationTool", "MigrationTool\MigrationTool.csproj", "{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SeedTheDatabase", "SeedTheDatabase\SeedTheDatabase.csproj", "{66865518-732B-47C4-A503-2420B8368590}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -335,6 +339,30 @@ Global
 		{9642BA1D-CC45-461B-A078-3722546E7948}.Release|iPhone.Build.0 = Release|Any CPU
 		{9642BA1D-CC45-461B-A078-3722546E7948}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{9642BA1D-CC45-461B-A078-3722546E7948}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Release|iPhone.Build.0 = Release|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Release|iPhone.Build.0 = Release|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{66865518-732B-47C4-A503-2420B8368590}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -362,6 +390,8 @@ Global
 		{B1B39605-8262-49DF-AB3E-A7C5C4400F91} = {DD3DB3A0-B4A5-4EA2-B776-4DBCA0939A8B}
 		{9DDC5B2D-EEA7-46B2-9CB0-A462507DE67C} = {F0708C71-062D-4E3C-A5F4-A9BA5E8DF639}
 		{9642BA1D-CC45-461B-A078-3722546E7948} = {DD3DB3A0-B4A5-4EA2-B776-4DBCA0939A8B}
+		{86E0943F-CB5B-4D69-BCF3-F4F22A3D268B} = {BC899719-A37F-4C41-A7D4-97108D889C5A}
+		{66865518-732B-47C4-A503-2420B8368590} = {BC899719-A37F-4C41-A7D4-97108D889C5A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F330B2A9-5D10-4D0E-8A18-3B690BBB4AA0}

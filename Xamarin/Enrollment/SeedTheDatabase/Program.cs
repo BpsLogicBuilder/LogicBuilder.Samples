@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Enrollment.AutoMapperProfiles;
+using Enrollment.BSL.AutoMapperProfiles;
 using Enrollment.Contexts;
 using Enrollment.Data.Entities;
 using Enrollment.Domain.Entities;
