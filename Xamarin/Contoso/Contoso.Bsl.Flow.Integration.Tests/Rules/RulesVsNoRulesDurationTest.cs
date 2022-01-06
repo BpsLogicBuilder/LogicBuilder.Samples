@@ -308,28 +308,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void JustLoopWithRulesNoBoxing1()
-        {
-            IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            flowManager.FlowDataCache.Response = new SaveEntityResponse();
-            System.Diagnostics.Stopwatch stopWatch = System.Diagnostics.Stopwatch.StartNew();
-            flowManager.Start("justloopnoboxing");
-            stopWatch.Stop();
-            this.output.WriteLine("JustLoopWithCode = {0}", stopWatch.Elapsed.TotalMilliseconds);
-        }
-
-        [Fact]
-        public void JustLoopWithRulesNoBoxing2()
-        {
-            IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            flowManager.FlowDataCache.Response = new SaveEntityResponse();
-            System.Diagnostics.Stopwatch stopWatch = System.Diagnostics.Stopwatch.StartNew();
-            flowManager.Start("justloopnoboxing");
-            stopWatch.Stop();
-            this.output.WriteLine("JustLoopWithCode = {0}", stopWatch.Elapsed.TotalMilliseconds);
-        }
-
-        [Fact]
         public void JustLoopWithCode1()
         {
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -352,34 +330,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             while ((int)flowManager.FlowDataCache.Items["Iteration_Index"] < 1000000)
             {
                 flowManager.FlowDataCache.Items["Iteration_Index"] = (int)flowManager.FlowDataCache.Items["Iteration_Index"] + 1;
-            }
-            stopWatch.Stop();
-            this.output.WriteLine("JustLoopWithCode = {0}", stopWatch.Elapsed.TotalMilliseconds);
-        }
-
-        [Fact]
-        public void JustLoopWithCodeNoBoxing1()
-        {
-            IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            System.Diagnostics.Stopwatch stopWatch = System.Diagnostics.Stopwatch.StartNew();
-            flowManager.FlowDataCache.Index1 = 0;
-            while (flowManager.FlowDataCache.Index1 < 1000000)
-            {
-                flowManager.FlowDataCache.Index1 = flowManager.FlowDataCache.Index1 + 1;
-            }
-            stopWatch.Stop();
-            this.output.WriteLine("JustLoopWithCode = {0}", stopWatch.Elapsed.TotalMilliseconds);
-        }
-
-        [Fact]
-        public void JustLoopWithCodeNoBoxing2()
-        {
-            IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            System.Diagnostics.Stopwatch stopWatch = System.Diagnostics.Stopwatch.StartNew();
-            flowManager.FlowDataCache.Index1 = 0;
-            while (flowManager.FlowDataCache.Index1 < 1000000)
-            {
-                flowManager.FlowDataCache.Index1 = flowManager.FlowDataCache.Index1 + 1;
             }
             stopWatch.Stop();
             this.output.WriteLine("JustLoopWithCode = {0}", stopWatch.Elapsed.TotalMilliseconds);
