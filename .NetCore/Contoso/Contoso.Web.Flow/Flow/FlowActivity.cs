@@ -1,7 +1,4 @@
-﻿using LogicBuilder.Forms.Parameters;
-using LogicBuilder.RulesDirector;
-using System;
-using System.Collections.Generic;
+﻿using LogicBuilder.RulesDirector;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
@@ -25,19 +22,14 @@ namespace Contoso.Web.Flow
 
         #region Methods
         public string FormatString(string format, Collection<object> list) 
-            => string.Format(CultureInfo.CurrentCulture, format, list.ToArray());
+            => FormatString(format, list.ToArray());
+
+        public string FormatString(string format, object[] list)
+            => string.Format(CultureInfo.CurrentCulture, format, list);
 
         public void FlowComplete() => this._flowManager.FlowComplete();
 
         public void Terminate() => this._flowManager.Terminate();
-
-        public void Wait() => this._flowManager.Wait();
-
-        public void DisplayQuestions(QuestionFormParameters form, ICollection<ConnectorParameters> connectors = null)
-            => throw new NotImplementedException();
-
-        public void DisplayInputQuestions(InputFormParameters form, ICollection<ConnectorParameters> connectors = null)
-            => this._flowManager.DisplayInputQuestions(form, connectors);
         #endregion Methods
     }
 }

@@ -14,7 +14,7 @@ namespace CreateAutoMapperProfilesForViewAndParameters
 
         private static void WriteAutoMapperValueProfiles()
         {
-            List<string> commonParameterToViewMaps = typeof(Contoso.Forms.Parameters.Input.BaseDataParameters).Assembly.GetTypes().Where(p => p.Namespace == "Contoso.Forms.Parameters.Common"
+            List<string> commonParameterToViewMaps = typeof(Contoso.Forms.Parameters.Common.AbstractControlEnum).Assembly.GetTypes().Where(p => p.Namespace == "Contoso.Forms.Parameters.Common"
                                && !p.GetTypeInfo().IsEnum
                                && !p.GetTypeInfo().IsAbstract
                                && !p.GetTypeInfo().IsGenericTypeDefinition
@@ -26,7 +26,7 @@ namespace CreateAutoMapperProfilesForViewAndParameters
                                     list.Add(string.Format(CultureInfo.CurrentCulture, "\t\t\tCreateMap<{0}, {1}>().ReverseMap();", next.Name, next.Name.Replace("Parameters", "View")));
                                     return list;
                                 });
-            
+
             string text = File.ReadAllText(string.Format(CultureInfo.InvariantCulture, "{0}\\CommonParametersMappingProfileFileTemplate.txt", Directory.GetCurrentDirectory()))
                 .Replace("#CommonParameterToViewIncludes#", string.Join(Environment.NewLine, commonParameterToViewMaps));
 
@@ -36,5 +36,10 @@ namespace CreateAutoMapperProfilesForViewAndParameters
                 sr.Close();
             }
         }
+    }
+
+    internal struct Constants
+    {
+        internal const string BASEPATH = @"C:\.github\BlaiseD\LogicBuilder.Samples\.NetCore\Contoso";
     }
 }

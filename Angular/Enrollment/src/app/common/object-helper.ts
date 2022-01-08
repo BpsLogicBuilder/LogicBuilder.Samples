@@ -2,7 +2,7 @@ import { GroupDescriptor, CompositeFilterDescriptor, FilterDescriptor, filterBy,
 import { IGroup } from "../stuctures/screens/i-group";
 import { IFilterGroup } from "../stuctures/screens/i-filter-group";
 import { IFilterDefinition } from "../stuctures/screens/i-filter-definition";
-import { IFormItemSetting, abstractControlKind, IFormGroupSettings, IValidatorDescription, IFormGroupArraySettings, IFormControlSettings, IFormGroupData } from "../stuctures/screens/edit/i-edit-form-settings";
+import { IFormItemSetting, abstractControlKind, IFormGroupSettings, IGroupBoxSettings, IValidatorDescription, IFormGroupArraySettings, IFormControlSettings, IFormGroupData } from "../stuctures/screens/edit/i-edit-form-settings";
 import { EntityType } from "../stuctures/screens/i-base-model";
 import { DateService } from "./date.service";
 import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl } from "@angular/forms";
@@ -151,9 +151,8 @@ export class ObjectHelper {
         return args;
     }
 
-    static getPatchObject(formGroup: FormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: FormBuilder): any
+    static updatePatchObject(patchObject: any, formGroup: FormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: FormBuilder)
     {
-        let patchObject = Object.assign({}, item || {});
         fieldSettings.forEach(field =>
         {
             if (field.abstractControlType === abstractControlKind.formControl || field.abstractControlType === abstractControlKind.multiSelectFormControl && formGroup.controls[field.field])
@@ -172,6 +171,10 @@ export class ObjectHelper {
                 {
                     patchObject[field.field] = null;
                 }
+            }
+            else if (item && field.abstractControlType === abstractControlKind.groupBox)
+            {
+                this.updatePatchObject(patchObject, formGroup, (<IGroupBoxSettings>field).fieldSettings, item, dateService, fb);
             }
             else if (item && field.abstractControlType === abstractControlKind.formGroup && formGroup.controls[field.field])
             {
@@ -201,6 +204,12 @@ export class ObjectHelper {
                 patchObject[field.field] = null;
             }
         });
+    }
+
+    static getPatchObject(formGroup: FormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: FormBuilder): any
+    {
+        let patchObject = Object.assign({}, item || {});
+        ObjectHelper.updatePatchObject(patchObject, formGroup, fieldSettings, item, dateService, fb);
 
         return patchObject;
     }
@@ -305,8 +314,8 @@ export class ObjectHelper {
         return null;
     }
 
-    static buildFormGroup(fieldSettings: IFormItemSetting[], fb: FormBuilder): FormGroup {
-        let controlsObject = {};
+    static updateControlsObject(fieldSettings: IFormItemSetting[], fb: FormBuilder, controlsObject: any)
+    {
         fieldSettings.forEach(field => {
             if (field.abstractControlType === abstractControlKind.formControl || field.abstractControlType === abstractControlKind.multiSelectFormControl) {
                 if (field.unchangedValidationSetting) {
@@ -316,6 +325,9 @@ export class ObjectHelper {
                     controlsObject[field.field] = [null];
                 }
             }
+            else if (field.abstractControlType === abstractControlKind.groupBox) {
+                ObjectHelper.updateControlsObject((<IGroupBoxSettings>field).fieldSettings, fb, controlsObject);
+            }
             else if (field.abstractControlType === abstractControlKind.formGroup) {
                 controlsObject[field.field] = ObjectHelper.buildFormGroup((<IFormGroupSettings>field).fieldSettings, fb);
             }
@@ -323,6 +335,11 @@ export class ObjectHelper {
                 controlsObject[field.field] = fb.array([]);
             }
         });
+    }
+
+    static buildFormGroup(fieldSettings: IFormItemSetting[], fb: FormBuilder): FormGroup {
+        let controlsObject = {};
+        ObjectHelper.updateControlsObject(fieldSettings, fb, controlsObject);
 
         let formGroup: FormGroup = fb.group(controlsObject);
         //create formGroup without validation first so that the formGroup is available when creating validation functions
@@ -347,6 +364,10 @@ export class ObjectHelper {
                         formControl.updateValueAndValidity();
                     }
                 }
+            }
+            else if (field.abstractControlType === abstractControlKind.groupBox)
+            {
+                ObjectHelper.setEditFormValidators((<IGroupBoxSettings>field).fieldSettings, formGroup);
             }
             else if (field.abstractControlType === abstractControlKind.formGroup)
             {

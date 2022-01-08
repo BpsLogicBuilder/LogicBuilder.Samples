@@ -10,7 +10,8 @@ namespace Contoso.AutoMapperProfiles
         public ExpansionViewToOperatorMappingProfile()
         {
             CreateMap<SelectExpandDefinitionView, SelectExpandDefinition>();
-            CreateMap<SelectExpandItemView, SelectExpandItem>();
+            CreateMap<SelectExpandItemView, SelectExpandItem>()
+                .ForMember(dest => dest.Filter, opts => opts.Ignore());
             CreateMap<SelectExpandItemQueryFunctionView, SelectExpandItemQueryFunction>();
             CreateMap<SortCollectionView, SortCollection>()
                 .ForMember(dest => dest.Skip, opts => opts.MapFrom(src => src.Skip.HasValue ? src.Skip.Value : 0))

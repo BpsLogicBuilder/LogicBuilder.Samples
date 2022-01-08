@@ -81,7 +81,7 @@ namespace UnitTests
             {
                 cfg.AddMaps(typeof(ConnectorProfile));
             });
-            config.AssertConfigurationIsValid<ConnectorProfile>();
+            config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }
         #endregion Methods

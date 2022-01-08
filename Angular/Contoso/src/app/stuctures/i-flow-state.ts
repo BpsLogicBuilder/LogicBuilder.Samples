@@ -5,5 +5,4 @@ export interface IFlowState {
     callingModuleStack: string[];
     moduleBeginName: string;
     moduleEndName: string;
-    dialogClosed: boolean;
 }

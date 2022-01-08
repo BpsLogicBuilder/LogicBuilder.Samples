@@ -15,8 +15,6 @@ namespace Contoso.Web.Flow.Cache
         public ScreenSettingsBase ScreenSettings { get; set; }
         public ParametersDictionary ParametersItems { get; set; } = new ParametersDictionary();
         public ModelDictionary ModelItems { get; set; } = new ModelDictionary();
-        public Variables Variables { get; set; } = new Variables();
-        public Dictionary<int, object> InputQuestionsAnswers { get; } = new Dictionary<int, object>();
         #endregion Properties
     }
 }

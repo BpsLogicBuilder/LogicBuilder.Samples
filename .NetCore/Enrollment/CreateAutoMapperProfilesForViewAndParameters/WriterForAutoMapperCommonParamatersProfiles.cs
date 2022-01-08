@@ -14,7 +14,7 @@ namespace CreateAutoMapperProfilesForViewAndParameters
 
         private static void WriteAutoMapperValueProfiles()
         {
-            List<string> commonParameterToViewMaps = typeof(Enrollment.Forms.Parameters.Input.BaseDataParameters).Assembly.GetTypes().Where(p => p.Namespace == "Enrollment.Forms.Parameters.Common"
+            List<string> commonParameterToViewMaps = typeof(Enrollment.Forms.Parameters.Common.AbstractControlEnum).Assembly.GetTypes().Where(p => p.Namespace == "Enrollment.Forms.Parameters.Common"
                                && !p.GetTypeInfo().IsEnum
                                && !p.GetTypeInfo().IsAbstract
                                && !p.GetTypeInfo().IsGenericTypeDefinition
@@ -30,7 +30,7 @@ namespace CreateAutoMapperProfilesForViewAndParameters
             string text = File.ReadAllText(string.Format(CultureInfo.InvariantCulture, "{0}\\CommonParametersMappingProfileFileTemplate.txt", Directory.GetCurrentDirectory()))
                 .Replace("#CommonParameterToViewIncludes#", string.Join(Environment.NewLine, commonParameterToViewMaps));
 
-            using (StreamWriter sr = new StreamWriter(@"C:\.NetStandardGit\Samples\.NetCore\Enrollment\Enrollment.AutoMapperProfiles\CommonParametersMappingProfile.cs", false, Encoding.UTF8))
+            using (StreamWriter sr = new StreamWriter(@"C:\.github\BlaiseD\LogicBuilder.Samples\.NetCore\Enrollment\Enrollment.AutoMapperProfiles\CommonParametersMappingProfile.cs", false, Encoding.UTF8))
             {
                 sr.Write(text);
                 sr.Close();

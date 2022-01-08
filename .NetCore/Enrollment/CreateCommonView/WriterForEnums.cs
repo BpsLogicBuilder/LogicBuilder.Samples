@@ -16,7 +16,7 @@ namespace CreateCommonView
 
         internal static void Write()
         {
-            typeof(Enrollment.Forms.Parameters.Input.BaseDataParameters).Assembly.GetTypes()
+            typeof(Enrollment.Forms.Parameters.Common.AbstractControlEnum).Assembly.GetTypes()
                 .Where(p => p.IsEnum)
                 .ToList()
                 .ForEach(t => WriteEnum(t));

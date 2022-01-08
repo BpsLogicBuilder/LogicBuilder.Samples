@@ -41,6 +41,7 @@ namespace Enrollment.AutoMapperProfiles
 			CreateMap<FilterTemplateParameters, FilterTemplateView>().ReverseMap();
 			CreateMap<FormControlSettingsParameters, FormControlSettingsView>().ReverseMap();
 			CreateMap<FormGroupArraySettingsParameters, FormGroupArraySettingsView>().ReverseMap();
+			CreateMap<FormGroupBoxSettingsParameters, FormGroupBoxSettingsView>().ReverseMap();
 			CreateMap<FormGroupSettingsParameters, FormGroupSettingsView>().ReverseMap();
 			CreateMap<FormGroupTemplateParameters, FormGroupTemplateView>().ReverseMap();
 			CreateMap<FormValidationSettingParameters, FormValidationSettingView>().ReverseMap();

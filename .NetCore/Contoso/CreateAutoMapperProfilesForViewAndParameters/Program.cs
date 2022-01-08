@@ -6,7 +6,6 @@ namespace CreateAutoMapperProfilesForViewAndParameters
     {
         static void Main(string[] args)
         {
-            WriterForAutoMapperInputValueProfiles.Write();
             WriterForAutoMapperCommonParamatersProfiles.Write();
         }
     }

@@ -1,20 +1,17 @@
 ﻿using AutoMapper;
 using Enrollment.Forms.View;
-using Enrollment.Forms.View.Input;
 using Enrollment.Repositories;
 using Enrollment.Web.Flow.Cache;
 using Enrollment.Web.Flow.Dialogs;
 using Enrollment.Web.Flow.Requests;
 using Enrollment.Web.Flow.ScreenSettings;
 using Enrollment.Web.Flow.ScreenSettings.Views;
-using LogicBuilder.Forms.Parameters;
 using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace Enrollment.Web.Flow
 {
@@ -47,7 +44,6 @@ namespace Enrollment.Web.Flow
         #endregion Fields
 
         #region Properties
-        public Variables Variables => this.FlowDataCache.Variables;
         public Progress Progress { get; } = new Progress();
         public FlowDataCache FlowDataCache { get; set; }
 
@@ -60,8 +56,6 @@ namespace Enrollment.Web.Flow
         public IEnrollmentRepository EnrollmentRepository { get; }
         public IMapper Mapper { get; }
 
-        public Dictionary<int, object> InputQuestionsAnswers => this.FlowDataCache.InputQuestionsAnswers;
-
         private FlowSettings FlowSettings
             => new FlowSettings
             (
@@ -71,21 +65,6 @@ namespace Enrollment.Web.Flow
                 FlowDataCache.ScreenSettings
             );
         #endregion Properties
-
-        public void DisplayInputQuestions(InputFormParameters form, ICollection<ConnectorParameters> connectors = null)
-        {
-            this.FlowDataCache.ScreenSettings = new ScreenSettings<InputFormView>
-            (
-                this.Mapper.Map<InputFormView>(form),
-                this.Mapper.Map<IEnumerable<ConnectorParameters>, IEnumerable<CommandButtonView>>(connectors),
-                ViewType.InputForm
-            );
-        }
-
-        public void DisplayQuestions(QuestionFormParameters form, ICollection<ConnectorParameters> connectors = null)
-        {
-            throw new NotImplementedException();
-        }
 
         public void FlowComplete()
         {
@@ -98,10 +77,6 @@ namespace Enrollment.Web.Flow
         }
 
         public void Terminate()
-        {
-        }
-
-        public void Wait()
         {
         }
 

@@ -1,18 +1,15 @@
 ﻿using AutoMapper;
+using Contoso.Forms.View;
 using Contoso.Repositories;
 using Contoso.Web.Flow.Cache;
 using Contoso.Web.Flow.Dialogs;
-using Contoso.Web.Flow.ScreenSettings;
 using Contoso.Web.Flow.Requests;
+using Contoso.Web.Flow.ScreenSettings;
 using Contoso.Web.Flow.ScreenSettings.Views;
-using LogicBuilder.Forms.Parameters;
 using LogicBuilder.RulesDirector;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using Contoso.Forms.View.Input;
-using Contoso.Forms.View;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -47,7 +44,6 @@ namespace Contoso.Web.Flow
         #endregion Fields
 
         #region Properties
-        public Variables Variables => this.FlowDataCache.Variables;
         public Progress Progress { get; } = new Progress();
         public FlowDataCache FlowDataCache { get; set; }
 
@@ -60,8 +56,6 @@ namespace Contoso.Web.Flow
         public ISchoolRepository SchoolRepository { get; }
         public IMapper Mapper { get; }
 
-        public Dictionary<int, object> InputQuestionsAnswers => this.FlowDataCache.InputQuestionsAnswers;
-
         private FlowSettings FlowSettings
             => new FlowSettings
             (
@@ -70,21 +64,6 @@ namespace Contoso.Web.Flow
                 FlowDataCache.ScreenSettings
             );
         #endregion Properties
-
-        public void DisplayInputQuestions(InputFormParameters form, ICollection<ConnectorParameters> connectors = null)
-        {
-            this.FlowDataCache.ScreenSettings = new ScreenSettings<InputFormView>
-            (
-                this.Mapper.Map<InputFormView>(form),
-                this.Mapper.Map<IEnumerable<ConnectorParameters>, IEnumerable<CommandButtonView>>(connectors),
-                ViewType.InputForm
-            );
-        }
-
-        public void DisplayQuestions(QuestionFormParameters form, ICollection<ConnectorParameters> connectors = null)
-        {
-            throw new NotImplementedException();
-        }
 
         public void FlowComplete()
         {
@@ -97,10 +76,6 @@ namespace Contoso.Web.Flow
         }
 
         public void Terminate()
-        {
-        }
-
-        public void Wait()
         {
         }
 

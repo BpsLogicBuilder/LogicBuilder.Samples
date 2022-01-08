@@ -1,6 +1,6 @@
 import { ObjectHelper } from "./object-helper";
 import { AbstractControl, FormControl, FormGroup, FormBuilder, FormArray } from "@angular/forms";
-import { formTypeEnum, IFormItemSetting, IValidatorDescription, IFormGroupSettings, IFormGroupArraySettings, abstractControlKind, IFormGroupData, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
+import { formTypeEnum, IFormItemSetting, IValidatorDescription, IGroupBoxSettings, IFormGroupSettings, IFormGroupArraySettings, abstractControlKind, IFormGroupData, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
 import { EditFormHelpers } from "./edit-form-helpers";
 import { IDirectiveDescription, IInputQuestion, IDirective } from "../stuctures/screens/input-form/i-input-form";
 import { IHandleInputDirectiveArgs, IHandleEditDirectiveArgs, IInputDirectiveFunctionArgs, IEditDirectiveFunctionArgs } from "../stuctures/screens/i-directive-function-args";
@@ -88,9 +88,12 @@ export class Directives
 
         for (let setting of groupSettings.fieldSettings)
         {
-            if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting.field])
+            if (setting.abstractControlType == abstractControlKind.groupBox)
+            {//Directives.getFormControlSetting gets the fields for IGroupBoxSettings so nothing to do here
+            }
+            else if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting.field])
             {
-                Directives.watchFields((<IFormGroupArraySettings>setting), <FormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).conditionalDirectives, formBuilder);
+              Directives.watchFields((<IFormGroupSettings>setting), <FormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).conditionalDirectives, formBuilder);
             }
             else if (setting.abstractControlType == abstractControlKind.formGroupArray && formGroup.controls[setting.field])
             {
@@ -114,6 +117,15 @@ export class Directives
 
         for (let field of fieldSettings)
         {
+            if (field.abstractControlType === abstractControlKind.groupBox)
+            {
+                for (let groupBoxField of (<IGroupBoxSettings>field).fieldSettings)
+                {
+                    if (groupBoxField.field === fieldName)
+                        return groupBoxField;
+                }
+            }
+
             if (field.field === fieldName)
                     return field;
         }

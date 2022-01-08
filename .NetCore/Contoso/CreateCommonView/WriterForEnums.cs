@@ -16,7 +16,7 @@ namespace CreateCommonView
 
         internal static void Write()
         {
-            typeof(Contoso.Forms.Parameters.Input.BaseDataParameters).Assembly.GetTypes()
+            typeof(Contoso.Forms.Parameters.Common.AbstractControlEnum).Assembly.GetTypes()
                 .Where(p => p.IsEnum)
                 .ToList()
                 .ForEach(t => WriteEnum(t));

@@ -9,6 +9,7 @@ namespace Contoso.Forms.Parameters.Common
         FormControl,
         MultiSelectFormControl,
         FormGroup,
-        FormGroupArray
+        FormGroupArray,
+        GroupBox
     }
 }

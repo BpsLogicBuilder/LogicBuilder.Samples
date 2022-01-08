@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.RulesDirector;
-using Microsoft.AspNetCore.Http;
 
 namespace Contoso.Web.Flow
 {

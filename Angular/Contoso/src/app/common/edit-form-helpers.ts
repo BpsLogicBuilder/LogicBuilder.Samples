@@ -1,5 +1,5 @@
 import { ObjectHelper } from "./object-helper";
-import { abstractControlKind, IFormItemSetting, IFormGroupSettings, IFormGroupArraySettings, IFormGroupData, formTypeEnum, IFormControlSettings, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
+import { abstractControlKind, IFormItemSetting, IFormGroupSettings, IGroupBoxSettings, IFormGroupArraySettings, IFormGroupData, formTypeEnum, IFormControlSettings, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
 import { FormGroup, FormArray, AbstractControl, FormBuilder, FormControl } from "@angular/forms";
 
 export class EditFormHelpers
@@ -14,6 +14,12 @@ export class EditFormHelpers
             {
                 if(formControl === formGroup.controls[setting.field])
                     return formGroupData;
+            }
+            else if (setting.abstractControlType == abstractControlKind.groupBox && formGroupData)
+            {
+                let data = EditFormHelpers.findFormGroupData(formControl, formGroup, (<IGroupBoxSettings>setting).fieldSettings, formGroupData);
+                if (data)
+                    return data;
             }
             else if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting.field] && formGroupData.formGroupData && formGroupData.formGroupData[setting.field])
             {
@@ -51,6 +57,10 @@ export class EditFormHelpers
                 || setting.abstractControlType === abstractControlKind.multiSelectFormControl)
                 && formGroup.controls[setting.field])
             {
+            }
+            else if (setting.abstractControlType == abstractControlKind.groupBox)
+            {
+                EditFormHelpers.buildFormGroupData(formGroup, (<IGroupBoxSettings>setting).fieldSettings, formGroupData);
             }
             else if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting.field])
             {
@@ -107,6 +117,8 @@ export class EditFormHelpers
 
             return formControl;
         }
+        //no need for abstractControlKind.groupBox (the target control for validation can't be a group box.  See Directives.getFormControlSetting)
+        //can't return an AbstractControl form a IGroupBoxSetting
         else  if (questionSetting.abstractControlType === abstractControlKind.formGroup)
         {
             let fg = ObjectHelper.buildFormGroup((<IFormGroupSettings>questionSetting).fieldSettings, fb);
@@ -138,6 +150,10 @@ export class EditFormHelpers
                         });
                     }
                 }
+            }
+            else if (setting.abstractControlType == abstractControlKind.groupBox)
+            {
+                EditFormHelpers.processValidationMessages(formGroup, (<IGroupBoxSettings>setting).fieldSettings, formGroupData, validationMessages);
             }
             else if (setting.abstractControlType == abstractControlKind.formGroup
                 && formGroup.controls[setting.field])
