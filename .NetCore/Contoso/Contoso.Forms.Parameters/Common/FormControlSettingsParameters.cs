@@ -30,9 +30,9 @@ namespace Contoso.Forms.Parameters.Common
             [NameValue(AttributeNames.DEFAULTVALUE, "(Title) required")]
             string placeHolder,
 
-            [Comments("text/numeric/boolean/date")]
-            [Domain("text,numeric,boolean,date")]
-            [ParameterEditorControl(ParameterControlType.DropDown)]
+            [Comments("text/numeric/boolean/date/email")]
+            [Domain("text,numeric,boolean,date,email")]
+            [ParameterEditorControl(ParameterControlType.SingleLineTextBox)]
             string type,
 
             [Comments("Defines the field's default value, validation functions (and arguments for the validator where necessary).")]

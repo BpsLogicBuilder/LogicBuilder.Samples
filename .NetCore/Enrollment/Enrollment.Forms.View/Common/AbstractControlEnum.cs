@@ -9,6 +9,7 @@ namespace Enrollment.Forms.View.Common
 		FormControl,
 		MultiSelectFormControl,
 		FormGroup,
-		FormGroupArray
-    }
+		FormGroupArray,
+		GroupBox
+	}
 }

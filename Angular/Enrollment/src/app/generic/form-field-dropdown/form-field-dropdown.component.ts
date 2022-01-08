@@ -33,7 +33,11 @@ export class FormFieldDropdownComponent implements OnInit, ControlValueAccessor
   @Input('reload')
   set reload(value: string)
   {
-    this.getDropDownData();
+    let set_reload = this;
+    setTimeout(function () {
+      set_reload.getDropDownData();
+    }, 10);
+    
     this._reload = value;
     this._clear = value;
   }

@@ -20,6 +20,12 @@
               </ng-container>
             </ng-container>
           </div>
+          <ng-container *ngIf="setting.abstractControlType === controlType.groupBox">
+            <ng-container *ngIf="setting.formGroupTemplate">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, itemForm)">
+              </ng-container>
+            </ng-container>
+          </ng-container>
           <ng-container *ngIf="itemForm.controls[setting.field] && setting.abstractControlType === controlType.formGroup">
             <ng-container *ngIf="setting.formGroupTemplate">
               <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, itemForm)">
@@ -55,8 +61,8 @@
     <ng-container *ngTemplateOutlet="groupTemplate">
     </ng-container>
   </div>
-  <div *ngIf="fieldSetting.showTitle">
-    <div class="card text-dark bg-white pl-0 pr-0">
+  <div *ngIf="fieldSetting.showTitle" class="mb-3">
+    <div class="card text-dark bg-light pl-0 pr-0">
       <div class="card-header">{{fieldSetting.title}}</div>
       <div class="card-body">
         <ng-container *ngTemplateOutlet="groupTemplate">
@@ -82,6 +88,12 @@
               </ng-container>
             </ng-container>
           </div>
+          <ng-container *ngIf="setting.abstractControlType === controlType.groupBox">
+            <ng-container *ngIf="setting.formGroupTemplate">
+              <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, formGroup, strIndex)">
+              </ng-container>
+            </ng-container>
+          </ng-container>
           <ng-container *ngIf="formGroup.controls[setting.field] && setting.abstractControlType === controlType.formGroup">
             <ng-container *ngIf="setting.formGroupTemplate">
               <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, formGroup, strIndex)">
@@ -144,6 +156,12 @@
                       </ng-container>
                     </ng-container>
                   </div>
+                  <ng-container *ngIf="setting.abstractControlType === controlType.groupBox">
+                    <ng-container *ngIf="setting.formGroupTemplate">
+                      <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, formGroupItem, strIndex)">
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
                   <ng-container *ngIf="formGroupItem.controls[setting.field] && setting.abstractControlType === controlType.formGroup">
                     <ng-container *ngIf="setting.formGroupTemplate">
                       <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, formGroupItem, getNewIndex(strIndex, i))">

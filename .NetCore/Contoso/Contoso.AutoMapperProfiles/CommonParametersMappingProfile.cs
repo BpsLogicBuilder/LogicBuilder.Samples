@@ -10,6 +10,7 @@ namespace Contoso.AutoMapperProfiles
     {
         public CommonParametersMappingProfile()
         {
+			CreateMap<AboutFormSettingsParameters, AboutFormSettingsView>().ReverseMap();
 			CreateMap<AggregateDefinitionParameters, AggregateDefinitionView>().ReverseMap();
 			CreateMap<AggregateTemplateFieldsParameters, AggregateTemplateFieldsView>().ReverseMap();
 			CreateMap<AggregateTemplateParameters, AggregateTemplateView>().ReverseMap();
@@ -41,14 +42,14 @@ namespace Contoso.AutoMapperProfiles
 			CreateMap<FilterTemplateParameters, FilterTemplateView>().ReverseMap();
 			CreateMap<FormControlSettingsParameters, FormControlSettingsView>().ReverseMap();
 			CreateMap<FormGroupArraySettingsParameters, FormGroupArraySettingsView>().ReverseMap();
+			CreateMap<FormGroupBoxSettingsParameters, FormGroupBoxSettingsView>().ReverseMap();
 			CreateMap<FormGroupSettingsParameters, FormGroupSettingsView>().ReverseMap();
 			CreateMap<FormGroupTemplateParameters, FormGroupTemplateView>().ReverseMap();
 			CreateMap<FormValidationSettingParameters, FormValidationSettingView>().ReverseMap();
 			CreateMap<GridSettingsParameters, GridSettingsView>().ReverseMap();
 			CreateMap<GroupParameters, GroupView>().ReverseMap();
 			CreateMap<HtmlPageSettingsParameters, HtmlPageSettingsView>().ReverseMap();
-            CreateMap<AboutFormSettingsParameters, AboutFormSettingsView>().ReverseMap();
-            CreateMap<MessageTemplateParameters, MessageTemplateView>().ReverseMap();
+			CreateMap<MessageTemplateParameters, MessageTemplateView>().ReverseMap();
 			CreateMap<MultiSelectFormControlSettingsParameters, MultiSelectFormControlSettingsView>().ReverseMap();
 			CreateMap<MultiSelectTemplateParameters, MultiSelectTemplateView>().ReverseMap();
 			CreateMap<RequestDetailsParameters, RequestDetailsView>().ReverseMap();

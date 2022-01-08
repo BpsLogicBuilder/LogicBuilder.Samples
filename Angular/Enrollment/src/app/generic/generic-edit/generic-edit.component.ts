@@ -82,6 +82,15 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
+  public getGroupBoxContext(fieldSetting: IFormItemSetting, formGroup: FormGroup, index: string)
+  {
+    return {
+      formGroup: formGroup,
+      fieldSetting: fieldSetting,
+      strIndex: index || ""
+    }
+  }
+
   public getFormArrayContext(fieldSetting: IFormGroupSettings, formGroup: FormGroup, index: string)
   {
     return {

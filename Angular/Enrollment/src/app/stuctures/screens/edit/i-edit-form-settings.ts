@@ -76,6 +76,11 @@ export interface IFormArrayData {
     formGroupDataArray: IFormGroupData[];
 }
 
+export interface IGroupBoxSettings extends IFormItemSetting, IGroupSettings {
+    title: string;
+    showTile: boolean;
+}
+
 export interface IFormGroupSettings extends IFormItemSetting, IGroupSettings {
     field: string;
     title: string;
@@ -103,7 +108,8 @@ export enum abstractControlKind {
     formControl = 0,
     multiSelectFormControl = 1,
     formGroup = 2,
-    formGroupArray = 3
+    formGroupArray = 3,
+    groupBox = 4
 }
 
 export enum formTypeEnum {

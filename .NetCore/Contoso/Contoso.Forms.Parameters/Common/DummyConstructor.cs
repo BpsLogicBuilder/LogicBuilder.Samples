@@ -15,6 +15,7 @@ namespace Contoso.Forms.Parameters.Common
             FormControlSettingsParameters formControlSettings,
             FormGroupArraySettingsParameters formGroupArraySettings,
             FormGroupSettingsParameters formGroupSettings,
+            FormGroupBoxSettingsParameters formGroupBoxSettings,
             MultiSelectFormControlSettingsParameters multiSelectFormControlSettings,
             CommandButtonParameters commandButtonData,
             ValidatorArgumentParameters validatorArguments

@@ -12,6 +12,5 @@ namespace Enrollment.Web.Flow.ScreenSettings
         public List<string> CallingModuleStack { get; set; } = new List<string>();
         public string ModuleBeginName { get; set; } = string.Empty;
         public string ModuleEndName { get; set; } = string.Empty;
-        public bool DialogClosed { get; set; }
     }
 }

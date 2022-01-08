@@ -5,17 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.RulesDirector" Version="1.0.0" />
+    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.2" />
     <PackageReference Include="LogicBuilder.Structures" Version="5.0.2" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Enrollment.Utils\Enrollment.Utils.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Common\" />
   </ItemGroup>
 
   <ItemGroup>

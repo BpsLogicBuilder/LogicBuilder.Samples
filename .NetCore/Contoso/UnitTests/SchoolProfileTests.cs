@@ -3,10 +3,8 @@ using Contoso.AutoMapperProfiles;
 using Contoso.Data.Entities;
 using Contoso.Domain.Entities;
 using Contoso.Forms.Parameters.Common;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Xunit;
 
 namespace UnitTests

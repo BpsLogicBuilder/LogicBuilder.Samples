@@ -3,7 +3,6 @@ using LogicBuilder.RulesDirector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Enrollment.Web.Flow
 {
@@ -24,10 +23,6 @@ namespace Enrollment.Web.Flow
         #endregion Variables
 
         #region Properties
-        protected override Dictionary<int, int> QuestionListAnswers => throw new NotImplementedException();
-        protected override Dictionary<int, object> InputQuestionsAnswers => this._flowManager.InputQuestionsAnswers;
-        protected override Variables Variables => this._flowManager.Variables;
-
         protected override Progress Progress => this._flowManager.Progress;
         protected override IRulesCache RulesCache => this._rulesCache;
         protected override IFlowActivity FlowActivity => this._flowManager.FlowActivity;
@@ -43,8 +38,7 @@ namespace Enrollment.Web.Flow
                     CallingModuleDriverStack = new List<string>(this._callingModuleDriverStack.OfType<string>()),
                     CallingModuleStack = new List<string>(this._callingModuleStack.OfType<string>()),
                     ModuleBeginName = this._moduleBeginName,
-                    ModuleEndName = this._moduleEndName,
-                    DialogClosed = this._dialogClosed
+                    ModuleEndName = this._moduleEndName
                 };
             }
             set
@@ -55,7 +49,6 @@ namespace Enrollment.Web.Flow
                 this._callingModuleStack = new System.Collections.Stack(value.CallingModuleStack.Reverse<string>().ToList());
                 this._moduleBeginName = value.ModuleBeginName;
                 this._moduleEndName = value.ModuleEndName;
-                this._dialogClosed = value.DialogClosed;
             }
         }
         #endregion Properties

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { EntityType } from '../stuctures/screens/i-base-model';
 import { EntityStateType } from '../stuctures/screens/entity-state-type';
 import { FormGroup, FormArray } from '@angular/forms';
-import { IFormItemSetting, abstractControlKind, IFormGroupSettings, IFormGroupArraySettings, IMultiSelectFormControlSettings } from '../stuctures/screens/edit/i-edit-form-settings';
+import { IFormItemSetting, abstractControlKind, IGroupBoxSettings, IFormGroupSettings, IFormGroupArraySettings, IMultiSelectFormControlSettings } from '../stuctures/screens/edit/i-edit-form-settings';
 
 @Injectable({
     providedIn: 'root'
@@ -26,7 +26,15 @@ export class ListManagerService {
         else if ((!originalEntity) || isInsert) {
             entityToSave.entityState = EntityStateType.Added;
             for (let setting of fieldSettings) {
-                if (setting.abstractControlType === abstractControlKind.formGroup) {
+                if (setting.abstractControlType === abstractControlKind.groupBox) {
+                    this.updateFormEntityState(
+                        entityToSave,
+                        originalEntity,
+                        formGroup,
+                        (<IGroupBoxSettings>setting).fieldSettings
+                    );
+                }
+                else if (setting.abstractControlType === abstractControlKind.formGroup) {
 
                     if (!formGroup.controls[setting.field]) {
                         entityToSave[setting.field] = null;
@@ -69,7 +77,15 @@ export class ListManagerService {
         else {//entityToSave = instructor
             entityToSave.entityState = EntityStateType.Modified;
             for (let setting of fieldSettings) {
-                if (setting.abstractControlType == abstractControlKind.formGroup) {
+                if (setting.abstractControlType === abstractControlKind.groupBox) {
+                    this.updateFormEntityState(
+                        entityToSave,
+                        originalEntity,
+                        formGroup,
+                        (<IGroupBoxSettings>setting).fieldSettings
+                    );
+                }
+                else if (setting.abstractControlType == abstractControlKind.formGroup) {
                     if (!formGroup.controls[setting.field]) {
                         entityToSave[setting.field] = null;
                         continue;

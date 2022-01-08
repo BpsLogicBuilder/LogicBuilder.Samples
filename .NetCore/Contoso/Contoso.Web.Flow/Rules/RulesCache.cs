@@ -10,13 +10,16 @@ namespace Contoso.Web.Flow.Rules
     {
         public RulesCache(Dictionary<string, RuleEngine> ruleEngines, Dictionary<string, string> resourceStrings)
         {
-            this.RuleEngines = ruleEngines;
-            this.ResourceStrings = resourceStrings;
+            _ruleEngines = ruleEngines;
+            _resourceStrings = resourceStrings;
         }
 
+        private readonly Dictionary<string, RuleEngine> _ruleEngines;
+        private readonly Dictionary<string, string> _resourceStrings;
+
         #region Properties
-        public Dictionary<string, RuleEngine> RuleEngines { get; private set; }
-        public Dictionary<string, string> ResourceStrings { get; private set; }
+        public IDictionary<string, RuleEngine> RuleEngines => _ruleEngines;
+        public IDictionary<string, string> ResourceStrings => _resourceStrings;
         #endregion Properties
 
         #region Methods

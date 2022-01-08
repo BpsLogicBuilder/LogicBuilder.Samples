@@ -15,14 +15,12 @@ namespace CreateCommonView
     {
         internal static void Write()
         {
-            HashSet<Type> excludes = new HashSet<Type>() { typeof(Contoso.Forms.Parameters.Input.BaseDataParameters) };
             using (CSharpCodeProvider compiler = new CSharpCodeProvider())
             {
-                typeof(Contoso.Forms.Parameters.Input.BaseDataParameters).Assembly.GetTypes().Where
+                typeof(Contoso.Forms.Parameters.Common.AbstractControlEnum).Assembly.GetTypes().Where
                                 (
                                     p => p.Namespace == "Contoso.Forms.Parameters.Common"
                                     && !p.GetTypeInfo().IsEnum
-                                    && !excludes.Contains(p)
                                     && !p.GetTypeInfo().IsGenericTypeDefinition
                                     && !p.GetTypeInfo().IsInterface
                                     && p.FullName.EndsWith("Parameters")

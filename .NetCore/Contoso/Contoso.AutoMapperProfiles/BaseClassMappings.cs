@@ -14,11 +14,13 @@ namespace Contoso.AutoMapperProfiles
             CreateMap<FormItemSettingView, FormItemSettingParameters>()
                 .Include<FormGroupArraySettingsView, FormGroupArraySettingsParameters>()
                 .Include<FormGroupSettingsView, FormGroupSettingsParameters>()
+                .Include<FormGroupBoxSettingsView, FormGroupBoxSettingsParameters>()
                 .Include<FormControlSettingsView, FormControlSettingsParameters>()
                 .Include<MultiSelectFormControlSettingsView, MultiSelectFormControlSettingsParameters>()
                 .ReverseMap()
                 .Include<FormGroupArraySettingsParameters, FormGroupArraySettingsView>()
                 .Include<FormGroupSettingsParameters, FormGroupSettingsView>()
+                .Include<FormGroupBoxSettingsParameters, FormGroupBoxSettingsView>()
                 .Include<FormControlSettingsParameters, FormControlSettingsView>()
                 .Include<MultiSelectFormControlSettingsParameters, MultiSelectFormControlSettingsView>();
 
