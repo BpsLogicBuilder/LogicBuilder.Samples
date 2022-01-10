@@ -13,7 +13,6 @@ namespace Contoso.Web.Flow.ScreenSettings.Views
         Delete,
         Html,
         About,
-        InputForm,
         FlowComplete,
         Exception
     }

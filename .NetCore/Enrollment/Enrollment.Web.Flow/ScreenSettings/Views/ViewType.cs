@@ -11,7 +11,6 @@ namespace Enrollment.Web.Flow.ScreenSettings.Views
         Create,
         Detail,
         Delete,
-        InputForm,
         Html,
         FlowComplete,
         Exception

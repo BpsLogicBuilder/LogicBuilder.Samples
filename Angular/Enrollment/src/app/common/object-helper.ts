@@ -2,12 +2,11 @@ import { GroupDescriptor, CompositeFilterDescriptor, FilterDescriptor, filterBy,
 import { IGroup } from "../stuctures/screens/i-group";
 import { IFilterGroup } from "../stuctures/screens/i-filter-group";
 import { IFilterDefinition } from "../stuctures/screens/i-filter-definition";
-import { IFormItemSetting, abstractControlKind, IFormGroupSettings, IGroupBoxSettings, IValidatorDescription, IFormGroupArraySettings, IFormControlSettings, IFormGroupData } from "../stuctures/screens/edit/i-edit-form-settings";
+import { IFormItemSetting, abstractControlKind, IFormGroupSettings, IGroupBoxSettings, IValidatorDescription, IFormGroupArraySettings, IFormControlSettings, IFormGroupData, IConditionGroup } from "../stuctures/screens/edit/i-edit-form-settings";
 import { EntityType } from "../stuctures/screens/i-base-model";
 import { DateService } from "./date.service";
 import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl } from "@angular/forms";
 import { ValidatorsManager } from "./validators-manager";
-import { IInputForm, IInputRow, IInputColumn, IInputQuestion, IConditionGroup } from "../stuctures/screens/input-form/i-input-form";
 import { ListManagerService } from "./list-manager.service";
 import { ISort } from "../stuctures/screens/i-sort";
 import { EditFormHelpers } from "./edit-form-helpers";
@@ -212,106 +211,6 @@ export class ObjectHelper {
         ObjectHelper.updatePatchObject(patchObject, formGroup, fieldSettings, item, dateService, fb);
 
         return patchObject;
-    }
-
-    static getPatchObjectFromInputForm(formSettings: IInputForm, dateService: DateService): any {
-        let patchObject = {};
-
-        if (formSettings.rows) {
-            formSettings.rows.forEach(row => {
-                ObjectHelper.updatePatchObjectByRow(patchObject, row, dateService);
-            });
-        }
-
-        return patchObject;
-    }
-
-    static updatePatchObjectByRow(patchObject: any, rowSetting: IInputRow, dateService: DateService) {
-        if (rowSetting.columns) {
-            rowSetting.columns.forEach(column => {
-                ObjectHelper.updatePatchObjectByColumn(patchObject, column, dateService);
-            });
-        }
-    }
-
-    static updatePatchObjectByColumn(patchObject: any, columnSetting: IInputColumn, dateService: DateService) {
-        if (columnSetting.rows) {
-            columnSetting.rows.forEach(row => {
-                ObjectHelper.updatePatchObjectByRow(patchObject, row, dateService);
-            });
-        }
-
-        if (columnSetting.questions) {
-            columnSetting.questions.forEach(question => {
-                patchObject[question.variableId] = question.htmlType == 'date' 
-                            ? dateService.convertToDate(question.currentValue) 
-                            : question.currentValue;
-            });
-        }
-    }
-
-    static getFormControl(questionSetting: IInputQuestion) : FormControl {
-        if (questionSetting.validationSetting) {
-            if (questionSetting.validationSetting.validators) {
-                let fn = ObjectHelper.getValidatorFunctions(questionSetting.validationSetting.validators);
-                return new FormControl(questionSetting.validationSetting.defaultValue, fn);
-            }
-            else {
-                return new FormControl(questionSetting.validationSetting.defaultValue);
-            }
-        }
-
-        return new FormControl();
-    }
-
-    static findQuestionSettingByColumn(questionName: string, columnSetting: IInputColumn): IInputQuestion {
-        let questionSetting: IInputQuestion = null;
-        if (columnSetting.rows && columnSetting.rows.length) {
-            for (let row of columnSetting.rows)
-            {
-                questionSetting = ObjectHelper.findQuestionSettingByRow(questionName, row);
-                if (questionSetting)
-                    return questionSetting;
-            }
-        }
-
-        if (columnSetting.questions && columnSetting.questions.length) {
-            for (let question of columnSetting.questions)
-            {
-                if (question.variableId == questionName)
-                    return question;
-            }
-        }
-        
-        return null;
-    }
-
-    static findQuestionSettingByRow(questionName: string, rowSetting: IInputRow): IInputQuestion {
-        let questionSetting: IInputQuestion = null;
-        if (rowSetting.columns && rowSetting.columns.length) {
-            for (let column of rowSetting.columns)
-            {
-                questionSetting = ObjectHelper.findQuestionSettingByColumn(questionName, column);
-                if (questionSetting)
-                    return questionSetting;
-            }
-        }
-        
-        return null;
-    }
-
-    static findQuestionSetting(questionName: string, formSettings: IInputForm): IInputQuestion {
-        let questionSetting: IInputQuestion = null;
-        if (formSettings.rows && formSettings.rows.length) {
-            for (let row of formSettings.rows)
-            {
-                questionSetting = ObjectHelper.findQuestionSettingByRow(questionName, row);
-                if (questionSetting)
-                    return questionSetting;
-            }
-        }
-        
-        return null;
     }
 
     static updateControlsObject(fieldSettings: IFormItemSetting[], fb: FormBuilder, controlsObject: any)

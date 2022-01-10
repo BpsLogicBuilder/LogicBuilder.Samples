@@ -1,9 +1,8 @@
 import { ObjectHelper } from "./object-helper";
 import { AbstractControl, FormControl, FormGroup, FormBuilder, FormArray } from "@angular/forms";
-import { formTypeEnum, IFormItemSetting, IValidatorDescription, IGroupBoxSettings, IFormGroupSettings, IFormGroupArraySettings, abstractControlKind, IFormGroupData, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
+import { IFormItemSetting, IValidatorDescription, IGroupBoxSettings, IFormGroupSettings, IFormGroupArraySettings, abstractControlKind, IFormGroupData, IGroupSettings, IDirectiveDescription, IDirective } from "../stuctures/screens/edit/i-edit-form-settings";
 import { EditFormHelpers } from "./edit-form-helpers";
-import { IDirectiveDescription, IInputQuestion, IDirective } from "../stuctures/screens/input-form/i-input-form";
-import { IHandleInputDirectiveArgs, IHandleEditDirectiveArgs, IInputDirectiveFunctionArgs, IEditDirectiveFunctionArgs } from "../stuctures/screens/i-directive-function-args";
+import { IHandleEditDirectiveArgs, IEditDirectiveFunctionArgs } from "../stuctures/screens/i-directive-function-args";
 
 export class DirectivesManager
 {
@@ -47,7 +46,6 @@ export class Directives
                                 targetControlName: targetField,
                                 targetControlFieldSetting: <IFormItemSetting>Directives.getFormControlSetting(groupSettings.fieldSettings, targetField),
                                 conditionalDirectives: conditionalDirectives,
-                                formType: formTypeEnum.editForm,
                                 fb: formBuilder
                             });
                         }
@@ -78,7 +76,6 @@ export class Directives
                                 targetControlName: targetField,
                                 targetControlFieldSetting: <IFormItemSetting>Directives.getFormControlSetting(groupSettings.fieldSettings, targetField),
                                 conditionalDirectives: conditionalDirectives,
-                                formType: formTypeEnum.editForm,
                                 fb: formBuilder
                             });
                         });
@@ -133,7 +130,7 @@ export class Directives
         return null;
     }
 
-    static handleDirective(args: IHandleInputDirectiveArgs | IHandleEditDirectiveArgs): void
+    static handleDirective(args: IHandleEditDirectiveArgs): void
     {
         let obj: any = {};
         obj[args.fieldBeingUpdated] = args.newValue;
@@ -143,42 +140,23 @@ export class Directives
         //because itemForm has not yet been updated at valueChanges.
         let conditionEvaluation: boolean = ObjectHelper.evaluateCondition(Object.assign({}, formObject, obj), args.directive.conditionGroup);
 
-        if (args.formType == formTypeEnum.inputForm)
-            {
-                Directives.getDirectiveFunction({
-                    directive: args.directive,
-                    formGroup: args.formGroup,
-                    fieldBeingUpdated: args.fieldBeingUpdated,
-                    newValue: args.newValue,
-                    targetControlName: args.targetControlName,
-                    targetControlFieldSetting: <IInputQuestion>args.targetControlFieldSetting,
-                    result: conditionEvaluation,
-                    conditionalDirectives: args.conditionalDirectives,
-                    formType: args.formType,
-                    fb: args.fb
-                  });
-            }
-            else if (args.formType === formTypeEnum.editForm)
-            {
-                Directives.getDirectiveFunction({
-                    directive: args.directive,
-                    formGroup: args.formGroup,
-                    groupSettings: (<IEditDirectiveFunctionArgs>args).groupSettings,
-                    fieldBeingUpdated: args.fieldBeingUpdated,
-                    newValue: args.newValue,
-                    targetControlName: args.targetControlName,
-                    targetControlFieldSetting: <IFormItemSetting>args.targetControlFieldSetting,
-                    result: conditionEvaluation,
-                    conditionalDirectives: args.conditionalDirectives,
-                    formType: args.formType,
-                    fb: args.fb
-                  });
-            }
+        Directives.getDirectiveFunction({
+            directive: args.directive,
+            formGroup: args.formGroup,
+            groupSettings: (<IEditDirectiveFunctionArgs>args).groupSettings,
+            fieldBeingUpdated: args.fieldBeingUpdated,
+            newValue: args.newValue,
+            targetControlName: args.targetControlName,
+            targetControlFieldSetting: <IFormItemSetting>args.targetControlFieldSetting,
+            result: conditionEvaluation,
+            conditionalDirectives: args.conditionalDirectives,
+            fb: args.fb
+          });
 
         
     }
 
-    static hideIf(args: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs)
+    static hideIf(args: IEditDirectiveFunctionArgs)
     {
         if (args.result)
         {
@@ -193,16 +171,9 @@ export class Directives
             if (args.formGroup.get(args.targetControlName))
                 return;
 
-            if (args.formType == formTypeEnum.inputForm)
-            {
-                args.formGroup.addControl(args.targetControlName,ObjectHelper.getFormControl(<IInputQuestion>args.targetControlFieldSetting));
-            }
-            else if (args.formType === formTypeEnum.editForm)
-            {
-                let newControl: AbstractControl = EditFormHelpers.getAbstractControl(<IFormItemSetting>args.targetControlFieldSetting, args.fb, args.formGroup, (<IEditDirectiveFunctionArgs>args).groupSettings);
-               
-                args.formGroup.addControl(args.targetControlName,newControl);
-            }
+            let newControl: AbstractControl = EditFormHelpers.getAbstractControl(<IFormItemSetting>args.targetControlFieldSetting, args.fb, args.formGroup, (<IEditDirectiveFunctionArgs>args).groupSettings);
+            
+            args.formGroup.addControl(args.targetControlName,newControl);
 
 
             Object.keys(args.conditionalDirectives).forEach(targetField =>
@@ -215,35 +186,17 @@ export class Directives
                         control.valueChanges
                             .subscribe(value =>
                             {
-                                if (args.formType == formTypeEnum.inputForm)
-                                {
-                                    Directives.handleDirective({
-                                        directive: directive,
-                                        formGroup: args.formGroup,
-                                        fieldBeingUpdated: args.targetControlName,
-                                        newValue: value,
-                                        targetControlName: targetField,
-                                        targetControlFieldSetting: <IInputQuestion>args.targetControlFieldSetting,
-                                        conditionalDirectives: args.conditionalDirectives,
-                                        formType: args.formType,
-                                        fb: args.fb
-                                    });
-                                }
-                                else if (args.formType === formTypeEnum.editForm)
-                                {
-                                    Directives.handleDirective({
-                                        directive: directive,
-                                        formGroup: args.formGroup,
-                                        groupSettings: (<IEditDirectiveFunctionArgs>args).groupSettings,
-                                        fieldBeingUpdated: args.targetControlName,
-                                        newValue: value,
-                                        targetControlName: targetField,
-                                        targetControlFieldSetting: <IFormItemSetting>args.targetControlFieldSetting,
-                                        conditionalDirectives: args.conditionalDirectives,
-                                        formType: args.formType,
-                                        fb: args.fb
-                                    });
-                                }
+                                Directives.handleDirective({
+                                    directive: directive,
+                                    formGroup: args.formGroup,
+                                    groupSettings: (<IEditDirectiveFunctionArgs>args).groupSettings,
+                                    fieldBeingUpdated: args.targetControlName,
+                                    newValue: value,
+                                    targetControlName: targetField,
+                                    targetControlFieldSetting: <IFormItemSetting>args.targetControlFieldSetting,
+                                    conditionalDirectives: args.conditionalDirectives,
+                                    fb: args.fb
+                                });
 
 
                             });
@@ -253,7 +206,7 @@ export class Directives
         }
     }
 
-    static reloadIf(args: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs)
+    static reloadIf(args: IEditDirectiveFunctionArgs)
     {
         if (args.result)
         {
@@ -268,7 +221,7 @@ export class Directives
         }
     }
 
-    static clearIf(args: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs)
+    static clearIf(args: IEditDirectiveFunctionArgs)
     {
         if (args.result)
         {
@@ -283,7 +236,7 @@ export class Directives
         }
     }
 
-    static disableIf(args: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs)
+    static disableIf(args: IEditDirectiveFunctionArgs)
     {
         let formControl: AbstractControl = args.formGroup.get(args.targetControlName);
         if (!formControl)
@@ -295,7 +248,7 @@ export class Directives
             formControl.enable();
     }
 
-    static validateIf(args: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs, validators: string[])
+    static validateIf(args: IEditDirectiveFunctionArgs, validators: string[])
     {
         let formControl: FormControl = <FormControl>args.formGroup.get(args.targetControlName);
         if (!formControl)
@@ -307,7 +260,7 @@ export class Directives
             Directives.RemoveValidators(formControl, validators, args.targetControlFieldSetting);
     }
 
-    static hasValidator(control: FormControl, validator: string, questionSetting: IInputQuestion | IFormItemSetting): boolean
+    static hasValidator(control: FormControl, validator: string, questionSetting: IFormItemSetting): boolean
     {
         if (!(questionSetting.validationSetting && questionSetting.validationSetting.validators && questionSetting.validationSetting.validators.length))
             return false;
@@ -317,7 +270,7 @@ export class Directives
         return validators.length > 0;
     }
 
-    static hasValidators(control: FormControl, validators: string[], questionSetting: IInputQuestion | IFormItemSetting): boolean
+    static hasValidators(control: FormControl, validators: string[], questionSetting: IFormItemSetting): boolean
     {
         for (let validator of validators)
         {
@@ -328,7 +281,7 @@ export class Directives
         return true;
     }
 
-    static getValidator(control: FormControl, validator: string, questionSetting: IInputQuestion | IFormItemSetting): IValidatorDescription
+    static getValidator(control: FormControl, validator: string, questionSetting:IFormItemSetting): IValidatorDescription
     {
         if (!(questionSetting.unchangedValidationSetting && questionSetting.unchangedValidationSetting.validators && questionSetting.unchangedValidationSetting.validators.length))
             return null;
@@ -336,7 +289,7 @@ export class Directives
         return questionSetting.unchangedValidationSetting.validators.find(v => v.functionName === validator);
     }
 
-    static RemoveValidators(control: FormControl, validatorsToRemove: string[], questionSetting: IInputQuestion | IFormItemSetting)
+    static RemoveValidators(control: FormControl, validatorsToRemove: string[], questionSetting: IFormItemSetting)
     {
         if (!Directives.hasValidators(control, validatorsToRemove, questionSetting))
             return;
@@ -355,7 +308,7 @@ export class Directives
         }
     }
 
-    static AddValidators(formGroup: FormGroup, targetControlName: string, validatorsToAdd: string[], questionSetting: IInputQuestion | IFormItemSetting)
+    static AddValidators(formGroup: FormGroup, targetControlName: string, validatorsToAdd: string[], questionSetting: IFormItemSetting)
     {
         let formControl: FormControl = <FormControl>formGroup.get(targetControlName);
         if (Directives.hasValidators(formControl, validatorsToAdd, questionSetting))
@@ -379,7 +332,7 @@ export class Directives
         }
     }
 
-    static getDirectiveFunctions(directives: IDirectiveDescription[], args: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs): any[]
+    static getDirectiveFunctions(directives: IDirectiveDescription[], args: IEditDirectiveFunctionArgs): any[]
     {
         let directiveFunctions: any = [];
         directives.forEach(directive =>
@@ -390,7 +343,7 @@ export class Directives
         return directiveFunctions;
     }
 
-    static getDirectiveFunction(directiveArguments: IInputDirectiveFunctionArgs | IEditDirectiveFunctionArgs): any
+    static getDirectiveFunction(directiveArguments: IEditDirectiveFunctionArgs): any
     {
         const directive: IDirectiveDescription =  directiveArguments.directive.directiveDescription;
         let args: any[] = directive.arguments

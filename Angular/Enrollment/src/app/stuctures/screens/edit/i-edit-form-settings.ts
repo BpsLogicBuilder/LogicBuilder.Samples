@@ -1,7 +1,6 @@
 import { IRequestDetails } from "../i-request-details";
 import { IDataRequestState } from "../i-data-request-state";
 import { IFilterGroup } from "../i-filter-group";
-import { IDirective } from "../input-form/i-input-form";
 
 export interface IEditFormSettings extends IGroupSettings {
     title: string;
@@ -112,7 +111,31 @@ export enum abstractControlKind {
     groupBox = 4
 }
 
-export enum formTypeEnum {
-    inputForm = 0,
-    editForm= 1
+export interface IDomainRequest {
+    state: IDataRequestState;
+    requestDetails: IRequestDetails;
+}
+
+export interface IDirective {
+    directiveDescription: IDirectiveDescription;
+    conditionGroup: IConditionGroup;
+}
+
+export interface ICondition {
+    operator: string;
+    leftVariable: string;
+    rightVariable?: string;
+    value?: any;
+}
+
+export interface IConditionGroup {
+    logic: 'or' | 'and';
+    conditions?: ICondition[];
+    conditionGroups?: IConditionGroup[];
+}
+
+export interface IDirectiveDescription {
+    className: string;
+    functionName: string;
+    arguments?: any;
 }

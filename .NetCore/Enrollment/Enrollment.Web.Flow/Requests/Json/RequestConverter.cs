@@ -24,7 +24,6 @@ namespace Enrollment.Web.Flow.Requests.Json
                 {
                     case ViewType.Detail:
                     case ViewType.Grid:
-                    case ViewType.InputForm:
                         return GetDerivedType(string.Format("Enrollment.Web.Flow.Requests.{0}Request", Enum.GetName(typeof(ViewType), viewType)));
                     default:
                         return typeof(DefaultRequest);

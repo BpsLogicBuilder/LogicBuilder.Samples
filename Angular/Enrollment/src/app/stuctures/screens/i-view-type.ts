@@ -4,7 +4,6 @@ export enum ViewTypeEnum {
     Create,
     Detail,
     Delete,
-    InputForm,
     Html,
     FlowComplete,
     Exception
