@@ -22,7 +22,6 @@ import { GridColumnDropdownFilterComponent } from './generic/grid-column-dropdow
 import { GridColumnMultiselectFilterComponent } from './generic/grid-column-multiselect-filter/grid-column-multiselect-filter.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ScreenHostComponent } from './screen-host/screen-host.component';
-import { InputFormComponent } from './input-form/input-form.component';
 import { HtmlPageComponent } from './html-page/html-page.component';
 import { DisplayDropdownValueComponent } from './generic/display-dropdown-value/display-dropdown-value.component';
 
@@ -42,7 +41,6 @@ import { DisplayDropdownValueComponent } from './generic/display-dropdown-value/
     GridColumnMultiselectFilterComponent,
     NavBarComponent,
     ScreenHostComponent,
-    InputFormComponent,
     HtmlPageComponent,
     DisplayDropdownValueComponent
   ],

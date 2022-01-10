@@ -22,7 +22,6 @@ namespace Enrollment.Web.Flow.Dialogs
             {
                 case ViewType.Detail:
                 case ViewType.Grid:
-                case ViewType.InputForm:
                     return (BaseDialogHandler)Activator.CreateInstance
                     (
                         typeof(BaseDialogHandler).Assembly.GetType

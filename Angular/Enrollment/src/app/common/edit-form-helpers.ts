@@ -1,5 +1,5 @@
 import { ObjectHelper } from "./object-helper";
-import { abstractControlKind, IFormItemSetting, IFormGroupSettings, IGroupBoxSettings, IFormGroupArraySettings, IFormGroupData, formTypeEnum, IFormControlSettings, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
+import { abstractControlKind, IFormItemSetting, IFormGroupSettings, IGroupBoxSettings, IFormGroupArraySettings, IFormGroupData, IFormControlSettings, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
 import { FormGroup, FormArray, AbstractControl, FormBuilder, FormControl } from "@angular/forms";
 
 export class EditFormHelpers

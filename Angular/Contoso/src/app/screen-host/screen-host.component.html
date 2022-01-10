@@ -7,7 +7,6 @@
     <div [@flyIn]="'in'" *ngSwitchCase="viewType.Delete"><app-generic-delete [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-delete></div>
     <div [@flyIn]="'in'" *ngSwitchCase="viewType.Html"><app-html-page [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-html-page></div>
     <div [@flyIn]="'in'" *ngSwitchCase="viewType.About"><app-about [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-about></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.InputForm"><app-input-form [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-input-form></div>
     <div [@flyIn]="'in'" *ngSwitchCase="viewType.FlowComplete">FlowComplete</div>
     <div [@flyIn]="'in'" *ngSwitchCase="viewType.Exception">
       <div class="alert alert-danger">

@@ -6,7 +6,6 @@ export enum ViewTypeEnum {
     Delete,
     Html,
     About,
-    InputForm,
     FlowComplete,
     Exception
 }
