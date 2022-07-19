@@ -71,15 +71,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="akavache" Version="8.1.1" />
-    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="akavache" Version="9.0.1" />
+    <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="Polly" Version="7.2.2" />
+    <PackageReference Include="Polly" Version="7.2.3" />
     <PackageReference Include="System.Reactive" Version="5.0.0" />
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
-    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.0.2291" />
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2478" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    <PackageReference Include="Xamarin.Forms.Visual.Material" Version="5.0.0.2478" />
   </ItemGroup>
 
   <ItemGroup>

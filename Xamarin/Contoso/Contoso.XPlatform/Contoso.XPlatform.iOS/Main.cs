@@ -19,10 +19,10 @@ namespace Contoso.XPlatform.iOS
             try
             {
 #endif
-                UIApplication.Main(args, null, "AppDelegate");
+                UIApplication.Main(args, null, typeof(AppDelegate));
 #if DEBUG
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
                 if (System.Diagnostics.Debugger.IsAttached)
                     System.Diagnostics.Debugger.Break();

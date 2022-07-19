@@ -128,18 +128,18 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json">
-      <Version>6.0.1</Version>
+      <Version>6.0.5</Version>
     </PackageReference>
-    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2291" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
-    <PackageReference Include="System.Memory" Version="4.5.4">
+    <PackageReference Include="Xamarin.Forms" Version="5.0.0.2478" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.3" />
+    <PackageReference Include="System.Memory" Version="4.5.5">
       <IncludeAssets>none</IncludeAssets>
     </PackageReference>
     <PackageReference Include="System.Buffers" Version="4.5.1">
       <IncludeAssets>none</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms.Visual.Material">
-      <Version>5.0.0.2291</Version>
+      <Version>5.0.0.2478</Version>
     </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
