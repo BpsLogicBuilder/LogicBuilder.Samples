@@ -63,8 +63,8 @@ namespace UnitTests
             {
                 cfg.AddMaps(typeof(SchoolProfile));
             });
-            config.AssertConfigurationIsValid<SchoolProfile>();
-            config.AssertConfigurationIsValid<FilterGroupProfile>();
+            config.AssertConfigurationIsValid();
+            config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }
         #endregion Methods

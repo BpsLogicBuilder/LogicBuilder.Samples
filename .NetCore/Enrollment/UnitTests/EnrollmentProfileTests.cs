@@ -74,8 +74,8 @@ namespace UnitTests
             {
                 cfg.AddMaps(typeof(EnrollmentProfile));
             });
-            config.AssertConfigurationIsValid<EnrollmentProfile>();
-            config.AssertConfigurationIsValid<FilterGroupProfile>();
+            config.AssertConfigurationIsValid();
+            config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }
         #endregion Methods
