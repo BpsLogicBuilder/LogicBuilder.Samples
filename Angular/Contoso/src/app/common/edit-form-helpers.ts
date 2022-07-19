@@ -1,10 +1,10 @@
 import { ObjectHelper } from "./object-helper";
 import { abstractControlKind, IFormItemSetting, IFormGroupSettings, IGroupBoxSettings, IFormGroupArraySettings, IFormGroupData, IFormControlSettings, IGroupSettings } from "../stuctures/screens/edit/i-edit-form-settings";
-import { FormGroup, FormArray, AbstractControl, FormBuilder, FormControl } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormArray, AbstractControl, UntypedFormBuilder, UntypedFormControl } from "@angular/forms";
 
 export class EditFormHelpers
 {
-    static findFormGroupData(formControl: AbstractControl, formGroup: FormGroup, fieldSettings: IFormItemSetting[], formGroupData: IFormGroupData)
+    static findFormGroupData(formControl: AbstractControl, formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[], formGroupData: IFormGroupData)
     {
         for (let setting of fieldSettings)
         {
@@ -26,18 +26,18 @@ export class EditFormHelpers
                 if(formControl === formGroup.controls[setting.field])
                     return formGroupData.formGroupData[setting.field];
 
-                let data =  EditFormHelpers.findFormGroupData(formControl, <FormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).fieldSettings, formGroupData.formGroupData[setting.field]);
+                let data =  EditFormHelpers.findFormGroupData(formControl, <UntypedFormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).fieldSettings, formGroupData.formGroupData[setting.field]);
                 if (data)
                     return data;
             }
             else if (setting.abstractControlType == abstractControlKind.formGroupArray && formGroup.controls[setting.field] && formGroupData.formArrayData && formGroupData.formArrayData[setting.field])
             {
-                let formGroupArray: FormArray = <FormArray>formGroup.controls[setting.field];
+                let formGroupArray: UntypedFormArray = <UntypedFormArray>formGroup.controls[setting.field];
                 if (formGroupArray.controls && formGroupArray.controls.length)
                 {
                     for (let i in formGroupArray.controls)
                     {
-                        let fg: FormGroup = <FormGroup>formGroupArray.controls[i];
+                        let fg: UntypedFormGroup = <UntypedFormGroup>formGroupArray.controls[i];
                         let data = EditFormHelpers.findFormGroupData(formControl, fg, (<IFormGroupArraySettings>setting).fieldSettings, formGroupData.formArrayData[setting.field].formGroupDataArray[i]);
                         if (data)
                             return data;
@@ -49,7 +49,7 @@ export class EditFormHelpers
         return null;
     }
 
-    static buildFormGroupData(formGroup: FormGroup, fieldSettings: IFormItemSetting[], formGroupData: IFormGroupData)
+    static buildFormGroupData(formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[], formGroupData: IFormGroupData)
     {
         for (let setting of fieldSettings)
         {
@@ -66,18 +66,18 @@ export class EditFormHelpers
             {
                 formGroupData.formGroupData = {};
                 formGroupData.formGroupData[setting.field] = { displayMessages: {} };
-                EditFormHelpers.buildFormGroupData(<FormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).fieldSettings, formGroupData.formGroupData[setting.field]);
+                EditFormHelpers.buildFormGroupData(<UntypedFormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).fieldSettings, formGroupData.formGroupData[setting.field]);
             }
             else if (setting.abstractControlType == abstractControlKind.formGroupArray && formGroup.controls[setting.field])
             {
-                let formGroupArray: FormArray = <FormArray>formGroup.controls[setting.field];
+                let formGroupArray: UntypedFormArray = <UntypedFormArray>formGroup.controls[setting.field];
                 formGroupData.formArrayData = {};
                 formGroupData.formArrayData[setting.field] = { formGroupDataArray: [] };
                 if (formGroupArray.controls && formGroupArray.controls.length)
                 {
                     for (let i in formGroupArray.controls)
                     {
-                        let fg:FormGroup = <FormGroup>formGroupArray.controls[i];
+                        let fg:UntypedFormGroup = <UntypedFormGroup>formGroupArray.controls[i];
                         formGroupData.formArrayData[setting.field].formGroupDataArray.push({ displayMessages: {} });
                         EditFormHelpers.buildFormGroupData(fg, (<IFormGroupArraySettings>setting).fieldSettings, formGroupData.formArrayData[setting.field].formGroupDataArray[i]);
                     }
@@ -86,33 +86,33 @@ export class EditFormHelpers
         }
     }
 
-    static getFormGroupData(formGroup: FormGroup, fieldSettings: IFormItemSetting[]): IFormGroupData
+    static getFormGroupData(formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[]): IFormGroupData
     {//call this on the form array's parent formGroup every time a new control is added to a form array
         let formGroupData: IFormGroupData = { displayMessages: {}};
         EditFormHelpers.buildFormGroupData(formGroup, fieldSettings, formGroupData);
         return formGroupData;
     }
 
-    static getAbstractControl(questionSetting: IFormItemSetting, fb: FormBuilder, formGroup: FormGroup, groupSettings: IGroupSettings): AbstractControl
+    static getAbstractControl(questionSetting: IFormItemSetting, fb: UntypedFormBuilder, formGroup: UntypedFormGroup, groupSettings: IGroupSettings): AbstractControl
     {
         if (questionSetting.abstractControlType === abstractControlKind.formControl || questionSetting.abstractControlType === abstractControlKind.multiSelectFormControl)
         {
-            let formControl: FormControl;
+            let formControl: UntypedFormControl;
             if (questionSetting.validationSetting)
             {
                 if (questionSetting.validationSetting.validators)
                 {
                     let fn = ObjectHelper.getValidatorFunctions(questionSetting.validationSetting.validators);
-                    formControl =  new FormControl(questionSetting.validationSetting.defaultValue, fn);
+                    formControl =  new UntypedFormControl(questionSetting.validationSetting.defaultValue, fn);
                 }
                 else
                 {
-                    formControl = new FormControl(questionSetting.validationSetting.defaultValue);
+                    formControl = new UntypedFormControl(questionSetting.validationSetting.defaultValue);
                 }
             }
             else
             {
-                formControl =  new FormControl();
+                formControl =  new UntypedFormControl();
             }
 
             return formControl;
@@ -128,10 +128,10 @@ export class EditFormHelpers
             return fb.array([]);
         }
 
-        return new FormControl();
+        return new UntypedFormControl();
     }
 
-    static processValidationMessages(formGroup: FormGroup, fieldSettings: IFormItemSetting[], formGroupData: IFormGroupData, validationMessages: { [key: string]: { [key: string]: string } })
+    static processValidationMessages(formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[], formGroupData: IFormGroupData, validationMessages: { [key: string]: { [key: string]: string } })
     {
         for (let setting of fieldSettings)
         {
@@ -158,19 +158,19 @@ export class EditFormHelpers
             else if (setting.abstractControlType == abstractControlKind.formGroup
                 && formGroup.controls[setting.field])
             {
-                const fg: FormGroup = <FormGroup>formGroup.controls[setting.field];
+                const fg: UntypedFormGroup = <UntypedFormGroup>formGroup.controls[setting.field];
                 EditFormHelpers.processValidationMessages(fg, (<IFormGroupSettings>setting).fieldSettings, formGroupData.formGroupData[setting.field], (<IFormGroupSettings>setting).validationMessages);
             }
             else if (setting.abstractControlType == abstractControlKind.formGroupArray 
                 && formGroup.controls[setting.field])
             {
-                const formGroupArray: FormArray =  <FormArray>formGroup.controls[setting.field];
+                const formGroupArray: UntypedFormArray =  <UntypedFormArray>formGroup.controls[setting.field];
                 if (formGroupArray.controls && formGroupArray.controls.length)
                 {
                     for (let i in formGroupArray.controls) {
                         EditFormHelpers.processValidationMessages
                         (
-                            <FormGroup>formGroupArray.controls[i], 
+                            <UntypedFormGroup>formGroupArray.controls[i], 
                             (<IFormGroupArraySettings>setting).fieldSettings, 
                             formGroupData.formArrayData[setting.field].formGroupDataArray[i], 
                             (<IFormGroupArraySettings>setting).validationMessages
