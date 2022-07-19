@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EntityType } from '../stuctures/screens/i-base-model';
 import { EntityStateType } from '../stuctures/screens/entity-state-type';
-import { FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { IFormItemSetting, abstractControlKind, IGroupBoxSettings, IFormGroupSettings, IFormGroupArraySettings, IMultiSelectFormControlSettings } from '../stuctures/screens/edit/i-edit-form-settings';
 
 @Injectable({
@@ -11,7 +11,7 @@ export class ListManagerService {
 
     constructor() { }
 
-    public updateFormEntityState(entityToSave: EntityType, originalEntity: EntityType, formGroup: FormGroup, fieldSettings: IFormItemSetting[], isInsert: boolean = false): EntityType {
+    public updateFormEntityState(entityToSave: EntityType, originalEntity: EntityType, formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[], isInsert: boolean = false): EntityType {
         if (!formGroup.dirty) {
             entityToSave.entityState = EntityStateType.Unchanged;
             //The following should not be necessary because this code should not run on insert for nested form groups.
@@ -66,7 +66,7 @@ export class ListManagerService {
                             entityToSave[setting.field][i] = this.updateFormEntityState(//e.g. entityToSave[setting.field] is instructor.courses
                                 entityToSave[setting.field][i], //e.g. entityToSave[setting.field][i] is instructor.courses[i]
                                 null,
-                                <FormGroup>(<FormArray>formGroup.controls[setting.field]).at(parseInt(i)),
+                                <UntypedFormGroup>(<UntypedFormArray>formGroup.controls[setting.field]).at(parseInt(i)),
                                 (<IFormGroupArraySettings>setting).fieldSettings
                             );
                         }
@@ -99,7 +99,7 @@ export class ListManagerService {
                     entityToSave[setting.field] = this.updateFormEntityState(
                         entityToSave[setting.field],// instructor.officeAssignment officeAssignment is a child entity
                         originalEntity[setting.field], //original instructor.officeAssignment
-                        <FormGroup>formGroup.controls[setting.field], //child form group
+                        <UntypedFormGroup>formGroup.controls[setting.field], //child form group
                         (<IFormGroupSettings>setting).fieldSettings //child formGroup setting
                         //isInsert is always false at this point
                     );
@@ -120,13 +120,13 @@ export class ListManagerService {
                                 && originalEntity[setting.field].length
                                 && this.itemExists<EntityType>(entityToSave[setting.field][i], originalEntity[setting.field], (<IFormGroupArraySettings>setting).keyFields)) {
 
-                                let formArray: FormArray = <FormArray>formGroup.controls[setting.field];
+                                let formArray: UntypedFormArray = <UntypedFormArray>formGroup.controls[setting.field];
                                 //let obj2 = formGroup.controls[setting.field][i];
                                 entityToSave[setting.field][i] = Object.assign({}, originalEntity[setting.field][i], formArray.at(parseInt(i)).value);
                                 entityToSave[setting.field][i] = this.updateFormEntityState(//e.g. entityToSave[setting.field] is instructor.courses
                                     entityToSave[setting.field][i], //e.g. entityToSave[setting.field][i] is instructor.courses[i]
                                     originalEntity[setting.field][i],
-                                    <FormGroup>formArray.at(parseInt(i)),
+                                    <UntypedFormGroup>formArray.at(parseInt(i)),
                                     (<IFormGroupArraySettings>setting).fieldSettings
                                     //isInsert is always false at this point
                                 );
@@ -140,7 +140,7 @@ export class ListManagerService {
                                 entityToSave[setting.field][i] = this.updateFormEntityState(//e.g. entityToSave[setting.field] is instructor.courses
                                     entityToSave[setting.field][i], //e.g. entityToSave[setting.field][i] is instructor.courses[i]
                                     null,
-                                    <FormGroup>(<FormArray>formGroup.controls[setting.field]).at(parseInt(i)),
+                                    <UntypedFormGroup>(<UntypedFormArray>formGroup.controls[setting.field]).at(parseInt(i)),
                                     (<IFormGroupArraySettings>setting).fieldSettings
                                 );
                             }

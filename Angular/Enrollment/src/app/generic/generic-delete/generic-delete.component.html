@@ -44,10 +44,10 @@
   </div>
   <div class="card-footer">
     <ng-container *ngFor="let button of commandButtons">
-      <button *ngIf="button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="navigateNext(button)">
+      <button *ngIf="button.cancel" class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
         <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
       </button>
-      <button *ngIf="!button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="submitClick(button)">
+      <button *ngIf="!button.cancel" class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="submitClick(button)">
         <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
       </button>
     </ng-container>

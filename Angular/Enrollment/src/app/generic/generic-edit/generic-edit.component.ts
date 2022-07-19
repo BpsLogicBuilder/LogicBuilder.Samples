@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, TemplateRef, Input } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormArray } from '@angular/forms';
 import { GenericService } from '../../http/generic.service';
 import { DateService } from '../../common/date.service';
 import { UiNotificationService } from '../../common/ui-notification.service';
@@ -35,7 +35,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
   @Input() settings: IEditFormSettings;
   @Input() public commandButtons: ICommandButton[];
 
-  constructor(private fb: FormBuilder,
+  constructor(private fb: UntypedFormBuilder,
     private _genericService: GenericService,
     private _dateService: DateService,
     private _uiNotificationService: UiNotificationService,
@@ -44,7 +44,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
   public controlType = abstractControlKind;
   public entity: EntityType;
   public errorMessage: string;
-  public itemForm: FormGroup;
+  public itemForm: UntypedFormGroup;
   public formSettings: IEditFormSettings;
 
   private formGroupData?: IFormGroupData;
@@ -62,7 +62,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
             : String(index);
   }
 
-  public getFieldContext(fieldSetting: IFormControlSettings, formGroup: FormGroup, index: string)
+  public getFieldContext(fieldSetting: IFormControlSettings, formGroup: UntypedFormGroup, index: string)
   {
     let fGroupData = EditFormHelpers.findFormGroupData(formGroup.controls[fieldSetting.field], this.itemForm, this.formSettings.fieldSettings, this.formGroupData) || { displayMessages: {}};
     return {
@@ -73,7 +73,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
-  public getFormGroupContext(fieldSetting: IFormItemSetting, formGroup: FormGroup, index: string)
+  public getFormGroupContext(fieldSetting: IFormItemSetting, formGroup: UntypedFormGroup, index: string)
   {
     return {
       formGroup: formGroup.controls[fieldSetting.field],
@@ -82,7 +82,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
-  public getGroupBoxContext(fieldSetting: IFormItemSetting, formGroup: FormGroup, index: string)
+  public getGroupBoxContext(fieldSetting: IFormItemSetting, formGroup: UntypedFormGroup, index: string)
   {
     return {
       formGroup: formGroup,
@@ -91,7 +91,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
-  public getFormArrayContext(fieldSetting: IFormGroupSettings, formGroup: FormGroup, index: string)
+  public getFormArrayContext(fieldSetting: IFormGroupSettings, formGroup: UntypedFormGroup, index: string)
   {
     return {
       formGroup: formGroup,
@@ -102,7 +102,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
-  public getDropDownFieldContext(fieldSetting: IFormControlSettings, formGroup: FormGroup, index: string)
+  public getDropDownFieldContext(fieldSetting: IFormControlSettings, formGroup: UntypedFormGroup, index: string)
   {
     let fGroupData = EditFormHelpers.findFormGroupData(formGroup.controls[fieldSetting.field], this.itemForm, this.formSettings.fieldSettings, this.formGroupData) || { displayMessages: {}};
 
@@ -117,7 +117,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
-  public getMultiSelectFieldContext(fieldSetting: IFormControlSettings, formGroup: FormGroup, index: string)
+  public getMultiSelectFieldContext(fieldSetting: IFormControlSettings, formGroup: UntypedFormGroup, index: string)
   {
     let fGroupData = EditFormHelpers.findFormGroupData(formGroup.controls[fieldSetting.field], this.itemForm, this.formSettings.fieldSettings, this.formGroupData) || { displayMessages: {}};
     return {
@@ -131,15 +131,15 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     }
   }
 
-  public addFormArrayItem(formArray: FormArray, arraySettings: IFormGroupArraySettings): void {
-    let formGroup: FormGroup = ObjectHelper.buildFormGroup(arraySettings.fieldSettings, this.fb);
+  public addFormArrayItem(formArray: UntypedFormArray, arraySettings: IFormGroupArraySettings): void {
+    let formGroup: UntypedFormGroup = ObjectHelper.buildFormGroup(arraySettings.fieldSettings, this.fb);
     formArray.push(formGroup);
 
     Directives.watchFields(arraySettings, formGroup, arraySettings.conditionalDirectives, this.fb);
     formGroup.patchValue(ObjectHelper.getPatchObject(formGroup, arraySettings.fieldSettings, null, this._dateService, this.fb));
   }
 
-  public deleteFormArrayItem(formArray: FormArray, index: number): void {
+  public deleteFormArrayItem(formArray: UntypedFormArray, index: number): void {
     formArray.removeAt(index);
     formArray.markAsDirty();
   }
