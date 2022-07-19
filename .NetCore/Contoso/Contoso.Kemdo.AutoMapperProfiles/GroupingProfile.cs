@@ -13,27 +13,33 @@ namespace Contoso.Kemdo.AutoMapperProfiles
         {
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<StudentModel>>()
                 .ConstructUsing(Helpers.Converter<StudentModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<CourseModel>>()
                 .ConstructUsing(Helpers.Converter<CourseModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<DepartmentModel>>()
                 .ConstructUsing(Helpers.Converter<DepartmentModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<InstructorModel>>()
                 .ConstructUsing(Helpers.Converter<InstructorModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<CourseAssignmentModel>>()
                 .ConstructUsing(Helpers.Converter<CourseAssignmentModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<EnrollmentModel>>()
                 .ConstructUsing(Helpers.Converter<EnrollmentModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
         }
     }
 

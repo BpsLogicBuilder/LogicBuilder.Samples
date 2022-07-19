@@ -13,15 +13,18 @@ namespace Enrollment.Kemdo.AutoMapperProfiles
         {
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<ResidencyModel>>()
                 .ConstructUsing(Helpers.Converter<ResidencyModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<LookUpsModel>>()
                 .ConstructUsing(Helpers.Converter<LookUpsModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
 
             CreateMap<AggregateFunctionsGroup, AggregateFunctionsGroupModel<UserModel>>()
                 .ConstructUsing(Helpers.Converter<UserModel>)
-                .ForMember(d => d.Items, opt => opt.Ignore());
+                .ForMember(d => d.Items, opt => opt.Ignore())
+                .ForMember(d => d.Subgroups, opt => opt.Ignore());
         }
     }
 
