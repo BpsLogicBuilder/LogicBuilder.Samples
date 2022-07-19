@@ -1,5 +1,5 @@
 import { ObjectHelper } from "./object-helper";
-import { AbstractControl, FormControl, FormGroup, FormBuilder, FormArray } from "@angular/forms";
+import { AbstractControl, UntypedFormControl, UntypedFormGroup, UntypedFormBuilder, UntypedFormArray } from "@angular/forms";
 import { IFormItemSetting, IValidatorDescription, IGroupBoxSettings, IFormGroupSettings, IFormGroupArraySettings, abstractControlKind, IFormGroupData, IGroupSettings, IDirectiveDescription, IDirective } from "../stuctures/screens/edit/i-edit-form-settings";
 import { EditFormHelpers } from "./edit-form-helpers";
 import { IHandleEditDirectiveArgs, IEditDirectiveFunctionArgs } from "../stuctures/screens/i-directive-function-args";
@@ -21,7 +21,7 @@ export class DirectivesManager
 
 export class Directives
 {
-    static watchFields(groupSettings: IGroupSettings, formGroup: FormGroup, conditionalDirectives: { [key: string]: IDirective[] }, formBuilder: FormBuilder)
+    static watchFields(groupSettings: IGroupSettings, formGroup: UntypedFormGroup, conditionalDirectives: { [key: string]: IDirective[] }, formBuilder: UntypedFormBuilder)
     {
         if (!conditionalDirectives)
             return;
@@ -90,15 +90,15 @@ export class Directives
             }
             else if (setting.abstractControlType == abstractControlKind.formGroup && formGroup.controls[setting.field])
             {
-              Directives.watchFields((<IFormGroupSettings>setting), <FormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).conditionalDirectives, formBuilder);
+              Directives.watchFields((<IFormGroupSettings>setting), <UntypedFormGroup>formGroup.controls[setting.field], (<IFormGroupSettings>setting).conditionalDirectives, formBuilder);
             }
             else if (setting.abstractControlType == abstractControlKind.formGroupArray && formGroup.controls[setting.field])
             {
-                const formGroupArray: FormArray =  <FormArray>formGroup.controls[setting.field];
+                const formGroupArray: UntypedFormArray =  <UntypedFormArray>formGroup.controls[setting.field];
                 if (formGroupArray.controls && formGroupArray.controls.length)
                 {
                     formGroupArray.controls.forEach(control => {
-                        let fg: FormGroup = <FormGroup>control;
+                        let fg: UntypedFormGroup = <UntypedFormGroup>control;
 
                         Directives.watchFields((<IFormGroupArraySettings>setting), fg, (<IFormGroupArraySettings>setting).conditionalDirectives, formBuilder);
                     });
@@ -250,7 +250,7 @@ export class Directives
 
     static validateIf(args: IEditDirectiveFunctionArgs, validators: string[])
     {
-        let formControl: FormControl = <FormControl>args.formGroup.get(args.targetControlName);
+        let formControl: UntypedFormControl = <UntypedFormControl>args.formGroup.get(args.targetControlName);
         if (!formControl)
             return;//should never happen
 
@@ -260,7 +260,7 @@ export class Directives
             Directives.RemoveValidators(formControl, validators, args.targetControlFieldSetting);
     }
 
-    static hasValidator(control: FormControl, validator: string, questionSetting: IFormItemSetting): boolean
+    static hasValidator(control: UntypedFormControl, validator: string, questionSetting: IFormItemSetting): boolean
     {
         if (!(questionSetting.validationSetting && questionSetting.validationSetting.validators && questionSetting.validationSetting.validators.length))
             return false;
@@ -270,7 +270,7 @@ export class Directives
         return validators.length > 0;
     }
 
-    static hasValidators(control: FormControl, validators: string[], questionSetting: IFormItemSetting): boolean
+    static hasValidators(control: UntypedFormControl, validators: string[], questionSetting: IFormItemSetting): boolean
     {
         for (let validator of validators)
         {
@@ -281,7 +281,7 @@ export class Directives
         return true;
     }
 
-    static getValidator(control: FormControl, validator: string, questionSetting:IFormItemSetting): IValidatorDescription
+    static getValidator(control: UntypedFormControl, validator: string, questionSetting:IFormItemSetting): IValidatorDescription
     {
         if (!(questionSetting.unchangedValidationSetting && questionSetting.unchangedValidationSetting.validators && questionSetting.unchangedValidationSetting.validators.length))
             return null;
@@ -289,7 +289,7 @@ export class Directives
         return questionSetting.unchangedValidationSetting.validators.find(v => v.functionName === validator);
     }
 
-    static RemoveValidators(control: FormControl, validatorsToRemove: string[], questionSetting: IFormItemSetting)
+    static RemoveValidators(control: UntypedFormControl, validatorsToRemove: string[], questionSetting: IFormItemSetting)
     {
         if (!Directives.hasValidators(control, validatorsToRemove, questionSetting))
             return;
@@ -308,9 +308,9 @@ export class Directives
         }
     }
 
-    static AddValidators(formGroup: FormGroup, targetControlName: string, validatorsToAdd: string[], questionSetting: IFormItemSetting)
+    static AddValidators(formGroup: UntypedFormGroup, targetControlName: string, validatorsToAdd: string[], questionSetting: IFormItemSetting)
     {
-        let formControl: FormControl = <FormControl>formGroup.get(targetControlName);
+        let formControl: UntypedFormControl = <UntypedFormControl>formGroup.get(targetControlName);
         if (Directives.hasValidators(formControl, validatorsToAdd, questionSetting))
             return;
 

@@ -1,9 +1,9 @@
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { IEditFormSettings, IFormItemSetting, IFormGroupData, IFormGroupSettings, IGroupSettings, IDirective } from "./edit/i-edit-form-settings";
 
 export interface IEditDirectiveFunctionArgs {
     directive: IDirective;
-    formGroup: FormGroup; 
+    formGroup: UntypedFormGroup; 
     groupSettings: IGroupSettings;
     fieldBeingUpdated: string; 
     newValue: any;
@@ -11,17 +11,17 @@ export interface IEditDirectiveFunctionArgs {
     targetControlFieldSetting: IFormItemSetting;
     result: boolean;
     conditionalDirectives: { [key: string]: IDirective[] };
-    fb: FormBuilder;
+    fb: UntypedFormBuilder;
 }
 
 export interface IHandleEditDirectiveArgs {
     directive: IDirective;
-    formGroup: FormGroup; 
+    formGroup: UntypedFormGroup; 
     groupSettings: IGroupSettings;
     fieldBeingUpdated: string; 
     newValue: any;
     targetControlName: string; 
     targetControlFieldSetting: IFormItemSetting;
     conditionalDirectives: { [key: string]: IDirective[] };
-    fb: FormBuilder;
+    fb: UntypedFormBuilder;
 }

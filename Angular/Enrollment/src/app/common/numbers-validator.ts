@@ -1,4 +1,4 @@
-import { ValidatorFn, AbstractControl, FormGroup } from "@angular/forms";
+import { ValidatorFn, AbstractControl, UntypedFormGroup } from "@angular/forms";
 
 export class NumberValidators
 {
@@ -30,7 +30,7 @@ export class CustomValidators
     {
         return (c: AbstractControl): { [key: string]: boolean } | null =>
         {
-            const formGroup: FormGroup = <FormGroup>c.parent;
+            const formGroup: UntypedFormGroup = <UntypedFormGroup>c.parent;
             const otherControl = formGroup.get(otherField);
 
             if (!otherControl.value)

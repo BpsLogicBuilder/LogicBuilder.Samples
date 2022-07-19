@@ -1,15 +1,15 @@
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 
 export class GenericValidator {
     constructor(private validationMessages: { [key: string]: { [key: string]: string } }) {}
 
-    processMessages(container: FormGroup): { [key: string]: string } {
+    processMessages(container: UntypedFormGroup): { [key: string]: string } {
         let messages = {};
         for (let controlKey in container.controls) {
             if (container.controls.hasOwnProperty(controlKey)) {
                 let c = container.controls[controlKey];
                 // If it is a FormGroup, process its child controls.
-                if (c instanceof FormGroup) {
+                if (c instanceof UntypedFormGroup) {
                     let childMessages = this.processMessages(c);
                     Object.assign(messages, childMessages);
                 } else {
@@ -30,13 +30,13 @@ export class GenericValidator {
         return messages;
     }
 
-    processMessages2(container: FormGroup, parentKey: string): { [key: string]: string } {
+    processMessages2(container: UntypedFormGroup, parentKey: string): { [key: string]: string } {
         let messages = {};
         for (let controlKey in container.controls) {
             if (container.controls.hasOwnProperty(controlKey)) {
                 let c = container.controls[controlKey];
                 // If it is a FormGroup, process its child controls.
-                if (c instanceof FormGroup) {
+                if (c instanceof UntypedFormGroup) {
                     let childMessages = this.processMessages2(c, controlKey);
                     Object.assign(messages, childMessages);
                 } else {
@@ -58,7 +58,7 @@ export class GenericValidator {
         return messages;
     }
 
-    getErrorCount(container: FormGroup): number {
+    getErrorCount(container: UntypedFormGroup): number {
         let errorCount = 0;
         for (let controlKey in container.controls) {
             if (container.controls.hasOwnProperty(controlKey)) {

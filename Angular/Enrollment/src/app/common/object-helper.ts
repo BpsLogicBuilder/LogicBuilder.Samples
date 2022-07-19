@@ -5,7 +5,7 @@ import { IFilterDefinition } from "../stuctures/screens/i-filter-definition";
 import { IFormItemSetting, abstractControlKind, IFormGroupSettings, IGroupBoxSettings, IValidatorDescription, IFormGroupArraySettings, IFormControlSettings, IFormGroupData, IConditionGroup } from "../stuctures/screens/edit/i-edit-form-settings";
 import { EntityType } from "../stuctures/screens/i-base-model";
 import { DateService } from "./date.service";
-import { FormBuilder, FormGroup, FormControl, FormArray, AbstractControl } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl, UntypedFormArray, AbstractControl } from "@angular/forms";
 import { ValidatorsManager } from "./validators-manager";
 import { ListManagerService } from "./list-manager.service";
 import { ISort } from "../stuctures/screens/i-sort";
@@ -150,7 +150,7 @@ export class ObjectHelper {
         return args;
     }
 
-    static updatePatchObject(patchObject: any, formGroup: FormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: FormBuilder)
+    static updatePatchObject(patchObject: any, formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: UntypedFormBuilder)
     {
         fieldSettings.forEach(field =>
         {
@@ -177,7 +177,7 @@ export class ObjectHelper {
             }
             else if (item && field.abstractControlType === abstractControlKind.formGroup && formGroup.controls[field.field])
             {
-                patchObject[field.field] = this.getPatchObject(<FormGroup>formGroup.controls[field.field], (<IFormGroupSettings>field).fieldSettings, item[field.field], dateService, fb);
+                patchObject[field.field] = this.getPatchObject(<UntypedFormGroup>formGroup.controls[field.field], (<IFormGroupSettings>field).fieldSettings, item[field.field], dateService, fb);
             }
             else if (item && field.abstractControlType === abstractControlKind.formGroupArray)
             {
@@ -186,8 +186,8 @@ export class ObjectHelper {
                     patchObject[field.field] = [];
                     item[field.field].forEach(element =>
                     {
-                        let formArray: FormArray = <FormArray>formGroup.controls[field.field];
-                        let fg: FormGroup = ObjectHelper.buildFormGroup((<IFormGroupArraySettings>field).fieldSettings, fb);
+                        let formArray: UntypedFormArray = <UntypedFormArray>formGroup.controls[field.field];
+                        let fg: UntypedFormGroup = ObjectHelper.buildFormGroup((<IFormGroupArraySettings>field).fieldSettings, fb);
 
                         formArray.push(fg);
                         patchObject[field.field].push(this.getPatchObject(fg, (<IFormGroupArraySettings>field).fieldSettings, element, dateService, fb));
@@ -205,7 +205,7 @@ export class ObjectHelper {
         });
     }
 
-    static getPatchObject(formGroup: FormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: FormBuilder): any
+    static getPatchObject(formGroup: UntypedFormGroup, fieldSettings: IFormItemSetting[], item: EntityType, dateService: DateService, fb: UntypedFormBuilder): any
     {
         let patchObject = Object.assign({}, item || {});
         ObjectHelper.updatePatchObject(patchObject, formGroup, fieldSettings, item, dateService, fb);
@@ -213,7 +213,7 @@ export class ObjectHelper {
         return patchObject;
     }
 
-    static updateControlsObject(fieldSettings: IFormItemSetting[], fb: FormBuilder, controlsObject: any)
+    static updateControlsObject(fieldSettings: IFormItemSetting[], fb: UntypedFormBuilder, controlsObject: any)
     {
         fieldSettings.forEach(field => {
             if (field.abstractControlType === abstractControlKind.formControl || field.abstractControlType === abstractControlKind.multiSelectFormControl) {
@@ -236,18 +236,18 @@ export class ObjectHelper {
         });
     }
 
-    static buildFormGroup(fieldSettings: IFormItemSetting[], fb: FormBuilder): FormGroup {
+    static buildFormGroup(fieldSettings: IFormItemSetting[], fb: UntypedFormBuilder): UntypedFormGroup {
         let controlsObject = {};
         ObjectHelper.updateControlsObject(fieldSettings, fb, controlsObject);
 
-        let formGroup: FormGroup = fb.group(controlsObject);
+        let formGroup: UntypedFormGroup = fb.group(controlsObject);
         //create formGroup without validation first so that the formGroup is available when creating validation functions
         //necessary for compare validators
         ObjectHelper.setEditFormValidators(fieldSettings, formGroup);
         return formGroup;
     }
 
-    static setEditFormValidators(fieldSettings: IFormItemSetting[], formGroup: FormGroup)
+    static setEditFormValidators(fieldSettings: IFormItemSetting[], formGroup: UntypedFormGroup)
     {
         fieldSettings.forEach(field =>
         {
@@ -257,7 +257,7 @@ export class ObjectHelper {
                 {
                     if (field.unchangedValidationSetting.validators)
                     {
-                        let formControl: FormControl = <FormControl>formGroup.get(field.field);
+                        let formControl: UntypedFormControl = <UntypedFormControl>formGroup.get(field.field);
                         formControl.clearValidators();
                         formControl.setValidators(ObjectHelper.getValidatorFunctions(field.unchangedValidationSetting.validators));
                         formControl.updateValueAndValidity();
@@ -270,15 +270,15 @@ export class ObjectHelper {
             }
             else if (field.abstractControlType === abstractControlKind.formGroup)
             {
-                ObjectHelper.setEditFormValidators((<IFormGroupSettings>field).fieldSettings, <FormGroup>formGroup.get(field.field));
+                ObjectHelper.setEditFormValidators((<IFormGroupSettings>field).fieldSettings, <UntypedFormGroup>formGroup.get(field.field));
             }
             else if (field.abstractControlType === abstractControlKind.formGroupArray)
             {
-                let formArray: FormArray = <FormArray>formGroup.get(field.field);
+                let formArray: UntypedFormArray = <UntypedFormArray>formGroup.get(field.field);
                 formArray.controls.forEach(control => {
                     if (field.abstractControlType === abstractControlKind.formGroup)
                     {//Only Supporting formGroups as elements of FormArray
-                        ObjectHelper.setEditFormValidators((<IFormGroupArraySettings>field).fieldSettings, <FormGroup>control);
+                        ObjectHelper.setEditFormValidators((<IFormGroupArraySettings>field).fieldSettings, <UntypedFormGroup>control);
                     }
                 })
             }
