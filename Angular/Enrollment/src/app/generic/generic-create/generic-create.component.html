@@ -6,7 +6,7 @@
     <div class="card-body">
       <fieldset *ngIf="formSettings?.fieldSettings?.length">
         <ng-container *ngFor="let setting of formSettings.fieldSettings">
-          <div class="form-group row" *ngIf="itemForm.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
+          <div class="mb-3 row" *ngIf="itemForm.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
             <ng-container *ngIf="setting.textTemplate">
               <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, itemForm)">
               </ng-container>
@@ -43,10 +43,10 @@
     </div>
     <div class="card-footer">
       <ng-container *ngFor="let button of commandButtons">
-        <button *ngIf="button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="navigateNext(button)">
+        <button *ngIf="button.cancel" class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
           <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
         </button>
-        <button *ngIf="!button.cancel" class="btn {{button.classString}} ml-2 px-4 float-right" type="button" (click)="submitClick(button)"
+        <button *ngIf="!button.cancel" class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="submitClick(button)"
           [disabled]='!(this.itemForm.dirty && this.itemForm.valid)'>
           <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
         </button>
@@ -74,7 +74,7 @@
     <div [formGroup]="formGroup">
       <ng-container *ngIf="fieldSetting?.fieldSettings?.length">
         <ng-container *ngFor="let setting of fieldSetting.fieldSettings">
-          <div class="form-group row" *ngIf="formGroup.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
+          <div class="mb-3 row" *ngIf="formGroup.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
             <ng-container *ngIf="setting.textTemplate">
               <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroup, strIndex)">
               </ng-container>
@@ -142,7 +142,7 @@
             <div [formGroup]="formGroupItem">
               <ng-container *ngIf="fieldSetting?.fieldSettings?.length">
                 <ng-container *ngFor="let setting of fieldSetting.fieldSettings;">
-                  <div class="form-group row" *ngIf="formGroupItem.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
+                  <div class="mb-3 row" *ngIf="formGroupItem.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
                     <ng-container *ngIf="setting.textTemplate">
                       <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
                       </ng-container>
@@ -234,7 +234,7 @@
   #dateTemplate>
   <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
   <div class="col-md-8">
-    <kendo-datepicker class="form-control nopadding fillparent" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
+    <kendo-datepicker class="form-control" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
       [formControl]="formGroup.controls[fieldSetting.field]"></kendo-datepicker>
     <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
       {{groupData.displayMessages[fieldSetting.field]}}
