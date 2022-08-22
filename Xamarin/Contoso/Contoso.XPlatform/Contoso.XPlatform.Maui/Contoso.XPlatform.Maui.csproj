@@ -1,0 +1,107 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+		<TargetFrameworks>net6.0</TargetFrameworks>
+		<RootNamespace>Contoso.XPlatform</RootNamespace>
+		<UseMaui>True</UseMaui>
+		<OutputType>Library</OutputType>
+		<ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-ios'">15.4</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">31.0</SupportedOSPlatformVersion>
+		<Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Rulesets\about.module" />
+    <None Remove="Rulesets\about.resources" />
+    <None Remove="Rulesets\about_nav.module" />
+    <None Remove="Rulesets\about_nav.resources" />
+    <None Remove="Rulesets\courses.module" />
+    <None Remove="Rulesets\courses.resources" />
+    <None Remove="Rulesets\departments.module" />
+    <None Remove="Rulesets\departments.resources" />
+    <None Remove="Rulesets\home.module" />
+    <None Remove="Rulesets\home.resources" />
+    <None Remove="Rulesets\home_nav.module" />
+    <None Remove="Rulesets\home_nav.resources" />
+    <None Remove="Rulesets\instructors.module" />
+    <None Remove="Rulesets\instructors.resources" />
+    <None Remove="Rulesets\nav_courses.module" />
+    <None Remove="Rulesets\nav_courses.resources" />
+    <None Remove="Rulesets\nav_departments.module" />
+    <None Remove="Rulesets\nav_departments.resources" />
+    <None Remove="Rulesets\nav_instructors.module" />
+    <None Remove="Rulesets\nav_instructors.resources" />
+    <None Remove="Rulesets\nav_students.module" />
+    <None Remove="Rulesets\nav_students.resources" />
+    <None Remove="Rulesets\students.module" />
+    <None Remove="Rulesets\students.resources" />
+    <None Remove="Rulesets\VariablesMetadata.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Rulesets\about.module" />
+    <EmbeddedResource Include="Rulesets\about.resources" />
+    <EmbeddedResource Include="Rulesets\about_nav.module" />
+    <EmbeddedResource Include="Rulesets\about_nav.resources" />
+    <EmbeddedResource Include="Rulesets\courses.module" />
+    <EmbeddedResource Include="Rulesets\courses.resources" />
+    <EmbeddedResource Include="Rulesets\departments.module" />
+    <EmbeddedResource Include="Rulesets\departments.resources" />
+    <EmbeddedResource Include="Rulesets\home.module" />
+    <EmbeddedResource Include="Rulesets\home.resources" />
+    <EmbeddedResource Include="Rulesets\home_nav.module" />
+    <EmbeddedResource Include="Rulesets\home_nav.resources" />
+    <EmbeddedResource Include="Rulesets\instructors.module" />
+    <EmbeddedResource Include="Rulesets\instructors.resources" />
+    <EmbeddedResource Include="Rulesets\nav_courses.module" />
+    <EmbeddedResource Include="Rulesets\nav_courses.resources" />
+    <EmbeddedResource Include="Rulesets\nav_departments.module" />
+    <EmbeddedResource Include="Rulesets\nav_departments.resources" />
+    <EmbeddedResource Include="Rulesets\nav_instructors.module" />
+    <EmbeddedResource Include="Rulesets\nav_instructors.resources" />
+    <EmbeddedResource Include="Rulesets\nav_students.module" />
+    <EmbeddedResource Include="Rulesets\nav_students.resources" />
+    <EmbeddedResource Include="Rulesets\students.module" />
+    <EmbeddedResource Include="Rulesets\students.resources" />
+    <EmbeddedResource Include="Rulesets\VariablesMetadata.xml" />
+  </ItemGroup>
+	
+<ItemGroup>
+		<PackageReference Include="akavache" Version="9.0.1" />
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="System.Reactive" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Contoso.AutoMapperProfiles\Contoso.AutoMapperProfiles.csproj" />
+		<ProjectReference Include="..\..\Contoso.Bsl.Business\Contoso.Bsl.Business.csproj" />
+		<ProjectReference Include="..\..\Contoso.XPlatform.AutoMapperProfiles\Contoso.XPlatform.AutoMapperProfiles.csproj" />
+		<ProjectReference Include="..\..\Contoso.XPlatform.Flow\Contoso.XPlatform.Flow.csproj" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <MauiXaml Update="App.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Themes\DarkTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Themes\LightTheme.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\BusyIndicator.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\MainPageView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	</ItemGroup>
+
+</Project>
