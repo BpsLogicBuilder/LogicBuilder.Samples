@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
+using Contoso.XPlatform.Flow.Settings.Screen;
 
 namespace Contoso.XPlatform
 {
@@ -90,11 +91,55 @@ namespace Contoso.XPlatform
                     )
                 )
                 .AddTransient<MainPageViewModel, MainPageViewModel>()
-                .AddTransient<EditFormViewModel, EditFormViewModel>()
-                .AddTransient<DetailFormViewModel, DetailFormViewModel>()
-                .AddTransient<SearchPageViewModel, SearchPageViewModel>()
-                .AddTransient<ListPageViewModel, ListPageViewModel>()
-                .AddTransient<TextPageViewModel, TextPageViewModel>()
+                .AddTransient<Func<ScreenSettingsBase, EditFormViewModel>>
+                (
+                    provider =>
+                    screenSettings => ActivatorUtilities.CreateInstance<EditFormViewModel>
+                    (
+                        provider,
+                        provider.GetRequiredService<IContextProvider>(),
+                        screenSettings
+                    )
+                )
+                .AddTransient<Func<ScreenSettingsBase, DetailFormViewModel>>
+                (
+                    provider =>
+                    screenSettings => ActivatorUtilities.CreateInstance<DetailFormViewModel>
+                    (
+                        provider,
+                        provider.GetRequiredService<IContextProvider>(),
+                        screenSettings
+                    )
+                )
+                .AddTransient<Func<ScreenSettingsBase, SearchPageViewModel>>
+                (
+                    provider =>
+                    screenSettings => ActivatorUtilities.CreateInstance<SearchPageViewModel>
+                    (
+                        provider,
+                        provider.GetRequiredService<IContextProvider>(),
+                        screenSettings
+                    )
+                )
+                .AddTransient<Func<ScreenSettingsBase, ListPageViewModel>>
+                (
+                    provider =>
+                    screenSettings => ActivatorUtilities.CreateInstance<ListPageViewModel>
+                    (
+                        provider,
+                        provider.GetRequiredService<IContextProvider>(),
+                        screenSettings
+                    )
+                )
+                .AddTransient<Func<ScreenSettingsBase, TextPageViewModel>>
+                (
+                    provider =>
+                    screenSettings => ActivatorUtilities.CreateInstance<TextPageViewModel>
+                    (
+                        provider,
+                        screenSettings
+                    )
+                )
                 .AddTransient<ExtendedSplashViewModel, ExtendedSplashViewModel>();
         }
     }

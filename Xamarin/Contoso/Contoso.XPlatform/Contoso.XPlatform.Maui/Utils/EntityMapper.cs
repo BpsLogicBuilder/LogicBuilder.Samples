@@ -10,7 +10,7 @@ namespace Contoso.XPlatform.Utils
 {
     public static class EntityMapper
     {
-        public static Dictionary<string, object?> EntityToObjectDictionary(this object entity, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
+        public static Dictionary<string, object?> EntityToObjectDictionary(this object? entity, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
             => mapper.Map<Dictionary<string, object?>>(entity).ToObjectDictionaryFromEntity(mapper, fieldSettings);
 
         public static Dictionary<string, object?> ValidatableListToObjectDictionary(this IEnumerable<IValidatable> properties, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
