@@ -77,18 +77,20 @@ namespace Contoso.XPlatform.Utils
                 if ((childForm.FormGroupTemplate?.TemplateName) != FromGroupTemplateNames.InlineFormGroupTemplate)
                     return;
 
-                var helper = (BaseConditionalDirectiveHelper<TConditionBase, TModel>)(Activator.CreateInstance
-                (
-                    this.GetType(),
-                    new object[]
-                    {
-                        childForm,
-                        properties,
-                        mapper,
-                        conditions,
-                        GetFieldName(childForm.Field)
-                    }
-                ) ?? throw new ArgumentException($"{childForm.Field}: {{C6549FB5-239A-429F-9B73-80959F159EF8}}"));
+                var helper = (BaseConditionalDirectiveHelper<TConditionBase, TModel>)(
+                    Activator.CreateInstance
+                    (
+                        this.GetType(),
+                        new object[]
+                        {
+                            childForm,
+                            properties,
+                            mapper,
+                            conditions,
+                            GetFieldName(childForm.Field)
+                        }
+                    ) ?? throw new ArgumentException($"{childForm.Field}: {{5340A6E4-45B0-4B75-982E-DE531260EE27}}")
+                );
 
                 conditions = helper.GetConditions();
             }

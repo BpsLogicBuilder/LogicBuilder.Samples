@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Maui.Controls;
+using System;
 using System.Globalization;
-using System.Text;
-using Microsoft.Maui.Controls;
 
 namespace Contoso.XPlatform.Converters
 {

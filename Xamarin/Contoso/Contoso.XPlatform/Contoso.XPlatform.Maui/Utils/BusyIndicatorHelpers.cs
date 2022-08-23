@@ -12,7 +12,7 @@ namespace Contoso.XPlatform.Utils
         {
             Task delay;
             Task<TResult> getResponse;
-            TResult response = null!;
+            TResult? response = null;
 
             List<Task> tasks = new List<Task>
             {
@@ -35,7 +35,7 @@ namespace Contoso.XPlatform.Utils
 
             RemoveBusyIndaicator();
 
-            return response!;
+            return response ?? throw new ArgumentException($"{nameof(response)}: {{189D9682-88D9-440C-BEEB-7B77E345FCA3}}");
 
             void ShowBusyIndaicator()
             {

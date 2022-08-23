@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Services
 
         private void UpdateReadOnlys(IEnumerable<IReadOnly> properties, Type modelType, object entity, List<ItemBindingDescriptor> itemBindings)
         {
-            IDictionary<string, object> existingValues = mapper.Map<Dictionary<string, object>>(entity) ?? new Dictionary<string, object>();
+            IDictionary<string, object?> existingValues = mapper.Map<Dictionary<string, object?>>(entity) ?? new Dictionary<string, object?>();
             IDictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
 
             foreach (var binding in itemBindings)

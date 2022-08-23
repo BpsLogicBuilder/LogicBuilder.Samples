@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Services
 
         private void UpdateReadOnlys(IEnumerable<IReadOnly> properties, object? source, List<FormItemSettingsDescriptor> fieldSettings, string? parentField = null)
         {
-            IDictionary<string, object> existingValues = mapper.Map<Dictionary<string, object>>(source) ?? new Dictionary<string, object>();
+            IDictionary<string, object?> existingValues = mapper.Map<Dictionary<string, object?>>(source) ?? new Dictionary<string, object?>();
             IDictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
             foreach (var setting in fieldSettings)
             {

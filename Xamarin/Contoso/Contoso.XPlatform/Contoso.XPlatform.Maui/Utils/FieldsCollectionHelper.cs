@@ -398,7 +398,7 @@ namespace Contoso.XPlatform.Utils
                         setting,
                         GetValidationRules(setting),
                         this.contextProvider
-                    ) ?? throw new ArgumentException($"{setting.MultiSelectTemplate.ModelType}: {{C6549FB5-239A-429F-9B73-80959F159EF8}}"),
+                    ) ?? throw new ArgumentException($"{setting.MultiSelectTemplate.ModelType}: {{E7665215-519B-434B-8CCD-A2C2D781918C}}"),
                     setting
                 );
         }

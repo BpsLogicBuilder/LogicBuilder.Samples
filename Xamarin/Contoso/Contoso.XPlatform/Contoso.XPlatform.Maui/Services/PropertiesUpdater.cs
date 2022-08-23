@@ -24,7 +24,7 @@ namespace Contoso.XPlatform.Services
 
         private void UpdateValidatables(IEnumerable<IValidatable> properties, object? source, List<FormItemSettingsDescriptor> fieldSettings, string? parentField = null)
         {
-            IDictionary<string, object> existingValues = mapper.Map<Dictionary<string, object>>(source) ?? new Dictionary<string, object>();
+            IDictionary<string, object?> existingValues = mapper.Map<Dictionary<string, object?>>(source) ?? new Dictionary<string, object?>();
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(p => p.Name);
             foreach (var setting in fieldSettings)
             {

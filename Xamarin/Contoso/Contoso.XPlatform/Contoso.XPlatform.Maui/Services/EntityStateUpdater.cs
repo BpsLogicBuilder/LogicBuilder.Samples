@@ -40,7 +40,7 @@ namespace Contoso.XPlatform.Services
             (
                 current,
                 existingEntity,
-                typeof(Dictionary<string, object>),
+                typeof(Dictionary<string, object?>),
                 typeof(TModel)
             );
         }

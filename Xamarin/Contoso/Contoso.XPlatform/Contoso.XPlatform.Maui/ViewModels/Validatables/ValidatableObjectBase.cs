@@ -25,7 +25,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private bool _isDirty;
         private bool _isVisible = true;
         private bool _isEnabled = true;
-        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        private Dictionary<string, string> _errors = new();
         private string _templateName;
         protected UiNotificationService uiNotificationService;
 

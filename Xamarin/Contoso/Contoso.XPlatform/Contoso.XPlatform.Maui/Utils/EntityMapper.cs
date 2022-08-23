@@ -18,18 +18,20 @@ namespace Contoso.XPlatform.Utils
 
         public static object ToModelObject(this IEnumerable<IValidatable> properties, Type entityType, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, object? destination = null)
         {
-            MethodInfo methodInfo = typeof(EntityMapper).GetMethod
-            (
-                "ToModelObject",
-                1,
-                new Type[]
-                {
-                    typeof(IEnumerable<IValidatable>),
-                    typeof(IMapper),
-                    typeof(List<FormItemSettingsDescriptor>),
-                    entityType
-                }
-            )!.MakeGenericMethod(entityType); /*ToModelObject is local*/
+            MethodInfo methodInfo = (
+                typeof(EntityMapper).GetMethod
+                (
+                    nameof(ToModelObject),
+                    1,
+                    new Type[]
+                    {
+                        typeof(IEnumerable<IValidatable>),
+                        typeof(IMapper),
+                        typeof(List<FormItemSettingsDescriptor>),
+                        entityType
+                    }
+                ) ?? throw new ArgumentException($"{nameof(ToModelObject)}: {{9054A00C-E98D-4F57-84AF-06EC13899654}}")
+            ).MakeGenericMethod(entityType); /*ToModelObject is local*/
 
             return methodInfo.Invoke(null, new object?[] { properties, mapper, fieldSettings, destination })!;
         }
@@ -48,7 +50,7 @@ namespace Contoso.XPlatform.Utils
             (
                 properties.ValidatableListToObjectDictionary(mapper, fieldSettings),
                 destination,
-                typeof(Dictionary<string, object>),
+                typeof(Dictionary<string, object?>),
                 typeof(T)
             );
         }
@@ -104,7 +106,7 @@ namespace Contoso.XPlatform.Utils
                     .Select
                     (
                         dictionary => dictionary.ToObjectDictionaryFromValidatableObjects(mapper, formGroupArraySetting.FieldSettings)
-                    ).ToList()//Need an ICollection<Dictionary<string, object>>
+                    ).ToList()//Need an ICollection<Dictionary<string, object?>>
                 );
 
                 void AddFormGroupPopup(FormGroupSettingsDescriptor formGroupSetting)
@@ -149,7 +151,7 @@ namespace Contoso.XPlatform.Utils
                     objectDictionary.Add
                     (
                         multiSelectFormControlSetting.Field,
-                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object>>>
+                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object?>>>
                         (
                             (IEnumerable<object>)(propertiesDictionary[GetFieldName(multiSelectFormControlSetting.Field)] ?? new List<object>())
                         )
@@ -207,7 +209,7 @@ namespace Contoso.XPlatform.Utils
                     .Select
                     (
                         dictionary => dictionary.ToObjectDictionaryFromEntity(mapper, formGroupArraySetting.FieldSettings)
-                    ).ToList()//Need an ICollection<Dictionary<string, object>>
+                    ).ToList()//Need an ICollection<Dictionary<string, object?>>
                 );
 
                 void AddFormGroup(FormGroupSettingsDescriptor formGroupSetting)
@@ -240,7 +242,7 @@ namespace Contoso.XPlatform.Utils
                     objectDictionary.Add
                     (
                         multiSelectFormControlSetting.Field,
-                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object>>>
+                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object?>>>
                         (
                             (IEnumerable<object>)(propertiesDictionary[multiSelectFormControlSetting.Field] ?? new List<object>())
                         )
@@ -325,8 +327,8 @@ namespace Contoso.XPlatform.Utils
                 else if (setting is FormGroupArraySettingsDescriptor formGroupArraySetting)
                 {
                     existing.TryGetValue(formGroupArraySetting.Field, out object? existingCollection);
-                    ICollection<Dictionary<string, object?>> existingList = (ICollection<Dictionary<string, object?>>)(existingCollection ?? new List<Dictionary<string, object>>());
-                    ICollection<Dictionary<string, object?>> currentList = (ICollection<Dictionary<string, object?>>)(current[formGroupArraySetting.Field] ?? new List<Dictionary<string, object>>());
+                    ICollection<Dictionary<string, object?>> existingList = (ICollection<Dictionary<string, object?>>)(existingCollection ?? new List<Dictionary<string, object?>>());
+                    ICollection<Dictionary<string, object?>> currentList = (ICollection<Dictionary<string, object?>>)(current[formGroupArraySetting.Field] ?? new List<Dictionary<string, object?>>());
 
                     if (currentList.Any() == true)
                     {
