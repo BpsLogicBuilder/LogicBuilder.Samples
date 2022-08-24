@@ -11,7 +11,7 @@ public partial class App : Application
     {
         InitializeComponent();
 
-        MainPage = new MainPageView();
+        MainPage = new ExtendedSplashView();
     }
 
     public const string BASE_URL = "https://contosoapibps.azurewebsites.net/";

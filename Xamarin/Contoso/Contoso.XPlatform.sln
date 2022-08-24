@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.XPlatform.AutoMappe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.XPlatform.Maui", "Contoso.XPlatform\Contoso.XPlatform.Maui\Contoso.XPlatform.Maui.csproj", "{F2A002D5-1FD6-46C6-92AD-2833C41E62E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.XPlatform.Maui.Tests", "Contoso.XPlatform.Maui.Tests\Contoso.XPlatform.Maui.Tests.csproj", "{922EAD99-A163-4353-8E4A-083C04EC0EF9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.XPlatform.Maui.Tests", "Contoso.XPlatform.Maui.Tests\Contoso.XPlatform.Maui.Tests.csproj", "{922EAD99-A163-4353-8E4A-083C04EC0EF9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

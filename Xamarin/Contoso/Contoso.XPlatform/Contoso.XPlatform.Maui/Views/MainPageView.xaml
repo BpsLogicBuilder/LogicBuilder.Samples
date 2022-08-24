@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<FlyoutPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.XPlatform.Views.MainPageView"
+             xmlns:pages="clr-namespace:Contoso.XPlatform.Views"
              Title="MainPageView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
-</ContentPage>
+    <FlyoutPage.Flyout>
+        <pages:Flyout x:Name="flyout" />
+    </FlyoutPage.Flyout>
+    <FlyoutPage.Detail>
+        <NavigationPage BackgroundColor="{DynamicResource PageBackgroundColor}" BarBackgroundColor="{DynamicResource PageBackgroundColor}" BarTextColor="{DynamicResource PrimaryTextColor}">
+            <x:Arguments>
+                <pages:MainPageViewDetail />
+            </x:Arguments>
+        </NavigationPage>
+    </FlyoutPage.Detail>
+</FlyoutPage>
