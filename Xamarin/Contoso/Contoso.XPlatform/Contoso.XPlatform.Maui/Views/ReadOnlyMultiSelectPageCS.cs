@@ -91,8 +91,8 @@ namespace Contoso.XPlatform.Views
                 }
             };
 
-            this.BackgroundColor = Color.FromRgba(0,0,0,0);
-            Visual = VisualMarker.Default;
+            this.BackgroundColor = Colors.Transparent;
+            //Visual = VisualMarker.Default;
             this.BindingContext = this.multiSelectReadOnly;
         }
 

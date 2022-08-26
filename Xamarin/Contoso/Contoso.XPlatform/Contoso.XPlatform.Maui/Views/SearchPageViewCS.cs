@@ -14,7 +14,7 @@ namespace Contoso.XPlatform.Views
         {
             this.searchPageListViewModel = searchPageViewModel.SearchPageEntityViewModel;
             AddContent();
-            Visual = VisualMarker.Default;
+            //Visual = VisualMarker.Default;
             BindingContext = this.searchPageListViewModel;
         }
 

@@ -17,7 +17,7 @@ namespace Contoso.XPlatform.Views
         {
             this.editFormEntityViewModel = editFormViewModel.EditFormEntityViewModel;
             AddContent();
-            Visual = VisualMarker.Default;
+            //Visual = VisualMarker.Default;
             BindingContext = this.editFormEntityViewModel;
         }
 

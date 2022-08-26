@@ -8,7 +8,7 @@ public partial class BusyIndicator : ContentPage
 	public BusyIndicator()
 	{
 		InitializeComponent();
-        Visual = VisualMarker.Default;
-        this.BackgroundColor = Color.FromRgba(0, 0, 0, 0);
+        //Visual = VisualMarker.Default; 
+        this.BackgroundColor = Colors.Transparent;
     }
 }

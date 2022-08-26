@@ -1,0 +1,40 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+		<UseMaui>true</UseMaui>
+    <TargetFramework>net6.0-android</TargetFramework>
+		<OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+		<SupportedOSPlatformVersion Condition="'$(TargetFramework)' == 'net6.0-android'">31.0</SupportedOSPlatformVersion>
+		<RootNamespace>Contoso.XPlatform.Droid</RootNamespace>
+  </PropertyGroup>
+	
+	<PropertyGroup>
+		<UseInterpreter Condition="$(TargetFramework.Contains('-android'))">True</UseInterpreter>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<AndroidResource Include="Resources\layout\Tabbar.xml" />
+		<AndroidResource Include="Resources\layout\Toolbar.xml" />
+		<AndroidResource Include="Resources\values\styles.xml" />
+		<AndroidResource Include="Resources\values\colors.xml" />
+		<AndroidResource Include="Resources\mipmap-anydpi-v26\icon.xml" />
+		<AndroidResource Include="Resources\mipmap-anydpi-v26\icon_round.xml" />
+		<AndroidResource Include="Resources\mipmap-hdpi\icon.png" />
+		<AndroidResource Include="Resources\mipmap-hdpi\launcher_foreground.png" />
+		<AndroidResource Include="Resources\mipmap-mdpi\icon.png" />
+		<AndroidResource Include="Resources\mipmap-mdpi\launcher_foreground.png" />
+		<AndroidResource Include="Resources\mipmap-xhdpi\icon.png" />
+		<AndroidResource Include="Resources\mipmap-xhdpi\launcher_foreground.png" />
+		<AndroidResource Include="Resources\mipmap-xxhdpi\icon.png" />
+		<AndroidResource Include="Resources\mipmap-xxhdpi\launcher_foreground.png" />
+		<AndroidResource Include="Resources\mipmap-xxxhdpi\icon.png" />
+		<AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Contoso.XPlatform.Maui\Contoso.XPlatform.Maui.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -68,13 +68,13 @@ namespace Contoso.XPlatform.Views
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupDetailButtonStyle")
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.DetailCommand)))
-                                        .SetGridColumn(2),
+                                        .SetGridColumn(1),
                                         new Button
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.CancelCommand)))
-                                        .SetGridColumn(3)
+                                        .SetGridColumn(2)
                                     }
                                 }
                             }
@@ -91,7 +91,7 @@ namespace Contoso.XPlatform.Views
             this.BindingContext = this.formArrayReadOnly;
         }
 
-        private IReadOnly formArrayReadOnly;
-        private FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
+        private readonly IReadOnly formArrayReadOnly;
+        private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
     }
 }

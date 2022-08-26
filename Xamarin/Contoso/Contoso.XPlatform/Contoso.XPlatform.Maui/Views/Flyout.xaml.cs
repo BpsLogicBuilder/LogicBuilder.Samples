@@ -9,7 +9,7 @@ public partial class Flyout : ContentPage
     public Flyout()
 	{
 		InitializeComponent();
-        Visual = VisualMarker.Default;
+        //Visual = VisualMarker.Default;
         ListView = MenuItemsListView;
     }
 }

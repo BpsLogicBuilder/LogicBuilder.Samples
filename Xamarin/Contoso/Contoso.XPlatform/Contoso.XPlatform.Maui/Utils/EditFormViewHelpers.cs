@@ -268,20 +268,22 @@ namespace Contoso.XPlatform.Utils
 
         public static Grid GetMultiSelectFieldControl()
         {
-            return new Grid
+            return new()
             {
                 Children =
                 {
                     GetEntryForMultiSelectControl(),
-                    new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: "OpenCommand")
-                    )
+                    new BoxView
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
         }
@@ -293,15 +295,17 @@ namespace Contoso.XPlatform.Utils
                 Children =
                 {
                     GetEntryForFormPopupControl(),
-                    new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: "OpenCommand")
-                    )
+                    new BoxView
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormValidatableObject<string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
         }
@@ -313,15 +317,17 @@ namespace Contoso.XPlatform.Utils
                 Children =
                 {
                     GetEntryForFormArrayPopupControl(),
-                    new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: "OpenCommand")
-                    )
+                    new BoxView
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormArrayValidatableObject<ObservableCollection<string>, string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
         }

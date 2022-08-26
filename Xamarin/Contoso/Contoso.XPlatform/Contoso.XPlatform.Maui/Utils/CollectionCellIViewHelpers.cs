@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Utils
         }
 
         private static StackLayout GetCheckboxControl(string field, FontAttributes fontAttributes)
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 IsEnabled = false,
@@ -44,7 +44,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static StackLayout GetSwitchFieldControl(string field, FontAttributes fontAttributes)
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 Children =
@@ -66,7 +66,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetMultiSelectFieldControl(string field, FontAttributes fontAttributes)
-            => new Grid
+            => new()
             {
                 Children =
                 {
@@ -90,7 +90,7 @@ namespace Contoso.XPlatform.Utils
             );
 
         private static Grid GetPasswordTextFieldControl(string field, FontAttributes fontAttributes)
-            => new Grid
+            => new()
             {
                 Children =
                 {

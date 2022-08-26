@@ -3,6 +3,7 @@ using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui;
+using Microsoft.Maui.Graphics;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -172,7 +173,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetPasswordTextFieldControl()
-            => new Grid
+            => new()
             {
                 Children =
                 {
@@ -186,7 +187,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetMultiSelectFieldControl()
-            => new Grid
+            => new()
             {
                 Children =
                 {
@@ -209,40 +210,44 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetPopupFormFieldControl() 
-            => new Grid
+            => new()
             {
                 Children =
                 {
                     GetEntry()
                     .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(FormReadOnlyObject<string>.Placeholder))),
                     new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: nameof(FormReadOnlyObject<string>.OpenCommand))
-                    )
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormReadOnlyObject<string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
 
-        private static Grid GetPopupFormArrayFieldControl()
-            => new Grid
+        private static Grid GetPopupFormArrayFieldControl() 
+            => new()
             {
                 Children =
                 {
                     GetEntry()
-                    .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.Placeholder))),
+                        .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.Placeholder))),
                     new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: nameof(FormReadOnlyObject<string>.OpenCommand))
-                    )
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
 

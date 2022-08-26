@@ -6,10 +6,10 @@ namespace Contoso.XPlatform.ViewModels
 {
     public class MainPageViewModel : ViewModelBase
     {
-        private ObservableCollection<NavigationMenuItemDescriptor>? _menuItems;
+        private ObservableCollection<NavigationMenuItemDescriptor> _menuItems = new ObservableCollection<NavigationMenuItemDescriptor>();
         public ObservableCollection<NavigationMenuItemDescriptor> MenuItems
         {
-            get { return _menuItems ?? throw new ArgumentException($"{nameof(_menuItems)}: {{84CB529B-62A4-4C5C-AF7F-7858C8164139}}"); }
+            get { return _menuItems; }
             set
             {
                 if (_menuItems == value)

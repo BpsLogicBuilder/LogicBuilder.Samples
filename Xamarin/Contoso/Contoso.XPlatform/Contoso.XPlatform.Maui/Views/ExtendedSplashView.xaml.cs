@@ -11,7 +11,7 @@ public partial class ExtendedSplashView : ContentPage
 	public ExtendedSplashView()
 	{
 		InitializeComponent();
-        Visual = VisualMarker.Default;
+        //Visual = VisualMarker.Default;
         this.BindingContext = App.ServiceProvider.GetRequiredService<ExtendedSplashViewModel>();
     }
 

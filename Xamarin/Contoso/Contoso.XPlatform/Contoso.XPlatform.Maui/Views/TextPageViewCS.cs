@@ -16,7 +16,7 @@ namespace Contoso.XPlatform.Views
         {
             this.textPageScreenViewModel = textPageViewModel.TextPageScreenViewModel;
             AddContent();
-            Visual = VisualMarker.Default;
+            //Visual = VisualMarker.Default;
             BindingContext = this.textPageScreenViewModel;
         }
 

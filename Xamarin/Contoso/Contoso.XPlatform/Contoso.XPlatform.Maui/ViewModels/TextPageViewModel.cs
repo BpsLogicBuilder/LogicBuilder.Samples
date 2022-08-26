@@ -7,11 +7,8 @@ namespace Contoso.XPlatform.ViewModels
 {
     public class TextPageViewModel : FlyoutDetailViewModelBase
     {
-        private readonly UiNotificationService uiNotificationService;
-
-        public TextPageViewModel(UiNotificationService uiNotificationService, ScreenSettingsBase screenSettings)
+        public TextPageViewModel(ScreenSettingsBase screenSettings)
         {
-            this.uiNotificationService = uiNotificationService;
             TextPageScreenViewModel = CreateTextPageScreenViewModel((ScreenSettings<TextFormSettingsDescriptor>)screenSettings);
         }
 
@@ -22,8 +19,7 @@ namespace Contoso.XPlatform.ViewModels
                 Activator.CreateInstance
                 (
                     typeof(TextPageScreenViewModel),
-                    screenSettings,
-                    uiNotificationService
+                    screenSettings
                 ) ?? throw new ArgumentException($"{typeof(TextPageScreenViewModel)}: {{C523F1C5-B187-4685-8B23-3C3C92322004}}")
             );
     }

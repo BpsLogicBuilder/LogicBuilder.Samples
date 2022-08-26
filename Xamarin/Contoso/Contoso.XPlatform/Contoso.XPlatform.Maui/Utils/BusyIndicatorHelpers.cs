@@ -1,4 +1,6 @@
-﻿using Microsoft.Maui.ApplicationModel;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,50 +16,49 @@ namespace Contoso.XPlatform.Utils
             Task<TResult> getResponse;
             TResult? response = null;
 
-            List<Task> tasks = new List<Task>
+            List<Task> tasks = new()
             {
                 (delay = Task.Delay(400)),
                 (getResponse = action())
             };
 
             bool activityIndicatorRunning = false;
-
+            /*Tak.ConfigureAwait(true) for all tasks seems to proevent issue of
+             the Busy Indicator window not closing.*/
             while (tasks.Any())
             {
-                Task finishedTask = await Task.WhenAny(tasks);
+                Task finishedTask = await Task.WhenAny(tasks).ConfigureAwait(true);
                 if (object.ReferenceEquals(finishedTask, delay) && response == null)
-                    ShowBusyIndaicator();
+                    await ShowBusyIndaicator().ConfigureAwait(true);
                 else if (object.ReferenceEquals(finishedTask, getResponse))
                     response = getResponse.Result;
 
                 tasks.Remove(finishedTask);
             }
 
-            RemoveBusyIndaicator();
+            await RemoveBusyIndaicator().ConfigureAwait(true);
 
             return response ?? throw new ArgumentException($"{nameof(response)}: {{189D9682-88D9-440C-BEEB-7B77E345FCA3}}");
 
-            void ShowBusyIndaicator()
+            Task ShowBusyIndaicator()
             {
                 activityIndicatorRunning = true;
-                MainThread.BeginInvokeOnMainThread
+
+                return App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                 (
-                    () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
-                    (
-                        new Views.BusyIndicator(), false
-                    )
+                    new Views.BusyIndicator(), false
                 );
             }
 
-            void RemoveBusyIndaicator()
+            async Task RemoveBusyIndaicator()
             {
                 if (!activityIndicatorRunning)
+                {
+                    await Task.CompletedTask;
                     return;
+                }
 
-                MainThread.BeginInvokeOnMainThread
-                (
-                    () => App.Current!.MainPage!.Navigation.PopModalAsync(false)/*App.Current.MainPage is not null at this point*/
-                );
+                await App.Current!.MainPage!.Navigation.PopModalAsync(false).ConfigureAwait(true);
             }
         }
     }

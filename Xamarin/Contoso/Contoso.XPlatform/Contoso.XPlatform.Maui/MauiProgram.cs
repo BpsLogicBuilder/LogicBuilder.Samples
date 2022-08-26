@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
 using Contoso.XPlatform.Flow.Settings.Screen;
+using Microsoft.Maui.Devices;
+using Contoso.XPlatform.Utils;
 
 namespace Contoso.XPlatform
 {
@@ -27,6 +29,14 @@ namespace Contoso.XPlatform
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
+                    if (DeviceInfo.Platform == DevicePlatform.Android)
+                    {
+                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.AndroidSolid);
+                    }
+                    if (DeviceInfo.Platform == DevicePlatform.iOS)
+                    {
+                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.iOSSolid);
+                    }
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });

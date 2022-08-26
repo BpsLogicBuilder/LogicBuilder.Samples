@@ -18,7 +18,7 @@ public partial class MainPageView : FlyoutPage
     public MainPageView()
     {
         InitializeComponent();
-        Visual = VisualMarker.Default;
+        //Visual = VisualMarker.Default;
         flyout.ListView.SelectionChanged += ListView_SelectionChanged;
         ViewModel = App.ServiceProvider.GetRequiredService<MainPageViewModel>();
         this.BindingContext = ViewModel;
@@ -28,7 +28,7 @@ public partial class MainPageView : FlyoutPage
 
         if (!DesignMode.IsDesignModeEnabled)
         {
-            Start();
+            MainPageView.Start();
         }
     }
 
@@ -77,19 +77,17 @@ public partial class MainPageView : FlyoutPage
     #endregion Properties
 
     #region Methods
-    private async void Start()
+    private static async void Start()
     {
-        using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-        {
-            await flowManagerService.Start();
-        }
+        using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+        await flowManagerService.Start();
     }
 
     private void FlowSettingsChanged(FlowSettings flowSettings)
     {
         flowSettings.FlowDataCache.NavigationBar.MenuItems
             .ForEach(item => item.Active = item.InitialModule == flowSettings.FlowDataCache.NavigationBar.CurrentModule);
-
+        
         ChangePage(flowSettings.ScreenSettings.CreatePage());
 
         UpdateNavigationMenu(flowSettings);
@@ -102,7 +100,7 @@ public partial class MainPageView : FlyoutPage
     {
         MainThread.BeginInvokeOnMainThread
         (
-            () => Detail = GetNavigationPage(page)
+            () => Detail = MainPageView.GetNavigationPage(page)
         );
 
         IsPresented = false;
@@ -116,7 +114,7 @@ public partial class MainPageView : FlyoutPage
         if (e.CurrentSelection.Count != 1)
             return;
 
-        if (!(e.CurrentSelection.First() is NavigationMenuItemDescriptor item))
+        if (e.CurrentSelection[0] is not NavigationMenuItemDescriptor item)
             return;
 
         if (item.Active)
@@ -132,7 +130,7 @@ public partial class MainPageView : FlyoutPage
             );
         }
 
-        void DisposeCurrentPageBindingContext(Page detail)
+        static void DisposeCurrentPageBindingContext(Page detail)
         {
             if (detail is not NavigationPage navigationPage)
                 return;
@@ -144,7 +142,7 @@ public partial class MainPageView : FlyoutPage
         }
     }
 
-    private NavigationPage GetNavigationPage(Page page)
+    private static NavigationPage GetNavigationPage(Page page)
     {
         NavigationPage.SetHasBackButton(page, false);
         page.SetDynamicResource(Page.BackgroundColorProperty, "PageBackgroundColor");

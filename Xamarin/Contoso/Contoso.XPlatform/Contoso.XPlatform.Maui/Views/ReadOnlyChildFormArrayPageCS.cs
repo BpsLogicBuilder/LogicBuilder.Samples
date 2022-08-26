@@ -61,7 +61,10 @@ namespace Contoso.XPlatform.Views
                                 .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.Items)))
                                 .AddBinding(SelectableItemsView.SelectionChangedCommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.SelectionChangedCommand)))
                                 .AddBinding(SelectableItemsView.SelectedItemProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.SelectedItem))),
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") },
+                                new BoxView 
+                                { 
+                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") 
+                                },
                                 new Grid
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
@@ -78,13 +81,13 @@ namespace Contoso.XPlatform.Views
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupDetailButtonStyle")
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.DetailCommand)))
-                                        .SetGridColumn(2),
+                                        .SetGridColumn(1),
                                         new Button
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.CancelCommand)))
-                                        .SetGridColumn(3)
+                                        .SetGridColumn(2)
                                     }
                                 }
                             }
@@ -96,8 +99,8 @@ namespace Contoso.XPlatform.Views
                 }
             };
 
-            this.BackgroundColor = Color.FromRgba(0, 0, 0, 0);
-            Visual = VisualMarker.Default;
+            this.BackgroundColor = Colors.Transparent;
+            //Visual = VisualMarker.Default;
             this.BindingContext = this.formArrayReadOnly;
         }
 
