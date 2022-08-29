@@ -118,7 +118,10 @@ public partial class MainPageView : FlyoutPage
             return;
 
         if (item.Active)
+        {
+            IsPresented = false;
             return;
+        }
 
         DisposeCurrentPageBindingContext(Detail);
 
