@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.Views
 
         public ListPageCollectionViewModelBase listPageCollectionViewModel { get; set; }
         private Grid transitionGrid;
-        private StackLayout page;
+        private Grid page;
 
         protected async override void OnAppearing()
         {
@@ -40,16 +40,22 @@ namespace Contoso.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new StackLayout
+                        page = new Grid
                         {
                             Padding = new Thickness(30),
+                            RowDefinitions = 
+                            { 
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) }, 
+                                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) } 
+                            },
                             Children =
                             {
                                 new Label
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
                                 }
-                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageCollectionViewModelBase.Title))),
+                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageCollectionViewModelBase.Title)))
+                                .SetGridRow(0),
                                 new CollectionView
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource("ListFormCollectionViewStyle"),
@@ -60,6 +66,7 @@ namespace Contoso.XPlatform.Views
                                     )
                                 }
                                 .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageCollectionViewModel<Domain.EntityModelBase>.Items)))
+                                .SetGridRow(1)
                             }
                         }
                     ),

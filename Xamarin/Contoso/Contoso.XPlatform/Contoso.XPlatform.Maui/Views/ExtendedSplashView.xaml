@@ -23,10 +23,10 @@
                 <ProgressBar Margin="10,0" 
                              Grid.Row="1" 
                              Grid.Column="1" 
-                             VerticalOptions="Center"  
+                             VerticalOptions="Center"
                              Progress="{Binding Progress, Mode=OneWay}"
-                             HeightRequest="2" WidthRequest="400" 
-                             HorizontalOptions="Center"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill"
                              ProgressColor="{DynamicResource PrimaryColor}" />
             </Grid>
         </Grid>

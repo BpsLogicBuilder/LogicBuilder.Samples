@@ -44,21 +44,26 @@ namespace Contoso.XPlatform.Utils
             {
                 activityIndicatorRunning = true;
 
-                return App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
-                (
-                    new Views.BusyIndicator(), false
+                return MainThread.InvokeOnMainThreadAsync
+                (/*App.Current.MainPage is not null at this point*/
+                    async () => await App.Current!.MainPage!.Navigation.PushModalAsync
+                    (
+                        new Views.BusyIndicator(), false
+                    ).ConfigureAwait(true)
                 );
             }
 
-            async Task RemoveBusyIndaicator()
+            Task RemoveBusyIndaicator()
             {
                 if (!activityIndicatorRunning)
                 {
-                    await Task.CompletedTask;
-                    return;
+                    return Task.CompletedTask;
                 }
 
-                await App.Current!.MainPage!.Navigation.PopModalAsync(false).ConfigureAwait(true);
+                return MainThread.InvokeOnMainThreadAsync
+                (/*App.Current.MainPage is not null at this point*/
+                    async () => await App.Current!.MainPage!.Navigation.PopModalAsync(false).ConfigureAwait(true)
+                );
             }
         }
     }
