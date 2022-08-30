@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace Contoso.XPlatform.Maui
+namespace Contoso.XPlatform
 {
     public class Program
     {

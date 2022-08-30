@@ -2,7 +2,7 @@ using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using System;
 
-namespace Contoso.XPlatform.Maui
+namespace Contoso.XPlatform
 {
     internal class Program : MauiApplication
     {

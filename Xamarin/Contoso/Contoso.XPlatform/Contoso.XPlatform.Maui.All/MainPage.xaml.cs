@@ -2,7 +2,7 @@
 using Microsoft.Maui.Controls;
 using System;
 
-namespace Contoso.XPlatform.Maui
+namespace Contoso.XPlatform
 {
     public partial class MainPage : ContentPage
     {

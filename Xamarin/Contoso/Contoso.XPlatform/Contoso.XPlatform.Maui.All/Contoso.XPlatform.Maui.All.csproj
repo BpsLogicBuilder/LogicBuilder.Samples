@@ -6,17 +6,17 @@
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
 		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
 		<OutputType>Exe</OutputType>
-		<RootNamespace>Contoso.XPlatform.Maui</RootNamespace>
+		<RootNamespace>Contoso.XPlatform</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 		<Nullable>enable</Nullable>
 		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 
 		<!-- Display name -->
-		<ApplicationTitle>Contoso.XPlatform.Maui</ApplicationTitle>
+		<ApplicationTitle>Contoso.XPlatform</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.contoso.xplatform.maui</ApplicationId>
+		<ApplicationId>com.companyname.contoso.xplatform</ApplicationId>
 		<ApplicationIdGuid>4D813FAA-56A8-45DC-8C92-4AC1D26717E2</ApplicationIdGuid>
 
 		<!-- Versions -->

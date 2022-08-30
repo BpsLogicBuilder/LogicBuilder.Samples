@@ -1,6 +1,6 @@
 ﻿using Microsoft.Maui.Controls;
 
-namespace Contoso.XPlatform.Maui
+namespace Contoso.XPlatform
 {
     public partial class AppShell : Shell
     {

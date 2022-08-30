@@ -1,7 +1,7 @@
 ﻿using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Hosting;
 
-namespace Contoso.XPlatform.Maui
+namespace Contoso.XPlatform
 {
     public static class MauiProgram
     {

@@ -2,7 +2,7 @@
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace Contoso.XPlatform.Maui
+namespace Contoso.XPlatform
 {
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
