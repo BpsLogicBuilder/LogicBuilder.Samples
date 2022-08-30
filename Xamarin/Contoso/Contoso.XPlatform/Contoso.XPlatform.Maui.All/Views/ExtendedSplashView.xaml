@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Contoso.XPlatform.Views.ExtendedSplashView"
+             Title="ExtendedSplashView"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Image x:Name="extendedSplashImage" VerticalOptions="Center" Source="splash_logo.png"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <ProgressBar Margin="10,0" 
+                             Grid.Row="1" 
+                             Grid.Column="1" 
+                             VerticalOptions="Center"
+                             Progress="{Binding Progress, Mode=OneWay}"
+                             HeightRequest="2"
+                             HorizontalOptions="Fill"
+                             ProgressColor="{DynamicResource PrimaryColor}" />
+            </Grid>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -23,11 +23,11 @@
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
 		<ApplicationVersion>1</ApplicationVersion>
 
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
-		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
-		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.4</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.4</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">31.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
 		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
 	</PropertyGroup>
 
@@ -41,12 +41,87 @@
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
 		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\splash_logo.png" BaseSize="310,150" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
 
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Resources\Fonts\FontAwesome5Solid900.otf" />
+	  <None Remove="Resources\Images\splash_logo.png" />
+	  <None Remove="Rulesets\about.module" />
+	  <None Remove="Rulesets\about.resources" />
+	  <None Remove="Rulesets\about_nav.module" />
+	  <None Remove="Rulesets\about_nav.resources" />
+	  <None Remove="Rulesets\courses.module" />
+	  <None Remove="Rulesets\courses.resources" />
+	  <None Remove="Rulesets\departments.module" />
+	  <None Remove="Rulesets\departments.resources" />
+	  <None Remove="Rulesets\home.module" />
+	  <None Remove="Rulesets\home.resources" />
+	  <None Remove="Rulesets\home_nav.module" />
+	  <None Remove="Rulesets\home_nav.resources" />
+	  <None Remove="Rulesets\instructors.module" />
+	  <None Remove="Rulesets\instructors.resources" />
+	  <None Remove="Rulesets\nav_courses.module" />
+	  <None Remove="Rulesets\nav_courses.resources" />
+	  <None Remove="Rulesets\nav_departments.module" />
+	  <None Remove="Rulesets\nav_departments.resources" />
+	  <None Remove="Rulesets\nav_instructors.module" />
+	  <None Remove="Rulesets\nav_instructors.resources" />
+	  <None Remove="Rulesets\nav_students.module" />
+	  <None Remove="Rulesets\nav_students.resources" />
+	  <None Remove="Rulesets\students.module" />
+	  <None Remove="Rulesets\students.resources" />
+	  <None Remove="Rulesets\VariablesMetadata.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Rulesets\about.module" />
+	  <EmbeddedResource Include="Rulesets\about.resources" />
+	  <EmbeddedResource Include="Rulesets\about_nav.module" />
+	  <EmbeddedResource Include="Rulesets\about_nav.resources" />
+	  <EmbeddedResource Include="Rulesets\courses.module" />
+	  <EmbeddedResource Include="Rulesets\courses.resources" />
+	  <EmbeddedResource Include="Rulesets\departments.module" />
+	  <EmbeddedResource Include="Rulesets\departments.resources" />
+	  <EmbeddedResource Include="Rulesets\home.module" />
+	  <EmbeddedResource Include="Rulesets\home.resources" />
+	  <EmbeddedResource Include="Rulesets\home_nav.module" />
+	  <EmbeddedResource Include="Rulesets\home_nav.resources" />
+	  <EmbeddedResource Include="Rulesets\instructors.module" />
+	  <EmbeddedResource Include="Rulesets\instructors.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_courses.module" />
+	  <EmbeddedResource Include="Rulesets\nav_courses.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_departments.module" />
+	  <EmbeddedResource Include="Rulesets\nav_departments.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_instructors.module" />
+	  <EmbeddedResource Include="Rulesets\nav_instructors.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_students.module" />
+	  <EmbeddedResource Include="Rulesets\nav_students.resources" />
+	  <EmbeddedResource Include="Rulesets\students.module" />
+	  <EmbeddedResource Include="Rulesets\students.resources" />
+	  <EmbeddedResource Include="Rulesets\VariablesMetadata.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="akavache" Version="9.0.1" />
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="System.Reactive" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Contoso.AutoMapperProfiles\Contoso.AutoMapperProfiles.csproj" />
+		<ProjectReference Include="..\..\Contoso.Bsl.Business\Contoso.Bsl.Business.csproj" />
+		<ProjectReference Include="..\..\Contoso.XPlatform.AutoMapperProfiles\Contoso.XPlatform.AutoMapperProfiles.csproj" />
+		<ProjectReference Include="..\..\Contoso.XPlatform.Flow\Contoso.XPlatform.Flow.csproj" />
 	</ItemGroup>
 
 </Project>
