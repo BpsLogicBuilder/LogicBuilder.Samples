@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Contoso.XPlatform\Contoso.XPlatform.Maui\Contoso.XPlatform.Maui.csproj" />
+    <ProjectReference Include="..\Contoso.XPlatform\Contoso.XPlatform.Maui.All\Contoso.XPlatform.Maui.All.csproj" />
   </ItemGroup>
 
 </Project>
