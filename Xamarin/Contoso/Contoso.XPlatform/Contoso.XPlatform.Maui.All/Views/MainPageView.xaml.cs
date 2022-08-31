@@ -1,15 +1,15 @@
 using Contoso.Forms.Configuration.Navigation;
-using Contoso.XPlatform.Flow.Settings;
 using Contoso.XPlatform.Flow;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Controls;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System;
+using Contoso.XPlatform.Flow.Settings;
 using Contoso.XPlatform.Services;
-using Microsoft.Maui.ApplicationModel;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
+using System;
+using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Views;
 
@@ -20,6 +20,9 @@ public partial class MainPageView : FlyoutPage
         InitializeComponent();
         //Visual = VisualMarker.Default;
         flyout.ListView.SelectionChanged += ListView_SelectionChanged;
+
+        FlyoutLayoutBehavior = MainPageView.GetFlyoutLayoutBehavior();
+
         ViewModel = App.ServiceProvider.GetRequiredService<MainPageViewModel>();
         this.BindingContext = ViewModel;
         flyout.BindingContext = ViewModel;
@@ -39,7 +42,7 @@ public partial class MainPageView : FlyoutPage
 
     #region Properties
     public MainPageViewModel ViewModel { get; }
-    private bool IsPortrait => Width < Height;
+    private bool IsPortrait => DeviceDisplay.MainDisplayInfo.Width < DeviceDisplay.MainDisplayInfo.Height;
 
     public UiNotificationService UiNotificationService
     {
@@ -103,9 +106,28 @@ public partial class MainPageView : FlyoutPage
             () => Detail = MainPageView.GetNavigationPage(page)
         );
 
-        IsPresented = false;
+        CloseFlyout();
 
         flyout.ListView.SelectedItem = null;
+    }
+
+    private void CloseFlyout()
+    {
+        if (!IsPortrait)
+            return;
+
+        IsPresented = false;
+    }
+
+    private static FlyoutLayoutBehavior GetFlyoutLayoutBehavior()
+    {
+        //if (DeviceInfo.Platform == DevicePlatform.WinUI)
+        //return IsPortrait ? FlyoutLayoutBehavior.Popover : FlyoutLayoutBehavior.Split;
+
+        //return FlyoutLayoutBehavior.Popover;
+        return DeviceInfo.Platform == DevicePlatform.WinUI
+            ? FlyoutLayoutBehavior.SplitOnLandscape
+            : FlyoutLayoutBehavior.Popover;
     }
     #endregion Methods
 
@@ -119,7 +141,7 @@ public partial class MainPageView : FlyoutPage
 
         if (item.Active)
         {
-            IsPresented = false;
+            CloseFlyout();
             return;
         }
 

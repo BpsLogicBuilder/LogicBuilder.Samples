@@ -16,18 +16,21 @@
                 <On Platform="Android" Value="FontAwesome5BrandsRegular400.otf#Regular" />
                 <On Platform="iOS" Value="Font Awesome 5 Brands Regular" />
                 <On Platform="UWP" Value="/Assets/FontAwesome5BrandsRegular400.otf#Font Awesome 5 Brands" />
+                <On Platform="WinUI" Value="/Assets/FontAwesome5BrandsRegular400.otf#Font Awesome 5 Brands" />
             </OnPlatform>
 
             <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesomeSolid">
                 <On Platform="Android" Value="FontAwesome5Solid900.otf#Regular" />
                 <On Platform="iOS" Value="Font Awesome 5 Free Solid" />
                 <On Platform="UWP" Value="/Assets/FontAwesome5Solid900.otf#Font Awesome 5 Free" />
+                <On Platform="WinUI" Value="/Assets/FontAwesome5Solid900.otf#Font Awesome 5 Free" />
             </OnPlatform>
 
             <OnPlatform x:TypeArguments="x:String" x:Key="FontAwesomeRegular">
                 <On Platform="Android" Value="FontAwesome5Regular.otf#Regular" />
                 <On Platform="iOS" Value="Font Awesome 5 Free Regular" />
                 <On Platform="UWP" Value="/Assets/FontAwesome5Regular400.otf#Font Awesome 5 Free" />
+                <On Platform="WinUI" Value="/Assets/FontAwesome5Regular400.otf#Font Awesome 5 Free" />
             </OnPlatform>
 
             <Style TargetType="Frame" x:Key="ResultListFrameStyle">

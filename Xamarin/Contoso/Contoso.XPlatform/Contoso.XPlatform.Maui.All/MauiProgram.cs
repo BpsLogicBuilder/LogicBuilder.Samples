@@ -13,6 +13,7 @@ using Contoso.XPlatform.Services;
 using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
 using Contoso.XPlatform.ViewModels;
+using Akavache;
 
 namespace Contoso.XPlatform
 {
@@ -35,11 +36,13 @@ namespace Contoso.XPlatform
                     }
                     if (DeviceInfo.Platform == DevicePlatform.WinUI)
                     {
-                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.WinSolid);
+                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.WinUISolid);
                     }
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            BlobCache.ApplicationName = AppConstants.ApplicationName;
 
             return builder.Build();
         }

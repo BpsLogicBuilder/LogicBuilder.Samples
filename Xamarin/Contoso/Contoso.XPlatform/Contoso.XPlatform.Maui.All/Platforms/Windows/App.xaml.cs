@@ -1,6 +1,9 @@
-﻿using Microsoft.Maui;
+﻿using Contoso.XPlatform.Flow;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 using Microsoft.UI.Xaml;
+using System;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -21,6 +24,21 @@ namespace Contoso.XPlatform.WinUI
             this.InitializeComponent();
         }
 
-        protected override MauiApp CreateMauiApp() => MauiProgram.CreateMauiApp();
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        {
+            base.OnLaunched(args);
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IAppLogger, AppLogger>();
+        }
+
+        protected override MauiApp CreateMauiApp()
+        {
+            MauiApp mauiApp = MauiProgram.CreateMauiApp();
+            MauiProgram.Init(ConfigureServices);
+            return mauiApp;
+        }
     }
 }

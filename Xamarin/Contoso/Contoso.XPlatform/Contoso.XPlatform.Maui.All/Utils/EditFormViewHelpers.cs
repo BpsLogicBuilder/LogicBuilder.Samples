@@ -428,6 +428,8 @@ namespace Contoso.XPlatform.Utils
                 return FontAwesomeFontFamily.AndroidSolid;
             else if (DeviceInfo.Platform == DevicePlatform.iOS)
                 return FontAwesomeFontFamily.iOSSolid;
+            else if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                return FontAwesomeFontFamily.WinUISolid;
             else
                 throw new ArgumentOutOfRangeException(nameof(DeviceInfo.Platform));
         }
