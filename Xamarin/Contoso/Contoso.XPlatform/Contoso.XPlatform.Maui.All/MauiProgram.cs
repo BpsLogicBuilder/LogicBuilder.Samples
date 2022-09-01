@@ -26,18 +26,22 @@ namespace Contoso.XPlatform
                 .UseMauiApp<App>()
                 .ConfigureFonts(fonts =>
                 {
+                    const string FontAwesomeFontFile = "FontAwesome5Solid900.otf";
                     if (DeviceInfo.Platform == DevicePlatform.Android)
-                    {
-                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.AndroidSolid);
-                    }
+                        fonts.AddFont(FontAwesomeFontFile, FontAwesomeFontFamily.AndroidSolid);
+
                     if (DeviceInfo.Platform == DevicePlatform.iOS)
-                    {
-                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.iOSSolid);
-                    }
+                        fonts.AddFont(FontAwesomeFontFile, FontAwesomeFontFamily.iOSSolid);
+
+                    if (DeviceInfo.Platform == DevicePlatform.MacCatalyst)
+                        fonts.AddFont(FontAwesomeFontFile, FontAwesomeFontFamily.MacCatalystSolid);
+
+                    if (DeviceInfo.Platform == DevicePlatform.Tizen)
+                        fonts.AddFont(FontAwesomeFontFile, FontAwesomeFontFamily.TizenSolid);
+
                     if (DeviceInfo.Platform == DevicePlatform.WinUI)
-                    {
-                        fonts.AddFont("FontAwesome5Solid900.otf", FontAwesomeFontFamily.WinUISolid);
-                    }
+                        fonts.AddFont(FontAwesomeFontFile, FontAwesomeFontFamily.WinUISolid);
+
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });

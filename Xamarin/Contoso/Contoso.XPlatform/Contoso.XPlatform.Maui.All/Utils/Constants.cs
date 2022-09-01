@@ -2017,17 +2017,12 @@ namespace Contoso.XPlatform.Utils
         public const string ApplicationName = "Contoso.XPlatform";
     }
 
-    public struct Platforms
-    {
-        public const string Android = "Android";
-        public const string iOS = "iOS";
-        public const string WinUI = "WinUI";
-    }
-
     public struct FontAwesomeFontFamily
     {
         public const string AndroidSolid = "FontAwesome5Solid900.otf#Regular";
         public const string iOSSolid = "Font Awesome 5 Free Solid";
+        public const string MacCatalystSolid = "Font Awesome 5 Free Solid";
+        public const string TizenSolid = "";
         public const string WinUISolid = "/Assets/FontAwesome5Solid900.otf#Font Awesome 5 Free";
     }
 

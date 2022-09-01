@@ -25,6 +25,36 @@
         <On Platform="WinUI" Value="/Assets/FontAwesome5Regular400.otf#Font Awesome 5 Free" />
     </OnPlatform>
 
+    <Style TargetType="Label" x:Key="BodyTextStyle">
+        <Setter Property="FontSize">
+            <OnPlatform x:TypeArguments="x:Double">
+                <On Platform="Android, Tizen">16</On>
+                <On Platform="iOS, MacCatalyst">17</On>
+                <On Platform="WinUI">14</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="SubtitleTextStyle">
+        <Setter Property="FontSize">
+            <OnPlatform x:TypeArguments="x:Double">
+                <On Platform="Android, Tizen">16</On>
+                <On Platform="iOS, MacCatalyst">22</On>
+                <On Platform="WinUI">20</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Label" x:Key="TitleTextStyle">
+        <Setter Property="FontSize">
+            <OnPlatform x:TypeArguments="x:Double">
+                <On Platform="Android, Tizen">24</On>
+                <On Platform="iOS, MacCatalyst">28</On>
+                <On Platform="WinUI">24</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
     <Style TargetType="Frame" x:Key="ResultListFrameStyle">
         <Setter Property="Padding" Value="0" />
         <Setter Property="Margin" Value="0" />
@@ -40,62 +70,62 @@
         <Setter Property="VerticalOptions" Value="Start" />
     </Style>
 
-    <Style TargetType="Label" x:Key="ResultListLabelStyle" BaseResourceKey="SubtitleStyle">
+    <Style TargetType="Label" x:Key="ResultListLabelStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="Margin" Value="-20,-8,-20,0" />
         <Setter Property="Padding" Value="20,20,20,2" />
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Label" x:Key="HeaderStyle" BaseResourceKey="TitleStyle">
+    <Style TargetType="Label" x:Key="HeaderStyle" BaseResourceKey="TitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryColor}" />
         <Setter Property="LineBreakMode" Value="NoWrap" />
     </Style>
 
-    <Style TargetType="Label" x:Key="DetailFormDeleteQuestionStyle" BaseResourceKey="SubtitleStyle">
+    <Style TargetType="Label" x:Key="DetailFormDeleteQuestionStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="Margin" Value="0,5,0,0" />
     </Style>
 
-    <Style TargetType="Label" x:Key="EditFormGroupHeaderStyle" BaseResourceKey="SubtitleStyle">
+    <Style TargetType="Label" x:Key="EditFormGroupHeaderStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Margin" Value="0,15,0,0" />
     </Style>
 
-    <Style TargetType="Label" x:Key="DetailFormGroupHeaderStyle" BaseResourceKey="SubtitleStyle">
+    <Style TargetType="Label" x:Key="DetailFormGroupHeaderStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Margin" Value="0,15,0,0" />
     </Style>
 
-    <Style TargetType="Label" x:Key="TextFormGroupHeaderStyle" BaseResourceKey="SubtitleStyle">
+    <Style TargetType="Label" x:Key="TextFormGroupHeaderStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="FontAttributes" Value="Bold" />
         <Setter Property="Margin" Value="0,5,0,0" />
     </Style>
 
-    <Style TargetType="Label" x:Key="TextFormItemLabelStyle" BaseResourceKey="BodyStyle">
+    <Style TargetType="Label" x:Key="TextFormItemLabelStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Label" x:Key="TextFormHyperLinkLabelStyle" BaseResourceKey="BodyStyle">
+    <Style TargetType="Label" x:Key="TextFormHyperLinkLabelStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextDecorations" Value="Underline" />
         <Setter Property="TextColor" Value="{DynamicResource HyperLinkColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Span" x:Key="TextFormItemSpanStyle" BaseResourceKey="BodyStyle">
+    <Style TargetType="Span" x:Key="TextFormItemSpanStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Span" x:Key="TextFormHyperLinkSpanStyle" BaseResourceKey="BodyStyle">
+    <Style TargetType="Span" x:Key="TextFormHyperLinkSpanStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextDecorations" Value="Underline" />
         <Setter Property="TextColor" Value="{DynamicResource HyperLinkColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
