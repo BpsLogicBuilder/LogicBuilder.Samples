@@ -9,7 +9,7 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Image x:Name="extendedSplashImage" VerticalOptions="Center" Source="splash_logo.png"/>
+            <Image x:Name="extendedSplashImage" VerticalOptions="Center" Source="splash_logo.png" HeightRequest="310" WidthRequest="150"/>
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*" />
@@ -21,7 +21,7 @@
                     <ColumnDefinition Width="*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <ProgressBar Margin="10,0" 
-                             Grid.Row="1" 
+                             Grid.Row="2" 
                              Grid.Column="1" 
                              VerticalOptions="Center"
                              Progress="{Binding Progress, Mode=OneWay}"
