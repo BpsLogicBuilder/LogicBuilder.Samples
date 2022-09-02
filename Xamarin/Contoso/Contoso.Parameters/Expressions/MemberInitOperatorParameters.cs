@@ -24,7 +24,17 @@ namespace Contoso.Parameters.Expressions
 			NewType = newType;
 		}
 
-		public IDictionary<string, IExpressionParameter> MemberBindings { get; set; }
-		public Type NewType { get; set; }
+        /*public IDictionary<string, IExpressionParameter> MemberBindings { get; set; }
+         * After calling IMapper.Map() IDictionary fails on iOS MAUI only with the following exception
+         * 
+         * ---> System.InvalidOperationException: Collection was modified; enumeration operation may not execute.
+   at System.Collections.Generic.Dictionary`2.Enumerator[[System.String, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[Contoso.Parameters.Expressions.IExpressionParameter, Contoso.Parameters, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]].MoveNext()
+   at System.Linq.Expressions.Interpreter.FuncCallInstruction`2[[System.Collections.IEnumerator, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Boolean, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]].Run(InterpretedFrame frame)
+   at System.Linq.Expressions.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   at System.Linq.Expressions.Interpreter.EnterTryCatchFinallyInstruction.Run(InterpretedFrame frame)
+   --- End of inner exception stack trace ---
+         */
+        public Dictionary<string, IExpressionParameter> MemberBindings { get; set; }
+        public Type NewType { get; set; }
     }
 }
