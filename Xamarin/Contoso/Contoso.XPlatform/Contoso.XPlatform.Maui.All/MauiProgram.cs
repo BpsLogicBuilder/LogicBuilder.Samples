@@ -91,6 +91,7 @@ namespace Contoso.XPlatform
                 .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
                 .AddSingleton<IContextProvider, ContextProvider>()
                 .AddSingleton<IRulesLoader, RulesLoader>()
+                .AddRulesCache()
                 .AddScoped<IFlowManager, FlowManager>()
                 .AddScoped<FlowActivityFactory, FlowActivityFactory>()
                 .AddScoped<DirectorFactory, DirectorFactory>()

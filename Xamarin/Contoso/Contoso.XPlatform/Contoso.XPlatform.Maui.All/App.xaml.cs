@@ -15,7 +15,7 @@ namespace Contoso.XPlatform
 
         protected override Window CreateWindow(IActivationState? activationState)
         {
-            return new Microsoft.Maui.Controls.Window(new ExtendedSplashView());
+            return new Microsoft.Maui.Controls.Window(new MainPageView());
         }
 
         public const string BASE_URL = "https://contosoapibps.azurewebsites.net/";
