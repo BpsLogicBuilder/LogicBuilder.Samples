@@ -9,16 +9,16 @@ namespace Contoso.XPlatform
     [Register("AppDelegate")]
     public class AppDelegate : MauiUIApplicationDelegate
     {
-        private void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IAppLogger, AppLogger>();
-        }
-
         protected override MauiApp CreateMauiApp()
         {
             MauiApp mauiApp = MauiProgram.CreateMauiApp();
             MauiProgram.Init(ConfigureServices);
             return mauiApp;
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IAppLogger, AppLogger>();
         }
     }
 }

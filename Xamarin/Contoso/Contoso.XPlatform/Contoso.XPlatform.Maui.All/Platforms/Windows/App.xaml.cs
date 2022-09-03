@@ -24,21 +24,16 @@ namespace Contoso.XPlatform.WinUI
             this.InitializeComponent();
         }
 
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
-        {
-            base.OnLaunched(args);
-        }
-
-        private void ConfigureServices(IServiceCollection services)
-        {
-            services.AddSingleton<IAppLogger, AppLogger>();
-        }
-
         protected override MauiApp CreateMauiApp()
         {
             MauiApp mauiApp = MauiProgram.CreateMauiApp();
             MauiProgram.Init(ConfigureServices);
             return mauiApp;
+        }
+
+        private void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<IAppLogger, AppLogger>();
         }
     }
 }
