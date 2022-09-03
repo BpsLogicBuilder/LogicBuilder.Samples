@@ -12,7 +12,7 @@
         <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
         <converters:MenuItemColorConverter x:Key="MenuItemColorConverter" />
     </ContentPage.Resources>
-    <VerticalStackLayout>
+    <Grid>
         <CollectionView x:Name="MenuItemsListView"
                         BackgroundColor="{DynamicResource ResultListBackgroundColor}"
                         SelectionMode="Single"
@@ -26,19 +26,23 @@
                         </Grid.ColumnDefinitions>
                         <Label 
                                 Padding="4,2,0,0"
-                                FontSize="18"
+                                Style="{StaticResource ListItemTextStyle}"
                                 Text="{Binding Path=Icon, Converter={StaticResource FontAwesomeConverter}}" 
                                 FontFamily="{StaticResource FontAwesomeSolid}"
                                 TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}"  />
                         <Label 
                                 Grid.Column="1" 
-                                FontSize="18"
+                                Margin="4,0,0,0"
                                 Text="{Binding Text}"
-                                Style="{DynamicResource ListItemTextStyle}"
+                                Style="{StaticResource ListItemTextStyle}"
                                 TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}"  />
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
-                                <VisualState Name="Normal" />
+                                <VisualState Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Property="BackgroundColor" Value="Transparent" />
+                                    </VisualState.Setters>
+                                </VisualState>
                                 <VisualState Name="Selected">
                                     <VisualState.Setters>
                                         <Setter Property="BackgroundColor" Value="{DynamicResource CommandButtonBackgroundColor}" />
@@ -50,5 +54,5 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-    </VerticalStackLayout>
+    </Grid>
 </ContentPage>

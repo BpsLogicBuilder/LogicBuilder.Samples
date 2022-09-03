@@ -26,6 +26,7 @@
     </OnPlatform>
 
     <Style TargetType="Label" x:Key="BodyTextStyle">
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize">
             <OnPlatform x:TypeArguments="x:Double">
                 <On Platform="Android, Tizen">16</On>
@@ -35,7 +36,19 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Label" x:Key="ListItemTextStyle">
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
+        <Setter Property="FontSize">
+            <OnPlatform x:TypeArguments="x:Double">
+                <On Platform="Android, Tizen">17</On>
+                <On Platform="iOS, MacCatalyst">17</On>
+                <On Platform="WinUI">22.667</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
     <Style TargetType="Label" x:Key="SubtitleTextStyle">
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize">
             <OnPlatform x:TypeArguments="x:Double">
                 <On Platform="Android, Tizen">16</On>
@@ -46,6 +59,7 @@
     </Style>
 
     <Style TargetType="Label" x:Key="TitleTextStyle">
+        <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize">
             <OnPlatform x:TypeArguments="x:Double">
                 <On Platform="Android, Tizen">24</On>
@@ -68,13 +82,6 @@
         <Setter Property="Margin" Value="0" />
         <Setter Property="BackgroundColor" Value="{DynamicResource ResultListBackgroundColor}" />
         <Setter Property="VerticalOptions" Value="Start" />
-    </Style>
-
-    <Style TargetType="Label" x:Key="ResultListLabelStyle" BaseResourceKey="SubtitleTextStyle">
-        <Setter Property="Margin" Value="-20,-8,-20,0" />
-        <Setter Property="Padding" Value="20,20,20,2" />
-        <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-        <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
     <Style TargetType="Label" x:Key="HeaderStyle" BaseResourceKey="TitleTextStyle">
@@ -185,18 +192,18 @@
         <Setter Property="BackgroundColor" Value = "{DynamicResource EntryBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Label">
+    <Style TargetType="Label" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value = "{DynamicResource PrimaryTextColor}" />
     </Style>
 
-    <Style TargetType="Label" x:Key="DetailFormLabel">
+    <Style TargetType="Label" x:Key="DetailFormLabel" BaseResourceKey="BodyTextStyle">
         <Setter Property="Margin" Value = "0,10,0,0" />
         <Setter Property="Padding"  Value = "5,15,0,10" />
         <Setter Property="TextColor" Value = "{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource EntryBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Label" x:Key="EditFormLabel">
+    <Style TargetType="Label" x:Key="EditFormLabel" BaseResourceKey="BodyTextStyle">
         <Setter Property="Margin" Value = "0,10,0,0" />
         <Setter Property="Padding"  Value = "5,15,0,10" />
         <Setter Property="TextColor" Value = "{DynamicResource PrimaryTextColor}" />
@@ -209,7 +216,7 @@
         <Setter Property="BorderColor" Value = "{DynamicResource CommandButtonBorderColor}" />
     </Style>
 
-    <Style TargetType="Label" x:Key="ErrorTextStyle">
+    <Style TargetType="Label" x:Key="ErrorTextStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value = "{DynamicResource ErrorTextColor}"   />
         <Setter Property="FontSize" Value = "12"   />
     </Style>
@@ -286,7 +293,7 @@
         <Setter Property="Padding" Value="0"/>
     </Style>
 
-    <Style TargetType="Label" x:Key="PopupHeaderLabelStyle">
+    <Style TargetType="Label" x:Key="PopupHeaderLabelStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
         <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
         <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
@@ -387,6 +394,10 @@
     <Style TargetType="Button" x:Key="PopupAddButtonStyle" BasedOn="{StaticResource BaseCommandButtonStyle}">
         <Setter Property="Text" Value="{x:Static utils:FontAwesomeIconConstants.Plus}" />
         <Setter Property="FontFamily" Value="{StaticResource FontAwesomeSolid}" />
+    </Style>
+
+    <Style TargetType="Page" ApplyToDerivedTypes="True">
+        <Setter Property="Padding" Value="0"/>
     </Style>
 
     <DataTemplate x:Key="CommndButtonItemTemplate" x:DataType="config:CommandButtonDescriptor" >
