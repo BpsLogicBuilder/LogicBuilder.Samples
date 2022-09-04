@@ -145,10 +145,16 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 #endif
                     return;
                 }
-
-                Items = null;
-                await System.Threading.Tasks.Task.Delay(400);
-                Items = ((GetListResponse)response).List.Cast<object>().ToList();
+#if ANDROID
+                //This Xamarin.Forms Android issue no longer seems to be a problem in MAUI
+                //Items = null;
+                //await System.Threading.Tasks.Task.Delay(400);
+#endif
+#if WINDOWS
+                //MAUI bug https://github.com/dotnet/maui/issues/9739
+                Items = new List<object>(((GetListResponse)response).List);
+#endif
+                Items = new List<object>(((GetListResponse)response).List);
                 OnPropertyChanged(nameof(SelectedItem));
 
                 this.Title = this._dropDownTemplate.TitleText;

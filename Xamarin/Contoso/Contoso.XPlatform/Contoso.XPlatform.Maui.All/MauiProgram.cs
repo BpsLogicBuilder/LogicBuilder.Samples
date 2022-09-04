@@ -51,11 +51,11 @@ namespace Contoso.XPlatform
             return builder.Build();
         }
 
-        public static void Init(Action<IServiceCollection> nativeConfigurationServices)
+        public static void Init(Action<IServiceCollection> platformConfigurationServices)
         {
             var services = new ServiceCollection();
 
-            nativeConfigurationServices(services);
+            platformConfigurationServices(services);
             ConfigureServices(services);
             App.ServiceCollection = services;
             App.ServiceProvider = App.ServiceCollection.BuildServiceProvider();
@@ -91,6 +91,10 @@ namespace Contoso.XPlatform
                 .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
                 .AddSingleton<IContextProvider, ContextProvider>()
                 .AddSingleton<IRulesLoader, RulesLoader>()
+                /*To use the extended splash (useful for low powered devices)
+                 * 1) Comment out .AddRulesCache()
+                 * 2) In App.CreateWindow(), replace return new Microsoft.Maui.Controls.Window(new MainPageView()); with return new Microsoft.Maui.Controls.Window(newExtendedSplashView());
+                 */
                 .AddRulesCache()
                 .AddScoped<IFlowManager, FlowManager>()
                 .AddScoped<FlowActivityFactory, FlowActivityFactory>()

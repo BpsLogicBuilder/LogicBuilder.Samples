@@ -16,6 +16,11 @@ namespace Contoso.XPlatform
         protected override Window CreateWindow(IActivationState? activationState)
         {
             return new Microsoft.Maui.Controls.Window(new MainPageView());
+            /*To use the extended splash (useful for low powered devices)
+                 * 1) Replace return new Microsoft.Maui.Controls.Window(new MainPageView()); with return new Microsoft.Maui.Controls.Window(newExtendedSplashView());
+                 * 2) In App.CreateWindow(), comment out .AddRulesCache()
+                 */
+            //return new Microsoft.Maui.Controls.Window(new ExtendedSplashView());
         }
 
         public const string BASE_URL = "https://contosoapibps.azurewebsites.net/";
