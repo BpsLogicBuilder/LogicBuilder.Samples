@@ -32,10 +32,17 @@
                                 TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}"  />
                         <Label 
                                 Grid.Column="1" 
-                                Margin="4,0,0,0"
                                 Text="{Binding Text}"
                                 Style="{StaticResource ListItemTextStyle}"
-                                TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}"  />
+                                TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}">
+                            <Label.Margin>
+                                <OnPlatform x:TypeArguments="Thickness">
+                                    <On Platform="Android, Tizen" Value="7,0,0,0" />
+                                    <On Platform="iOS, MacCatalyst" Value="7,0,0,0" />
+                                    <On Platform="WinUI" Value="20,0,0,0" />
+                                </OnPlatform>
+                            </Label.Margin>
+                        </Label>
                         <VisualStateManager.VisualStateGroups>
                             <VisualStateGroup Name="CommonStates">
                                 <VisualState Name="Normal">

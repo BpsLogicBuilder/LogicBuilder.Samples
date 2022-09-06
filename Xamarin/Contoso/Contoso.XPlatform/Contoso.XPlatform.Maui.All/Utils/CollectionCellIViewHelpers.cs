@@ -22,10 +22,9 @@ namespace Contoso.XPlatform.Utils
             };
         }
 
-        private static StackLayout GetCheckboxControl(string field, FontAttributes fontAttributes)
+        private static HorizontalStackLayout GetCheckboxControl(string field, FontAttributes fontAttributes)
             => new()
             {
-                Orientation = StackOrientation.Horizontal,
                 IsEnabled = false,
                 Children =
                 {
@@ -43,10 +42,9 @@ namespace Contoso.XPlatform.Utils
                 }
             };
 
-        private static StackLayout GetSwitchFieldControl(string field, FontAttributes fontAttributes)
+        private static HorizontalStackLayout GetSwitchFieldControl(string field, FontAttributes fontAttributes)
             => new()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch

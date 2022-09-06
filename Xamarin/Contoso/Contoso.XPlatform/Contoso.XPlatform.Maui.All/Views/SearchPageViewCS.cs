@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.Views
 
         public SearchPageCollectionViewModelBase searchPageListViewModel { get; set; }
         private Grid transitionGrid;
-        private StackLayout page;
+        private VerticalStackLayout page;
 
         protected async override void OnAppearing()
         {
@@ -40,7 +40,7 @@ namespace Contoso.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new StackLayout
+                        page = new VerticalStackLayout
                         {
                             Padding = new Thickness(30),
                             Children =
@@ -65,6 +65,7 @@ namespace Contoso.XPlatform.Views
                                 .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageCollectionViewModelBase.FilterPlaceholder))),
                                 new RefreshView
                                 {
+                                    Margin = new Thickness(0, 10, 0, 0),
                                     Content = new CollectionView
                                     {
                                         Style = LayoutHelpers.GetStaticStyleResource("SearchFormCollectionViewStyle"),

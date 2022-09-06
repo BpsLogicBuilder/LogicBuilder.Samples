@@ -42,7 +42,7 @@
             <OnPlatform x:TypeArguments="x:Double">
                 <On Platform="Android, Tizen">17</On>
                 <On Platform="iOS, MacCatalyst">17</On>
-                <On Platform="WinUI">22.667</On>
+                <On Platform="WinUI">17</On>
             </OnPlatform>
         </Setter>
     </Style>
@@ -113,7 +113,7 @@
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="Margin" Value="0,5,0,0" />
+        <Setter Property="Margin" Value="0,15,0,0" />
     </Style>
 
     <Style TargetType="Label" x:Key="TextFormItemLabelStyle" BaseResourceKey="BodyTextStyle">
@@ -161,7 +161,7 @@
                             <Setter Property="Color" Value="{DynamicResource CheckBoxColor}" />
                         </VisualState.Setters>
                     </VisualState>
-
+                    
                     <VisualState x:Name="IsChecked">
                         <VisualState.Setters>
                             <Setter Property="Color" Value="{DynamicResource CheckBoxCheckedColor}" />
@@ -221,7 +221,7 @@
         <Setter Property="FontSize" Value = "12"   />
     </Style>
 
-    <Style TargetType="StackLayout" x:Key="MultiSelectPopupViewStyle">
+    <Style TargetType="VerticalStackLayout" x:Key="MultiSelectPopupViewStyle">
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
         <Setter Property="HeightRequest" Value="464"/>
         <Setter Property="WidthRequest" Value="330"/>
@@ -229,7 +229,7 @@
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
 
-    <Style TargetType="StackLayout" x:Key="FormArrayPopupViewStyle">
+    <Style TargetType="VerticalStackLayout" x:Key="FormArrayPopupViewStyle">
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
         <Setter Property="HeightRequest" Value="464"/>
         <Setter Property="WidthRequest" Value="330"/>
@@ -237,7 +237,7 @@
         <Setter Property="VerticalOptions" Value="Center"/>
     </Style>
 
-    <Style TargetType="StackLayout" x:Key="ChildFormPopupViewStyle">
+    <Style TargetType="VerticalStackLayout" x:Key="ChildFormPopupViewStyle">
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
         <Setter Property="HeightRequest" Value="464"/>
         <Setter Property="WidthRequest" Value="330"/>
@@ -307,24 +307,29 @@
     </Style>
 
     <Style TargetType="CollectionView" x:Key="MultiSelectPopupCollectionViewStyle">
+        <Setter Property="Margin" Value="0, 10, 0, 0"/>
         <Setter Property="SelectionMode" Value="Multiple"/>
         <Setter Property="HeightRequest" Value="340"/>
     </Style>
 
     <Style TargetType="CollectionView" x:Key="FormArrayPopupCollectionViewStyle">
+        <Setter Property="Margin" Value="0, 10, 0, 0"/>
         <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="HeightRequest" Value="340"/>
     </Style>
 
     <Style TargetType="CollectionView" x:Key="SearchFormCollectionViewStyle">
+        <Setter Property="Margin" Value="0, 10, 0, 0"/>
         <Setter Property="SelectionMode" Value="Single"/>
     </Style>
 
     <Style TargetType="CollectionView" x:Key="ListFormCollectionViewStyle">
+        <Setter Property="Margin" Value="0, 10, 0, 0"/>
         <Setter Property="SelectionMode" Value="None"/>
     </Style>
 
     <Style TargetType="CollectionView" x:Key="ChildFormPopupCollectionViewStyle">
+        <Setter Property="Margin" Value="0, 10, 0, 0"/>
         <Setter Property="SelectionMode" Value="None"/>
         <Setter Property="HeightRequest" Value="340"/>
     </Style>
@@ -400,7 +405,7 @@
         <Setter Property="Padding" Value="0"/>
     </Style>
 
-    <DataTemplate x:Key="CommndButtonItemTemplate" x:DataType="config:CommandButtonDescriptor" >
+    <DataTemplate x:Key="CommndButtonItemTemplate" x:DataType="config:CommandButtonDescriptor">
         <Grid>
             <Frame
                         Margin="5"

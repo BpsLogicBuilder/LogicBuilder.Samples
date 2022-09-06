@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Views
 
         private readonly DetailFormEntityViewModelBase detailFormEntityViewModel;
         private Grid transitionGrid;
-        private StackLayout page;
+        private VerticalStackLayout page;
 
         protected async override void OnAppearing()
         {
@@ -60,7 +60,7 @@ namespace Contoso.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new StackLayout
+                        page = new VerticalStackLayout
                         {
                             Padding = new Thickness(30),
                             Children =
@@ -96,7 +96,7 @@ namespace Contoso.XPlatform.Views
                                 {
                                     Content = detailFormEntityViewModel.FormLayout.ControlGroupBoxList.Aggregate
                                     (
-                                        new StackLayout(),
+                                        new VerticalStackLayout(),
                                         (stackLayout, controlBox) =>
                                         {
                                             if (controlBox.IsVisible == false)
@@ -117,7 +117,7 @@ namespace Contoso.XPlatform.Views
                                             );
                                             stackLayout.Children.Add
                                             (
-                                                new StackLayout
+                                                new VerticalStackLayout
                                                 {
                                                     VerticalOptions = LayoutOptions.Start,
                                                     BindingContext = controlBox

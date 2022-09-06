@@ -1,4 +1,4 @@
-using Contoso.Forms.Configuration.Navigation;
+using AutoMapper;
 using Contoso.XPlatform.Flow;
 using Contoso.XPlatform.Flow.Settings;
 using Contoso.XPlatform.Services;
@@ -9,6 +9,7 @@ using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Devices;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Views;
@@ -38,6 +39,7 @@ public partial class MainPageView : FlyoutPage
     #region Fields
     private UiNotificationService? _uiNotificationService;
     private IAppLogger? _appLogger;
+    private IMapper? _mapper;
     #endregion Fields
 
     #region Properties
@@ -77,6 +79,17 @@ public partial class MainPageView : FlyoutPage
             return _appLogger;
         }
     }
+
+    public IMapper Mapper
+    {
+        get
+        {
+            if (_mapper == null)
+                _mapper = App.ServiceProvider.GetRequiredService<IMapper>();
+
+            return _mapper;
+        }
+    }
     #endregion Properties
 
     #region Methods
@@ -90,18 +103,39 @@ public partial class MainPageView : FlyoutPage
     {
         flowSettings.FlowDataCache.NavigationBar.MenuItems
             .ForEach(item => item.Active = item.InitialModule == flowSettings.FlowDataCache.NavigationBar.CurrentModule);
-        
+
         ChangePage(flowSettings.ScreenSettings.CreatePage());
 
         UpdateNavigationMenu(flowSettings);
     }
 
     private void UpdateNavigationMenu(FlowSettings flowSettings)
-        => ViewModel.MenuItems = new ObservableCollection<NavigationMenuItemDescriptor>(flowSettings.FlowDataCache.NavigationBar.MenuItems);
-
-    private void ChangePage(Page page)
     {
-        MainThread.BeginInvokeOnMainThread
+        List<FlyoutMenuItem> menuItems = Mapper.Map<List<FlyoutMenuItem>>(flowSettings.FlowDataCache.NavigationBar.MenuItems);
+
+        if (menuItems.Count == ViewModel.MenuItems.Count)
+        {
+            for (int i = 0; i < menuItems.Count; i++)
+            {
+                if (!menuItems[i].Equals(ViewModel.MenuItems[i]))
+                {
+                    ViewModel.MenuItems[i].Text = menuItems[i].Text;
+                    ViewModel.MenuItems[i].Active = menuItems[i].Active;
+                }
+            }
+
+            return;//Updating the active state prevents flicker on WinUI
+        }
+
+        ViewModel.MenuItems = new ObservableCollection<FlyoutMenuItem>
+        (
+            menuItems
+        );
+    }
+
+    private async void ChangePage(Page page)
+    {
+        await MainThread.InvokeOnMainThreadAsync
         (
             () => Detail = MainPageView.GetNavigationPage(page)
         );
@@ -121,13 +155,9 @@ public partial class MainPageView : FlyoutPage
 
     private static FlyoutLayoutBehavior GetFlyoutLayoutBehavior()
     {
-        //if (DeviceInfo.Platform == DevicePlatform.WinUI)
-        //return IsPortrait ? FlyoutLayoutBehavior.Popover : FlyoutLayoutBehavior.Split;
-
-        //return FlyoutLayoutBehavior.Popover;
         return DeviceInfo.Platform == DevicePlatform.WinUI
-            ? FlyoutLayoutBehavior.SplitOnLandscape
-            : FlyoutLayoutBehavior.Popover;
+            ? FlyoutLayoutBehavior.Default
+            : FlyoutLayoutBehavior.Popover;/*Flyout page issues on ios and Android https://github.com/dotnet/maui/issues/7520 */
     }
     #endregion Methods
 
@@ -136,7 +166,7 @@ public partial class MainPageView : FlyoutPage
         if (e.CurrentSelection.Count != 1)
             return;
 
-        if (e.CurrentSelection[0] is not NavigationMenuItemDescriptor item)
+        if (e.CurrentSelection[0] is not FlyoutMenuItem item)
             return;
 
         if (item.Active)

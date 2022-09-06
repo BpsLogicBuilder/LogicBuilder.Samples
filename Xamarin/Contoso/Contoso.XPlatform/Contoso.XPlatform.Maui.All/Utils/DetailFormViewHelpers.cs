@@ -13,7 +13,7 @@ namespace Contoso.XPlatform.Utils
         {
             CheckboxTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -24,7 +24,7 @@ namespace Contoso.XPlatform.Utils
             ),
             DateTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -35,7 +35,7 @@ namespace Contoso.XPlatform.Utils
             ),
             FormGroupArrayTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -46,7 +46,7 @@ namespace Contoso.XPlatform.Utils
             ),
             HiddenTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     IsVisible = false,
                     HeightRequest = 1
@@ -54,7 +54,7 @@ namespace Contoso.XPlatform.Utils
             ),
             MultiSelectTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -65,7 +65,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PasswordTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -76,7 +76,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PopupFormGroupTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -87,7 +87,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PickerTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -98,7 +98,7 @@ namespace Contoso.XPlatform.Utils
             ),
             SwitchTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -109,7 +109,7 @@ namespace Contoso.XPlatform.Utils
             ),
             TextTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -127,10 +127,9 @@ namespace Contoso.XPlatform.Utils
                 nameof(TextFieldReadOnlyObject<string>.DisplayText)
             );
 
-        private static StackLayout GetCheckboxControl()
-            => new StackLayout()
+        private static HorizontalStackLayout GetCheckboxControl()
+            => new HorizontalStackLayout()
             {
-                Orientation = StackOrientation.Horizontal,
                 IsEnabled = false,
                 Children =
                 {
@@ -148,10 +147,9 @@ namespace Contoso.XPlatform.Utils
                 }
             };
 
-        private static StackLayout GetSwitchFieldControl()
-            => new StackLayout()
+        private static HorizontalStackLayout GetSwitchFieldControl()
+            => new HorizontalStackLayout()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch

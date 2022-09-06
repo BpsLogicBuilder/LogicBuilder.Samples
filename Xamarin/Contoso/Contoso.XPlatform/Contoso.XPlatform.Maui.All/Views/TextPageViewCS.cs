@@ -22,7 +22,7 @@ namespace Contoso.XPlatform.Views
 
         public TextPageScreenViewModel textPageScreenViewModel { get; set; }
         private Grid transitionGrid;
-        private StackLayout page;
+        private VerticalStackLayout page;
 
         protected async override void OnAppearing()
         {
@@ -61,7 +61,7 @@ namespace Contoso.XPlatform.Views
         [MemberNotNull(nameof(page))]
         private View GetScrollViewContent()
         {
-            page = new StackLayout
+            page = new VerticalStackLayout
             {
                 Padding = new Thickness(30),
                 Children =
@@ -136,8 +136,8 @@ namespace Contoso.XPlatform.Views
                         new TapGestureRecognizer
                         {
                             CommandParameter = spanItemDescriptor.Url
-                        }
-                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: "TapCommand"))
+                        }/*Tap Gesture not working https://github.com/dotnet/maui/issues/4734 */
+                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: nameof(TextPageScreenViewModel.TapCommand)))
                     }
                 };
 
@@ -160,7 +160,7 @@ namespace Contoso.XPlatform.Views
                         {
                             CommandParameter = labelItemDescriptor.Url
                         }
-                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: "TapCommand"))
+                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: nameof(TextPageScreenViewModel.TapCommand)))
                     }
                 };
 

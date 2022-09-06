@@ -137,7 +137,7 @@ namespace Contoso.XPlatform.Utils
                             Style = GetStaticStyleResource(ItemStyleNames.HeaderTextDetailListItemStyle),
                             Children =
                             {
-                                new StackLayout
+                                new VerticalStackLayout
                                 {
                                     Margin = new Thickness(2),
                                     Padding = new Thickness(7),
@@ -175,7 +175,7 @@ namespace Contoso.XPlatform.Utils
                             Style = GetStaticStyleResource(ItemStyleNames.TextDetailListItemStyle),
                             Children =
                             {
-                                new StackLayout
+                                new VerticalStackLayout
                                 {
                                     Margin = new Thickness(2),
                                     Padding = new Thickness(7),
@@ -236,8 +236,8 @@ namespace Contoso.XPlatform.Utils
             => new ToolbarItem
             {
                 AutomationId = button.ShortString,
-                    //Text = button.LongString,
-                    IconImageSource = new FontImageSource
+                //Text = button.LongString,
+                IconImageSource = new FontImageSource
                 {
                     FontFamily = EditFormViewHelpers.GetFontAwesomeFontFamily(),
                     Glyph = FontAwesomeIcons.Solid[button.ButtonIcon],

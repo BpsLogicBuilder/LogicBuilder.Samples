@@ -33,7 +33,7 @@ namespace Contoso.XPlatform.Views
                 {
                     new ContentView
                     {
-                        Content = new StackLayout
+                        Content = new VerticalStackLayout
                         {
                             Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupViewStyle"),
                             Children =
@@ -72,13 +72,13 @@ namespace Contoso.XPlatform.Views
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding("CancelCommand"))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.CancelCommand)))
                                         .SetGridColumn(1),
                                         new Button
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupAcceptButtonStyle")
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding("SubmitCommand"))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SubmitCommand)))
                                         .SetGridColumn(2)
                                     }
                                 }

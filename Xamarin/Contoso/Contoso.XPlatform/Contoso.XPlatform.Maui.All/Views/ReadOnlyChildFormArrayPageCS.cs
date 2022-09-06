@@ -33,7 +33,7 @@ namespace Contoso.XPlatform.Views
                 {
                     new ContentView
                     {
-                        Content = new StackLayout
+                        Content = new VerticalStackLayout
                         {
                             Style = LayoutHelpers.GetStaticStyleResource("FormArrayPopupViewStyle"),
                             Children =

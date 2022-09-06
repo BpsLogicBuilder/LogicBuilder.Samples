@@ -34,7 +34,7 @@ namespace Contoso.XPlatform.Views
                 {
                     new ContentView
                     {
-                        Content = new StackLayout
+                        Content = new VerticalStackLayout
                         {
                             Style = LayoutHelpers.GetStaticStyleResource("ChildFormPopupViewStyle"),
                             Children =
@@ -55,7 +55,7 @@ namespace Contoso.XPlatform.Views
                                     Style = LayoutHelpers.GetStaticStyleResource("ChildFormPopupScrollViewStyle"),
                                     Content = this.formLayout.ControlGroupBoxList.Aggregate
                                     (
-                                        new StackLayout(),
+                                        new VerticalStackLayout(),
                                         (stackLayout, controlBox) =>
                                         {
                                             if (controlBox.IsVisible == false)
@@ -76,7 +76,7 @@ namespace Contoso.XPlatform.Views
                                             );
                                             stackLayout.Children.Add
                                             (
-                                                new StackLayout
+                                                new VerticalStackLayout
                                                 {
                                                     VerticalOptions = LayoutOptions.Start,
                                                     BindingContext = controlBox

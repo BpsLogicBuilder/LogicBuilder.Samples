@@ -14,6 +14,7 @@ using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
 using Contoso.XPlatform.ViewModels;
 using Akavache;
+using Contoso.XPlatform.MappingProfiles;
 
 namespace Contoso.XPlatform
 {
@@ -81,7 +82,7 @@ namespace Contoso.XPlatform
                 (
                     new MapperConfiguration(cfg =>
                     {
-                        cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile));
+                        cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile), typeof(MeuItemProfile));
                         cfg.AllowNullCollections = true;
                     })
                 )

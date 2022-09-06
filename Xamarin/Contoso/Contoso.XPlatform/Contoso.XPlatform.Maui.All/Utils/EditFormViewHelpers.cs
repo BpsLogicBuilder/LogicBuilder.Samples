@@ -24,7 +24,7 @@ namespace Contoso.XPlatform.Utils
                         Style = LayoutHelpers.GetStaticStyleResource("MultiSelectItemStyle"),
                         Children =
                         {
-                            new StackLayout
+                            new VerticalStackLayout
                             {
                                 Margin = new Thickness(2),
                                 Padding = new Thickness(7),
@@ -49,7 +49,7 @@ namespace Contoso.XPlatform.Utils
         {
             TextTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -61,7 +61,7 @@ namespace Contoso.XPlatform.Utils
             ),
             LabelTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -73,7 +73,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PasswordTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -85,7 +85,7 @@ namespace Contoso.XPlatform.Utils
             ),
             DateTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -97,7 +97,7 @@ namespace Contoso.XPlatform.Utils
             ),
             CheckboxTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -109,7 +109,7 @@ namespace Contoso.XPlatform.Utils
             ),
             SwitchTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -121,7 +121,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PickerTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -133,7 +133,7 @@ namespace Contoso.XPlatform.Utils
             ),
             MultiSelectTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -145,7 +145,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PopupFormGroupTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -157,7 +157,7 @@ namespace Contoso.XPlatform.Utils
             ),
             FormGroupArrayTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -169,7 +169,7 @@ namespace Contoso.XPlatform.Utils
             ),
             HiddenTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     IsVisible = false,
                     HeightRequest = 1
@@ -177,10 +177,9 @@ namespace Contoso.XPlatform.Utils
             )
         };
 
-        public static StackLayout GetCheckboxForValidation()
-            => new StackLayout()
+        public static HorizontalStackLayout GetCheckboxForValidation()
+            => new HorizontalStackLayout()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new CheckBox
@@ -204,10 +203,9 @@ namespace Contoso.XPlatform.Utils
                 }
             };
 
-        public static StackLayout GetSwitchForValidation()
-            => new StackLayout()
+        public static HorizontalStackLayout GetSwitchForValidation()
+            => new HorizontalStackLayout()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch
