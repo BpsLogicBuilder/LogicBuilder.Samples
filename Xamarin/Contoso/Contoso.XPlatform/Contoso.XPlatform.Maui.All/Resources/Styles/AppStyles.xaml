@@ -154,8 +154,6 @@
     </Style>
 
     <Style TargetType="ContentView" x:Key="PopupDialogContentViewStyle">
-        <Setter Property="HorizontalOptions" Value="Fill" />
-        <Setter Property="VerticalOptions" Value="Fill" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PopupViewBackgroundColor}" />
         <Setter Property="AbsoluteLayout.LayoutBounds" Value="0.00, 0.00, 1, 1" />
         <Setter Property="AbsoluteLayout.LayoutFlags" Value="All" />

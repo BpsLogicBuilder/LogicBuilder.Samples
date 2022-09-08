@@ -215,6 +215,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                 if (property is IDisposable disposable)
                     Dispose(disposable);
             }
+            GC.SuppressFinalize(this);
         }
 
         public override bool Validate()
