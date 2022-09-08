@@ -12,6 +12,7 @@
         public const string DetailFormEntryStyle = nameof(DetailFormEntryStyle);
         public const string DetailFormGroupHeaderStyle = nameof(DetailFormGroupHeaderStyle);
         public const string DetailFormLabel = nameof(DetailFormLabel);
+        public const string DetailFormStackLayoutStyle = nameof(DetailFormStackLayoutStyle);
 
         public const string EditFormGroupHeaderStyle = nameof(EditFormGroupHeaderStyle);
         public const string EditFormLabel = nameof(EditFormLabel);
@@ -56,5 +57,6 @@
         public const string TextFormItemLabelStyle = nameof(TextFormItemLabelStyle);
         public const string TextFormItemSpanStyle = nameof(TextFormItemSpanStyle);
         public const string TitleTextStyle = nameof(TitleTextStyle);
+        public const string TransitionGridStyle = nameof(TransitionGridStyle);
     }
 }

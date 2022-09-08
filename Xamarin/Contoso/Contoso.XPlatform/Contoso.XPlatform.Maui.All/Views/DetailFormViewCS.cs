@@ -1,14 +1,13 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.DetailForm;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
-using System.Linq;
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
-using Contoso.XPlatform.Constants;
+using System.Linq;
 
 namespace Contoso.XPlatform.Views
 {
@@ -63,7 +62,7 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new VerticalStackLayout
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormStackLayoutStyle),
                             Children =
                             {
                                 new Label
@@ -82,7 +81,7 @@ namespace Contoso.XPlatform.Views
                                 new Label
                                 {
                                     IsVisible = detailFormEntityViewModel.FormSettings.FormType == FormType.Delete,
-                                    Style = LayoutHelpers.GetStaticStyleResource("DetailFormDeleteQuestionStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormDeleteQuestionStyle)
                                 }
                                 .AddBinding
                                 (
@@ -107,7 +106,7 @@ namespace Contoso.XPlatform.Views
                                             (
                                                 new Label
                                                 {
-                                                    Style = LayoutHelpers.GetStaticStyleResource("DetailFormGroupHeaderStyle"),
+                                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormGroupHeaderStyle),
                                                     BindingContext = controlBox
                                                 }
                                                 .AddBinding
@@ -135,11 +134,10 @@ namespace Contoso.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty,
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

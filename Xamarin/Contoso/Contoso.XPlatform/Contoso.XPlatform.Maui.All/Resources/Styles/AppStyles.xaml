@@ -267,6 +267,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Grid" x:Key="TransitionGridStyle">
+        <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
+    </Style>
+
     <Style TargetType="Label" x:Key="BodyTextStyle">
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize">
@@ -460,6 +464,16 @@
         <Setter Property="Padding" Value="10,0" />
         <Setter Property="HorizontalOptions" Value="Center"/>
         <Setter Property="VerticalOptions" Value="Center"/>
+    </Style>
+
+    <Style TargetType="VerticalStackLayout" x:Key="DetailFormStackLayoutStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30</On>
+            </OnPlatform>
+        </Setter>
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="FormArrayPopupViewStyle">
