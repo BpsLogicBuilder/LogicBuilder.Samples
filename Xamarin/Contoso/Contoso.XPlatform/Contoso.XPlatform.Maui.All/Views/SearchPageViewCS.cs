@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.Views
 
         public SearchPageCollectionViewModelBase searchPageListViewModel { get; set; }
         private Grid transitionGrid;
-        private VerticalStackLayout page;
+        private Grid page;
 
         protected async override void OnAppearing()
         {
@@ -40,35 +40,65 @@ namespace Contoso.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new VerticalStackLayout
+                        page = new Grid
                         {
                             Padding = new Thickness(30),
+                            RowDefinitions =
+                            {
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                            },
                             Children =
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
-                                .AddBinding(Label.TextProperty, new Binding(nameof(SearchPageCollectionViewModelBase.Title))),
-                                new SearchBar
+                                .AddBinding(Label.TextProperty, new Binding(nameof(SearchPageCollectionViewModelBase.Title)))
+                                .SetGridRow(0),
+                                new Grid
                                 {
-                                    Behaviors =
+                                    ColumnDefinitions =
                                     {
-                                        new EventToCommandBehavior
+                                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) },
+                                        new ColumnDefinition { Width = new GridLength(1, GridUnitType.Auto) }
+                                    },
+                                    Children =
+                                    {
+                                        new SearchBar
                                         {
-                                            EventName = nameof(SearchBar.TextChanged),
+                                            HorizontalOptions = LayoutOptions.Fill,
+                                            Behaviors =
+                                            {
+                                                new EventToCommandBehavior
+                                                {
+                                                    EventName = nameof(SearchBar.TextChanged),
+                                                }
+                                                .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.TextChangedCommand)))
+                                            }
+                                        },
+#if WINDOWS
+                                        new Button
+                                        {
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PullButtonStyle),
                                         }
-                                        .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.TextChangedCommand)))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.RefreshCommand)))
+                                        .SetGridColumn(1)
+#endif
                                     }
                                 }
                                 .AddBinding(SearchBar.TextProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.SearchText)))
-                                .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageCollectionViewModelBase.FilterPlaceholder))),
+                                .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageCollectionViewModelBase.FilterPlaceholder)))
+                                .SetGridRow(1),
                                 new RefreshView
-                                {
-                                    Margin = new Thickness(0, 10, 0, 0),
+                                {/* RefreshView pulls to the right on iOS https://github.com/dotnet/maui/issues/7315 */
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SearchFormRefreshViewStyle),
+                                    VerticalOptions = LayoutOptions.Start,
                                     Content = new CollectionView
                                     {
-                                        Style = LayoutHelpers.GetStaticStyleResource("SearchFormCollectionViewStyle"),
+                                        ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical),
+                                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SearchFormCollectionViewStyle),
                                         ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                         (
                                             this.searchPageListViewModel.FormSettings.ItemTemplateName,
@@ -81,6 +111,7 @@ namespace Contoso.XPlatform.Views
                                 }
                                 .AddBinding(RefreshView.IsRefreshingProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.IsRefreshing)))
                                 .AddBinding(RefreshView.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.RefreshCommand)))
+                                .SetGridRow(2)
                             }
                         }
                     ),

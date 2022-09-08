@@ -28,4 +28,5 @@
     <Color x:Key="CheckBoxColor">#767676</Color>
     <Color x:Key="CheckBoxCheckedColor">#34C759</Color>
     <Color x:Key="CheckBoxDisabledColor">#B2109CF0</Color>
+    <Color x:Key="SearchBarDisabledTextColor">#404040</Color>
 </ResourceDictionary>

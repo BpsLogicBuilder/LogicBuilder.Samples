@@ -53,9 +53,21 @@ namespace Contoso.XPlatform.Utils
             return bindable;
         }
 
+        public static T SetGridColumnSpan<T>(this T bindable, int columnSpan) where T : BindableObject
+        {
+            Grid.SetColumnSpan(bindable, columnSpan);
+            return bindable;
+        }
+
         public static T SetGridRow<T>(this T bindable, int row) where T : BindableObject
         {
             Grid.SetRow(bindable, row);
+            return bindable;
+        }
+
+        public static T SetGridRowSpan<T>(this T bindable, int rowSpan) where T : BindableObject
+        {
+            Grid.SetRowSpan(bindable, rowSpan);
             return bindable;
         }
 
@@ -134,13 +146,12 @@ namespace Contoso.XPlatform.Utils
                     (
                         () => new Grid
                         {
-                            Style = GetStaticStyleResource(ItemStyleNames.HeaderTextDetailListItemStyle),
+                            Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailListItemStyle),
                             Children =
                             {
                                 new VerticalStackLayout
                                 {
-                                    Margin = new Thickness(2),
-                                    Padding = new Thickness(7),
+                                    Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailItemLayout),
                                     Children =
                                     {
                                         CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
@@ -172,13 +183,12 @@ namespace Contoso.XPlatform.Utils
                     (
                         () => new Grid
                         {
-                            Style = GetStaticStyleResource(ItemStyleNames.TextDetailListItemStyle),
+                            Style = GetStaticStyleResource(StyleKeys.TextDetailListItemStyle),
                             Children =
                             {
                                 new VerticalStackLayout
                                 {
-                                    Margin = new Thickness(2),
-                                    Padding = new Thickness(7),
+                                    Style = GetStaticStyleResource(StyleKeys.TextDetailItemLayout),
                                     Children =
                                     {
                                         CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
@@ -218,12 +228,6 @@ namespace Contoso.XPlatform.Utils
             public const string Header = "Header";
             public const string Text = "Text";
             public const string Detail = "Detail";
-        }
-
-        private struct ItemStyleNames
-        {
-            public const string TextDetailListItemStyle = "TextDetailListItemStyle";
-            public const string HeaderTextDetailListItemStyle = "HeaderTextDetailListItemStyle";
         }
 
         internal static void AddToolBarItems(IList<ToolbarItem> toolbarItems, ICollection<CommandButtonDescriptor> buttons)

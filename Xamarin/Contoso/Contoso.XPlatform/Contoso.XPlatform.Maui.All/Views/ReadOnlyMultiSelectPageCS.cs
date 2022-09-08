@@ -32,9 +32,16 @@ namespace Contoso.XPlatform.Views
                 {
                     new ContentView
                     {
-                        Content = new VerticalStackLayout
+                        Content = new Grid
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupViewStyle"),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupViewStyle),
+                            RowDefinitions =
+                            {
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                            },
                             Children =
                             {
                                 new Grid
@@ -47,22 +54,18 @@ namespace Contoso.XPlatform.Views
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
                                         }.AddBinding(Label.TextProperty, new Binding("Title"))
                                     }
-                                },
-                                new Grid
+                                }
+                                .SetGridRow(0),
+                                new CollectionView
                                 {
-                                    Children =
-                                    {
-                                        new CollectionView
-                                        {
-                                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
-                                            ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
-                                        }
-                                        .AddBinding(ItemsView.ItemsSourceProperty, new Binding("Items"))
-                                        .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding("SelectedItems")),
-                                        new BoxView()
-                                    }
-                                },
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") },
+                                    Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
+                                    ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                }
+                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
+                                .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems), BindingMode.OneWay))
+                                .SetGridRow(1),
+                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") }
+                                .SetGridRow(2),
                                 new Grid
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
@@ -78,10 +81,11 @@ namespace Contoso.XPlatform.Views
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding("CancelCommand"))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.CancelCommand)))
                                         .SetGridColumn(2)
                                     }
                                 }
+                                .SetGridRow(3)
                             }
                         }
                     }

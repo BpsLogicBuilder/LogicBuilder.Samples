@@ -33,9 +33,16 @@ namespace Contoso.XPlatform.Views
                 {
                     new ContentView
                     {
-                        Content = new VerticalStackLayout
+                        Content = new Grid
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupViewStyle"),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupViewStyle),
+                            RowDefinitions =
+                            {
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                            },
                             Children =
                             {
                                 new Grid
@@ -48,15 +55,18 @@ namespace Contoso.XPlatform.Views
                                             Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
                                         }.AddBinding(Label.TextProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Title)))
                                     }
-                                },
+                                }
+                                .SetGridRow(0),
                                 new CollectionView
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
                                     ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
                                 }
                                 .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Items)))
-                                .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SelectedItems))),
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") },
+                                .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SelectedItems)))
+                                .SetGridRow(1),
+                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") }
+                                .SetGridRow(2),
                                 new Grid
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
@@ -82,6 +92,7 @@ namespace Contoso.XPlatform.Views
                                         .SetGridColumn(2)
                                     }
                                 }
+                                .SetGridRow(3),
                             }
                         }
                     }
@@ -96,7 +107,7 @@ namespace Contoso.XPlatform.Views
             this.BindingContext = this.multiSelectValidatable;
         }
 
-        private IValidatable multiSelectValidatable;
-        private MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
+        private readonly IValidatable multiSelectValidatable;
+        private readonly MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
     }
 }

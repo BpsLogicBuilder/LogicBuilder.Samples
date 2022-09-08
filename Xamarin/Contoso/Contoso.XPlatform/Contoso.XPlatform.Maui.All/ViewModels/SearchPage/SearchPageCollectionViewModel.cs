@@ -320,7 +320,6 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
             this.FormSettings.SortCollection.Skip = (defaultSkip ?? 0) + this._entitiesDictionary.Count;
 
-            IsRefreshing = true;
             BaseResponse baseResponse = await GetList();
             IsRefreshing = false;
 

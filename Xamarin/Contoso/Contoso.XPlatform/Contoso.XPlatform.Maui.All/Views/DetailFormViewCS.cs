@@ -67,7 +67,7 @@ namespace Contoso.XPlatform.Views
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
                                 .AddBinding
                                 (

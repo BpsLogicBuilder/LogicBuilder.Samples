@@ -2031,4 +2031,17 @@ namespace Contoso.XPlatform.Utils
         public const string InlineFormGroupTemplate = "InlineFormGroupTemplate";
         public const string PopupFormGroupTemplate = "PopupFormGroupTemplate";
     }
+
+    public struct StyleKeys
+    {
+        public const string HeaderStyle = nameof(HeaderStyle);
+        public const string HeaderTextDetailListItemStyle = nameof(HeaderTextDetailListItemStyle);
+        public const string HeaderTextDetailItemLayout = nameof(HeaderTextDetailItemLayout);
+        public const string MultiSelectPopupViewStyle = nameof(MultiSelectPopupViewStyle);
+        public const string PullButtonStyle = nameof(PullButtonStyle);
+        public const string SearchFormCollectionViewStyle = nameof(SearchFormCollectionViewStyle);
+        public const string SearchFormRefreshViewStyle = nameof(SearchFormRefreshViewStyle);
+        public const string TextDetailItemLayout = nameof(TextDetailItemLayout);
+        public const string TextDetailListItemStyle = nameof(TextDetailListItemStyle);
+    }
 }

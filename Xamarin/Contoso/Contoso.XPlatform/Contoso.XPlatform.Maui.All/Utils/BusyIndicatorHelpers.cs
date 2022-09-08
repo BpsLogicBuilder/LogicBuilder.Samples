@@ -35,7 +35,9 @@ namespace Contoso.XPlatform.Utils
 
                 tasks.Remove(finishedTask);
             }
-
+#if ANDROID
+            await Task.Delay(100).ConfigureAwait(true);/*Busy Indicator window not closing.*/
+#endif
             await RemoveBusyIndaicator().ConfigureAwait(true);
 
             return response ?? throw new ArgumentException($"{nameof(response)}: {{189D9682-88D9-440C-BEEB-7B77E345FCA3}}");

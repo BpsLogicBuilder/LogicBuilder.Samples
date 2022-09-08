@@ -69,7 +69,7 @@ namespace Contoso.XPlatform.Views
                     new Label
                     {
                         Text = this.textPageScreenViewModel.Title,
-                        Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                     }
                 }
             };
