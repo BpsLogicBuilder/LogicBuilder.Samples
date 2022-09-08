@@ -39,8 +39,8 @@ namespace Contoso.XPlatform.Views
                             RowDefinitions =
                             {
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
-                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
                                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
                             },
                             Children =
@@ -63,6 +63,7 @@ namespace Contoso.XPlatform.Views
                                     ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
                                 }
                                 .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Items)))
+                                /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
                                 .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SelectedItems)))
                                 .SetGridRow(1),
                                 new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") }

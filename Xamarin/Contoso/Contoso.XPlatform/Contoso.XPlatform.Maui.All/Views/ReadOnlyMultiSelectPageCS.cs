@@ -38,8 +38,8 @@ namespace Contoso.XPlatform.Views
                             RowDefinitions =
                             {
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
-                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
                                 new RowDefinition { Height = new GridLength(1, GridUnitType.Star) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
                             },
                             Children =
@@ -56,13 +56,30 @@ namespace Contoso.XPlatform.Views
                                     }
                                 }
                                 .SetGridRow(0),
-                                new CollectionView
+                                new ScrollView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
-                                    ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                    Content = new Grid
+                                    {
+                                        new CollectionView
+                                        {
+                                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
+                                            ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                        }
+                                        .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
+                                        /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
+                                        .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems), BindingMode.OneWay)),
+                                        new BoxView()
+                                        {
+                                            GestureRecognizers =
+                                            {
+                                                new TapGestureRecognizer()
+                                                {
+                                                    Command = new Command(() => { })/*This prevents updates to the collection view*/
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
-                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
-                                .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems), BindingMode.OneWay))
                                 .SetGridRow(1),
                                 new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") }
                                 .SetGridRow(2),
