@@ -25,6 +25,19 @@
         <On Platform="WinUI" Value="/Assets/FontAwesome5Regular400.otf#Font Awesome 5 Free" />
     </OnPlatform>
 
+    <Style TargetType="AbsoluteLayout" x:Key="PopupDialogAbsoluteLayoutStyle">
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Fill" />
+    </Style>
+
+    <Style TargetType="ContentView" x:Key="PopupDialogContentViewStyle">
+        <Setter Property="HorizontalOptions" Value="Fill" />
+        <Setter Property="VerticalOptions" Value="Fill" />
+        <Setter Property="BackgroundColor" Value="{DynamicResource PopupViewBackgroundColor}" />
+        <Setter Property="AbsoluteLayout.LayoutBounds" Value="0.00, 0.00, 1, 1" />
+        <Setter Property="AbsoluteLayout.LayoutFlags" Value="All" />
+    </Style>
+
     <Style TargetType="Label" x:Key="BodyTextStyle">
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize">
@@ -320,6 +333,7 @@
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="TextDetailItemLayout">
+        <Setter Property="BackgroundColor" Value="{DynamicResource ResultListBackgroundColor}"/>
         <Setter Property="HeightRequest">
             <OnPlatform x:TypeArguments="x:Double">
                 <On Platform="Android, Tizen">65</On>
@@ -361,6 +375,7 @@
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="HeaderTextDetailItemLayout">
+        <Setter Property="BackgroundColor" Value="{DynamicResource ResultListBackgroundColor}"/>
         <Setter Property="HeightRequest">
             <OnPlatform x:TypeArguments="x:Double">
                 <On Platform="Android, Tizen">85</On>

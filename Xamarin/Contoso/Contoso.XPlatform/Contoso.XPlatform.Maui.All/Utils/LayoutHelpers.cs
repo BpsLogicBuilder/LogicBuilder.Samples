@@ -14,6 +14,7 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Layouts;
 using Microsoft.Maui;
+using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -174,7 +175,6 @@ namespace Contoso.XPlatform.Utils
                                         )
                                     }
                                 }
-                                .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                             }
                         }
                     );
@@ -205,7 +205,6 @@ namespace Contoso.XPlatform.Utils
                                         )
                                     }
                                 }
-                                .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                             }
                         }
                     );

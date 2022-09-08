@@ -1,4 +1,5 @@
 ﻿using Contoso.XPlatform.Behaviours;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.SearchPage;
@@ -77,7 +78,9 @@ namespace Contoso.XPlatform.Views
                                                 }
                                                 .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.TextChangedCommand)))
                                             }
-                                        },
+                                        }
+                                        .AddBinding(SearchBar.TextProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.SearchText)))
+                                        .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageCollectionViewModelBase.FilterPlaceholder))),
 #if WINDOWS
                                         new Button
                                         {
@@ -88,8 +91,6 @@ namespace Contoso.XPlatform.Views
 #endif
                                     }
                                 }
-                                .AddBinding(SearchBar.TextProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.SearchText)))
-                                .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageCollectionViewModelBase.FilterPlaceholder)))
                                 .SetGridRow(1),
                                 new RefreshView
                                 {/* RefreshView pulls to the right on iOS https://github.com/dotnet/maui/issues/7315 */

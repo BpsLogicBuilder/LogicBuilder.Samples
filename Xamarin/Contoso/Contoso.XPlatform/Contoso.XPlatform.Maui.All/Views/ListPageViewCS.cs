@@ -1,4 +1,5 @@
-﻿using Contoso.XPlatform.Utils;
+﻿using Contoso.XPlatform.Constants;
+using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ListPage;
 

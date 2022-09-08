@@ -7,6 +7,7 @@ using System;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
+using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Views
 {
