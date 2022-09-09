@@ -1,13 +1,11 @@
 ﻿using Contoso.Forms.Configuration.TextForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.TextPage;
-using System;
-
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
+using System;
 using System.Diagnostics.CodeAnalysis;
-using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Views
 {
@@ -15,13 +13,13 @@ namespace Contoso.XPlatform.Views
     {
         public TextPageViewCS(TextPageViewModel textPageViewModel)
         {
-            this.textPageScreenViewModel = textPageViewModel.TextPageScreenViewModel;
+            this.TextPageScreenViewModel = textPageViewModel.TextPageScreenViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
-            BindingContext = this.textPageScreenViewModel;
+            BindingContext = this.TextPageScreenViewModel;
         }
 
-        public TextPageScreenViewModel textPageScreenViewModel { get; set; }
+        public TextPageScreenViewModel TextPageScreenViewModel { get; set; }
         private Grid transitionGrid;
         private VerticalStackLayout page;
 
@@ -35,8 +33,8 @@ namespace Contoso.XPlatform.Views
         [MemberNotNull(nameof(transitionGrid), nameof(page))]
         private void AddContent()
         {
-            LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.textPageScreenViewModel.Buttons);
-            Title = this.textPageScreenViewModel.Title;
+            LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.TextPageScreenViewModel.Buttons);
+            Title = this.TextPageScreenViewModel.Title;
             Content = new Grid
             {
                 Children =
@@ -50,11 +48,10 @@ namespace Contoso.XPlatform.Views
         [MemberNotNull(nameof(transitionGrid))]
         private Grid GetTransitionGrid()
         {
-            transitionGrid = new Grid().AssignDynamicResource
-            (
-                VisualElement.BackgroundColorProperty,
-                "PageBackgroundColor"
-            );
+            transitionGrid = new Grid
+            {
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+            };
 
             return transitionGrid;
         }
@@ -64,18 +61,18 @@ namespace Contoso.XPlatform.Views
         {
             page = new VerticalStackLayout
             {
-                Padding = new Thickness(30),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextPageStackLayoutStyle),
                 Children =
                 {
                     new Label
                     {
-                        Text = this.textPageScreenViewModel.Title,
+                        Text = this.TextPageScreenViewModel.Title,
                         Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                     }
                 }
             };
 
-            foreach (var group in textPageScreenViewModel.FormSettings.TextGroups)
+            foreach (var group in TextPageScreenViewModel.FormSettings.TextGroups)
             {
                 page.Children.Add(GetGroupHeader(group));
                 foreach (LabelItemDescriptorBase item in group.Labels)
@@ -101,7 +98,7 @@ namespace Contoso.XPlatform.Views
 
             Label GetFornattedLabelItem(FormattedLabelItemDescriptor formattedItemDescriptor)
             {
-                Label formattedLabel = new Label
+                Label formattedLabel = new()
                 {
                     FormattedText = new FormattedString
                     {
@@ -128,10 +125,10 @@ namespace Contoso.XPlatform.Views
             }
 
             Span GetHyperLinkSpanItem(HyperLinkSpanItemDescriptor spanItemDescriptor)
-                => new Span
+                => new()
                 {
                     Text = spanItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormHyperLinkSpanStyle"),
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormHyperLinkSpanStyle),
                     GestureRecognizers =
                     {
                         new TapGestureRecognizer
@@ -143,18 +140,18 @@ namespace Contoso.XPlatform.Views
                 };
 
             Span GetSpanItem(SpanItemDescriptor spanItemDescriptor)
-                => new Span
+                => new()
                 {
                     Text = spanItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormItemSpanStyle")
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormItemSpanStyle)
                 };
 
 
             Label GetHyperLinkLabelItem(HyperLinkLabelItemDescriptor labelItemDescriptor)
-                => new Label
+                => new()
                 {
                     Text = labelItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormHyperLinkLabelStyle"),
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormHyperLinkLabelStyle),
                     GestureRecognizers =
                     {
                         new TapGestureRecognizer
@@ -166,17 +163,17 @@ namespace Contoso.XPlatform.Views
                 };
 
             Label GetLabelItem(LabelItemDescriptor labelItemDescriptor)
-                => new Label
+                => new()
                 {
                     Text = labelItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormItemLabelStyle")
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormItemLabelStyle)
                 };
 
             Label GetGroupHeader(TextGroupDescriptor textGroupDescriptor)
-                => new Label
+                => new()
                 {
                     Text = textGroupDescriptor.Title,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormGroupHeaderStyle")
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormGroupHeaderStyle)
                 };
         }
     }

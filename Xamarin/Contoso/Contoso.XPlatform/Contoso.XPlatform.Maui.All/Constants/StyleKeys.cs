@@ -61,6 +61,7 @@
         public const string TextFormHyperLinkSpanStyle = nameof(TextFormHyperLinkSpanStyle);
         public const string TextFormItemLabelStyle = nameof(TextFormItemLabelStyle);
         public const string TextFormItemSpanStyle = nameof(TextFormItemSpanStyle);
+        public const string TextPageStackLayoutStyle = nameof(TextPageStackLayoutStyle);
         public const string TitleTextStyle = nameof(TitleTextStyle);
         public const string TransitionGridStyle = nameof(TransitionGridStyle);
     }

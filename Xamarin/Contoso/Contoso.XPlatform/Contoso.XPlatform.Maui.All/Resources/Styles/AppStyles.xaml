@@ -593,4 +593,14 @@
             </OnPlatform>
         </Setter>
     </Style>
+
+    <Style TargetType="VerticalStackLayout" x:Key="TextPageStackLayoutStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
 </ResourceDictionary>
