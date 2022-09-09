@@ -5,6 +5,7 @@
         public const string BaseEntryStyle = nameof(BaseEntryStyle);
         public const string BodyTextStyle = nameof(BodyTextStyle);
 
+        public const string CheckBoxLabelStyle = nameof(CheckBoxLabelStyle);
         public const string ChildFormPopupScrollViewStyle = nameof(ChildFormPopupScrollViewStyle);
         public const string ChildFormPopupViewStyle = nameof(ChildFormPopupViewStyle);
 
@@ -24,6 +25,7 @@
         public const string HeaderStyle = nameof(HeaderStyle);
         public const string HeaderTextDetailListItemStyle = nameof(HeaderTextDetailListItemStyle);
         public const string HeaderTextDetailItemLayout = nameof(HeaderTextDetailItemLayout);
+        public const string HiddenTemplateStyle = nameof(HiddenTemplateStyle);
 
         public const string ListFormCollectionViewStyle = nameof(ListFormCollectionViewStyle);
         public const string ListItemStyle = nameof(ListItemStyle);
@@ -33,6 +35,7 @@
         public const string MultiSelectItemStyle = nameof(MultiSelectItemStyle);
         public const string MultiSelectPopupCollectionViewStyle = nameof(MultiSelectPopupCollectionViewStyle);
         public const string MultiSelectPopupViewStyle = nameof(MultiSelectPopupViewStyle);
+        public const string MultiSelectSingleFieldLabelStyle = nameof(MultiSelectSingleFieldLabelStyle);
         public const string MultiSelectSingleFieldLayoutStyle = nameof(MultiSelectSingleFieldLayoutStyle);
 
         public const string PopupAcceptButtonStyle = nameof(PopupAcceptButtonStyle);
@@ -53,6 +56,7 @@
         public const string SearchFormRefreshViewStyle = nameof(SearchFormRefreshViewStyle);
         public const string SearchPageViewLayoutStyle = nameof(SearchPageViewLayoutStyle);
         public const string SubtitleTextStyle = nameof(SubtitleTextStyle);
+        public const string SwitchLabelStyle = nameof(SwitchLabelStyle);
 
         public const string TextDetailItemLayout = nameof(TextDetailItemLayout);
         public const string TextDetailListItemStyle = nameof(TextDetailListItemStyle);
@@ -64,5 +68,7 @@
         public const string TextPageStackLayoutStyle = nameof(TextPageStackLayoutStyle);
         public const string TitleTextStyle = nameof(TitleTextStyle);
         public const string TransitionGridStyle = nameof(TransitionGridStyle);
+
+        public const string ValidationMessageLabelStyle = nameof(ValidationMessageLabelStyle);
     }
 }

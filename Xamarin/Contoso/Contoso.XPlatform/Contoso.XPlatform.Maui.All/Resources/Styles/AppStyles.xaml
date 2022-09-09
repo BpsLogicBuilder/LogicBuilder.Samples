@@ -322,6 +322,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Label" x:Key="CheckBoxLabelStyle" BaseResourceKey="BodyTextStyle">
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
     <Style TargetType="Label" x:Key="DetailFormDeleteQuestionStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
@@ -356,6 +360,12 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource EntryBackgroundColor}" />
     </Style>
 
+    <Style TargetType="Label" x:Key="MultiSelectSingleFieldLabelStyle" BaseResourceKey="BodyTextStyle">
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
     <Style TargetType="Label" x:Key="TitleTextStyle">
         <Setter Property="FontFamily" Value="OpenSansRegular" />
         <Setter Property="FontSize">
@@ -383,6 +393,10 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Label" x:Key="ValidationMessageLabelStyle" BaseResourceKey="BodyTextStyle">
+        <Setter Property="TextColor" Value = "{DynamicResource ErrorTextColor}" />
+    </Style>
+
     <Style TargetType="Label" x:Key="PopupHeaderLabelStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
         <Setter Property="HorizontalOptions" Value="Center"/>
@@ -395,6 +409,12 @@
             </OnPlatform>
         </Setter>
         <Setter Property="FontAttributes" Value="Bold"/>
+    </Style>
+
+    <Style TargetType="Label" x:Key="SwitchLabelStyle" BaseResourceKey="BodyTextStyle">
+        <Setter Property="Margin" Value="2" />
+        <Setter Property="Padding" Value="7" />
+        <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
     <Style TargetType="Label" x:Key="TextFormGroupHeaderStyle" BaseResourceKey="SubtitleTextStyle">
@@ -489,6 +509,11 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
+    <Style TargetType="Switch">
+        <Setter Property="OnColor" Value="{DynamicResource SwitchOnColor}" />
+        <Setter Property="ThumbColor" Value="{DynamicResource SwitchThumbColor}" />
+    </Style>
+
     <Style TargetType="VerticalStackLayout" x:Key="ChildFormPopupViewStyle">
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
         <Setter Property="HeightRequest" Value="464"/>
@@ -549,6 +574,11 @@
                 <On Platform="WinUI">2</On>
             </OnPlatform>
         </Setter>
+    </Style>
+
+    <Style TargetType="VerticalStackLayout" x:Key="HiddenTemplateStyle">
+        <Setter Property="HeightRequest" Value="1"/>
+        <Setter Property="IsVisible" Value="false"/>
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="MultiSelectSingleFieldLayoutStyle">

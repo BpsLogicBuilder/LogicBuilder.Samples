@@ -1,14 +1,13 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.XPlatform.Behaviours;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Converters;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Validatables;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
 using System;
 using System.Collections.ObjectModel;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui;
-using Microsoft.Maui.Devices;
-using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -32,9 +31,7 @@ namespace Contoso.XPlatform.Utils
                                 {
                                     new Label
                                     {
-                                        VerticalOptions = LayoutOptions.Center,
-                                        HorizontalOptions = LayoutOptions.Center,
-                                        FontAttributes = FontAttributes.Bold
+                                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectSingleFieldLabelStyle),
                                     }.AddBinding(Label.TextProperty, new Binding(multiSelectTemplateDescriptor.TextField))
                                 }
                             }
@@ -170,8 +167,7 @@ namespace Contoso.XPlatform.Utils
             (
                 () => new VerticalStackLayout
                 {
-                    IsVisible = false,
-                    HeightRequest = 1
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HiddenTemplateStyle)
                 }
             )
         };
@@ -195,7 +191,7 @@ namespace Contoso.XPlatform.Utils
                     .AddBinding(CheckBox.IsCheckedProperty, new Binding(nameof(CheckboxValidatableObject.Value))),
                     new Label
                     {
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.CheckBoxLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(CheckboxValidatableObject.CheckboxLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -218,14 +214,10 @@ namespace Contoso.XPlatform.Utils
                             .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SwitchValidatableObject.ToggledCommand)))
                         }
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value)))
-                    .AssignDynamicResource(Switch.OnColorProperty, ColorKeys.SwitchOnColor)
-                    .AssignDynamicResource(Switch.ThumbColorProperty, ColorKeys.SwitchThumbColor),
+                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value))),
                     new Label
                     {
-                        Margin = new Thickness(2),
-                        Padding = new Thickness(7),
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(SwitchValidatableObject.SwitchLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -402,13 +394,12 @@ namespace Contoso.XPlatform.Utils
                     }
             }
             .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(EntryValidatableObject<string>.Placeholder)))
-            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "EntryBackgroundColor")
-            .AssignDynamicResource(Entry.TextColorProperty, "PrimaryTextColor")
             .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
 
         public static Label GetLabelForValidation()
             => new Label
             {
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ValidationMessageLabelStyle),
                 Behaviors =
                 {
                     new ErrorLabelValidationBehavior()
@@ -416,8 +407,7 @@ namespace Contoso.XPlatform.Utils
                         .AddBinding(ErrorLabelValidationBehavior.IsDirtyProperty, new Binding(nameof(EntryValidatableObject<string>.IsDirty)))
                 }
             }
-            .AddBinding(Label.TextProperty, new Binding(path: nameof(ValidatableObjectBase<object>.Errors), converter: new FirstValidationErrorConverter()))
-            .AssignDynamicResource(Label.TextColorProperty, "ErrorTextColor");
+            .AddBinding(Label.TextProperty, new Binding(path: nameof(ValidatableObjectBase<object>.Errors), converter: new FirstValidationErrorConverter()));
 
         public static string GetFontAwesomeFontFamily()
         {
