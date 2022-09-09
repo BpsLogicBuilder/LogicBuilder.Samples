@@ -44,31 +44,29 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 
                 _nextCommand = new Command<CommandButtonDescriptor>
                 (
-                     Next
+                     EditFormEntityViewModelBase.Next
                 );
 
                 return _nextCommand;
             }
         }
 
-        protected void Next(CommandButtonDescriptor button)
+        protected static void Next(CommandButtonDescriptor button)
         {
-            NavigateNext(button);
+            EditFormEntityViewModelBase.NavigateNext(button);
         }
 
-        private Task NavigateNext(CommandButtonDescriptor button)
+        private static Task NavigateNext(CommandButtonDescriptor button)
         {
-            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-            {
-                flowManagerService.CopyFlowItems();
-                return flowManagerService.Next
-                (
-                    new CommandButtonRequest
-                    {
-                        NewSelection = button.ShortString
-                    }
-                );
-            }
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.CopyFlowItems();
+            return flowManagerService.Next
+            (
+                new CommandButtonRequest
+                {
+                    NewSelection = button.ShortString
+                }
+            );
         }
 
         public bool AreFieldsValid()
@@ -80,6 +78,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 
         public virtual void Dispose()
         {
+            GC.SuppressFinalize(this);
         }
     }
 }

@@ -1,14 +1,13 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.EditForm;
 using Contoso.XPlatform.ViewModels.Validatables;
-using System.Linq;
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
-using Contoso.XPlatform.Constants;
+using System.Linq;
 
 namespace Contoso.XPlatform.Views
 {
@@ -22,7 +21,7 @@ namespace Contoso.XPlatform.Views
             BindingContext = this.editFormEntityViewModel;
         }
 
-        private EditFormEntityViewModelBase editFormEntityViewModel;
+        private readonly EditFormEntityViewModelBase editFormEntityViewModel;
         private Grid transitionGrid;
         private VerticalStackLayout page;
 
@@ -63,7 +62,7 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new VerticalStackLayout
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormStackLayoutStyle),
                             Children =
                             {
                                 new Label
@@ -93,7 +92,7 @@ namespace Contoso.XPlatform.Views
                                             (
                                                 new Label
                                                 {
-                                                    Style = LayoutHelpers.GetStaticStyleResource("EditFormGroupHeaderStyle"),
+                                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormGroupHeaderStyle),
                                                     BindingContext = controlBox
                                                 }
                                                 .AddBinding
@@ -121,11 +120,10 @@ namespace Contoso.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty, 
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

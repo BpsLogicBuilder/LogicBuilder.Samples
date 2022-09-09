@@ -13,13 +13,13 @@ namespace Contoso.XPlatform.Views
     {
         public SearchPageViewCS(SearchPageViewModel searchPageViewModel)
         {
-            this.searchPageListViewModel = searchPageViewModel.SearchPageEntityViewModel;
+            this.SearchPageListViewModel = searchPageViewModel.SearchPageEntityViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
-            BindingContext = this.searchPageListViewModel;
+            BindingContext = this.SearchPageListViewModel;
         }
 
-        public SearchPageCollectionViewModelBase searchPageListViewModel { get; set; }
+        public SearchPageCollectionViewModelBase SearchPageListViewModel { get; set; }
         private Grid transitionGrid;
         private Grid page;
 
@@ -33,8 +33,8 @@ namespace Contoso.XPlatform.Views
         [MemberNotNull(nameof(transitionGrid), nameof(page))]
         private void AddContent()
         {
-            LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.searchPageListViewModel.Buttons);
-            Title = searchPageListViewModel.FormSettings.Title;
+            LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.SearchPageListViewModel.Buttons);
+            Title = SearchPageListViewModel.FormSettings.Title;
 
             Content = new Grid
             {
@@ -43,7 +43,7 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new Grid
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SearchPageViewLayoutStyle),
                             RowDefinitions =
                             {
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
@@ -86,7 +86,7 @@ namespace Contoso.XPlatform.Views
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PullButtonStyle),
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.RefreshCommand)))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.ButtonRefreshCommand)))
                                         .SetGridColumn(1)
 #endif
                                     }
@@ -102,8 +102,8 @@ namespace Contoso.XPlatform.Views
                                         Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SearchFormCollectionViewStyle),
                                         ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                         (
-                                            this.searchPageListViewModel.FormSettings.ItemTemplateName,
-                                            this.searchPageListViewModel.FormSettings.Bindings
+                                            this.SearchPageListViewModel.FormSettings.ItemTemplateName,
+                                            this.SearchPageListViewModel.FormSettings.Bindings
                                         )
                                     }
                                     .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.Items)))
@@ -117,11 +117,10 @@ namespace Contoso.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty,
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

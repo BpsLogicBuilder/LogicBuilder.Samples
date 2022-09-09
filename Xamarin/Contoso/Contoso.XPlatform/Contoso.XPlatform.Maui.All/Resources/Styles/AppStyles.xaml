@@ -213,6 +213,16 @@
         </Setter>
     </Style>
 
+    <Style TargetType="Grid" x:Key="ListPageViewLayoutStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30,30,45,30</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
     <Style TargetType="Grid" x:Key="MultiSelectItemStyle">
         <Setter Property="Margin" Value="5" />
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -248,6 +258,16 @@
     <Style TargetType="Grid" x:Key="PopupFooterStyle">
         <Setter Property="BackgroundColor" Value="Transparent"/>
         <Setter Property="HeightRequest" Value="60"/>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="SearchPageViewLayoutStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30,30,45,30</On>
+            </OnPlatform>
+        </Setter>
     </Style>
 
     <Style TargetType="Grid" x:Key="TextDetailListItemStyle" BasedOn="{StaticResource ListItemStyle}">
@@ -476,6 +496,16 @@
         </Setter>
     </Style>
 
+    <Style TargetType="VerticalStackLayout" x:Key="EditFormStackLayoutStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
     <Style TargetType="VerticalStackLayout" x:Key="FormArrayPopupViewStyle">
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
         <Setter Property="HeightRequest" Value="464"/>
@@ -505,6 +535,24 @@
                 <On Platform="Android, Tizen">2</On>
                 <On Platform="iOS, MacCatalyst">3</On>
                 <On Platform="WinUI">2</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
+    <Style TargetType="VerticalStackLayout" x:Key="MultiSelectSingleFieldLayoutStyle">
+        <Setter Property="BackgroundColor" Value="{DynamicResource ResultListBackgroundColor}"/>
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">7</On>
+                <On Platform="iOS, MacCatalyst">7</On>
+                <On Platform="WinUI">7</On>
+            </OnPlatform>
+        </Setter>
+        <Setter Property="Margin">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">2</On>
+                <On Platform="iOS, MacCatalyst">2</On>
+                <On Platform="WinUI">2,2,10,2</On>
             </OnPlatform>
         </Setter>
     </Style>

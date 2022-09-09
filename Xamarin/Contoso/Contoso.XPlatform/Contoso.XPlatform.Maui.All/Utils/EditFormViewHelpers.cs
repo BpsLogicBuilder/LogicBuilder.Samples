@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui;
 using Microsoft.Maui.Devices;
+using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -21,13 +22,12 @@ namespace Contoso.XPlatform.Utils
                 (
                     () => new Grid
                     {
-                        Style = LayoutHelpers.GetStaticStyleResource("MultiSelectItemStyle"),
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectItemStyle),
                         Children =
                         {
                             new VerticalStackLayout
                             {
-                                Margin = new Thickness(2),
-                                Padding = new Thickness(7),
+                                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectSingleFieldLayoutStyle),
                                 Children =
                                 {
                                     new Label
@@ -38,7 +38,6 @@ namespace Contoso.XPlatform.Utils
                                     }.AddBinding(Label.TextProperty, new Binding(multiSelectTemplateDescriptor.TextField))
                                 }
                             }
-                            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                         }
                     }
                 )
@@ -178,7 +177,7 @@ namespace Contoso.XPlatform.Utils
         };
 
         public static HorizontalStackLayout GetCheckboxForValidation()
-            => new HorizontalStackLayout()
+            => new()
             {
                 Children =
                 {
@@ -204,7 +203,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         public static HorizontalStackLayout GetSwitchForValidation()
-            => new HorizontalStackLayout()
+            => new()
             {
                 Children =
                 {
@@ -220,8 +219,8 @@ namespace Contoso.XPlatform.Utils
                         }
                     }
                     .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value)))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AssignDynamicResource(Switch.OnColorProperty, ColorKeys.SwitchOnColor)
+                    .AssignDynamicResource(Switch.ThumbColorProperty, ColorKeys.SwitchThumbColor),
                     new Label
                     {
                         Margin = new Thickness(2),
@@ -370,7 +369,7 @@ namespace Contoso.XPlatform.Utils
         {
             return AddBindingWithStringFormat(GetEntry(isPassword));
 
-            Entry AddBindingWithStringFormat(Entry entry)
+            static Entry AddBindingWithStringFormat(Entry entry)
                 => entry.AddBinding
                 (
                     Entry.TextProperty,
@@ -447,7 +446,7 @@ namespace Contoso.XPlatform.Utils
         private static View GetLabel(string titleBinding, string valueBinding, bool isPassword = false)
             => new Label
             {
-                Style = LayoutHelpers.GetStaticStyleResource("EditFormLabel"),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormLabel),
                 FormattedText = new FormattedString
                 {
                     Spans =

@@ -43,7 +43,7 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new Grid
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ListPageViewLayoutStyle),
                             RowDefinitions = 
                             { 
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) }, 
@@ -59,7 +59,7 @@ namespace Contoso.XPlatform.Views
                                 .SetGridRow(0),
                                 new CollectionView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("ListFormCollectionViewStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ListFormCollectionViewStyle),
                                     ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                     (
                                         this.listPageCollectionViewModel.FormSettings.ItemTemplateName,
@@ -72,11 +72,10 @@ namespace Contoso.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty,
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

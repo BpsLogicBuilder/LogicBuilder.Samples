@@ -45,7 +45,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
         private readonly IMapper mapper;
         private readonly DirectiveManagers<TModel> directiveManagers;
         private TModel? entity;
-        private Dictionary<string, object?> originalEntityDictionary = new Dictionary<string, object?>();
+        private Dictionary<string, object?> originalEntityDictionary = new();
         private readonly IDisposable propertyChangedSubscription;
 
         public override void Dispose()
@@ -58,6 +58,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
                 if (property is IDisposable disposable)
                     Dispose(disposable);
             }
+            GC.SuppressFinalize(this);
         }
 
         protected void Dispose(IDisposable disposable)
@@ -133,7 +134,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 
                 if (toSave.EntityState == LogicBuilder.Domain.EntityStateType.Unchanged)
                 {
-                    Next(button);
+                    EditFormEntityViewModelBase.Next(button);
                     return;
                 }
 
@@ -161,7 +162,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
                     );
                 }
 
-                Next(button);
+                EditFormEntityViewModelBase.Next(button);
             },
             canExecute: (button) => AreFieldsValid()
         );

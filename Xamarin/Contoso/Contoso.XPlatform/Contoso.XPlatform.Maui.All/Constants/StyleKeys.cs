@@ -16,6 +16,7 @@
 
         public const string EditFormGroupHeaderStyle = nameof(EditFormGroupHeaderStyle);
         public const string EditFormLabel = nameof(EditFormLabel);
+        public const string EditFormStackLayoutStyle = nameof(EditFormStackLayoutStyle);
 
         public const string FormArrayPopupCollectionViewStyle = nameof(FormArrayPopupCollectionViewStyle);
         public const string FormArrayPopupViewStyle = nameof(FormArrayPopupViewStyle);
@@ -27,10 +28,12 @@
         public const string ListFormCollectionViewStyle = nameof(ListFormCollectionViewStyle);
         public const string ListItemStyle = nameof(ListItemStyle);
         public const string ListItemTextStyle = nameof(ListItemTextStyle);
+        public const string ListPageViewLayoutStyle = nameof(ListPageViewLayoutStyle);
 
         public const string MultiSelectItemStyle = nameof(MultiSelectItemStyle);
         public const string MultiSelectPopupCollectionViewStyle = nameof(MultiSelectPopupCollectionViewStyle);
         public const string MultiSelectPopupViewStyle = nameof(MultiSelectPopupViewStyle);
+        public const string MultiSelectSingleFieldLayoutStyle = nameof(MultiSelectSingleFieldLayoutStyle);
 
         public const string PopupAcceptButtonStyle = nameof(PopupAcceptButtonStyle);
         public const string PopupAddButtonStyle = nameof(PopupAddButtonStyle);
@@ -47,6 +50,7 @@
 
         public const string SearchFormCollectionViewStyle = nameof(SearchFormCollectionViewStyle);
         public const string SearchFormRefreshViewStyle = nameof(SearchFormRefreshViewStyle);
+        public const string SearchPageViewLayoutStyle = nameof(SearchPageViewLayoutStyle);
         public const string SubtitleTextStyle = nameof(SubtitleTextStyle);
 
         public const string TextDetailItemLayout = nameof(TextDetailItemLayout);

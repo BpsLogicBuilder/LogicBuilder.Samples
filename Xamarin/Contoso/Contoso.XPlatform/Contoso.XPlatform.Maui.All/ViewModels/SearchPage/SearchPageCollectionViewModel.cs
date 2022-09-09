@@ -114,6 +114,26 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             }
         }
 
+        private ICommand? _buttonRefreshCommand;
+        public ICommand ButtonRefreshCommand
+        {
+            get
+            {
+                if (_buttonRefreshCommand != null)
+                    return _buttonRefreshCommand;
+
+                _buttonRefreshCommand = new Command
+                (
+                    () =>
+                    {
+                        IsRefreshing = true;/*IsRefreshing = true triggers the refresh command.*/
+                    }
+                );
+
+                return _buttonRefreshCommand;
+            }
+        }
+
         private ICommand? _editCommand;
         public ICommand EditCommand
         {
