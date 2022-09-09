@@ -44,7 +44,7 @@ public partial class MainPageView : FlyoutPage
 
     #region Properties
     public MainPageViewModel ViewModel { get; }
-    private bool IsPortrait => DeviceDisplay.MainDisplayInfo.Width < DeviceDisplay.MainDisplayInfo.Height;
+    private static bool IsPortrait => DeviceDisplay.MainDisplayInfo.Width < DeviceDisplay.MainDisplayInfo.Height;
 
     public UiNotificationService UiNotificationService
     {
@@ -84,8 +84,7 @@ public partial class MainPageView : FlyoutPage
     {
         get
         {
-            if (_mapper == null)
-                _mapper = App.ServiceProvider.GetRequiredService<IMapper>();
+            _mapper ??= App.ServiceProvider.GetRequiredService<IMapper>();
 
             return _mapper;
         }
@@ -147,7 +146,7 @@ public partial class MainPageView : FlyoutPage
 
     private void CloseFlyout()
     {
-        if (!IsPortrait)
+        if (!MainPageView.IsPortrait)
             return;
 
         IsPresented = false;
@@ -200,11 +199,6 @@ public partial class MainPageView : FlyoutPage
     private static NavigationPage GetNavigationPage(Page page)
     {
         NavigationPage.SetHasBackButton(page, false);
-        page.SetDynamicResource(Page.BackgroundColorProperty, "PageBackgroundColor");
-        var navigationPage = new NavigationPage(page);
-        navigationPage.SetDynamicResource(NavigationPage.BarBackgroundColorProperty, "PageBackgroundColor");
-        navigationPage.SetDynamicResource(NavigationPage.BarTextColorProperty, "PrimaryTextColor");
-
-        return navigationPage;
+        return new NavigationPage(page);
     }
 }

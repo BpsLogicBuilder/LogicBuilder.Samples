@@ -57,6 +57,7 @@
         public const string SearchFormRefreshViewStyle = nameof(SearchFormRefreshViewStyle);
         public const string SearchPageViewLayoutStyle = nameof(SearchPageViewLayoutStyle);
         public const string SubtitleTextStyle = nameof(SubtitleTextStyle);
+        public const string SwitchCollectionCellLabelStyle = nameof(SwitchCollectionCellLabelStyle);
         public const string SwitchLabelStyle = nameof(SwitchLabelStyle);
 
         public const string TextDetailItemLayout = nameof(TextDetailItemLayout);

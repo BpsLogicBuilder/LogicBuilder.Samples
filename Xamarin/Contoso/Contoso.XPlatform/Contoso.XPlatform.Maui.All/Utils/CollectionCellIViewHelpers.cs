@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
+using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -49,15 +50,13 @@ namespace Contoso.XPlatform.Utils
                 {
                     new Switch
                     {
-                        IsEnabled = false
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailSwitchStyle),
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding($"[{field}].{nameof(SwitchReadOnlyObject.Value)}"))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AddBinding(Switch.IsToggledProperty, new Binding($"[{field}].{nameof(SwitchReadOnlyObject.Value)}")),
                     new Label
                     {
-                        FontAttributes = fontAttributes,
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchCollectionCellLabelStyle),
+                        FontAttributes = fontAttributes
                     }
                     .AddBinding(Label.TextProperty, new Binding($"[{field}].{nameof(SwitchReadOnlyObject.SwitchLabel)}"))
                 }

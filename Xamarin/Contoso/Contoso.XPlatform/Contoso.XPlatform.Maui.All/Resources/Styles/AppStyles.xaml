@@ -170,7 +170,7 @@
         <Setter Property="BackgroundColor" Value = "{DynamicResource EntryBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Entry" x:Key="BaseEntryStyle" >
+    <Style TargetType="Entry" x:Key="BaseEntryStyle">
         <Setter Property="Margin" Value = "0,10,0,0" />
         <Setter Property="BackgroundColor" Value = "{DynamicResource EntryBackgroundColor}" />
         <Setter Property="TextColor" Value = "{DynamicResource PrimaryTextColor}" />
@@ -417,6 +417,10 @@
         <Setter Property="VerticalOptions" Value="Center" />
     </Style>
 
+    <Style TargetType="Label" x:Key="SwitchCollectionCellLabelStyle" BaseResourceKey="BodyTextStyle">
+        <Setter Property="VerticalOptions" Value="Center" />
+    </Style>
+
     <Style TargetType="Label" x:Key="TextFormGroupHeaderStyle" BaseResourceKey="SubtitleTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
@@ -435,8 +439,14 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
+    <Style TargetType="NavigationPage" ApplyToDerivedTypes="True">
+        <Setter Property="BarBackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
+        <Setter Property="BarTextColor" Value="{DynamicResource PrimaryTextColor}"/>
+    </Style>
+
     <Style TargetType="Page" ApplyToDerivedTypes="True">
         <Setter Property="Padding" Value="0"/>
+        <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
     </Style>
 
     <Style TargetType="Picker">
