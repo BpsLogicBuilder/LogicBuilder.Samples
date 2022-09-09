@@ -5,7 +5,6 @@ using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
-using Microsoft.Maui.Layouts;
 using System;
 using System.Collections.ObjectModel;
 
@@ -27,12 +26,12 @@ namespace Contoso.XPlatform.Views
 
             Content = new AbsoluteLayout
             {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogAbsoluteLayoutStyle),
                 Children =
                 {
                     new ContentView
                     {
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogContentViewStyle),
                         Content = new Grid
                         {
                             Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupViewStyle),
@@ -47,13 +46,13 @@ namespace Contoso.XPlatform.Views
                             {
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderStyle),
                                     Children =
                                     {
                                         new Label
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
-                                        }.AddBinding(Label.TextProperty, new Binding("Title"))
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderLabelStyle),
+                                        }.AddBinding(Label.TextProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Title)))
                                     }
                                 }
                                 .SetGridRow(0),
@@ -61,32 +60,35 @@ namespace Contoso.XPlatform.Views
                                 {
                                     Content = new Grid
                                     {
-                                        new CollectionView
-                                        {
-                                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
-                                            ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
-                                        }
-                                        .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
-                                        /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
-                                        .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems), BindingMode.OneWay)),
-                                        new BoxView()
-                                        {
-                                            GestureRecognizers =
+                                        Children =
+                                        { 
+                                            new CollectionView
                                             {
-                                                new TapGestureRecognizer()
+                                                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
+                                                ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                            }
+                                            .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
+                                            /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
+                                            .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems), BindingMode.OneWay)),
+                                            new BoxView()
+                                            {
+                                                GestureRecognizers =
                                                 {
-                                                    Command = new Command(() => { })/*This prevents updates to the collection view*/
+                                                    new TapGestureRecognizer()
+                                                    {
+                                                        Command = new Command(() => { })/*This prevents updates to the collection view*/
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                                 .SetGridRow(1),
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") }
+                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) }
                                 .SetGridRow(2),
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterStyle),
                                     ColumnDefinitions =
                                     {
                                         new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) },
@@ -97,7 +99,7 @@ namespace Contoso.XPlatform.Views
                                     {
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupCancelButtonStyle)
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.CancelCommand)))
                                         .SetGridColumn(2)
@@ -107,9 +109,6 @@ namespace Contoso.XPlatform.Views
                             }
                         }
                     }
-                    .AssignDynamicResource(VisualElement.BackgroundColorProperty, "PopupViewBackgroundColor")
-                    .SetAbsoluteLayoutBounds(new Rect(0, 0, 1, 1))
-                    .SetAbsoluteLayoutFlags(AbsoluteLayoutFlags.All)
                 }
             };
 
@@ -118,7 +117,7 @@ namespace Contoso.XPlatform.Views
             this.BindingContext = this.multiSelectReadOnly;
         }
 
-        private IReadOnly multiSelectReadOnly;
-        private MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
+        private readonly IReadOnly multiSelectReadOnly;
+        private readonly MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
     }
 }
