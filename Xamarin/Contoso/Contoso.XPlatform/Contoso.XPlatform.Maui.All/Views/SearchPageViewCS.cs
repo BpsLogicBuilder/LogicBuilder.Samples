@@ -69,7 +69,6 @@ namespace Contoso.XPlatform.Views
                                     {
                                         new SearchBar
                                         {
-                                            HorizontalOptions = LayoutOptions.Fill,
                                             Behaviors =
                                             {
                                                 new EventToCommandBehavior
@@ -95,10 +94,8 @@ namespace Contoso.XPlatform.Views
                                 new RefreshView
                                 {/* RefreshView pulls to the right on iOS https://github.com/dotnet/maui/issues/7315 */
                                     Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SearchFormRefreshViewStyle),
-                                    VerticalOptions = LayoutOptions.Start,
                                     Content = new CollectionView
                                     {
-                                        ItemsLayout = new LinearItemsLayout(ItemsLayoutOrientation.Vertical),
                                         Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SearchFormCollectionViewStyle),
                                         ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                         (
