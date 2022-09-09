@@ -39,6 +39,7 @@
         public const string PopupAddButtonStyle = nameof(PopupAddButtonStyle);
         public const string PopupCancelButtonStyle = nameof(PopupCancelButtonStyle);
         public const string PopupDeleteButtonStyle = nameof(PopupDeleteButtonStyle);
+        public const string PopupDetailButtonStyle = nameof(PopupDetailButtonStyle);
         public const string PopupDialogAbsoluteLayoutStyle = nameof(PopupDialogAbsoluteLayoutStyle);
         public const string PopupDialogContentViewStyle = nameof(PopupDialogContentViewStyle);
         public const string PopupEditButtonStyle = nameof(PopupEditButtonStyle);

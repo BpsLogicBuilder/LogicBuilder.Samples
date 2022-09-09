@@ -1,12 +1,12 @@
 ﻿using Contoso.Forms.Configuration;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
-using System.Collections.ObjectModel;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
-using Microsoft.Maui.Layouts;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Views
 {
@@ -27,31 +27,31 @@ namespace Contoso.XPlatform.Views
 
             Content = new AbsoluteLayout
             {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogAbsoluteLayoutStyle),
                 Children =
                 {
                     new ContentView
                     {
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogContentViewStyle),
                         Content = new VerticalStackLayout
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource("FormArrayPopupViewStyle"),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.FormArrayPopupViewStyle),
                             Children =
                             {
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderStyle),
                                     Children =
                                     {
                                         new Label
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderLabelStyle),
                                         }.AddBinding(Label.TextProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.Title)))
                                     }
                                 },
                                 new CollectionView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("FormArrayPopupCollectionViewStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.FormArrayPopupCollectionViewStyle),
                                     ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                     (
                                         this.formsCollectionDisplayTemplateDescriptor.TemplateName,
@@ -63,11 +63,11 @@ namespace Contoso.XPlatform.Views
                                 .AddBinding(SelectableItemsView.SelectedItemProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.SelectedItem))),
                                 new BoxView 
                                 { 
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") 
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) 
                                 },
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterStyle),
                                     ColumnDefinitions =
                                     {
                                         new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) },
@@ -78,13 +78,13 @@ namespace Contoso.XPlatform.Views
                                     {
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupDetailButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDetailButtonStyle)
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.DetailCommand)))
                                         .SetGridColumn(1),
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupCancelButtonStyle)
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.CancelCommand)))
                                         .SetGridColumn(2)
@@ -93,9 +93,6 @@ namespace Contoso.XPlatform.Views
                             }
                         }
                     }
-                    .AssignDynamicResource(VisualElement.BackgroundColorProperty, "PopupViewBackgroundColor")
-                    .SetAbsoluteLayoutBounds(new Rect(0, 0, 1, 1))
-                    .SetAbsoluteLayoutFlags(AbsoluteLayoutFlags.All)
                 }
             };
 
