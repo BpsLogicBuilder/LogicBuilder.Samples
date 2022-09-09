@@ -509,9 +509,16 @@
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
     </Style>
 
-    <Style TargetType="Switch">
+    <Style TargetType="Switch" x:Key="BaseSwitchStyle">
         <Setter Property="OnColor" Value="{DynamicResource SwitchOnColor}" />
         <Setter Property="ThumbColor" Value="{DynamicResource SwitchThumbColor}" />
+    </Style>
+
+    <Style TargetType="Switch" BaseResourceKey="BaseSwitchStyle">
+    </Style>
+
+    <Style TargetType="Switch" x:Key="DetailSwitchStyle" BaseResourceKey="BaseSwitchStyle">
+        <Setter Property="IsEnabled" Value="False" />
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="ChildFormPopupViewStyle">
@@ -578,7 +585,7 @@
 
     <Style TargetType="VerticalStackLayout" x:Key="HiddenTemplateStyle">
         <Setter Property="HeightRequest" Value="1"/>
-        <Setter Property="IsVisible" Value="false"/>
+        <Setter Property="IsVisible" Value="False"/>
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="MultiSelectSingleFieldLayoutStyle">

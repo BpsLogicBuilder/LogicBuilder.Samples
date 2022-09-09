@@ -14,6 +14,7 @@
         public const string DetailFormGroupHeaderStyle = nameof(DetailFormGroupHeaderStyle);
         public const string DetailFormLabel = nameof(DetailFormLabel);
         public const string DetailFormStackLayoutStyle = nameof(DetailFormStackLayoutStyle);
+        public const string DetailSwitchStyle = nameof(DetailSwitchStyle);
 
         public const string EditFormGroupHeaderStyle = nameof(EditFormGroupHeaderStyle);
         public const string EditFormLabel = nameof(EditFormLabel);
