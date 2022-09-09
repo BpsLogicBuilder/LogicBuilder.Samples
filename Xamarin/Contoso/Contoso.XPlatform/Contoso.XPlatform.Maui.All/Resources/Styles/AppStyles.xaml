@@ -380,9 +380,15 @@
 
     <Style TargetType="Label" x:Key="PopupHeaderLabelStyle" BaseResourceKey="BodyTextStyle">
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}"/>
-        <Setter Property="HorizontalOptions" Value="CenterAndExpand"/>
-        <Setter Property="VerticalOptions" Value="CenterAndExpand"/>
-        <Setter Property="FontSize" Value="18"/>
+        <Setter Property="HorizontalOptions" Value="Center"/>
+        <Setter Property="VerticalOptions" Value="Center"/>
+        <Setter Property="FontSize">
+            <OnPlatform x:TypeArguments="x:Double">
+                <On Platform="Android, Tizen">18</On>
+                <On Platform="iOS, MacCatalyst">20</On>
+                <On Platform="WinUI">18</On>
+            </OnPlatform>
+        </Setter>
         <Setter Property="FontAttributes" Value="Bold"/>
     </Style>
 

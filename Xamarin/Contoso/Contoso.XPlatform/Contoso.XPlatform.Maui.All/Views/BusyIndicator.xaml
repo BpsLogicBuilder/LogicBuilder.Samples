@@ -9,7 +9,7 @@
             <ContentView BackgroundColor="{DynamicResource PopupViewBackgroundColor}" AbsoluteLayout.LayoutBounds="0.00, 0.00, 1, 1" AbsoluteLayout.LayoutFlags="All">
                 <Grid>
                     <ActivityIndicator Color="{DynamicResource PrimaryColor}" IsRunning="true"
-                           VerticalOptions="CenterAndExpand" />
+                           VerticalOptions="Center" />
                 </Grid>
             </ContentView>
         </AbsoluteLayout>

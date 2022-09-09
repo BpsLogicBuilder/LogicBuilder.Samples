@@ -5,7 +5,6 @@ using Contoso.XPlatform.ViewModels.Validatables;
 using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
-using Microsoft.Maui.Layouts;
 using System;
 using System.Collections.ObjectModel;
 
@@ -28,12 +27,12 @@ namespace Contoso.XPlatform.Views
 
             Content = new AbsoluteLayout
             {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogAbsoluteLayoutStyle),
                 Children =
                 {
                     new ContentView
                     {
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogContentViewStyle),
                         Content = new Grid
                         {
                             Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupViewStyle),
@@ -48,30 +47,30 @@ namespace Contoso.XPlatform.Views
                             {
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderStyle),
                                     Children =
                                     {
                                         new Label
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderLabelStyle),
                                         }.AddBinding(Label.TextProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Title)))
                                     }
                                 }
                                 .SetGridRow(0),
                                 new CollectionView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
                                     ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
                                 }
                                 .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Items)))
                                 /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
                                 .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SelectedItems)))
                                 .SetGridRow(1),
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") }
+                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) }
                                 .SetGridRow(2),
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterStyle),
                                     ColumnDefinitions =
                                     {
                                         new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) },
@@ -82,13 +81,13 @@ namespace Contoso.XPlatform.Views
                                     {
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupCancelButtonStyle)
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.CancelCommand)))
                                         .SetGridColumn(1),
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupAcceptButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupAcceptButtonStyle)
                                         }
                                         .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SubmitCommand)))
                                         .SetGridColumn(2)
@@ -98,9 +97,6 @@ namespace Contoso.XPlatform.Views
                             }
                         }
                     }
-                    .AssignDynamicResource(VisualElement.BackgroundColorProperty, "PopupViewBackgroundColor")
-                    .SetAbsoluteLayoutBounds(new Rect(0, 0, 1, 1))
-                    .SetAbsoluteLayoutFlags(AbsoluteLayoutFlags.All)
                 }
             };
 
