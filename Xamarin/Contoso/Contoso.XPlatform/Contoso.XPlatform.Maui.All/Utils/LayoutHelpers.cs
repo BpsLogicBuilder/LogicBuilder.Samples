@@ -1,20 +1,16 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Flow.Settings.Screen;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
-using Contoso.XPlatform.Views;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Layouts;
-using Microsoft.Maui;
-using Contoso.XPlatform.Constants;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -99,42 +95,6 @@ namespace Contoso.XPlatform.Utils
                 return style;
 
             throw new ArgumentException($"{nameof(styleName)}: DF65BD5C-E8A5-409C-A736-F6DF1B29D5E7");
-        }
-
-        internal static Page CreatePage(this ScreenSettingsBase screenSettings)
-        {
-            if (!Enum.IsDefined(typeof(ViewType), screenSettings.ViewType))
-                throw new ArgumentException($"{nameof(screenSettings.ViewType)}: {{11439C04-24F7-48A2-8775-142B7C362BF3}}");
-
-            return CreatePage(Enum.GetName(typeof(ViewType), screenSettings.ViewType)!);
-
-            Page CreatePage(string viewName)
-            {
-                Type factoryFuncType = typeof(Func<,>).MakeGenericType
-                (
-                    typeof(ScreenSettingsBase),
-                    typeof(FlyoutDetailViewModelBase).Assembly.GetType
-                    (
-                        $"Contoso.XPlatform.ViewModels.{viewName}ViewModel"
-                    ) ?? throw new ArgumentException($"{viewName}: {{A00D3DF7-FC4C-40F5-8FBC-2CF3B3C7695D}}")
-                );
-
-                Func<ScreenSettingsBase, FlyoutDetailViewModelBase> factoryFunc = (Func<ScreenSettingsBase, FlyoutDetailViewModelBase>)App.ServiceProvider.GetRequiredService(factoryFuncType);
-                FlyoutDetailViewModelBase viewModel = factoryFunc(screenSettings);
-                //Delegate factoryFunc = (Delegate)App.ServiceProvider.GetRequiredService(factoryFuncType);
-                //FlyoutDetailViewModelBase viewModel = (FlyoutDetailViewModelBase)factoryFunc.DynamicInvoke(screenSettings);
-
-                return (Page)(
-                    Activator.CreateInstance
-                    (
-                        typeof(MainPageView).Assembly.GetType
-                        (
-                            $"Contoso.XPlatform.Views.{viewName}ViewCS"
-                        ) ?? throw new ArgumentException($"{viewName}: {{782AEB97-488F-46DE-AA1C-9B0B26A40C2E}}"),
-                        viewModel
-                    ) ?? throw new ArgumentException($"{viewName}: {{4074835A-2C4E-4488-84C2-8F39CA4C9720}}")
-                );
-            }
         }
 
         internal static DataTemplate GetCollectionViewItemTemplate(string templateName,

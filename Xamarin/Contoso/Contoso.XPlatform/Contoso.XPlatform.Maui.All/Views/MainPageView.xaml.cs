@@ -4,6 +4,7 @@ using Contoso.XPlatform.Flow.Settings;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.Views.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
@@ -17,10 +18,12 @@ namespace Contoso.XPlatform.Views;
 public partial class MainPageView : FlyoutPage
 {
     public MainPageView(
+        IDetailPageFactory detailPageFactory,
         IMapper mapper,
         MainPageViewModel mainPageViewModel, 
         UiNotificationService uiNotificationService)
     {
+        _detailPageFactory = detailPageFactory;
         _mapper = mapper;
         _uiNotificationService = uiNotificationService;
         InitializeComponent();
@@ -42,6 +45,7 @@ public partial class MainPageView : FlyoutPage
     }
 
     #region Fields
+    private readonly IDetailPageFactory _detailPageFactory;
     private readonly IMapper _mapper;
     private readonly UiNotificationService _uiNotificationService;
     #endregion Fields
@@ -62,8 +66,8 @@ public partial class MainPageView : FlyoutPage
     {
         flowSettings.FlowDataCache.NavigationBar.MenuItems
             .ForEach(item => item.Active = item.InitialModule == flowSettings.FlowDataCache.NavigationBar.CurrentModule);
-
-        ChangePage(flowSettings.ScreenSettings.CreatePage());
+        
+        ChangePage(_detailPageFactory.CreatePage(flowSettings.ScreenSettings));
 
         UpdateNavigationMenu(flowSettings);
     }
