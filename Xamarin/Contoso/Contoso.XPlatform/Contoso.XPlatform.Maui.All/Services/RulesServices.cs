@@ -24,7 +24,7 @@ namespace Microsoft.Extensions.DependencyInjection
 
         static async Task<RulesCache> LoadRules(IRulesLoader rulesLoader)
         {
-            RulesCache cache = new RulesCache(new ConcurrentDictionary<string, RuleEngine>(), new ConcurrentDictionary<string, string>());
+            RulesCache cache = new(new ConcurrentDictionary<string, RuleEngine>(), new ConcurrentDictionary<string, string>());
 
             var assembly = IntrospectionExtensions.GetTypeInfo(typeof(MainPageViewModel)).Assembly;
             string[] uwpResources = GetResourceStrings(assembly);

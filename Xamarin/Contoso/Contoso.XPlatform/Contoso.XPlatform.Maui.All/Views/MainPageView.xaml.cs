@@ -16,19 +16,24 @@ namespace Contoso.XPlatform.Views;
 
 public partial class MainPageView : FlyoutPage
 {
-    public MainPageView()
+    public MainPageView(
+        IMapper mapper,
+        MainPageViewModel mainPageViewModel, 
+        UiNotificationService uiNotificationService)
     {
+        _mapper = mapper;
+        _uiNotificationService = uiNotificationService;
         InitializeComponent();
         //Visual = VisualMarker.Default;
         flyout.ListView.SelectionChanged += ListView_SelectionChanged;
 
         FlyoutLayoutBehavior = MainPageView.GetFlyoutLayoutBehavior();
 
-        ViewModel = App.ServiceProvider.GetRequiredService<MainPageViewModel>();
+        ViewModel = mainPageViewModel;
         this.BindingContext = ViewModel;
         flyout.BindingContext = ViewModel;
 
-        UiNotificationService.FlowSettingsSubject.Subscribe(FlowSettingsChanged);
+        _uiNotificationService.FlowSettingsSubject.Subscribe(FlowSettingsChanged);
 
         if (!DesignMode.IsDesignModeEnabled)
         {
@@ -37,58 +42,13 @@ public partial class MainPageView : FlyoutPage
     }
 
     #region Fields
-    private UiNotificationService? _uiNotificationService;
-    private IAppLogger? _appLogger;
-    private IMapper? _mapper;
+    private readonly IMapper _mapper;
+    private readonly UiNotificationService _uiNotificationService;
     #endregion Fields
 
     #region Properties
     public MainPageViewModel ViewModel { get; }
     private static bool IsPortrait => DeviceDisplay.MainDisplayInfo.Width < DeviceDisplay.MainDisplayInfo.Height;
-
-    public UiNotificationService UiNotificationService
-    {
-        get
-        {
-            if (_uiNotificationService == null)
-            {
-                DateTime dt = DateTime.Now;
-                _uiNotificationService = App.ServiceProvider.GetRequiredService<UiNotificationService>();
-                DateTime dt2 = DateTime.Now;
-
-                AppLogger.LogMessage(nameof(MainPageView), $"Get UiNotificationService (milliseconds) = {(dt2 - dt).TotalMilliseconds}");
-            }
-
-            return _uiNotificationService;
-        }
-    }
-
-    public IAppLogger AppLogger
-    {
-        get
-        {
-            if (_appLogger == null)
-            {
-                DateTime dt = DateTime.Now;
-                _appLogger = App.ServiceProvider.GetRequiredService<IAppLogger>();
-                DateTime dt2 = DateTime.Now;
-
-                AppLogger.LogMessage(nameof(MainPageView), $"Get AppLogger (milliseconds) = {(dt2 - dt).TotalMilliseconds}");
-            }
-
-            return _appLogger;
-        }
-    }
-
-    public IMapper Mapper
-    {
-        get
-        {
-            _mapper ??= App.ServiceProvider.GetRequiredService<IMapper>();
-
-            return _mapper;
-        }
-    }
     #endregion Properties
 
     #region Methods
@@ -110,7 +70,7 @@ public partial class MainPageView : FlyoutPage
 
     private void UpdateNavigationMenu(FlowSettings flowSettings)
     {
-        List<FlyoutMenuItem> menuItems = Mapper.Map<List<FlyoutMenuItem>>(flowSettings.FlowDataCache.NavigationBar.MenuItems);
+        List<FlyoutMenuItem> menuItems = _mapper.Map<List<FlyoutMenuItem>>(flowSettings.FlowDataCache.NavigationBar.MenuItems);
 
         if (menuItems.Count == ViewModel.MenuItems.Count)
         {
