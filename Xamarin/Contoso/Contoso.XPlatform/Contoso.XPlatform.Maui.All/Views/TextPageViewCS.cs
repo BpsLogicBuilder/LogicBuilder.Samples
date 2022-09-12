@@ -11,9 +11,9 @@ namespace Contoso.XPlatform.Views
 {
     public class TextPageViewCS : ContentPage
     {
-        public TextPageViewCS(TextPageViewModel textPageViewModel)
+        public TextPageViewCS(TextPageScreenViewModel textPageViewModel)
         {
-            this.TextPageScreenViewModel = textPageViewModel.TextPageScreenViewModel;
+            this.TextPageScreenViewModel = textPageViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.TextPageScreenViewModel;

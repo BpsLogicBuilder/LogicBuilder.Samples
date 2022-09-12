@@ -1,5 +1,5 @@
 ﻿using Contoso.XPlatform.Flow.Settings.Screen;
-using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.SearchPage;
 using Microsoft.Maui.Controls;
 using System;
 
@@ -7,12 +7,12 @@ namespace Contoso.XPlatform.Views.Factories
 {
     public class SearchPageFactory : ISearchPageFactory
     {
-        private readonly Func<SearchPageViewModel, SearchPageViewCS> _getPage;
-        private readonly Func<ScreenSettingsBase, SearchPageViewModel> _getViewModel;
+        private readonly Func<SearchPageCollectionViewModelBase, SearchPageViewCS> _getPage;
+        private readonly Func<ScreenSettingsBase, SearchPageCollectionViewModelBase> _getViewModel;
 
         public SearchPageFactory(
-            Func<SearchPageViewModel, SearchPageViewCS> getPage,
-            Func<ScreenSettingsBase, SearchPageViewModel> getViewModel)
+            Func<SearchPageCollectionViewModelBase, SearchPageViewCS> getPage,
+            Func<ScreenSettingsBase, SearchPageCollectionViewModelBase> getViewModel)
         {
             _getPage = getPage;
             _getViewModel = getViewModel;

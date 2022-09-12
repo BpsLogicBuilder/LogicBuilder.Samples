@@ -13,9 +13,9 @@ namespace Contoso.XPlatform.Views
 {
     public class DetailFormViewCS : ContentPage
     {
-        public DetailFormViewCS(DetailFormViewModel detailFormViewModel)
+        public DetailFormViewCS(DetailFormEntityViewModelBase detailFormViewModel)
         {
-            this.detailFormEntityViewModel = detailFormViewModel.DetailFormEntityViewModel;
+            this.detailFormEntityViewModel = detailFormViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.detailFormEntityViewModel;

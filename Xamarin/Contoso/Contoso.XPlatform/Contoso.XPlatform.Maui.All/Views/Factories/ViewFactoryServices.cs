@@ -7,7 +7,7 @@ namespace Contoso.XPlatform.Views.Factories
         internal static IServiceCollection AddViewFactories(this IServiceCollection services) 
             => services
                 .AddTransient<IDetailFormFactory, DetailFormFactory>()
-                .AddTransient<IDetailPageFactory, DetailPageFactory>()
+                .AddTransient<IFlyoutDetailPageFactory, FlyoutDetailPageFactory>()
                 .AddTransient<IEditFormFactory, EditFormFactory>()
                 .AddTransient<IListPageFactory, ListPageFactory>()
                 .AddTransient<ISearchPageFactory, SearchPageFactory>()

@@ -1,5 +1,10 @@
 ﻿using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.DetailForm;
+using Contoso.XPlatform.ViewModels.EditForm;
+using Contoso.XPlatform.ViewModels.ListPage;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
+using Contoso.XPlatform.ViewModels.SearchPage;
+using Contoso.XPlatform.ViewModels.TextPage;
 using Contoso.XPlatform.ViewModels.Validatables;
 using Contoso.XPlatform.Views;
 using Contoso.XPlatform.Views.Factories;
@@ -32,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         validatable
                     )
                 )
-                .AddTransient<Func<DetailFormViewModel, DetailFormViewCS>>
+                .AddTransient<Func<DetailFormEntityViewModelBase, DetailFormViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<DetailFormViewCS>
@@ -41,7 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         viewModel
                     )
                 )
-                .AddTransient<Func<EditFormViewModel, EditFormViewCS>>
+                .AddTransient<Func<EditFormEntityViewModelBase, EditFormViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<EditFormViewCS>
@@ -50,7 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         viewModel
                     )
                 )
-                .AddTransient<Func<ListPageViewModel, ListPageViewCS>>
+                .AddTransient<Func<ListPageCollectionViewModelBase, ListPageViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<ListPageViewCS>
@@ -95,7 +100,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         readOnly
                     )
                 )
-                .AddTransient<Func<SearchPageViewModel, SearchPageViewCS>>
+                .AddTransient<Func<SearchPageCollectionViewModelBase, SearchPageViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<SearchPageViewCS>
@@ -104,7 +109,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         viewModel
                     )
                 )
-                .AddTransient<Func<TextPageViewModel, TextPageViewCS>>
+                .AddTransient<Func<TextPageScreenViewModel, TextPageViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<TextPageViewCS>

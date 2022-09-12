@@ -18,7 +18,7 @@ namespace Contoso.XPlatform.Views;
 public partial class MainPageView : FlyoutPage
 {
     public MainPageView(
-        IDetailPageFactory detailPageFactory,
+        IFlyoutDetailPageFactory detailPageFactory,
         IMapper mapper,
         MainPageViewModel mainPageViewModel, 
         UiNotificationService uiNotificationService)
@@ -45,7 +45,7 @@ public partial class MainPageView : FlyoutPage
     }
 
     #region Fields
-    private readonly IDetailPageFactory _detailPageFactory;
+    private readonly IFlyoutDetailPageFactory _detailPageFactory;
     private readonly IMapper _mapper;
     private readonly UiNotificationService _uiNotificationService;
     #endregion Fields

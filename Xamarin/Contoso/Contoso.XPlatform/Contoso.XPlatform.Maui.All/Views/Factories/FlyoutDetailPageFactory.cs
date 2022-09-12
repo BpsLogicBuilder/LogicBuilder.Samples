@@ -4,7 +4,7 @@ using System;
 
 namespace Contoso.XPlatform.Views.Factories
 {
-    public class DetailPageFactory : IDetailPageFactory
+    public class FlyoutDetailPageFactory : IFlyoutDetailPageFactory
     {
         private readonly IDetailFormFactory _detailFormFactory;
         private readonly IEditFormFactory _editFormFactory;
@@ -12,7 +12,7 @@ namespace Contoso.XPlatform.Views.Factories
         private readonly ISearchPageFactory _searchPageFactory;
         private readonly ITextPageFactory _textPageFactory;
 
-        public DetailPageFactory(
+        public FlyoutDetailPageFactory(
             IDetailFormFactory detailFormFactory,
             IEditFormFactory editFormFactory,
             IListPageFactory listPageFactory,

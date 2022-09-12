@@ -17,7 +17,7 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
 {
     public class DetailFormEntityViewModel<TModel> : DetailFormEntityViewModelBase, IDisposable where TModel : Domain.EntityModelBase
     {
-        public DetailFormEntityViewModel(ScreenSettings<DataFormSettingsDescriptor> screenSettings, IContextProvider contextProvider) 
+        public DetailFormEntityViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
             : base(screenSettings, contextProvider)
         {
             FormLayout = contextProvider.ReadOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));

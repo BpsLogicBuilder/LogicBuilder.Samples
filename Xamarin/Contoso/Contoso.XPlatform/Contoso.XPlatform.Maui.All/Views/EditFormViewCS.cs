@@ -13,9 +13,9 @@ namespace Contoso.XPlatform.Views
 {
     public class EditFormViewCS : ContentPage
     {
-        public EditFormViewCS(EditFormViewModel editFormViewModel)
+        public EditFormViewCS(EditFormEntityViewModelBase editFormViewModel)
         {
-            this.editFormEntityViewModel = editFormViewModel.EditFormEntityViewModel;
+            this.editFormEntityViewModel = editFormViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.editFormEntityViewModel;

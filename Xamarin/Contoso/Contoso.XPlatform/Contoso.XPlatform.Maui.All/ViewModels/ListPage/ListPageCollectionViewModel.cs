@@ -15,7 +15,7 @@ namespace Contoso.XPlatform.ViewModels.ListPage
 {
     public class ListPageCollectionViewModel<TModel> : ListPageCollectionViewModelBase where TModel : Domain.EntityModelBase
     {
-        public ListPageCollectionViewModel(ScreenSettings<ListFormSettingsDescriptor> screenSettings, IContextProvider contextProvider) : base(screenSettings)
+        public ListPageCollectionViewModel(IContextProvider contextProvider, ScreenSettings<ListFormSettingsDescriptor> screenSettings) : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.contextProvider = contextProvider;

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Contoso.XPlatform.Views.Factories
+﻿namespace Contoso.XPlatform.Views.Factories
 {
-    public interface ISearchPageFactory : IDetailPageFactory
+    public interface ISearchPageFactory : IFlyoutDetailPageFactory
     {
     }
 }

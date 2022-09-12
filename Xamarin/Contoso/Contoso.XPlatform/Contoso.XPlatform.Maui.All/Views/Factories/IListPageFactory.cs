@@ -1,6 +1,6 @@
 ﻿namespace Contoso.XPlatform.Views.Factories
 {
-    public interface IListPageFactory : IDetailPageFactory
+    public interface IListPageFactory : IFlyoutDetailPageFactory
     {
     }
 }

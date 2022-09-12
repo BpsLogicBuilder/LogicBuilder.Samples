@@ -11,9 +11,9 @@ namespace Contoso.XPlatform.Views
 {
     public class SearchPageViewCS : ContentPage
     {
-        public SearchPageViewCS(SearchPageViewModel searchPageViewModel)
+        public SearchPageViewCS(SearchPageCollectionViewModelBase searchPageViewModel)
         {
-            this.SearchPageListViewModel = searchPageViewModel.SearchPageEntityViewModel;
+            this.SearchPageListViewModel = searchPageViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.SearchPageListViewModel;

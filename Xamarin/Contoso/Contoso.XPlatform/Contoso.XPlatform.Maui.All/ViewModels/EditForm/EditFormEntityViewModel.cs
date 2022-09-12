@@ -16,7 +16,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 {
     public class EditFormEntityViewModel<TModel> : EditFormEntityViewModelBase where TModel : Domain.EntityModelBase
     {
-        public EditFormEntityViewModel(ScreenSettings<DataFormSettingsDescriptor> screenSettings, IContextProvider contextProvider)
+        public EditFormEntityViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, contextProvider)
         {
             FormLayout = contextProvider.FieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));

@@ -11,9 +11,9 @@ namespace Contoso.XPlatform.Views
 {
     public class ListPageViewCS : ContentPage
     {
-        public ListPageViewCS(ListPageViewModel listPageViewModel)
+        public ListPageViewCS(ListPageCollectionViewModelBase listPageViewModel)
         {
-            this.listPageCollectionViewModel = listPageViewModel.ListPageCollectionViewModel;
+            this.listPageCollectionViewModel = listPageViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.listPageCollectionViewModel;
