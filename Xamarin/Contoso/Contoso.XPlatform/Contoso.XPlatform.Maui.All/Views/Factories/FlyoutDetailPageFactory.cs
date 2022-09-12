@@ -40,6 +40,19 @@ namespace Contoso.XPlatform.Views.Factories
                 ViewType.TextPage => _textPageFactory.CreatePage(screenSettings),
                 _ => throw new ArgumentException($"{nameof(screenSettings.ViewType)}: {{AD813669-B274-438F-85A3-7FC04A734C4A}}"),
             };
+
+            /*
+            * Is this or the above better?
+            * 
+            string viewName = Enum.GetName(typeof(ViewType), screenSettings.ViewType)!;
+            IFlyoutDetailPageFactory factory = (IFlyoutDetailPageFactory)App.ServiceProvider.GetRequiredService
+            (
+                typeof(IFlyoutDetailPageFactory).Assembly.GetType
+                (
+                    $"Contoso.XPlatform.Views.Factories.I{viewName}Factory"
+                ) ?? throw new ArgumentException($"{nameof(screenSettings.ViewType)}: {{55B26AE5-8ECF-4802-8958-CD2E24B5EB22}}")
+            );
+            return factory.CreatePage(screenSettings);*/
         }
     }
 }
