@@ -7,12 +7,12 @@ namespace Contoso.XPlatform.Views.Factories
 {
     public class SearchPageFactory : ISearchPageFactory
     {
-        private readonly Func<SearchPageCollectionViewModelBase, SearchPageViewCS> _getPage;
-        private readonly Func<ScreenSettingsBase, SearchPageCollectionViewModelBase> _getViewModel;
+        private readonly Func<SearchPageViewModelBase, SearchPageViewCS> _getPage;
+        private readonly Func<ScreenSettingsBase, SearchPageViewModelBase> _getViewModel;
 
         public SearchPageFactory(
-            Func<SearchPageCollectionViewModelBase, SearchPageViewCS> getPage,
-            Func<ScreenSettingsBase, SearchPageCollectionViewModelBase> getViewModel)
+            Func<SearchPageViewModelBase, SearchPageViewCS> getPage,
+            Func<ScreenSettingsBase, SearchPageViewModelBase> getViewModel)
         {
             _getPage = getPage;
             _getViewModel = getViewModel;

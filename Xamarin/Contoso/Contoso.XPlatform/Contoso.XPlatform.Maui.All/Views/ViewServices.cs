@@ -37,7 +37,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         validatable
                     )
                 )
-                .AddTransient<Func<DetailFormEntityViewModelBase, DetailFormViewCS>>
+                .AddTransient<Func<DetailFormViewModelBase, DetailFormViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<DetailFormViewCS>
@@ -46,7 +46,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         viewModel
                     )
                 )
-                .AddTransient<Func<EditFormEntityViewModelBase, EditFormViewCS>>
+                .AddTransient<Func<EditFormViewModelBase, EditFormViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<EditFormViewCS>
@@ -55,7 +55,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         viewModel
                     )
                 )
-                .AddTransient<Func<ListPageCollectionViewModelBase, ListPageViewCS>>
+                .AddTransient<Func<ListPageViewModelBase, ListPageViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<ListPageViewCS>
@@ -100,7 +100,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         readOnly
                     )
                 )
-                .AddTransient<Func<SearchPageCollectionViewModelBase, SearchPageViewCS>>
+                .AddTransient<Func<SearchPageViewModelBase, SearchPageViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<SearchPageViewCS>
@@ -109,7 +109,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         viewModel
                     )
                 )
-                .AddTransient<Func<TextPageScreenViewModel, TextPageViewCS>>
+                .AddTransient<Func<TextPageViewModel, TextPageViewCS>>
                 (
                     provider =>
                     viewModel => ActivatorUtilities.CreateInstance<TextPageViewCS>

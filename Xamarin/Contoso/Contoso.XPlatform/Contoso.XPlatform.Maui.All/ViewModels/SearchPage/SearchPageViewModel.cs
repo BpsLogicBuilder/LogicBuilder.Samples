@@ -21,9 +21,9 @@ using System;
 
 namespace Contoso.XPlatform.ViewModels.SearchPage
 {
-    public class SearchPageCollectionViewModel<TModel> : SearchPageCollectionViewModelBase where TModel : Domain.EntityModelBase
+    public class SearchPageViewModel<TModel> : SearchPageViewModelBase where TModel : Domain.EntityModelBase
     {
-        public SearchPageCollectionViewModel(IContextProvider contextProvider, ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
+        public SearchPageViewModel(IContextProvider contextProvider, ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();

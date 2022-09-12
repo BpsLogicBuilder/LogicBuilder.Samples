@@ -8,9 +8,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.SearchPage
 {
-    public class SearchPageCollectionViewModelBase : ViewModelBase, IDisposable
+    public class SearchPageViewModelBase : ViewModelBase, IDisposable
     {
-        protected SearchPageCollectionViewModelBase(ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
+        protected SearchPageViewModelBase(ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
         {
             FormSettings = screenSettings.Settings;
             Buttons = new ObservableCollection<CommandButtonDescriptor>(screenSettings.CommandButtons);

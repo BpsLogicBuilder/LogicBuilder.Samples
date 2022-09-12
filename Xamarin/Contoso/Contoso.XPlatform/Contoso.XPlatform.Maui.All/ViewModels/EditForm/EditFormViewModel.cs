@@ -14,9 +14,9 @@ using Microsoft.Maui.Controls;
 
 namespace Contoso.XPlatform.ViewModels.EditForm
 {
-    public class EditFormEntityViewModel<TModel> : EditFormEntityViewModelBase where TModel : Domain.EntityModelBase
+    public class EditFormViewModel<TModel> : EditFormViewModelBase where TModel : Domain.EntityModelBase
     {
-        public EditFormEntityViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings)
+        public EditFormViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, contextProvider)
         {
             FormLayout = contextProvider.FieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));
@@ -134,7 +134,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 
                 if (toSave.EntityState == LogicBuilder.Domain.EntityStateType.Unchanged)
                 {
-                    EditFormEntityViewModelBase.Next(button);
+                    EditFormViewModelBase.Next(button);
                     return;
                 }
 
@@ -162,7 +162,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
                     );
                 }
 
-                EditFormEntityViewModelBase.Next(button);
+                EditFormViewModelBase.Next(button);
             },
             canExecute: (button) => AreFieldsValid()
         );

@@ -13,7 +13,7 @@ namespace Contoso.XPlatform.Views
 {
     public class EditFormViewCS : ContentPage
     {
-        public EditFormViewCS(EditFormEntityViewModelBase editFormViewModel)
+        public EditFormViewCS(EditFormViewModelBase editFormViewModel)
         {
             this.editFormEntityViewModel = editFormViewModel;
             AddContent();
@@ -21,7 +21,7 @@ namespace Contoso.XPlatform.Views
             BindingContext = this.editFormEntityViewModel;
         }
 
-        private readonly EditFormEntityViewModelBase editFormEntityViewModel;
+        private readonly EditFormViewModelBase editFormEntityViewModel;
         private Grid transitionGrid;
         private VerticalStackLayout page;
 
@@ -75,7 +75,7 @@ namespace Contoso.XPlatform.Views
                                     GetHeaderBinding
                                     (
                                         editFormEntityViewModel.FormSettings.HeaderBindings,
-                                        $"{nameof(EditFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        $"{nameof(EditFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new ScrollView

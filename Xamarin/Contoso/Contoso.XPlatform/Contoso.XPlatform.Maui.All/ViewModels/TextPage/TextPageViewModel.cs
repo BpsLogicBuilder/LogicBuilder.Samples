@@ -14,9 +14,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.TextPage
 {
-    public class TextPageScreenViewModel : ViewModelBase, IDisposable
+    public class TextPageViewModel : ViewModelBase, IDisposable
     {
-        public TextPageScreenViewModel(ScreenSettings<TextFormSettingsDescriptor> screenSettings)
+        public TextPageViewModel(ScreenSettings<TextFormSettingsDescriptor> screenSettings)
         {
             FormSettings = screenSettings.Settings;
             Buttons = new ObservableCollection<CommandButtonDescriptor>(screenSettings.CommandButtons);
@@ -68,7 +68,7 @@ namespace Contoso.XPlatform.ViewModels.TextPage
 
         private void Next(CommandButtonDescriptor button)
         {
-            TextPageScreenViewModel.NavigateNext(button);
+            TextPageViewModel.NavigateNext(button);
         }
 
         private static Task NavigateNext(CommandButtonDescriptor button)

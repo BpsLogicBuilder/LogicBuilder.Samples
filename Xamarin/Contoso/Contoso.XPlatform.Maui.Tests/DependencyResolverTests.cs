@@ -27,8 +27,8 @@ namespace Contoso.XPlatform.Maui.Tests
         public void CanResolveEditFormViewModel()
         {
             ScreenSettingsBase settings = new ScreenSettings<DataFormSettingsDescriptor>(Descriptors.DepartmentForm, Descriptors.ButtonDescriptors, ViewType.EditForm);
-            Func<ScreenSettingsBase, EditFormEntityViewModelBase> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, EditFormEntityViewModelBase>>();
-            EditFormEntityViewModelBase editFormViewModel = factoryFunc(settings);
+            Func<ScreenSettingsBase, EditFormViewModelBase> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, EditFormViewModelBase>>();
+            EditFormViewModelBase editFormViewModel = factoryFunc(settings);
             Assert.NotNull(editFormViewModel);
         }
 
@@ -36,8 +36,8 @@ namespace Contoso.XPlatform.Maui.Tests
         public void CanResolveEditFormViewModelWithNonGenericConstructor()
         {
             ScreenSettingsBase settings = new ScreenSettings<DataFormSettingsDescriptor>(Descriptors.DepartmentForm, Descriptors.ButtonDescriptors, ViewType.EditForm);
-            Func<ScreenSettingsBase, EditFormEntityViewModelBase> factoryFunc = (Func<ScreenSettingsBase, EditFormEntityViewModelBase>)serviceProvider.GetRequiredService(typeof(Func<ScreenSettingsBase, EditFormEntityViewModelBase>));
-            EditFormEntityViewModelBase editFormViewModel = factoryFunc(settings);
+            Func<ScreenSettingsBase, EditFormViewModelBase> factoryFunc = (Func<ScreenSettingsBase, EditFormViewModelBase>)serviceProvider.GetRequiredService(typeof(Func<ScreenSettingsBase, EditFormViewModelBase>));
+            EditFormViewModelBase editFormViewModel = factoryFunc(settings);
             Assert.NotNull(editFormViewModel);
         }
     }

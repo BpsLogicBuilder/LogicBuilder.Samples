@@ -7,9 +7,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.ListPage
 {
-    public abstract class ListPageCollectionViewModelBase : ViewModelBase, IDisposable
+    public abstract class ListPageViewModelBase : ViewModelBase, IDisposable
     {
-        protected ListPageCollectionViewModelBase(ScreenSettings<ListFormSettingsDescriptor> screenSettings)
+        protected ListPageViewModelBase(ScreenSettings<ListFormSettingsDescriptor> screenSettings)
         {
             FormSettings = screenSettings.Settings;
             Buttons = new ObservableCollection<CommandButtonDescriptor>(screenSettings.CommandButtons);

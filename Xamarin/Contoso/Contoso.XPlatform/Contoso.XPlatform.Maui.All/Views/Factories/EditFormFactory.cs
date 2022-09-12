@@ -7,12 +7,12 @@ namespace Contoso.XPlatform.Views.Factories
 {
     public class EditFormFactory : IEditFormFactory
     {
-        private readonly Func<EditFormEntityViewModelBase, EditFormViewCS> _getPage;
-        private readonly Func<ScreenSettingsBase, EditFormEntityViewModelBase> _getViewModel;
+        private readonly Func<EditFormViewModelBase, EditFormViewCS> _getPage;
+        private readonly Func<ScreenSettingsBase, EditFormViewModelBase> _getViewModel;
 
         public EditFormFactory(
-            Func<EditFormEntityViewModelBase, EditFormViewCS> getPage,
-            Func<ScreenSettingsBase, EditFormEntityViewModelBase> getViewModel)
+            Func<EditFormViewModelBase, EditFormViewCS> getPage,
+            Func<ScreenSettingsBase, EditFormViewModelBase> getViewModel)
         {
             _getPage = getPage;
             _getViewModel = getViewModel;

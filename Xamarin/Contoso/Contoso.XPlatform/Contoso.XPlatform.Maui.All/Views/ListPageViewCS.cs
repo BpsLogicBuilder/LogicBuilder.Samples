@@ -11,7 +11,7 @@ namespace Contoso.XPlatform.Views
 {
     public class ListPageViewCS : ContentPage
     {
-        public ListPageViewCS(ListPageCollectionViewModelBase listPageViewModel)
+        public ListPageViewCS(ListPageViewModelBase listPageViewModel)
         {
             this.listPageCollectionViewModel = listPageViewModel;
             AddContent();
@@ -19,7 +19,7 @@ namespace Contoso.XPlatform.Views
             BindingContext = this.listPageCollectionViewModel;
         }
 
-        public ListPageCollectionViewModelBase listPageCollectionViewModel { get; set; }
+        public ListPageViewModelBase listPageCollectionViewModel { get; set; }
         private Grid transitionGrid;
         private Grid page;
 
@@ -55,7 +55,7 @@ namespace Contoso.XPlatform.Views
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
-                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageCollectionViewModelBase.Title)))
+                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageViewModelBase.Title)))
                                 .SetGridRow(0),
                                 new CollectionView
                                 {
@@ -66,7 +66,7 @@ namespace Contoso.XPlatform.Views
                                         this.listPageCollectionViewModel.FormSettings.Bindings
                                     )
                                 }
-                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageCollectionViewModel<Domain.EntityModelBase>.Items)))
+                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageViewModel<Domain.EntityModelBase>.Items)))
                                 .SetGridRow(1)
                             }
                         }

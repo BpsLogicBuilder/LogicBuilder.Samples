@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         internal static IServiceCollection AddViewModels(this IServiceCollection services) 
             => services.AddTransient<MainPageViewModel>()
-                .AddTransient<Func<ScreenSettingsBase, DetailFormEntityViewModelBase>>
+                .AddTransient<Func<ScreenSettingsBase, DetailFormViewModelBase>>
                 (
                     provider =>
                     (screenSettings) =>
@@ -27,16 +27,16 @@ namespace Microsoft.Extensions.DependencyInjection
                         if (screenSettings is not ScreenSettings<DataFormSettingsDescriptor> dataFormSettings)
                             throw new ArgumentException($"{nameof(screenSettings)}: {{40DAEE65-72D5-4213-8243-07F54D5494B0}}");
 
-                        return (DetailFormEntityViewModelBase)ActivatorUtilities.CreateInstance
+                        return (DetailFormViewModelBase)ActivatorUtilities.CreateInstance
                         (
                             provider,
-                            typeof(DetailFormEntityViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
+                            typeof(DetailFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<IContextProvider>(),
                             dataFormSettings
                         );
                     }
                 )
-                .AddTransient<Func<ScreenSettingsBase, EditFormEntityViewModelBase>>
+                .AddTransient<Func<ScreenSettingsBase, EditFormViewModelBase>>
                 (
                     provider =>
                     screenSettings =>
@@ -44,15 +44,15 @@ namespace Microsoft.Extensions.DependencyInjection
                         if (screenSettings is not ScreenSettings<DataFormSettingsDescriptor> dataFormSettings)
                             throw new ArgumentException($"{nameof(screenSettings)}: {{0BA43238-B845-4E6E-8952-F213CF74B755}}");
 
-                        return (EditFormEntityViewModelBase)ActivatorUtilities.CreateInstance
+                        return (EditFormViewModelBase)ActivatorUtilities.CreateInstance
                         (
                             provider,
-                            typeof(EditFormEntityViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
+                            typeof(EditFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<IContextProvider>(),
                             dataFormSettings
                         );
                     })
-                .AddTransient<Func<ScreenSettingsBase, ListPageCollectionViewModelBase>>
+                .AddTransient<Func<ScreenSettingsBase, ListPageViewModelBase>>
                 (
                     provider =>
                     screenSettings =>
@@ -60,15 +60,15 @@ namespace Microsoft.Extensions.DependencyInjection
                         if (screenSettings is not ScreenSettings<ListFormSettingsDescriptor> listFormSettings)
                             throw new ArgumentException($"{nameof(screenSettings)}: {{E418F32B-6D8B-44AF-BBC5-1BCBC14642C6}}");
 
-                        return (ListPageCollectionViewModelBase)ActivatorUtilities.CreateInstance
+                        return (ListPageViewModelBase)ActivatorUtilities.CreateInstance
                         (
                             provider,
-                            typeof(ListPageCollectionViewModel<>).MakeGenericType(GetEntityType(listFormSettings.Settings.ModelType)),
+                            typeof(ListPageViewModel<>).MakeGenericType(GetEntityType(listFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<IContextProvider>(),
                             listFormSettings
                         );
                     })
-                .AddTransient<Func<ScreenSettingsBase, SearchPageCollectionViewModelBase>>
+                .AddTransient<Func<ScreenSettingsBase, SearchPageViewModelBase>>
                 (
                     provider =>
                     screenSettings =>
@@ -76,15 +76,15 @@ namespace Microsoft.Extensions.DependencyInjection
                         if (screenSettings is not ScreenSettings<SearchFormSettingsDescriptor> searchFormSettings)
                             throw new ArgumentException($"{nameof(screenSettings)}: {{48040E4A-EDDD-4724-8B5C-F7D0B8FF11E9}}");
 
-                        return (SearchPageCollectionViewModelBase)ActivatorUtilities.CreateInstance
+                        return (SearchPageViewModelBase)ActivatorUtilities.CreateInstance
                         (
                             provider,
-                            typeof(SearchPageCollectionViewModel<>).MakeGenericType(GetEntityType(searchFormSettings.Settings.ModelType)),
+                            typeof(SearchPageViewModel<>).MakeGenericType(GetEntityType(searchFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<IContextProvider>(),
                             searchFormSettings
                         );
                     })
-                .AddTransient<Func<ScreenSettingsBase, TextPageScreenViewModel>>
+                .AddTransient<Func<ScreenSettingsBase, TextPageViewModel>>
                 (
                     provider =>
                     screenSettings =>
@@ -92,7 +92,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         if (screenSettings is not ScreenSettings<TextFormSettingsDescriptor> textFormSettings)
                             throw new ArgumentException($"{nameof(screenSettings)}: {{3F3E8EE3-5E51-4786-A018-8A2EEF247581}}");
 
-                        return ActivatorUtilities.CreateInstance<TextPageScreenViewModel>
+                        return ActivatorUtilities.CreateInstance<TextPageViewModel>
                         (
                             provider,
                             textFormSettings

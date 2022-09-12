@@ -4,8 +4,9 @@ using Contoso.XPlatform.Flow.Requests;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
-using Contoso.XPlatform.ViewModels.ReadOnlys;
+using Contoso.XPlatform.ViewModels.Validatables;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -13,22 +14,23 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 
-namespace Contoso.XPlatform.ViewModels.DetailForm
+namespace Contoso.XPlatform.ViewModels.EditForm
 {
-    public abstract class DetailFormEntityViewModelBase : ViewModelBase
+    public abstract class EditFormViewModelBase : ViewModelBase, IDisposable
     {
-        protected DetailFormEntityViewModelBase(ScreenSettings<DataFormSettingsDescriptor> screenSettings, IContextProvider contextProvider)
+        protected EditFormViewModelBase(ScreenSettings<DataFormSettingsDescriptor> screenSettings, IContextProvider contextProvider)
         {
             this.UiNotificationService = contextProvider.UiNotificationService;
             FormSettings = screenSettings.Settings;
             Buttons = new ObservableCollection<CommandButtonDescriptor>(screenSettings.CommandButtons);
         }
 
-        public Dictionary<string, IReadOnly> BindingPropertiesDictionary
+        abstract public EditFormLayout FormLayout { get; set; }
+
+        public Dictionary<string, IValidatable> BindingPropertiesDictionary
             => FormLayout.Properties.ToDictionary(p => p.Name.ToBindingDictionaryKey());
 
         public DataFormSettingsDescriptor FormSettings { get; set; }
-        abstract public DetailFormLayout FormLayout { get; set; }
         public UiNotificationService UiNotificationService { get; set; }
         public ObservableCollection<CommandButtonDescriptor> Buttons { get; set; }
 
@@ -42,31 +44,41 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
 
                 _nextCommand = new Command<CommandButtonDescriptor>
                 (
-                     Next
+                     EditFormViewModelBase.Next
                 );
 
                 return _nextCommand;
             }
         }
 
-        protected void Next(CommandButtonDescriptor button)
+        protected static void Next(CommandButtonDescriptor button)
         {
-            NavigateNext(button);
+            EditFormViewModelBase.NavigateNext(button);
         }
 
-        protected Task NavigateNext(CommandButtonDescriptor button)
+        private static Task NavigateNext(CommandButtonDescriptor button)
         {
-            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-            {
-                flowManagerService.CopyFlowItems();
-                return flowManagerService.Next
-                (
-                    new CommandButtonRequest
-                    {
-                        NewSelection = button.ShortString
-                    }
-                );
-            }
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.CopyFlowItems();
+            return flowManagerService.Next
+            (
+                new CommandButtonRequest
+                {
+                    NewSelection = button.ShortString
+                }
+            );
+        }
+
+        public bool AreFieldsValid()
+            => FormLayout.Properties.Aggregate
+            (
+                true,
+                (isTrue, next) => next.Validate() && isTrue
+            );
+
+        public virtual void Dispose()
+        {
+            GC.SuppressFinalize(this);
         }
     }
 }

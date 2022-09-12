@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace Contoso.XPlatform.ViewModels.ListPage
 {
-    public class ListPageCollectionViewModel<TModel> : ListPageCollectionViewModelBase where TModel : Domain.EntityModelBase
+    public class ListPageViewModel<TModel> : ListPageViewModelBase where TModel : Domain.EntityModelBase
     {
-        public ListPageCollectionViewModel(IContextProvider contextProvider, ScreenSettings<ListFormSettingsDescriptor> screenSettings) : base(screenSettings)
+        public ListPageViewModel(IContextProvider contextProvider, ScreenSettings<ListFormSettingsDescriptor> screenSettings) : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.contextProvider = contextProvider;

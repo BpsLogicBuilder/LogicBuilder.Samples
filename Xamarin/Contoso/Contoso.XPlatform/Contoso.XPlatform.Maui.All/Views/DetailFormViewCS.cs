@@ -13,7 +13,7 @@ namespace Contoso.XPlatform.Views
 {
     public class DetailFormViewCS : ContentPage
     {
-        public DetailFormViewCS(DetailFormEntityViewModelBase detailFormViewModel)
+        public DetailFormViewCS(DetailFormViewModelBase detailFormViewModel)
         {
             this.detailFormEntityViewModel = detailFormViewModel;
             AddContent();
@@ -21,7 +21,7 @@ namespace Contoso.XPlatform.Views
             BindingContext = this.detailFormEntityViewModel;
         }
 
-        private readonly DetailFormEntityViewModelBase detailFormEntityViewModel;
+        private readonly DetailFormViewModelBase detailFormEntityViewModel;
         private Grid transitionGrid;
         private VerticalStackLayout page;
 
@@ -75,7 +75,7 @@ namespace Contoso.XPlatform.Views
                                     GetLabelBinding
                                     (
                                         detailFormEntityViewModel.FormSettings.HeaderBindings,
-                                        $"{nameof(DetailFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        $"{nameof(DetailFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new Label
@@ -89,7 +89,7 @@ namespace Contoso.XPlatform.Views
                                     GetLabelBinding
                                     (
                                         detailFormEntityViewModel.FormSettings.SubtitleBindings,
-                                        $"{nameof(DetailFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        $"{nameof(DetailFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new ScrollView

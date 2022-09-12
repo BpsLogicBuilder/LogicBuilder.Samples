@@ -7,12 +7,12 @@ namespace Contoso.XPlatform.Views.Factories
 {
     public class TextPageFactory : ITextPageFactory
     {
-        private readonly Func<TextPageScreenViewModel, TextPageViewCS> _getPage;
-        private readonly Func<ScreenSettingsBase, TextPageScreenViewModel> _getViewModel;
+        private readonly Func<TextPageViewModel, TextPageViewCS> _getPage;
+        private readonly Func<ScreenSettingsBase, TextPageViewModel> _getViewModel;
 
         public TextPageFactory(
-            Func<TextPageScreenViewModel, TextPageViewCS> getPage,
-            Func<ScreenSettingsBase, TextPageScreenViewModel> getViewModel)
+            Func<TextPageViewModel, TextPageViewCS> getPage,
+            Func<ScreenSettingsBase, TextPageViewModel> getViewModel)
         {
             _getPage = getPage;
             _getViewModel = getViewModel;

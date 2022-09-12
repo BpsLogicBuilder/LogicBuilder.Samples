@@ -15,9 +15,9 @@ using Microsoft.Maui.Controls;
 
 namespace Contoso.XPlatform.ViewModels.DetailForm
 {
-    public class DetailFormEntityViewModel<TModel> : DetailFormEntityViewModelBase, IDisposable where TModel : Domain.EntityModelBase
+    public class DetailFormViewModel<TModel> : DetailFormViewModelBase, IDisposable where TModel : Domain.EntityModelBase
     {
-        public DetailFormEntityViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
+        public DetailFormViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
             : base(screenSettings, contextProvider)
         {
             FormLayout = contextProvider.ReadOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));

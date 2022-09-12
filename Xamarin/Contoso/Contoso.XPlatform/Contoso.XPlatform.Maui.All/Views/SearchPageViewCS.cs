@@ -11,7 +11,7 @@ namespace Contoso.XPlatform.Views
 {
     public class SearchPageViewCS : ContentPage
     {
-        public SearchPageViewCS(SearchPageCollectionViewModelBase searchPageViewModel)
+        public SearchPageViewCS(SearchPageViewModelBase searchPageViewModel)
         {
             this.SearchPageListViewModel = searchPageViewModel;
             AddContent();
@@ -19,7 +19,7 @@ namespace Contoso.XPlatform.Views
             BindingContext = this.SearchPageListViewModel;
         }
 
-        public SearchPageCollectionViewModelBase SearchPageListViewModel { get; set; }
+        public SearchPageViewModelBase SearchPageListViewModel { get; set; }
         private Grid transitionGrid;
         private Grid page;
 
@@ -56,7 +56,7 @@ namespace Contoso.XPlatform.Views
                                 {
                                     Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
-                                .AddBinding(Label.TextProperty, new Binding(nameof(SearchPageCollectionViewModelBase.Title)))
+                                .AddBinding(Label.TextProperty, new Binding(nameof(SearchPageViewModelBase.Title)))
                                 .SetGridRow(0),
                                 new Grid
                                 {
@@ -75,17 +75,17 @@ namespace Contoso.XPlatform.Views
                                                 {
                                                     EventName = nameof(SearchBar.TextChanged),
                                                 }
-                                                .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.TextChangedCommand)))
+                                                .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.TextChangedCommand)))
                                             }
                                         }
-                                        .AddBinding(SearchBar.TextProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.SearchText)))
-                                        .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageCollectionViewModelBase.FilterPlaceholder))),
+                                        .AddBinding(SearchBar.TextProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.SearchText)))
+                                        .AddBinding(SearchBar.PlaceholderProperty, new Binding(nameof(SearchPageViewModelBase.FilterPlaceholder))),
 #if WINDOWS
                                         new Button
                                         {
                                             Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PullButtonStyle),
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.ButtonRefreshCommand)))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.ButtonRefreshCommand)))
                                         .SetGridColumn(1)
 #endif
                                     }
@@ -103,12 +103,12 @@ namespace Contoso.XPlatform.Views
                                             this.SearchPageListViewModel.FormSettings.Bindings
                                         )
                                     }
-                                    .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.Items)))
-                                    .AddBinding(SelectableItemsView.SelectionChangedCommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.SelectionChangedCommand)))
-                                    .AddBinding(SelectableItemsView.SelectedItemProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.SelectedItem)))
+                                    .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.Items)))
+                                    .AddBinding(SelectableItemsView.SelectionChangedCommandProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.SelectionChangedCommand)))
+                                    .AddBinding(SelectableItemsView.SelectedItemProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.SelectedItem)))
                                 }
-                                .AddBinding(RefreshView.IsRefreshingProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.IsRefreshing)))
-                                .AddBinding(RefreshView.CommandProperty, new Binding(nameof(SearchPageCollectionViewModel<Domain.EntityModelBase>.RefreshCommand)))
+                                .AddBinding(RefreshView.IsRefreshingProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.IsRefreshing)))
+                                .AddBinding(RefreshView.CommandProperty, new Binding(nameof(SearchPageViewModel<Domain.EntityModelBase>.RefreshCommand)))
                                 .SetGridRow(2)
                             }
                         }
