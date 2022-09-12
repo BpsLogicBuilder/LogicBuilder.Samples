@@ -7,16 +7,21 @@ using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Validatables;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
 
 namespace Contoso.XPlatform.ViewModels.EditForm
 {
     public class EditFormViewModel<TModel> : EditFormViewModelBase where TModel : Domain.EntityModelBase
     {
-        public EditFormViewModel(IContextProvider contextProvider, ScreenSettings<DataFormSettingsDescriptor> screenSettings)
+        public EditFormViewModel(
+            IContextProvider contextProvider,
+            Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers> getDirectiveManagers,
+            ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, contextProvider)
         {
             FormLayout = contextProvider.FieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));
@@ -24,11 +29,11 @@ namespace Contoso.XPlatform.ViewModels.EditForm
             this.httpService = contextProvider.HttpService;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;
             this.mapper = contextProvider.Mapper;
-            this.directiveManagers = new DirectiveManagers<TModel>
+            this.directiveManagers = (DirectiveManagers<TModel>)getDirectiveManagers
             (
-                FormLayout.Properties,
-                FormSettings,
-                contextProvider
+                typeof(TModel), 
+                FormLayout.Properties, 
+                FormSettings
             );
 
             propertyChangedSubscription = this.UiNotificationService.ValueChanged.Subscribe(FieldChanged);

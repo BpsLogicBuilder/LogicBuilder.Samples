@@ -6,8 +6,13 @@ using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Validators
 {
-    internal class ReadOnlyDirectiveManagers<TModel> : IDisposable
+    internal class ReadOnlyDirectiveManagers<TModel> : IReadOnlyDirectiveManagers
     {
+        public ReadOnlyDirectiveManagers(IContextProvider contextProvider, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
+            : this(properties, formSettings, contextProvider)
+        {
+        }
+
         public ReadOnlyDirectiveManagers(ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings, IContextProvider contextProvider)
         {
             this.properties = properties;
@@ -64,7 +69,7 @@ namespace Contoso.XPlatform.Validators
             Dispose(this.reloadIfManager);
         }
 
-        private void Dispose(IDisposable disposable)
+        private static void Dispose(IDisposable disposable)
         {
             if (disposable != null)
                 disposable.Dispose();

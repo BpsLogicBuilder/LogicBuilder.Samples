@@ -4,13 +4,17 @@ using Contoso.Forms.Configuration.SearchForm;
 using Contoso.Forms.Configuration.TextForm;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.DetailForm;
 using Contoso.XPlatform.ViewModels.EditForm;
 using Contoso.XPlatform.ViewModels.ListPage;
+using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.SearchPage;
 using Contoso.XPlatform.ViewModels.TextPage;
+using Contoso.XPlatform.ViewModels.Validatables;
 using System;
+using System.Collections.ObjectModel;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -18,7 +22,8 @@ namespace Microsoft.Extensions.DependencyInjection
     internal static class ViewModelServices
     {
         internal static IServiceCollection AddViewModels(this IServiceCollection services) 
-            => services.AddTransient<MainPageViewModel>()
+            => services
+                .AddTransient<MainPageViewModel>()
                 .AddTransient<Func<ScreenSettingsBase, DetailFormViewModelBase>>
                 (
                     provider =>
@@ -32,7 +37,23 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(DetailFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers>>(),
                             dataFormSettings
+                        );
+                    }
+                )
+                .AddTransient<Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers>>
+                (
+                    provider =>
+                    (modelType, properties, formSettings) =>
+                    {
+                        return (IDirectiveManagers)ActivatorUtilities.CreateInstance
+                        (
+                            provider,
+                            typeof(DirectiveManagers<>).MakeGenericType(modelType),
+                            provider.GetRequiredService<IContextProvider>(),
+                            properties,
+                            formSettings
                         );
                     }
                 )
@@ -49,9 +70,11 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(EditFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers>>(),
                             dataFormSettings
                         );
-                    })
+                    }
+                )
                 .AddTransient<Func<ScreenSettingsBase, ListPageViewModelBase>>
                 (
                     provider =>
@@ -67,7 +90,23 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider.GetRequiredService<IContextProvider>(),
                             listFormSettings
                         );
-                    })
+                    }
+                )
+                .AddTransient<Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers>>
+                (
+                    provider =>
+                    (modelType, properties, formSettings) =>
+                    {
+                        return (IReadOnlyDirectiveManagers)ActivatorUtilities.CreateInstance
+                        (
+                            provider,
+                            typeof(ReadOnlyDirectiveManagers<>).MakeGenericType(modelType),
+                            provider.GetRequiredService<IContextProvider>(),
+                            properties,
+                            formSettings
+                        );
+                    }
+                )
                 .AddTransient<Func<ScreenSettingsBase, SearchPageViewModelBase>>
                 (
                     provider =>
@@ -83,7 +122,8 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider.GetRequiredService<IContextProvider>(),
                             searchFormSettings
                         );
-                    })
+                    }
+                )
                 .AddTransient<Func<ScreenSettingsBase, TextPageViewModel>>
                 (
                     provider =>
@@ -97,7 +137,8 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             textFormSettings
                         );
-                    })
+                    }
+                )
                 .AddTransient<ExtendedSplashViewModel>();
 
 

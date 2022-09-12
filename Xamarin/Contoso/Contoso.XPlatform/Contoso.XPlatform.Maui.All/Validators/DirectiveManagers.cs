@@ -6,8 +6,13 @@ using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Validators
 {
-    internal class DirectiveManagers<TModel> : IDisposable
+    internal class DirectiveManagers<TModel> : IDirectiveManagers
     {
+        public DirectiveManagers(IContextProvider contextProvider, ObservableCollection<IValidatable> properties, IFormGroupSettings formSettings)
+            : this(properties, formSettings, contextProvider)
+        {
+        }
+
         public DirectiveManagers(ObservableCollection<IValidatable> properties, IFormGroupSettings formSettings, IContextProvider contextProvider)
         {
             this.properties = properties;
