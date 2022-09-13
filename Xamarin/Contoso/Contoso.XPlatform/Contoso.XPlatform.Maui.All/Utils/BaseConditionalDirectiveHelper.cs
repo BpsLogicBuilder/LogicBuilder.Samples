@@ -71,7 +71,7 @@ namespace Contoso.XPlatform.Utils
                     return;
                 }
 
-                if (!(descriptor is FormGroupSettingsDescriptor childForm))
+                if (descriptor is not FormGroupSettingsDescriptor childForm)
                     return;
 
                 if ((childForm.FormGroupTemplate?.TemplateName) != FromGroupTemplateNames.InlineFormGroupTemplate)

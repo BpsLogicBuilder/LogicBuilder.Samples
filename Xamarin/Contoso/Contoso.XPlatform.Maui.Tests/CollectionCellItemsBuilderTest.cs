@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.Maui.Tests
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
         [Fact]
         public void CreateReadOnlyPropertiesForInstructorModel()

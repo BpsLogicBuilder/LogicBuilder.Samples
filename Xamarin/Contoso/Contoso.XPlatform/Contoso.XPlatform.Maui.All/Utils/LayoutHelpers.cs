@@ -100,80 +100,77 @@ namespace Contoso.XPlatform.Utils
         internal static DataTemplate GetCollectionViewItemTemplate(string templateName,
             Dictionary<string, ItemBindingDescriptor> bindings)
         {
-            switch (templateName)
+            return templateName switch
             {
-                case TemplateNames.HeaderTextDetailTemplate:
-                    return new DataTemplate
-                    (
-                        () => new Grid
+                TemplateNames.HeaderTextDetailTemplate => new DataTemplate
+                (
+                    () => new Grid
+                    {
+                        Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailListItemStyle),
+                        Children =
                         {
-                            Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailListItemStyle),
-                            Children =
+                            new VerticalStackLayout
                             {
-                                new VerticalStackLayout
+                                Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailItemLayout),
+                                Children =
                                 {
-                                    Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailItemLayout),
-                                    Children =
-                                    {
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Header].TemplateName,
-                                            bindings[BindingNames.Header].Property,
-                                            FontAttributes.Bold
-                                        ),
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Text].TemplateName,
-                                            bindings[BindingNames.Text].Property,
-                                            FontAttributes.None
-                                        ),
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Detail].TemplateName,
-                                            bindings[BindingNames.Detail].Property,
-                                            FontAttributes.Italic
-                                        )
-                                    }
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Header].TemplateName,
+                                        bindings[BindingNames.Header].Property,
+                                        FontAttributes.Bold
+                                    ),
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Text].TemplateName,
+                                        bindings[BindingNames.Text].Property,
+                                        FontAttributes.None
+                                    ),
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Detail].TemplateName,
+                                        bindings[BindingNames.Detail].Property,
+                                        FontAttributes.Italic
+                                    )
                                 }
                             }
                         }
-                    );
-                case TemplateNames.TextDetailTemplate:
-                    return new DataTemplate
-                    (
-                        () => new Grid
+                    }
+                ),
+                TemplateNames.TextDetailTemplate => new DataTemplate
+                (
+                    () => new Grid
+                    {
+                        Style = GetStaticStyleResource(StyleKeys.TextDetailListItemStyle),
+                        Children =
                         {
-                            Style = GetStaticStyleResource(StyleKeys.TextDetailListItemStyle),
-                            Children =
+                            new VerticalStackLayout
                             {
-                                new VerticalStackLayout
+                                Style = GetStaticStyleResource(StyleKeys.TextDetailItemLayout),
+                                Children =
                                 {
-                                    Style = GetStaticStyleResource(StyleKeys.TextDetailItemLayout),
-                                    Children =
-                                    {
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Text].TemplateName,
-                                            bindings[BindingNames.Text].Property,
-                                            FontAttributes.Bold
-                                        ),
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Detail].TemplateName,
-                                            bindings[BindingNames.Detail].Property,
-                                            FontAttributes.Italic
-                                        )
-                                    }
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Text].TemplateName,
+                                        bindings[BindingNames.Text].Property,
+                                        FontAttributes.Bold
+                                    ),
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Detail].TemplateName,
+                                        bindings[BindingNames.Detail].Property,
+                                        FontAttributes.Italic
+                                    )
                                 }
                             }
                         }
-                    );
-                default:
-                    throw new ArgumentException
-                    (
-                        $"{nameof(templateName)}: 83C55FEE-9A93-45D3-A972-2335BA0F16AE"
-                    );
-            }
+                    }
+                ),
+                _ => throw new ArgumentException
+                (
+                    $"{nameof(templateName)}: 83C55FEE-9A93-45D3-A972-2335BA0F16AE"
+                ),
+            };
         }
 
         private struct TemplateNames
