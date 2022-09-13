@@ -1,4 +1,9 @@
 ﻿using AutoMapper;
+using Contoso.Forms.Configuration.DataForm;
+using Contoso.Forms.Configuration.Validation;
+using Contoso.XPlatform.ViewModels;
+using System;
+using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services
 {
@@ -10,8 +15,8 @@ namespace Contoso.XPlatform.Services
         IReloadIfConditionalDirectiveBuilder ReloadIfConditionalDirectiveBuilder { get; }
         IEntityStateUpdater EntityStateUpdater { get; }
         IEntityUpdater EntityUpdater { get; }
-        IFieldsCollectionBuilder FieldsCollectionBuilder { get; }
-        IUpdateOnlyFieldsCollectionBuilder UpdateOnlyFieldsCollectionBuilder { get; }
+        Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IFieldsCollectionBuilder> GetFieldsCollectionBuilder { get; }
+        Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IUpdateOnlyFieldsCollectionBuilder> GetUpdateOnlyFieldsCollectionBuilder { get; }
         IReadOnlyFieldsCollectionBuilder ReadOnlyFieldsCollectionBuilder { get; }
         ICollectionCellItemsBuilder CollectionCellItemsBuilder { get; }
         IGetItemFilterBuilder GetItemFilterBuilder { get; }

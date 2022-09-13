@@ -24,7 +24,15 @@ namespace Contoso.XPlatform.ViewModels.EditForm
             ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, contextProvider)
         {
-            FormLayout = contextProvider.FieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));
+            FormLayout = contextProvider.GetFieldsCollectionBuilder
+            (
+                typeof(TModel),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            ).CreateFields();
             this.entityStateUpdater = contextProvider.EntityStateUpdater;
             this.httpService = contextProvider.HttpService;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;

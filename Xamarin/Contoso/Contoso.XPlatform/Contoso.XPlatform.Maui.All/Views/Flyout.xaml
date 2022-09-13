@@ -25,11 +25,18 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label 
-                                Padding="4,2,0,0"
                                 Style="{StaticResource ListItemTextStyle}"
                                 Text="{Binding Path=Icon, Converter={StaticResource FontAwesomeConverter}}" 
                                 FontFamily="{StaticResource FontAwesomeSolid}"
-                                TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}"  />
+                                TextColor="{Binding Path=Active, Mode=OneWay, Converter={StaticResource MenuItemColorConverter}}">
+                            <Label.Padding>
+                                <OnPlatform x:TypeArguments="Thickness">
+                                    <On Platform="Android, Tizen" Value="4,2,0,0" />
+                                    <On Platform="iOS, MacCatalyst" Value="4,2,0,0" />
+                                    <On Platform="WinUI" Value="10,5,0,0" />
+                                </OnPlatform>
+                            </Label.Padding>
+                        </Label>
                         <Label 
                                 Grid.Column="1" 
                                 Text="{Binding Text}"

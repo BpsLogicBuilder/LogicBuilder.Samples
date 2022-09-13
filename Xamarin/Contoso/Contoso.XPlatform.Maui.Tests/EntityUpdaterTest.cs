@@ -1,4 +1,5 @@
 ﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.Validatables;
@@ -29,11 +30,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelWithInlineOfficeAssignmentToInstructor()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["ID"].Value = 3;
             propertiesDictionary["FirstName"].Value = "John";
@@ -87,11 +91,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelWithPopupOfficeAssignmentToInstructor()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["ID"].Value = 3;
             propertiesDictionary["FirstName"].Value = "John";
@@ -145,11 +152,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelToDepartment()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["DepartmentID"].Value = 1;
             propertiesDictionary["Name"].Value = "Mathematics";
@@ -203,11 +213,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelToDepartment_WhenSingleValueFieldIsNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["DepartmentID"].Value = 1;
             //propertiesDictionary["Name"].Value = "Mathematics";
@@ -261,11 +274,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelToDepartment_WhenSingleValueFieldIsDefaults()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
 
             propertiesDictionary["Name"].Value = null;
@@ -287,11 +303,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelWithInlineOfficeAssignmentToInstructor_WnenChildObjectInlineIsNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["ID"].Value = 3;
             propertiesDictionary["FirstName"].Value = "John";
@@ -345,11 +364,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelWithInlineOfficeAssignmentToInstructor_WnenChildObjectInlineIsNull()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["OfficeAssignment.Location"].Value = null;
 
@@ -370,11 +392,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelWithPopupOfficeAssignmentToInstructor_WnenChildObjectOpupIsNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["ID"].Value = 3;
             propertiesDictionary["FirstName"].Value = "John";
@@ -428,11 +453,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelWithPopupOfficeAssignmentToInstructor_WnenChildObjectOpupIsNull()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["OfficeAssignment"].Value = null;
 
@@ -453,11 +481,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelToInstructor_WnenMultiSelectFieldNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["ID"].Value = 3;
             propertiesDictionary["FirstName"].Value = "John";
@@ -486,11 +517,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelToInstructor_WnenMultiSelectFieldIsNull()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["Courses"].Value = (ObservableCollection<CourseAssignmentModel>?)propertiesDictionary["Courses"].Value;
 
@@ -511,11 +545,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapIValidatableListModelToDepartment_WhenFormArrayIsNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["DepartmentID"].Value = 1;
             propertiesDictionary["Name"].Value = "Mathematics";
@@ -539,6 +576,19 @@ namespace Contoso.XPlatform.Maui.Tests
             Assert.Equal(new DateTime(2021, 5, 20), departmentModel.StartDate);
             Assert.Equal(1, departmentModel.InstructorID);
             Assert.Empty(departmentModel.Courses);
+        }
+
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                dataFormSettingsDescriptor.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

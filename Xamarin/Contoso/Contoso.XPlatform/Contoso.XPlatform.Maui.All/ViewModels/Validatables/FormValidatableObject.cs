@@ -20,8 +20,26 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this.Placeholder = this.FormSettings.ValidFormControlText;
             this.entityUpdater = contextProvider.EntityUpdater;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;
-            this.fieldsCollectionBuilder = contextProvider.FieldsCollectionBuilder;
-            this.updateOnlyFieldsCollectionBuilder = contextProvider.UpdateOnlyFieldsCollectionBuilder;
+            this.fieldsCollectionBuilder = contextProvider.GetFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            );
+
+            this.updateOnlyFieldsCollectionBuilder = contextProvider.GetUpdateOnlyFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            );
+
             CreateFieldsCollection();
 
             this.directiveManagers = new DirectiveManagers<T>
@@ -37,7 +55,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         [MemberNotNull(nameof(FormLayout))]
         protected virtual void CreateFieldsCollection()
         {
-            FormLayout = updateOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(T));
+            FormLayout = updateOnlyFieldsCollectionBuilder.CreateFields();
         }
 
         public event EventHandler? Cancelled;

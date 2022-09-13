@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
+using Contoso.Forms.Configuration.DataForm;
 
 namespace Contoso.XPlatform.Maui.Tests
 {
@@ -29,11 +30,13 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapCourseModelToIValidatableList()
         {
             //act
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.CourseForm,
                 typeof(CourseModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //assert
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
@@ -46,11 +49,11 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateEditFormLayoutForDepartment_NoGroups()
         {
-            EditFormLayout formLayout = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            EditFormLayout formLayout = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            );
+            ).CreateFields();
 
             Assert.Single(formLayout.ControlGroupBoxList);
             Assert.Equal(6, formLayout.ControlGroupBoxList.Single().Count);
@@ -60,11 +63,11 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateEditFormLayoutForDepartment_AllFieldsGrouped()
         {
-            EditFormLayout formLayout = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            EditFormLayout formLayout = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentFormWithAllItemsGrouped,
                 typeof(DepartmentModel)
-            );
+            ).CreateFields();
 
             Assert.Equal(2, formLayout.ControlGroupBoxList.Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "GroupOne").Count);
@@ -74,17 +77,30 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateEditFormLayoutForDepartment_SomeFieldsGrouped()
         {
-            EditFormLayout formLayout = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            EditFormLayout formLayout = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentFormWithSomesItemsGrouped,
                 typeof(DepartmentModel)
-            );
+            ).CreateFields();
 
 
             Assert.Equal(2, formLayout.ControlGroupBoxList.Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "GroupOne").Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "Department").Count);
             Assert.Equal("Department", formLayout.ControlGroupBoxList.First().GroupHeader);
+        }
+
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                dataFormSettingsDescriptor.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

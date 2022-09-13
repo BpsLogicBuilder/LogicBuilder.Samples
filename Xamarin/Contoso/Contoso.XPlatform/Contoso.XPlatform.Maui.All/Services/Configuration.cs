@@ -1,6 +1,11 @@
-﻿using Contoso.XPlatform;
+﻿using Contoso.Forms.Configuration.DataForm;
+using Contoso.Forms.Configuration.Validation;
+using Contoso.XPlatform;
 using Contoso.XPlatform.Flow.Rules;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels;
+using System.Collections.Generic;
+using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -9,7 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static IServiceCollection AddServices(this IServiceCollection services)
             => services
                 .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
                 .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
                 .AddSingleton<IReadOnlyFieldsCollectionBuilder, ReadOnlyFieldsCollectionBuilder>()
                 .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()

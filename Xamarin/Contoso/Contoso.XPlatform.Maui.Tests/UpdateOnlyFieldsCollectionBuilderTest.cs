@@ -25,12 +25,19 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void MapCourseModelToIValidatableList()
         {
-            //act
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IUpdateOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            //arrange
+            IUpdateOnlyFieldsCollectionBuilder updateOnlyFieldsCollectionBuilder = serviceProvider.GetRequiredService<IContextProvider>().GetUpdateOnlyFieldsCollectionBuilder
             (
+                typeof(CourseModel),
+                Descriptors.CourseForm.FieldSettings,
                 Descriptors.CourseForm,
-                typeof(CourseModel)
-            ).Properties;
+                Descriptors.CourseForm.ValidationMessages,
+                null,
+                null
+            );
+
+            //act
+            ObservableCollection<IValidatable> properties = updateOnlyFieldsCollectionBuilder.CreateFields().Properties;
 
             //assert
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);

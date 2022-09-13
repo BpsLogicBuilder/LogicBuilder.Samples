@@ -14,7 +14,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
         protected override void CreateFieldsCollection()
         {
-            FormLayout = this.fieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(T));
+            FormLayout = this.fieldsCollectionBuilder.CreateFields();
         }
 
         public event EventHandler? AddCancelled;

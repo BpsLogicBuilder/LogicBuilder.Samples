@@ -1,4 +1,5 @@
 ﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.Validatables;
@@ -28,7 +29,7 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapInstructorModelToIValidatableListWithInlineOfficeAssignment()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -60,11 +61,13 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
             };
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -88,7 +91,7 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapInstructorModelToIValidatableListWithPopupOfficeAssignment()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -120,11 +123,13 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
             };
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -148,7 +153,7 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapDepartmentModelToIValidatableList()
         {
             //arrange
-            DepartmentModel department = new DepartmentModel
+            DepartmentModel department = new()
             {
                 DepartmentID = 1,
                 Name = "Mathematics",
@@ -177,11 +182,13 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
             };
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -200,6 +207,19 @@ namespace Contoso.XPlatform.Maui.Tests
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["StartDate"]);
             Assert.Equal(1, propertiesDictionary["InstructorID"]);
             Assert.Equal("Trigonometry", ((IEnumerable<CourseModel>)propertiesDictionary["Courses"]!).First().Title);
+        }
+
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                dataFormSettingsDescriptor.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Contoso.XPlatform.Utils
 {
     internal class CollectionCellItemsHelper
     {
-        private List<ItemBindingDescriptor> itemBindings;
+        private readonly List<ItemBindingDescriptor> itemBindings;
         private readonly IContextProvider contextProvider;
         private readonly Type modelType;
         public ICollection<IReadOnly> Properties { get; }

@@ -375,11 +375,25 @@ namespace Contoso.XPlatform.Maui.Tests
 
         private ObservableCollection<IValidatable> CreateValidatablesFormSettings(IFormGroupSettings formSettings, Type modelType)
         {
-            return serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            return GetFieldsCollectionBuilder
             (
                 formSettings,
                 modelType
-            ).Properties;
+            )
+            .CreateFields().Properties;
+        }
+
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(IFormGroupSettings formSettings, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                formSettings.FieldSettings,
+                formSettings,
+                formSettings.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

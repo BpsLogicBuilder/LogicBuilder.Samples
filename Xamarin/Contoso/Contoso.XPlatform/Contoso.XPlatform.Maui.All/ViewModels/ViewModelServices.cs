@@ -139,7 +139,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
-                .AddTransient<ExtendedSplashViewModel>();
+                .AddTransient<ExtendedSplashViewModel>()
+                .AddValidatableServices();
 
 
         static Type? TypeResolver(Assembly? assembly, string typeName, bool matchCase)
