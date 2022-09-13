@@ -16,8 +16,8 @@ namespace Contoso.XPlatform.Services
         IEntityStateUpdater EntityStateUpdater { get; }
         IEntityUpdater EntityUpdater { get; }
         Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IFieldsCollectionBuilder> GetFieldsCollectionBuilder { get; }
+        Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, DetailFormLayout?, string?, IReadOnlyFieldsCollectionBuilder> GetReadOnlyFieldsCollectionBuilder { get; }
         Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IUpdateOnlyFieldsCollectionBuilder> GetUpdateOnlyFieldsCollectionBuilder { get; }
-        IReadOnlyFieldsCollectionBuilder ReadOnlyFieldsCollectionBuilder { get; }
         ICollectionCellItemsBuilder CollectionCellItemsBuilder { get; }
         IGetItemFilterBuilder GetItemFilterBuilder { get; }
         IHttpService HttpService { get; }

@@ -1,4 +1,5 @@
 ﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;
@@ -23,11 +24,12 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateDetailFormLayoutForDepartment_NoGroups()
         {
-            DetailFormLayout formLayout = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            DetailFormLayout formLayout = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            );
+            )
+            .CreateFields();
 
             Assert.Single(formLayout.ControlGroupBoxList);
             Assert.Equal(6, formLayout.ControlGroupBoxList.Single().Count);
@@ -37,11 +39,12 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateDetailFormLayoutForDepartment_AllFieldsGrouped()
         {
-            DetailFormLayout formLayout = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            DetailFormLayout formLayout = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentFormWithAllItemsGrouped,
                 typeof(DepartmentModel)
-            );
+            )
+            .CreateFields();
 
             Assert.Equal(2, formLayout.ControlGroupBoxList.Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "GroupOne").Count);
@@ -51,17 +54,30 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateDetailFormLayoutForDepartment_SomeFieldsGrouped()
         {
-            DetailFormLayout formLayout = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            DetailFormLayout formLayout = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentFormWithSomeItemsGrouped,
                 typeof(DepartmentModel)
-            );
+            )
+            .CreateFields();
 
 
             Assert.Equal(2, formLayout.ControlGroupBoxList.Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "GroupOne").Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "Department").Count);
             Assert.Equal("Department", formLayout.ControlGroupBoxList.First().GroupHeader);
+        }
+
+        private IReadOnlyFieldsCollectionBuilder GetReadOnlyFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetReadOnlyFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                null,
+                null
+            );
         }
     }
 }

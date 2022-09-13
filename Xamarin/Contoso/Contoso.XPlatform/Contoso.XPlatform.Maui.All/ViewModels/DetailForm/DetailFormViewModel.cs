@@ -25,7 +25,14 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
             ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
             : base(screenSettings, contextProvider)
         {
-            FormLayout = contextProvider.ReadOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(TModel));
+            FormLayout = contextProvider.GetReadOnlyFieldsCollectionBuilder
+            (
+                typeof(TModel),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                null,
+                null
+            ).CreateFields();
             this.httpService = contextProvider.HttpService;
             this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
             this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;

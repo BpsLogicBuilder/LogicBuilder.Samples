@@ -1,4 +1,5 @@
 ﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
@@ -60,11 +61,13 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -120,11 +123,13 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -177,11 +182,13 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -214,11 +221,13 @@ namespace Contoso.XPlatform.Maui.Tests
                 DepartmentID = 2
             };
 
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.CourseForm,
                 typeof(CourseModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -233,6 +242,18 @@ namespace Contoso.XPlatform.Maui.Tests
             Assert.Equal(3, propertiesDictionary["Credits"]);
             Assert.Equal("Trigonometry", propertiesDictionary["Title"]);
             Assert.Equal(2, propertiesDictionary["DepartmentID"]);
+        }
+
+        private IReadOnlyFieldsCollectionBuilder GetReadOnlyFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetReadOnlyFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                null,
+                null
+            );
         }
     }
 }

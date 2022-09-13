@@ -18,7 +18,14 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.Title = this.FormSettings.Title;
             this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
             this.Placeholder = this.FormSettings.Placeholder;
-            FormLayout = contextProvider.ReadOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(T));
+            FormLayout = contextProvider.GetReadOnlyFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                null,
+                null
+            ).CreateFields();
 
             this.directiveManagers = new ReadOnlyDirectiveManagers<T>
             (
@@ -140,6 +147,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 if (property is IDisposable disposable)
                     Dispose(disposable);
             }
+            GC.SuppressFinalize(this);
         }
 
         protected void Dispose(IDisposable disposable)

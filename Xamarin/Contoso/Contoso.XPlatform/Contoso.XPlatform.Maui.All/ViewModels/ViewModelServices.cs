@@ -107,6 +107,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
+                .AddReadOnlyServices()
                 .AddTransient<Func<ScreenSettingsBase, SearchPageViewModelBase>>
                 (
                     provider =>

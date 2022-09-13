@@ -14,6 +14,7 @@ namespace Contoso.XPlatform.Services
             IEntityStateUpdater entityStateUpdater,
             IEntityUpdater entityUpdater,
             Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IFieldsCollectionBuilder> getFieldsCollectionBuilder,
+            Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, DetailFormLayout?, string?, IReadOnlyFieldsCollectionBuilder> getReadOnlyFieldsCollectionBuilder,
             Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IUpdateOnlyFieldsCollectionBuilder> getUpdateOnlyFieldsCollectionBuilder,
             IGetItemFilterBuilder getItemFilterBuilder,
             IHttpService httpService,
@@ -41,11 +42,11 @@ namespace Contoso.XPlatform.Services
             ClearIfConditionalDirectiveBuilder = clearIfConditionalDirectiveBuilder;
             ReloadIfConditionalDirectiveBuilder = reloadIfConditionalDirectiveBuilder;
             GetFieldsCollectionBuilder = getFieldsCollectionBuilder;
+            GetReadOnlyFieldsCollectionBuilder = getReadOnlyFieldsCollectionBuilder;
             GetUpdateOnlyFieldsCollectionBuilder = getUpdateOnlyFieldsCollectionBuilder;
 
             //passing IContextProvider to FieldsCollectionBuilder will create a circular dependency
             //so creating the instance here instead of using DI.
-            ReadOnlyFieldsCollectionBuilder = new ReadOnlyFieldsCollectionBuilder(this);
             CollectionCellItemsBuilder = new CollectionCellItemsBuilder(this);
         }
 
@@ -56,8 +57,8 @@ namespace Contoso.XPlatform.Services
         public IEntityStateUpdater EntityStateUpdater { get; }
         public IEntityUpdater EntityUpdater { get; }
         public Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IFieldsCollectionBuilder> GetFieldsCollectionBuilder { get; }
+        public Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, DetailFormLayout?, string?, IReadOnlyFieldsCollectionBuilder> GetReadOnlyFieldsCollectionBuilder { get; }
         public Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, Dictionary<string, List<ValidationRuleDescriptor>>, EditFormLayout?, string?, IUpdateOnlyFieldsCollectionBuilder> GetUpdateOnlyFieldsCollectionBuilder { get; }
-        public IReadOnlyFieldsCollectionBuilder ReadOnlyFieldsCollectionBuilder { get; }
         public ICollectionCellItemsBuilder CollectionCellItemsBuilder { get; }
         public IGetItemFilterBuilder GetItemFilterBuilder { get; }
         public IHttpService HttpService { get; }
