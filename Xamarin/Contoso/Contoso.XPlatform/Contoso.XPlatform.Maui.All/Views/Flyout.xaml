@@ -21,7 +21,7 @@
                 <DataTemplate>
                     <Grid Padding="5,10" IsEnabled="{Binding Active, Converter={StaticResource InverseBoolConverter}}">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30"/>
+                            <ColumnDefinition Width="{OnPlatform WinUI=40, Default=30}" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Label 
