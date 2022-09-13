@@ -14,9 +14,9 @@ namespace Contoso.XPlatform.Services
     public class ReadOnlyFieldsCollectionBuilder : IReadOnlyFieldsCollectionBuilder
     {
         private readonly IContextProvider contextProvider;
-        private List<FormItemSettingsDescriptor> fieldSettings;
-        private IFormGroupBoxSettings groupBoxSettings;
-        private DetailFormLayout formLayout;
+        private readonly List<FormItemSettingsDescriptor> fieldSettings;
+        private readonly IFormGroupBoxSettings groupBoxSettings;
+        private readonly DetailFormLayout formLayout;
         private readonly string? parentName;
         private readonly Type modelType;
 
