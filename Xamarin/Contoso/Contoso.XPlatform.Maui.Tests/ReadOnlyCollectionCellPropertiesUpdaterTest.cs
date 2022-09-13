@@ -28,7 +28,7 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapInstructorModelToIReadOnlyList()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -61,7 +61,7 @@ namespace Contoso.XPlatform.Maui.Tests
                 }
             };
 
-            List<ItemBindingDescriptor> itemBindings = new List<ItemBindingDescriptor>
+            List<ItemBindingDescriptor> itemBindings = new()
             {
                 new TextItemBindingDescriptor
                 {
@@ -79,11 +79,11 @@ namespace Contoso.XPlatform.Maui.Tests
                 }
             };
 
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 itemBindings,
                 typeof(InstructorModel)
-            );
+            ).CreateFields();
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyCollectionCellPropertiesUpdater>().UpdateProperties
@@ -104,14 +104,14 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapCourseModelToIReadOnlyList()
         {
             //arrange
-            CourseModel course = new CourseModel
+            CourseModel course = new()
             {
                 CourseID = 3,
                 Title = "Chemistry",
                 Credits = 5
             };
 
-            List<ItemBindingDescriptor> itemBindings = new List<ItemBindingDescriptor>
+            List<ItemBindingDescriptor> itemBindings = new()
             {
                 new TextItemBindingDescriptor
                 {
@@ -136,11 +136,12 @@ namespace Contoso.XPlatform.Maui.Tests
                 }
             };
 
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 itemBindings,
                 typeof(CourseModel)
-            );
+            )
+            .CreateFields();
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyCollectionCellPropertiesUpdater>().UpdateProperties
@@ -156,6 +157,15 @@ namespace Contoso.XPlatform.Maui.Tests
             Assert.Equal(3, propertiesDictionary["CourseID"]);
             Assert.Equal("Chemistry", propertiesDictionary["Title"]);
             Assert.Equal(5, propertiesDictionary["Credits"]);
+        }
+
+        private ICollectionCellItemsBuilder GetCollectionCellItemsBuilder(List<ItemBindingDescriptor> bindingDescriptors, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetCollectionCellItemsBuilder
+            (
+                modelType,
+                bindingDescriptors
+            );
         }
     }
 }

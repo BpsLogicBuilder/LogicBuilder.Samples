@@ -234,7 +234,7 @@ namespace Contoso.XPlatform.Utils
         {
             return descriptors.Aggregate(false, DoAggregate);
 
-            bool DoAggregate(bool shouldAdd, FormItemSettingsDescriptor next)
+            static bool DoAggregate(bool shouldAdd, FormItemSettingsDescriptor next)
             {
                 if (shouldAdd) return shouldAdd;
 
@@ -262,8 +262,7 @@ namespace Contoso.XPlatform.Utils
         /// <param name="itemBindings"></param>
         /// <returns></returns>
         internal static KeyValuePair<Dictionary<string, IReadOnly>, TModel> GetCollectionCellDictionaryModelPair<TModel>(this TModel entity, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
-            => new KeyValuePair<Dictionary<string, IReadOnly>, TModel>
-            (
+            => new            (
                 GetCollectionCellDictionaryItem(entity, contextProvider, itemBindings),
                 entity
             );
@@ -278,7 +277,7 @@ namespace Contoso.XPlatform.Utils
         /// <returns></returns>
         internal static Dictionary<string, IReadOnly> GetCollectionCellDictionaryItem<TModel>(this TModel entity, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
         {
-            ICollection<IReadOnly> properties = contextProvider.CollectionCellItemsBuilder.CreateCellsCollection(itemBindings, typeof(TModel));
+            ICollection<IReadOnly> properties = contextProvider.GetCollectionCellItemsBuilder(typeof(TModel), itemBindings).CreateFields();
 
             UpdateCollectionCellProperties
             (

@@ -14,8 +14,6 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static IServiceCollection AddServices(this IServiceCollection services)
             => services
                 .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IReadOnlyFieldsCollectionBuilder, ReadOnlyFieldsCollectionBuilder>()
                 .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
                 .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
                 .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()

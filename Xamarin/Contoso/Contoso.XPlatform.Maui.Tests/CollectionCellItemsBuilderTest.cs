@@ -1,6 +1,7 @@
 ﻿using Contoso.Domain.Entities;
 using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
@@ -21,11 +22,10 @@ namespace Contoso.XPlatform.Maui.Tests
         #region Fields
         private IServiceProvider serviceProvider;
         #endregion Fields
-
         [Fact]
         public void CreateReadOnlyPropertiesForInstructorModel()
         {
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 new List<ItemBindingDescriptor>
                 {
@@ -45,7 +45,7 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 },
                 typeof(InstructorModel)
-            );
+            ).CreateFields();
 
             Assert.Equal(2, properties.Count);
         }
@@ -53,7 +53,7 @@ namespace Contoso.XPlatform.Maui.Tests
         [Fact]
         public void CreateReadOnlyPropertiesForInstructorModelWithNavigationPrpertu()
         {
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 new List<ItemBindingDescriptor>
                 {
@@ -80,9 +80,19 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 },
                 typeof(InstructorModel)
-            );
+            )
+            .CreateFields();
 
             Assert.Equal(3, properties.Count);
+        }
+
+        private ICollectionCellItemsBuilder GetCollectionCellItemsBuilder(List<ItemBindingDescriptor> bindingDescriptors, Type modelType)
+        {
+            return serviceProvider.GetRequiredService<IContextProvider>().GetCollectionCellItemsBuilder
+            (
+                modelType,
+                bindingDescriptors
+            );
         }
     }
 }
