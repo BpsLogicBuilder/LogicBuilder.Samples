@@ -1,6 +1,7 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 
@@ -8,7 +9,12 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class AddFormValidatableObject<T> : FormValidatableObject<T> where T : class
     {
-        public AddFormValidatableObject(string name, IChildFormGroupSettings setting, IEnumerable<IValidationRule> validations, IContextProvider contextProvider) : base(name, setting, validations, contextProvider)
+        public AddFormValidatableObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            string name,
+            IChildFormGroupSettings setting,
+            IEnumerable<IValidationRule> validations) : base(collectionBuilderFactory, contextProvider, name, setting, validations)
         {
         }
 

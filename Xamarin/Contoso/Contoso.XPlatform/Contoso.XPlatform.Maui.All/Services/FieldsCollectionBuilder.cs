@@ -2,10 +2,12 @@
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.Validation;
 using Contoso.XPlatform.Utils;
-using Contoso.XPlatform.Validators.Rules;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.Validators.Rules;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
+using Contoso.XPlatform.ViewModels.Validatables.Factories;
 using LogicBuilder.Expressions.Utils;
 using LogicBuilder.RulesDirector;
 using System;
@@ -17,8 +19,11 @@ namespace Contoso.XPlatform.Services
 {
     public class FieldsCollectionBuilder : IFieldsCollectionBuilder
     {
+        protected readonly ICollectionBuilderFactory collectionBuilderFactory;
         protected readonly IContextProvider contextProvider;
         private readonly UiNotificationService uiNotificationService;
+        private readonly IValidatableFactory validatableFactory;
+        private readonly IValidatableValueHelper validatableValueHelper;
 
         private readonly List<FormItemSettingsDescriptor> fieldSettings;
         protected IFormGroupBoxSettings groupBoxSettings;
@@ -28,7 +33,10 @@ namespace Contoso.XPlatform.Services
         protected readonly Type modelType;
 
         public FieldsCollectionBuilder(
+            ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
+            IValidatableFactory validatableFactory,
+            IValidatableValueHelper validatableValueHelper,
             List<FormItemSettingsDescriptor> fieldSettings,
             IFormGroupBoxSettings groupBoxSettings,
             Dictionary<string, List<ValidationRuleDescriptor>> validationMessages,
@@ -39,7 +47,10 @@ namespace Contoso.XPlatform.Services
             this.fieldSettings = fieldSettings;
             this.groupBoxSettings = groupBoxSettings;
             this.ValidationMessages = validationMessages;
+            this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
+            this.validatableFactory = validatableFactory;
+            this.validatableValueHelper = validatableValueHelper;
             this.modelType = modelType;
             this.uiNotificationService = contextProvider.UiNotificationService;
 
@@ -102,7 +113,7 @@ namespace Contoso.XPlatform.Services
             if (setting.FieldSettings.Any(s => s is FormGroupBoxSettingsDescriptor))
                 throw new ArgumentException($"{nameof(setting.FieldSettings)}: B11BFDCD-9612-4584-A420-8FE511A8B64A");
 
-            contextProvider.GetFieldsCollectionBuilder
+            collectionBuilderFactory.GetFieldsCollectionBuilder
             (
                 this.modelType,
                 setting.FieldSettings,
@@ -144,7 +155,7 @@ namespace Contoso.XPlatform.Services
 
         protected virtual void AddFormGroupInline(FormGroupSettingsDescriptor setting)
         {
-            contextProvider.GetFieldsCollectionBuilder
+            collectionBuilderFactory.GetFieldsCollectionBuilder
             (
                 this.modelType,
                 setting.FieldSettings,
@@ -265,33 +276,30 @@ namespace Contoso.XPlatform.Services
             }
         }
 
-        private IValidatable CreateFormValidatableObject(FormGroupSettingsDescriptor setting)
-        {
-            return (IValidatable)(
-                Activator.CreateInstance
-                (
-                    typeof(FormValidatableObject<>).MakeGenericType(Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{setting.ModelType}: {{7E79347E-F11F-48B2-8365-49E98A1061EA}}")),
-                    GetFieldName(setting.Field),
-                    setting,
-                    Array.Empty<IValidationRule>(),
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{setting.ModelType}: {{C2F9E53E-563B-4CEE-B070-74CB2714A5D4}}")
+        private IValidatable CreateFormValidatableObject(FormGroupSettingsDescriptor setting) 
+            => this.validatableFactory.CreateFormValidatableObject
+            (
+                Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{setting.ModelType}: {{7E79347E-F11F-48B2-8365-49E98A1061EA}}"),
+                GetFieldName(setting.Field),
+                nameof(FormValidatableObject<string>),
+                setting,
+                Array.Empty<IValidationRule>()
             );
-        }
 
         private IValidatable CreateHiddenValidatableObject(FormControlSettingsDescriptor setting, string templateName)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{F69C7063-5F25-408F-9914-08E29245D98C}}");
+            IValidatable hiddenValidatable = validatableFactory.CreateHiddenValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(HiddenValidatableObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{F69C7063-5F25-408F-9914-08E29245D98C}}")),
-                    GetFieldName(setting.Field),
-                    templateName,
-                    GetValidationRules(setting),
-                    this.uiNotificationService
-                ) ?? throw new ArgumentException($"{setting.Type}: {{C2F2C3BB-723A-4C94-8941-BBD50F06036B}}"),
-                setting
+                fieldType,
+                GetFieldName(setting.Field),
+                templateName,
+                GetValidationRules(setting)
             );
+
+            hiddenValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            return hiddenValidatable;
+        }
 
         private IValidatable CreateCheckboxValidatableObject(FormControlSettingsDescriptor setting, string templateName, string title)
             => ValidatableObjectFactory.GetValidatable
@@ -324,37 +332,39 @@ namespace Contoso.XPlatform.Services
             );
 
         private IValidatable CreateEntryValidatableObject(FormControlSettingsDescriptor setting, string templateName, string placeholder, string stringFormat)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{0CF6F381-C03C-46BE-B3A2-815E8C34B96A}}");
+            IValidatable entryValidatable = validatableFactory.CreateEntryValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(EntryValidatableObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{0CF6F381-C03C-46BE-B3A2-815E8C34B96A}}")),
-                    GetFieldName(setting.Field),
-                    templateName,
-                    placeholder,
-                    stringFormat,
-                    GetValidationRules(setting),
-                    this.uiNotificationService
-                ) ?? throw new ArgumentException($"{setting.Type}: {{B4018648-8BB6-4D8F-8493-884FF2066AF6}}"),
-                setting
+                fieldType,
+                GetFieldName(setting.Field),
+                templateName,
+                placeholder,
+                stringFormat,
+                GetValidationRules(setting)
             );
 
+            entryValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            return entryValidatable;
+        }
+
         private IValidatable CreateLabelValidatableObject(FormControlSettingsDescriptor setting, string templateName, string title, string placeholder, string stringFormat)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{B0097578-8375-4D4F-B933-DB5708BF1A23}}");
+            IValidatable labelValidatable = validatableFactory.CreateLabelValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(LabelValidatableObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{B0097578-8375-4D4F-B933-DB5708BF1A23}}")),
-                    GetFieldName(setting.Field),
-                    templateName,
-                    title,
-                    placeholder,
-                    stringFormat,
-                    GetValidationRules(setting),
-                    this.uiNotificationService
-                ) ?? throw new ArgumentException($"{setting.Type}: {{32DDD6F8-BA5E-4BDE-A257-7CEBD9ADA715}}"),
-                setting
+                fieldType,
+                GetFieldName(setting.Field),
+                templateName,
+                title,
+                placeholder,
+                stringFormat,
+                GetValidationRules(setting)
             );
+
+            labelValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            return labelValidatable;
+        }
 
         private IValidatable CreateDatePickerValidatableObject(FormControlSettingsDescriptor setting, string templateName)
             => ValidatableObjectFactory.GetValidatable
@@ -419,10 +429,12 @@ namespace Contoso.XPlatform.Services
                             typeof(ObservableCollection<>).MakeGenericType(elementType),
                             elementType
                         ),
+                        this.collectionBuilderFactory,
+                        this.contextProvider,
+                        this.validatableFactory,
                         GetFieldName(setting.Field),
                         setting,
-                        Array.Empty<IValidationRule>(),
-                        this.contextProvider
+                        Array.Empty<IValidationRule>()
                     ) ?? throw new ArgumentException($"{setting.ModelType}: {{45FCB8EF-F39A-4DF9-AA00-FBC6534F9740}}")
                 );
         }

@@ -1,6 +1,7 @@
 ﻿using Contoso.Domain.Entities;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -26,7 +27,7 @@ namespace Contoso.XPlatform.Maui.Tests
         public void MapCourseModelToIValidatableList()
         {
             //arrange
-            IUpdateOnlyFieldsCollectionBuilder updateOnlyFieldsCollectionBuilder = serviceProvider.GetRequiredService<IContextProvider>().GetUpdateOnlyFieldsCollectionBuilder
+            IUpdateOnlyFieldsCollectionBuilder updateOnlyFieldsCollectionBuilder = serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetUpdateOnlyFieldsCollectionBuilder
             (
                 typeof(CourseModel),
                 Descriptors.CourseForm.FieldSettings,

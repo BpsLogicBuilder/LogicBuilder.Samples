@@ -1,6 +1,9 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.Validation;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.ViewModels.Validatables;
+using Contoso.XPlatform.ViewModels.Validatables.Factories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,14 +13,20 @@ namespace Contoso.XPlatform.Services
     public class UpdateOnlyFieldsCollectionBuilder : FieldsCollectionBuilder, IUpdateOnlyFieldsCollectionBuilder
     {
         public UpdateOnlyFieldsCollectionBuilder(
+            ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
+            IValidatableFactory validatableFactory,
+            IValidatableValueHelper validatableValueHelper,
             List<FormItemSettingsDescriptor> fieldSettings,
             IFormGroupBoxSettings groupBoxSettings,
             Dictionary<string, List<ValidationRuleDescriptor>> validationMessages,
             Type modelType,
             EditFormLayout? formLayout = null,
             string? parentName = null) : base(
-                contextProvider, 
+                collectionBuilderFactory,
+                contextProvider,
+                validatableFactory,
+                validatableValueHelper,
                 fieldSettings,
                 groupBoxSettings,
                 validationMessages,
@@ -48,7 +57,7 @@ namespace Contoso.XPlatform.Services
             if (setting.FieldSettings.Any(s => s is FormGroupBoxSettingsDescriptor))
                 throw new ArgumentException($"{nameof(setting.FieldSettings)}: 25BFA228-1B14-4B32-AA1C-8F8002DF4413");
 
-            contextProvider.GetUpdateOnlyFieldsCollectionBuilder
+            collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
             (
                 this.modelType,
                 setting.FieldSettings,
@@ -61,7 +70,7 @@ namespace Contoso.XPlatform.Services
 
         protected override void AddFormGroupInline(FormGroupSettingsDescriptor setting)
         {
-            contextProvider.GetUpdateOnlyFieldsCollectionBuilder
+            collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
             (
                 this.modelType,
                 setting.FieldSettings,

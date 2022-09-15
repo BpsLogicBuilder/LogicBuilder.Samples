@@ -2,6 +2,7 @@
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using System;
 using System.Collections.Generic;
 
@@ -32,6 +33,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new ReadOnlyFieldsCollectionBuilder
                         (
+                            provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             fieldSettings,
                             groupBoxSettings,

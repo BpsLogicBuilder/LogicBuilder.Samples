@@ -8,6 +8,7 @@ using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.DetailForm;
 using Contoso.XPlatform.ViewModels.EditForm;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ListPage;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.SearchPage;
@@ -24,6 +25,7 @@ namespace Microsoft.Extensions.DependencyInjection
         internal static IServiceCollection AddViewModels(this IServiceCollection services) 
             => services
                 .AddTransient<MainPageViewModel>()
+                .AddTransient<ICollectionBuilderFactory, CollectionBuilderFactory>()
                 .AddTransient<Func<ScreenSettingsBase, DetailFormViewModelBase>>
                 (
                     provider =>
@@ -36,6 +38,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider,
                             typeof(DetailFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
+                            provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers>>(),
                             dataFormSettings
@@ -57,6 +60,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
+                .AddTransient<IDirectiveManagersFactory, DirectiveManagersFactory>()
                 .AddTransient<Func<ScreenSettingsBase, EditFormViewModelBase>>
                 (
                     provider =>
@@ -69,8 +73,9 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider,
                             typeof(EditFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
+                            provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
-                            provider.GetRequiredService<Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers>>(),
+                            provider.GetRequiredService<IDirectiveManagersFactory>(),
                             dataFormSettings
                         );
                     }
@@ -87,6 +92,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider,
                             typeof(ListPageViewModel<>).MakeGenericType(GetEntityType(listFormSettings.Settings.ModelType)),
+                            provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             listFormSettings
                         );

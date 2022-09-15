@@ -127,8 +127,4 @@
 		<ProjectReference Include="..\..\Contoso.XPlatform.Flow\Contoso.XPlatform.Flow.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="ViewModels\Factories\" />
-	</ItemGroup>
-
 </Project>

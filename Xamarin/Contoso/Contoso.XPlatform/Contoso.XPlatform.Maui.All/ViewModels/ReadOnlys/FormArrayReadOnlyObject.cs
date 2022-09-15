@@ -11,12 +11,17 @@ using Microsoft.Maui.Controls;
 using Microsoft.Maui.ApplicationModel;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using Contoso.XPlatform.ViewModels.Factories;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class FormArrayReadOnlyObject<T, E> : ReadOnlyObjectBase<T> where T : ObservableCollection<E> where E : class
     {
-        public FormArrayReadOnlyObject(string name, FormGroupArraySettingsDescriptor setting, IContextProvider contextProvider) 
+        public FormArrayReadOnlyObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            string name,
+            FormGroupArraySettingsDescriptor setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
         {
             this.FormSettings = setting;
@@ -24,9 +29,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.itemBindings = this.formsCollectionDisplayTemplateDescriptor.Bindings.Values.ToList();
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.Placeholder;
+            this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
         }
 
+        private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;
@@ -106,6 +113,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 (
                     item => item.GetCollectionCellDictionaryModelPair
                     (
+                        this.collectionBuilderFactory,
                         this.contextProvider,
                         this.itemBindings
                     )
@@ -224,9 +232,10 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                         (
                             new FormReadOnlyObject<E>
                             (
+                                this.collectionBuilderFactory,
+                                this.contextProvider,
                                 Value.IndexOf(this._entitiesDictionary[this.SelectedItem]).ToString(),
-                                this.FormSettings,
-                                this.contextProvider
+                                this.FormSettings
                             )
                             {
                                 Value = this._entitiesDictionary[this.SelectedItem]

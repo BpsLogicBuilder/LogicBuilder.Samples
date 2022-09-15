@@ -4,6 +4,7 @@ using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -161,7 +162,7 @@ namespace Contoso.XPlatform.Maui.Tests
 
         private ICollectionCellItemsBuilder GetCollectionCellItemsBuilder(List<ItemBindingDescriptor> bindingDescriptors, Type modelType)
         {
-            return serviceProvider.GetRequiredService<IContextProvider>().GetCollectionCellItemsBuilder
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetCollectionCellItemsBuilder
             (
                 modelType,
                 bindingDescriptors

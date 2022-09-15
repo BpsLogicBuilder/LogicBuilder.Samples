@@ -8,25 +8,26 @@ using Contoso.XPlatform.Flow.Requests;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
-using System.Diagnostics.CodeAnalysis;
-using System;
 
 namespace Contoso.XPlatform.ViewModels.SearchPage
 {
     public class SearchPageViewModel<TModel> : SearchPageViewModelBase where TModel : Domain.EntityModelBase
     {
-        public SearchPageViewModel(IContextProvider contextProvider, ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
+        public SearchPageViewModel(ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
+            this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
             this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;
             this.httpService = contextProvider.HttpService;
@@ -35,6 +36,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             GetItems();
         }
 
+        private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
         private readonly IGetItemFilterBuilder getItemFilterBuilder;
         private readonly IHttpService httpService;
@@ -322,6 +324,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             (
                 item => item.GetCollectionCellDictionaryModelPair
                 (
+                    this.collectionBuilderFactory,
                     this.contextProvider,
                     this.itemBindings
                 )
@@ -358,6 +361,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             {
                 var kvp = next.GetCollectionCellDictionaryModelPair
                 (
+                    this.collectionBuilderFactory,
                     this.contextProvider,
                     this.itemBindings
                 );
@@ -377,7 +381,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private void Add(CommandButtonDescriptor button)
         {
-            NavigateNext(button);
+            SearchPageViewModel<TModel>.NavigateNext(button);
         }
 
         private void Edit(CommandButtonDescriptor button)
@@ -397,56 +401,52 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private void SetItemFilterAndNavigateNext(CommandButtonDescriptor button)
         {
-            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-            {
-                flowManagerService.CopyFlowItems();
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.CopyFlowItems();
 
-                if (this.SelectedItem == null)
-                    throw new ArgumentException($"{nameof(this.SelectedItem)}: {{E28E220D-FBA4-405C-A803-61C5BE385943}}");
-                if (this._entitiesDictionary == null)
-                    throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{30F5CBC2-1FC0-431E-B326-0642380001E6}}");
+            if (this.SelectedItem == null)
+                throw new ArgumentException($"{nameof(this.SelectedItem)}: {{E28E220D-FBA4-405C-A803-61C5BE385943}}");
+            if (this._entitiesDictionary == null)
+                throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{30F5CBC2-1FC0-431E-B326-0642380001E6}}");
 
-                flowManagerService.SetFlowDataCacheItem
+            flowManagerService.SetFlowDataCacheItem
+            (
+                typeof(FilterLambdaOperatorParameters).FullName!,
+                this.getItemFilterBuilder.CreateFilter
                 (
-                    typeof(FilterLambdaOperatorParameters).FullName!,
-                    this.getItemFilterBuilder.CreateFilter
-                    (
-                        this.FormSettings.ItemFilterGroup,
-                        typeof(TModel),
-                        this._entitiesDictionary[SelectedItem]
-                    )
-                );
-
-                flowManagerService.SetFlowDataCacheItem
-                (
-                    typeof(TModel).FullName!,
+                    this.FormSettings.ItemFilterGroup,
+                    typeof(TModel),
                     this._entitiesDictionary[SelectedItem]
-                );
+                )
+            );
 
-                flowManagerService.Next
-                (
-                    new CommandButtonRequest
-                    {
-                        NewSelection = button.ShortString
-                    }
-                );
-            }
+            flowManagerService.SetFlowDataCacheItem
+            (
+                typeof(TModel).FullName!,
+                this._entitiesDictionary[SelectedItem]
+            );
+
+            flowManagerService.Next
+            (
+                new CommandButtonRequest
+                {
+                    NewSelection = button.ShortString
+                }
+            );
         }
 
-        private Task NavigateNext(CommandButtonDescriptor button)
+        private static Task NavigateNext(CommandButtonDescriptor button)
         {
-            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-            {
-                flowManagerService.CopyFlowItems();
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.CopyFlowItems();
 
-                return flowManagerService.Next
-                (
-                    new CommandButtonRequest
-                    {
-                        NewSelection = button.ShortString
-                    }
-                );
-            }
+            return flowManagerService.Next
+            (
+                new CommandButtonRequest
+                {
+                    NewSelection = button.ShortString
+                }
+            );
         }
     }
 }

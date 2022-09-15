@@ -4,6 +4,7 @@ using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
@@ -258,9 +259,9 @@ namespace Contoso.XPlatform.Utils
         /// <param name="contextProvider"></param>
         /// <param name="itemBindings"></param>
         /// <returns></returns>
-        internal static KeyValuePair<Dictionary<string, IReadOnly>, TModel> GetCollectionCellDictionaryModelPair<TModel>(this TModel entity, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
+        internal static KeyValuePair<Dictionary<string, IReadOnly>, TModel> GetCollectionCellDictionaryModelPair<TModel>(this TModel entity, ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
             => new            (
-                GetCollectionCellDictionaryItem(entity, contextProvider, itemBindings),
+                GetCollectionCellDictionaryItem(entity, collectionBuilderFactory, contextProvider, itemBindings),
                 entity
             );
 
@@ -272,9 +273,9 @@ namespace Contoso.XPlatform.Utils
         /// <param name="contextProvider"></param>
         /// <param name="itemBindings"></param>
         /// <returns></returns>
-        internal static Dictionary<string, IReadOnly> GetCollectionCellDictionaryItem<TModel>(this TModel entity, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
+        internal static Dictionary<string, IReadOnly> GetCollectionCellDictionaryItem<TModel>(this TModel entity, ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
         {
-            ICollection<IReadOnly> properties = contextProvider.GetCollectionCellItemsBuilder(typeof(TModel), itemBindings).CreateFields();
+            ICollection<IReadOnly> properties = collectionBuilderFactory.GetCollectionCellItemsBuilder(typeof(TModel), itemBindings).CreateFields();
 
             UpdateCollectionCellProperties
             (

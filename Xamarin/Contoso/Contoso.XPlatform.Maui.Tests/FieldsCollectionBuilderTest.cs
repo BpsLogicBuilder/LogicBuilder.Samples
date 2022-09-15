@@ -1,17 +1,16 @@
 ﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.ViewModels.Validatables;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.ViewModels.Validatables;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
-using Contoso.Forms.Configuration.DataForm;
 
 namespace Contoso.XPlatform.Maui.Tests
 {
@@ -92,7 +91,7 @@ namespace Contoso.XPlatform.Maui.Tests
 
         private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            return serviceProvider.GetRequiredService<IContextProvider>().GetFieldsCollectionBuilder
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetFieldsCollectionBuilder
             (
                 modelType,
                 dataFormSettingsDescriptor.FieldSettings,

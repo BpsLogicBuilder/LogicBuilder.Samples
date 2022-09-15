@@ -8,6 +8,7 @@ using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
@@ -20,12 +21,13 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
     public class DetailFormViewModel<TModel> : DetailFormViewModelBase, IDisposable where TModel : Domain.EntityModelBase
     {
         public DetailFormViewModel(
+            ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers> getReadOnlyDirectiveManagers,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
             : base(screenSettings, contextProvider)
         {
-            FormLayout = contextProvider.GetReadOnlyFieldsCollectionBuilder
+            FormLayout = collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (
                 typeof(TModel),
                 this.FormSettings.FieldSettings,
@@ -33,6 +35,7 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
                 null,
                 null
             ).CreateFields();
+
             this.httpService = contextProvider.HttpService;
             this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
             this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;

@@ -1,6 +1,7 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -13,14 +14,19 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class FormValidatableObject<T> : ValidatableObjectBase<T>, IDisposable where T : class
     {
-        public FormValidatableObject(string name, IChildFormGroupSettings setting, IEnumerable<IValidationRule>? validations, IContextProvider contextProvider) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public FormValidatableObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            string name,
+            IChildFormGroupSettings setting,
+            IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
         {
             this.FormSettings = setting;
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.ValidFormControlText;
             this.entityUpdater = contextProvider.EntityUpdater;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;
-            this.fieldsCollectionBuilder = contextProvider.GetFieldsCollectionBuilder
+            this.fieldsCollectionBuilder = collectionBuilderFactory.GetFieldsCollectionBuilder
             (
                 typeof(T),
                 this.FormSettings.FieldSettings,
@@ -30,7 +36,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                 null
             );
 
-            this.updateOnlyFieldsCollectionBuilder = contextProvider.GetUpdateOnlyFieldsCollectionBuilder
+            this.updateOnlyFieldsCollectionBuilder = collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
             (
                 typeof(T),
                 this.FormSettings.FieldSettings,

@@ -3,6 +3,7 @@ using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Maui.Tests.Helpers;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -70,7 +71,7 @@ namespace Contoso.XPlatform.Maui.Tests
 
         private IReadOnlyFieldsCollectionBuilder GetReadOnlyFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            return serviceProvider.GetRequiredService<IContextProvider>().GetReadOnlyFieldsCollectionBuilder
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetReadOnlyFieldsCollectionBuilder
             (
                 modelType,
                 dataFormSettingsDescriptor.FieldSettings,

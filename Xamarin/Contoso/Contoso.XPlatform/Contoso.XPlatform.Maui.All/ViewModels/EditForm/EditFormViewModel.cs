@@ -7,6 +7,7 @@ using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
 using Microsoft.Maui.Controls;
 using System;
@@ -19,12 +20,13 @@ namespace Contoso.XPlatform.ViewModels.EditForm
     public class EditFormViewModel<TModel> : EditFormViewModelBase where TModel : Domain.EntityModelBase
     {
         public EditFormViewModel(
+            ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
-            Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers> getDirectiveManagers,
+            IDirectiveManagersFactory directiveManagersFactory,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, contextProvider)
         {
-            FormLayout = contextProvider.GetFieldsCollectionBuilder
+            FormLayout = collectionBuilderFactory.GetFieldsCollectionBuilder
             (
                 typeof(TModel),
                 this.FormSettings.FieldSettings,
@@ -33,11 +35,12 @@ namespace Contoso.XPlatform.ViewModels.EditForm
                 null,
                 null
             ).CreateFields();
+
             this.entityStateUpdater = contextProvider.EntityStateUpdater;
             this.httpService = contextProvider.HttpService;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;
             this.mapper = contextProvider.Mapper;
-            this.directiveManagers = (DirectiveManagers<TModel>)getDirectiveManagers
+            this.directiveManagers = (DirectiveManagers<TModel>)directiveManagersFactory.GetDirectiveManagers
             (
                 typeof(TModel), 
                 FormLayout.Properties, 

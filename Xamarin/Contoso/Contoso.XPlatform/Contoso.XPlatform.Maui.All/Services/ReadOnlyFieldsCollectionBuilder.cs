@@ -1,6 +1,7 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using LogicBuilder.Expressions.Utils;
 using LogicBuilder.RulesDirector;
@@ -13,6 +14,7 @@ namespace Contoso.XPlatform.Services
 {
     public class ReadOnlyFieldsCollectionBuilder : IReadOnlyFieldsCollectionBuilder
     {
+        private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
         private readonly List<FormItemSettingsDescriptor> fieldSettings;
         private readonly IFormGroupBoxSettings groupBoxSettings;
@@ -21,6 +23,7 @@ namespace Contoso.XPlatform.Services
         private readonly Type modelType;
 
         public ReadOnlyFieldsCollectionBuilder(
+            ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             List<FormItemSettingsDescriptor> fieldSettings,
             IFormGroupBoxSettings groupBoxSettings,
@@ -30,6 +33,7 @@ namespace Contoso.XPlatform.Services
         {
             this.fieldSettings = fieldSettings;
             this.groupBoxSettings = groupBoxSettings;
+            this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
             this.modelType = modelType;
 
@@ -90,7 +94,7 @@ namespace Contoso.XPlatform.Services
             if (setting.FieldSettings.Any(s => s is FormGroupBoxSettingsDescriptor))
                 throw new ArgumentException($"{nameof(setting.FieldSettings)}: E5DC0442-F3B9-4C50-B641-304358DF8EBA");
 
-            contextProvider.GetReadOnlyFieldsCollectionBuilder
+            collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (
                 this.modelType,
                 setting.FieldSettings,
@@ -187,7 +191,7 @@ namespace Contoso.XPlatform.Services
 
         private void AddFormGroupInline(FormGroupSettingsDescriptor setting)
         {
-            contextProvider.GetReadOnlyFieldsCollectionBuilder
+            collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (
                 this.modelType,
                 setting.FieldSettings,
@@ -226,9 +230,10 @@ namespace Contoso.XPlatform.Services
                 Activator.CreateInstance
                 (
                     typeof(FormReadOnlyObject<>).MakeGenericType(Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{23DF0B63-07A2-4CA3-86BB-EAE91DFAF89E}}")),
+                    this.collectionBuilderFactory,
+                    this.contextProvider,
                     GetFieldName(setting.Field),
-                    setting,
-                    this.contextProvider
+                    setting
                 ) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{25724F9B-35C1-4A41-8481-3140670E4542}}")
             );
 
@@ -327,9 +332,10 @@ namespace Contoso.XPlatform.Services
                             typeof(ObservableCollection<>).MakeGenericType(elementType),
                             elementType
                         ),
+                        this.collectionBuilderFactory,
+                        this.contextProvider,
                         GetFieldName(setting.Field),
-                        setting,
-                        this.contextProvider
+                        setting
                     ) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{7C95B79B-78C5-480D-922F-EA21D21EC120}}")
                 );
         }

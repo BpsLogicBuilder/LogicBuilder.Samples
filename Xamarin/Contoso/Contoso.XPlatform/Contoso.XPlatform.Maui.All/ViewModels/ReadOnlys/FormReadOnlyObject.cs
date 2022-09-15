@@ -6,19 +6,24 @@ using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.ApplicationModel;
 using System.Diagnostics.CodeAnalysis;
+using Contoso.XPlatform.ViewModels.Factories;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class FormReadOnlyObject<T> : ReadOnlyObjectBase<T>, IDisposable where T : class
     {
-        public FormReadOnlyObject(string name, IChildFormGroupSettings setting, IContextProvider contextProvider) 
+        public FormReadOnlyObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            string name,
+            IChildFormGroupSettings setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
         {
             this.FormSettings = setting;
             this.Title = this.FormSettings.Title;
             this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
             this.Placeholder = this.FormSettings.Placeholder;
-            FormLayout = contextProvider.GetReadOnlyFieldsCollectionBuilder
+            FormLayout = collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (
                 typeof(T),
                 this.FormSettings.FieldSettings,
