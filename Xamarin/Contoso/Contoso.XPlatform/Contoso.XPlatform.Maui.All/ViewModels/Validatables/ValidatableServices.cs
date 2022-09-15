@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration.DataForm;
+﻿using Contoso.Forms.Configuration;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.Validation;
 using Contoso.XPlatform;
 using Contoso.XPlatform.Services;
@@ -222,6 +223,30 @@ namespace Microsoft.Extensions.DependencyInjection
                                         validations ?? Array.Empty<IValidationRule>()
                                 }
                             ) ?? throw new ArgumentException($"{fieldType}: {{891D329A-2CF5-4C7D-8AA9-924D060AA881}}")
+                        );
+                    }
+                )
+                .AddTransient<Func<Type, string, object?, DropDownTemplateDescriptor, IEnumerable<IValidationRule>?, IValidatable>>
+                (
+                    provider =>
+                    (fieldType, name, defaultValue, dropDownTemplate, validations) =>
+                    {
+                        if (dropDownTemplate.TemplateName != nameof(QuestionTemplateSelector.PickerTemplate))
+                            throw new ArgumentException($"{nameof(dropDownTemplate.TemplateName)}: {{981EC142-52D2-4CA8-A16A-E62405DD85EF}}");
+
+                        return (IValidatable)(
+                            Activator.CreateInstance
+                            (
+                                typeof(PickerValidatableObject<>).MakeGenericType(fieldType),
+                                new object?[]
+                                {
+                                        provider.GetRequiredService<IContextProvider>(),
+                                        name,
+                                        defaultValue,
+                                        dropDownTemplate,
+                                        validations ?? Array.Empty<IValidationRule>()
+                                }
+                            ) ?? throw new ArgumentException($"{fieldType}: {{79B782E6-21DD-4579-93DD-DC901D0D3CD8}}")
                         );
                     }
                 )

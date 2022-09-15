@@ -21,7 +21,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class PickerValidatableObject<T> : ValidatableObjectBase<T>, IHasItemsSourceValidatable
     {
-        public PickerValidatableObject(string name, T defaultValue, DropDownTemplateDescriptor dropDownTemplate, IEnumerable<IValidationRule> validations, IContextProvider contextProvider)
+        public PickerValidatableObject(IContextProvider contextProvider, string name, T defaultValue, DropDownTemplateDescriptor dropDownTemplate, IEnumerable<IValidationRule>? validations)
             : base(name, dropDownTemplate.TemplateName, validations, contextProvider.UiNotificationService)
         {
             this.defaultValue = defaultValue;

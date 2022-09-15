@@ -380,19 +380,20 @@ namespace Contoso.XPlatform.Services
         }
 
         private IValidatable CreatePickerValidatableObject(FormControlSettingsDescriptor setting, DropDownTemplateDescriptor dropDownTemplate)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{8FB0D8B8-5273-48AC-98F4-6CE6FC4C81CC}}");
+            IValidatable pickerValidatable = validatableFactory.CreatePickerValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(PickerValidatableObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{1CEE7C08-7FDB-45E6-A13C-9C27E2100EE2}}")),
-                    GetFieldName(setting.Field),
-                    ValidatableObjectFactory.GetValue(setting),
-                    dropDownTemplate,
-                    GetValidationRules(setting),
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{setting.Type}: {{F261FAD0-8BBB-4F8C-A507-E782F7385011}}"),
-                setting
+                fieldType,
+                GetFieldName(setting.Field),
+                validatableValueHelper.GetDefaultValue(setting, fieldType),
+                dropDownTemplate,
+                GetValidationRules(setting)
             );
+
+            pickerValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            return pickerValidatable;
+        }
 
         private IValidatable CreateMultiSelectValidatableObject(MultiSelectFormControlSettingsDescriptor setting)
         {
