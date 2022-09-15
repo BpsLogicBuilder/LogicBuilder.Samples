@@ -302,34 +302,32 @@ namespace Contoso.XPlatform.Services
         }
 
         private IValidatable CreateCheckboxValidatableObject(FormControlSettingsDescriptor setting, string templateName, string title)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            IValidatable checkboxValidatable = validatableFactory.CreateCheckboxValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(CheckboxValidatableObject),
-                    GetFieldName(setting.Field),
-                    templateName,
-                    title,
-                    GetValidationRules(setting),
-                    this.uiNotificationService
-                ) ?? throw new ArgumentException($"{typeof(CheckboxValidatableObject)}: {{CFA66AF1-88E6-465E-A79F-2AA38451C321}}"),
-                setting
+                GetFieldName(setting.Field),
+                templateName,
+                title,
+                GetValidationRules(setting)
             );
 
+            checkboxValidatable.Value = validatableValueHelper.GetDefaultValue(setting, typeof(bool));
+            return checkboxValidatable;
+        }
+
         private IValidatable CreateSwitchValidatableObject(FormControlSettingsDescriptor setting, string templateName, string title)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            IValidatable switchValidatable = validatableFactory.CreateSwitchValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(SwitchValidatableObject),
-                    GetFieldName(setting.Field),
-                    templateName,
-                    title,
-                    GetValidationRules(setting),
-                    this.uiNotificationService
-                ) ?? throw new ArgumentException($"{typeof(SwitchValidatableObject)}: {{B728AF40-B321-4ABF-B4EB-1E887866EE51}}"),
-                setting
+                GetFieldName(setting.Field),
+                templateName,
+                title,
+                GetValidationRules(setting)
             );
+
+            switchValidatable.Value = validatableValueHelper.GetDefaultValue(setting, typeof(bool));
+            return switchValidatable;
+        }
 
         private IValidatable CreateEntryValidatableObject(FormControlSettingsDescriptor setting, string templateName, string placeholder, string stringFormat)
         {
@@ -367,18 +365,19 @@ namespace Contoso.XPlatform.Services
         }
 
         private IValidatable CreateDatePickerValidatableObject(FormControlSettingsDescriptor setting, string templateName)
-            => ValidatableObjectFactory.GetValidatable
+        {
+            Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{036F8A43-704B-4187-AABA-142B14734582}}");
+            IValidatable datePickerValidatable = validatableFactory.CreateDatePickerValidatableObject
             (
-                Activator.CreateInstance
-                (
-                    typeof(DatePickerValidatableObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{117F5104-3D4F-4E23-84A9-6DD759446523}}")),
-                    GetFieldName(setting.Field),
-                    templateName,
-                    GetValidationRules(setting),
-                    this.uiNotificationService
-                ) ?? throw new ArgumentException($"{setting.Type}: {{8827079A-EB58-42A4-9937-7A183C45063A}}"),
-                setting
+                fieldType,
+                GetFieldName(setting.Field),
+                templateName,
+                GetValidationRules(setting)
             );
+
+            datePickerValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            return datePickerValidatable;
+        }
 
         private IValidatable CreatePickerValidatableObject(FormControlSettingsDescriptor setting, DropDownTemplateDescriptor dropDownTemplate)
             => ValidatableObjectFactory.GetValidatable

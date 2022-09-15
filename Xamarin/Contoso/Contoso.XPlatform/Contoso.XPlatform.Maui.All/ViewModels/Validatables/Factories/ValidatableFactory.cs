@@ -7,22 +7,49 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
 {
     internal class ValidatableFactory : IValidatableFactory
     {
+        private readonly Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getCheckboxValidatable;
+        private readonly Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getDatePickerValidatable;
         private readonly Func<Type, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getEntryValidatable;
         private readonly Func<Type, string, string, IChildFormGroupSettings, IEnumerable<IValidationRule>?, IValidatable> getFormValidatable;
         private readonly Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getHiddenValidatable;
         private readonly Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable;
+        private readonly Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getSwitchValidatable;
 
         public ValidatableFactory(
+            Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getCheckboxValidatable,
+            Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getDatePickerValidatable,
             Func<Type, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getEntryValidatable,
             Func<Type, string, string, IChildFormGroupSettings, IEnumerable<IValidationRule>?, IValidatable> getFormValidatable,
             Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getHiddenValidatable,
-            Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable)
+            Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable,
+            Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getSwitchValidatable)
         {
+            this.getCheckboxValidatable = getCheckboxValidatable;
+            this.getDatePickerValidatable = getDatePickerValidatable;
             this.getEntryValidatable = getEntryValidatable;
             this.getFormValidatable = getFormValidatable;
             this.getHiddenValidatable = getHiddenValidatable;
             this.getLabelValidatable = getLabelValidatable;
+            this.getSwitchValidatable = getSwitchValidatable;
         }
+
+        public IValidatable CreateCheckboxValidatableObject(string name, string templateName, string checkboxLabel, IEnumerable<IValidationRule>? validations) 
+            => getCheckboxValidatable
+            (
+                name,
+                templateName,
+                checkboxLabel,
+                validations
+            );
+
+        public IValidatable CreateDatePickerValidatableObject(Type fieldType, string name, string templateName, IEnumerable<IValidationRule>? validations)
+            => getDatePickerValidatable
+            (
+                fieldType,
+                name,
+                templateName,
+                validations
+            );
 
         public IValidatable CreateEntryValidatableObject(Type fieldType, string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
             => getEntryValidatable
@@ -47,16 +74,14 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
             );
         }
 
-        public IValidatable CreateHiddenValidatableObject(Type fieldType, string name, string templateName, IEnumerable<IValidationRule>? validations)
-        {
-            return this.getHiddenValidatable
+        public IValidatable CreateHiddenValidatableObject(Type fieldType, string name, string templateName, IEnumerable<IValidationRule>? validations) 
+            => getHiddenValidatable
             (
                 fieldType,
                 name,
                 templateName,
                 validations
             );
-        }
 
         public IValidatable CreateLabelValidatableObject(Type fieldType, string name, string templateName, string title, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
             => getLabelValidatable
@@ -67,6 +92,15 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
                 title,
                 placeholder,
                 stringFormat,
+                validations
+            );
+
+        public IValidatable CreateSwitchValidatableObject(string name, string templateName, string checkboxLabel, IEnumerable<IValidationRule>? validations)
+            => getSwitchValidatable
+            (
+                name,
+                templateName,
+                checkboxLabel,
                 validations
             );
     }

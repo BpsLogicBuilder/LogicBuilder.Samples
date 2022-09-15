@@ -57,6 +57,78 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
+                .AddTransient<Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable>>
+                (//switch and checkbox validatables have the same signature
+                    provider =>
+                    (name, templateName, label, validations) =>
+                    {
+                        if (templateName == nameof(QuestionTemplateSelector.CheckboxTemplate))
+                        {
+                            return new CheckboxValidatableObject
+                            (
+                                provider.GetRequiredService<UiNotificationService>(),
+                                name,
+                                templateName,
+                                label,
+                                validations ?? Array.Empty<IValidationRule>()
+                            );
+                        }
+                        else if (templateName == nameof(QuestionTemplateSelector.SwitchTemplate))
+                        {
+                            return new SwitchValidatableObject
+                            (
+                                provider.GetRequiredService<UiNotificationService>(),
+                                name,
+                                templateName,
+                                label,
+                                validations ?? Array.Empty<IValidationRule>()
+                            );
+                        }
+
+                        throw new ArgumentException($"{nameof(templateName)}: {{704DE899-ABD4-4EC4-BB6B-56F6B3F1F289}}");
+                    }
+                )
+                .AddTransient<Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable>>
+                (//DatePicker and Hidden have the same signature
+                    provider =>
+                    (fieldType, name, templateName, validations) =>
+                    {
+                        if (templateName == nameof(QuestionTemplateSelector.DateTemplate))
+                        {
+                            return (IValidatable)(
+                                Activator.CreateInstance
+                                (
+                                    typeof(DatePickerValidatableObject<>).MakeGenericType(fieldType),
+                                    new object[]
+                                    {
+                                        provider.GetRequiredService<UiNotificationService>(),
+                                        name,
+                                        templateName,
+                                        validations ?? Array.Empty<IValidationRule>()
+                                    }
+                                ) ?? throw new ArgumentException($"{fieldType}: {{966C7238-5435-4A7E-BF50-57284004AE61}}")
+                            );
+                        }
+                        else if (templateName == nameof(QuestionTemplateSelector.HiddenTemplate))
+                        {
+                            return (IValidatable)(
+                                Activator.CreateInstance
+                                (
+                                    typeof(HiddenValidatableObject<>).MakeGenericType(fieldType),
+                                    new object[]
+                                    {
+                                        provider.GetRequiredService<UiNotificationService>(),
+                                        name,
+                                        templateName,
+                                        validations ?? Array.Empty<IValidationRule>()
+                                    }
+                                ) ?? throw new ArgumentException($"{fieldType}: {{EB232E08-F38C-49F8-B137-1C771316DA13}}")
+                            );
+                        }
+
+                        throw new ArgumentException($"{nameof(templateName)}: {{08714810-6632-437D-9F5F-0A4EC5A3D1E2}}");
+                    }
+                )
                 .AddTransient<Func<Type, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable>>
                 (
                     provider =>
@@ -125,29 +197,6 @@ namespace Microsoft.Extensions.DependencyInjection
                         }
 
                         throw new ArgumentException($"{nameof(setting.FormGroupTemplate.TemplateName)}: {{E8F5BC05-4696-456F-AD02-66A484394A9E}}");
-                    }
-                )
-                .AddTransient<Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable>>
-                (
-                    provider =>
-                    (fieldType, name, templateName, validations) =>
-                    {
-                        if (templateName != nameof(QuestionTemplateSelector.HiddenTemplate))
-                            throw new ArgumentException($"{nameof(templateName)}: {{08714810-6632-437D-9F5F-0A4EC5A3D1E2}}");
-
-                        return (IValidatable)(
-                            Activator.CreateInstance
-                            (
-                                typeof(HiddenValidatableObject<>).MakeGenericType(fieldType),
-                                new object[]
-                                {
-                                        provider.GetRequiredService<UiNotificationService>(),
-                                        name,
-                                        templateName,
-                                        validations ?? Array.Empty<IValidationRule>()
-                                }
-                            ) ?? throw new ArgumentException($"{fieldType}: {{EB232E08-F38C-49F8-B137-1C771316DA13}}")
-                        );
                     }
                 )
                 .AddTransient<Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable>>
