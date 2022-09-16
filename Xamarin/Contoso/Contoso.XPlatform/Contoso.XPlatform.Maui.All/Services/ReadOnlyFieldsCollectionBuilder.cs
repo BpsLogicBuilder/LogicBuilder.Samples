@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration.DataForm;
+﻿using AutoMapper;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
@@ -16,6 +17,8 @@ namespace Contoso.XPlatform.Services
     {
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
+        private readonly IDirectiveManagersFactory directiveManagersFactory;
+        private readonly IMapper mapper;
         private readonly List<FormItemSettingsDescriptor> fieldSettings;
         private readonly IFormGroupBoxSettings groupBoxSettings;
         private readonly DetailFormLayout formLayout;
@@ -25,6 +28,8 @@ namespace Contoso.XPlatform.Services
         public ReadOnlyFieldsCollectionBuilder(
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
+            IDirectiveManagersFactory directiveManagersFactory,
+            IMapper mapper,
             List<FormItemSettingsDescriptor> fieldSettings,
             IFormGroupBoxSettings groupBoxSettings,
             Type modelType,
@@ -35,6 +40,8 @@ namespace Contoso.XPlatform.Services
             this.groupBoxSettings = groupBoxSettings;
             this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
+            this.directiveManagersFactory = directiveManagersFactory;
+            this.mapper = mapper;
             this.modelType = modelType;
 
             if (formLayout == null)
@@ -232,6 +239,7 @@ namespace Contoso.XPlatform.Services
                     typeof(FormReadOnlyObject<>).MakeGenericType(Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{23DF0B63-07A2-4CA3-86BB-EAE91DFAF89E}}")),
                     this.collectionBuilderFactory,
                     this.contextProvider,
+                    this.directiveManagersFactory,
                     GetFieldName(setting.Field),
                     setting
                 ) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{25724F9B-35C1-4A41-8481-3140670E4542}}")
@@ -294,7 +302,8 @@ namespace Contoso.XPlatform.Services
                     setting.Title,
                     setting.StringFormat,
                     setting.DropDownTemplate,
-                    this.contextProvider
+                    this.contextProvider,
+                    this.mapper
                 ) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{F610E13D-1934-4075-98AD-5C31889163AC}}")
             );
 
@@ -334,6 +343,7 @@ namespace Contoso.XPlatform.Services
                         ),
                         this.collectionBuilderFactory,
                         this.contextProvider,
+                        this.directiveManagersFactory,
                         GetFieldName(setting.Field),
                         setting
                     ) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{7C95B79B-78C5-480D-922F-EA21D21EC120}}")

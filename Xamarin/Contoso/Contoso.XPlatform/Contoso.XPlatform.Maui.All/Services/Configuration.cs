@@ -1,11 +1,6 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.Forms.Configuration.Validation;
-using Contoso.XPlatform;
+﻿using Contoso.XPlatform;
 using Contoso.XPlatform.Flow.Rules;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.ViewModels;
-using System.Collections.Generic;
-using System;
 
 namespace Microsoft.Extensions.DependencyInjection
 {

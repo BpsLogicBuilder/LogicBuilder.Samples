@@ -17,6 +17,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         public FormValidatableObject(
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
+            IDirectiveManagersFactory directiveManagersFactory,
             string name,
             IChildFormGroupSettings setting,
             IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
@@ -48,11 +49,11 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
             CreateFieldsCollection();
 
-            this.directiveManagers = new DirectiveManagers<T>
+            this.directiveManagers = (DirectiveManagers<T>)directiveManagersFactory.GetDirectiveManagers
             (
+                typeof(T),
                 FormLayout.Properties,
-                FormSettings,
-                contextProvider
+                FormSettings
             );
 
             propertyChangedSubscription = this.uiNotificationService.ValueChanged.Subscribe(FieldChanged);

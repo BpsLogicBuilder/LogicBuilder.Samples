@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration.DataForm;
+﻿using AutoMapper;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System;
@@ -8,12 +9,12 @@ namespace Contoso.XPlatform.Validators
 {
     internal class ReadOnlyDirectiveManagers<TModel> : IReadOnlyDirectiveManagers
     {
-        public ReadOnlyDirectiveManagers(IContextProvider contextProvider, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
-            : this(properties, formSettings, contextProvider)
+        public ReadOnlyDirectiveManagers(IContextProvider contextProvider, IMapper mapper, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
+            : this(properties, formSettings, contextProvider, mapper)
         {
         }
 
-        public ReadOnlyDirectiveManagers(ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings, IContextProvider contextProvider)
+        public ReadOnlyDirectiveManagers(ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings, IContextProvider contextProvider, IMapper mapper)
         {
             this.properties = properties;
             this.formSettings = formSettings;
@@ -26,7 +27,7 @@ namespace Contoso.XPlatform.Validators
                     this.formSettings,
                     this.properties
                 ),
-                contextProvider.Mapper,
+                mapper,
                 contextProvider.UiNotificationService
             );
 
@@ -38,7 +39,7 @@ namespace Contoso.XPlatform.Validators
                     this.formSettings,
                     this.properties
                 ),
-                contextProvider.Mapper,
+                mapper,
                 contextProvider.UiNotificationService
             );
 
@@ -50,7 +51,7 @@ namespace Contoso.XPlatform.Validators
                     this.formSettings,
                     this.properties
                 ),
-                contextProvider.Mapper,
+                mapper,
                 contextProvider.UiNotificationService
             );
         }

@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration.DataForm;
+﻿using AutoMapper;
+using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.ListForm;
 using Contoso.Forms.Configuration.SearchForm;
 using Contoso.Forms.Configuration.TextForm;
@@ -40,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             typeof(DetailFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
-                            provider.GetRequiredService<Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers>>(),
+                            provider.GetRequiredService<IDirectiveManagersFactory>(),
                             dataFormSettings
                         );
                     }
@@ -76,6 +77,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IDirectiveManagersFactory>(),
+                            provider.GetRequiredService<IMapper>(),
                             dataFormSettings
                         );
                     }
@@ -108,6 +110,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(ReadOnlyDirectiveManagers<>).MakeGenericType(modelType),
                             provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<IMapper>(),
                             properties,
                             formSettings
                         );

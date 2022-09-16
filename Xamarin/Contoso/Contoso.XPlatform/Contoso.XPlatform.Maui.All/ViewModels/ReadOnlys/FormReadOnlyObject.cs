@@ -15,6 +15,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         public FormReadOnlyObject(
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
+            IDirectiveManagersFactory directiveManagersFactory,
             string name,
             IChildFormGroupSettings setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
@@ -32,11 +33,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 null
             ).CreateFields();
 
-            this.directiveManagers = new ReadOnlyDirectiveManagers<T>
+            this.directiveManagers = (ReadOnlyDirectiveManagers<T>)directiveManagersFactory.GetReadOnlyDirectiveManagers
             (
+                typeof(T),
                 FormLayout.Properties,
-                FormSettings,
-                contextProvider
+                FormSettings
             );
         }
 

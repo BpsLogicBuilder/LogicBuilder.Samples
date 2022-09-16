@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration.Bindings;
+﻿using AutoMapper;
+using Contoso.Forms.Configuration.Bindings;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using LogicBuilder.Expressions.Utils;
@@ -11,14 +12,16 @@ namespace Contoso.XPlatform.Services
     public class CollectionCellItemsBuilder : ICollectionCellItemsBuilder
     {
         private readonly IContextProvider contextProvider;
+        private readonly IMapper mapper;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private readonly Type modelType;
         public ICollection<IReadOnly> Properties { get; }
 
-        public CollectionCellItemsBuilder(IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings, Type modelType)
+        public CollectionCellItemsBuilder(IContextProvider contextProvider, IMapper mapper, List<ItemBindingDescriptor> itemBindings, Type modelType)
         {
             this.itemBindings = itemBindings;
             this.contextProvider = contextProvider;
+            this.mapper = mapper;
             this.modelType = modelType;
             Properties = new List<IReadOnly>();
         }
@@ -141,7 +144,8 @@ namespace Contoso.XPlatform.Services
                     binding.Title,
                     binding.StringFormat,
                     binding.DropDownTemplate,
-                    this.contextProvider
+                    this.contextProvider,
+                    this.mapper
                 ) ?? throw new ArgumentException($"{binding.Property}: {{15DACB56-2914-4A2A-8089-48FBC5BBBA49}}")
             );
 

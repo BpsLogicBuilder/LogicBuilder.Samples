@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration.Bindings;
+﻿using AutoMapper;
+using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;
@@ -21,6 +22,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         return new CollectionCellItemsBuilder
                         (
                             provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<IMapper>(),
                             itemBindings,
                             modelType
                         );
@@ -35,6 +37,8 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<IDirectiveManagersFactory>(),
+                            provider.GetRequiredService<IMapper>(),
                             fieldSettings,
                             groupBoxSettings,
                             modelType,

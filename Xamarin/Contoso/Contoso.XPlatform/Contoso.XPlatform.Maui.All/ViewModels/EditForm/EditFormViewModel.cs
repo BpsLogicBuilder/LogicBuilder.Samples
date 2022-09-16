@@ -23,6 +23,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
+            IMapper mapper,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, contextProvider)
         {
@@ -39,7 +40,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
             this.entityStateUpdater = contextProvider.EntityStateUpdater;
             this.httpService = contextProvider.HttpService;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;
-            this.mapper = contextProvider.Mapper;
+            this.mapper = mapper;
             this.directiveManagers = (DirectiveManagers<TModel>)directiveManagersFactory.GetDirectiveManagers
             (
                 typeof(TModel), 

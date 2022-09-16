@@ -10,7 +10,6 @@ namespace Contoso.XPlatform.Services
             IEntityUpdater entityUpdater,
             IGetItemFilterBuilder getItemFilterBuilder,
             IHttpService httpService,
-            IMapper mapper,
             ISearchSelectorBuilder searchSelectorBuilder,
             IPropertiesUpdater propertiesUpdater,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
@@ -25,7 +24,6 @@ namespace Contoso.XPlatform.Services
             EntityUpdater = entityUpdater;
             GetItemFilterBuilder = getItemFilterBuilder;
             HttpService = httpService;
-            Mapper = mapper;
             SearchSelectorBuilder = searchSelectorBuilder;
             PropertiesUpdater = propertiesUpdater;
             ReadOnlyPropertiesUpdater = readOnlyPropertiesUpdater;
@@ -43,7 +41,6 @@ namespace Contoso.XPlatform.Services
         public IEntityUpdater EntityUpdater { get; }
         public IGetItemFilterBuilder GetItemFilterBuilder { get; }
         public IHttpService HttpService { get; }
-        public IMapper Mapper { get; }
         public ISearchSelectorBuilder SearchSelectorBuilder { get; }
         public IPropertiesUpdater PropertiesUpdater { get; }
         public IReadOnlyPropertiesUpdater ReadOnlyPropertiesUpdater { get; }

@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
         public DetailFormViewModel(
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
-            Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers> getReadOnlyDirectiveManagers,
+            IDirectiveManagersFactory directiveManagersFactory,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
             : base(screenSettings, contextProvider)
         {
@@ -40,7 +40,7 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
             this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
             this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;
 
-            this.directiveManagers = (ReadOnlyDirectiveManagers<TModel>)getReadOnlyDirectiveManagers
+            this.directiveManagers = (ReadOnlyDirectiveManagers<TModel>)directiveManagersFactory.GetReadOnlyDirectiveManagers
             (
                 typeof(TModel), 
                 FormLayout.Properties, 

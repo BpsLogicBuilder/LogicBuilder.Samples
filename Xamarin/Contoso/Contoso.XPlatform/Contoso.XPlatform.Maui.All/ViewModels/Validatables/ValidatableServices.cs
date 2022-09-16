@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.Configuration;
+﻿using AutoMapper;
+using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.Validation;
 using Contoso.XPlatform;
@@ -171,6 +172,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                         typeof(FormValidatableObject<>).MakeGenericType(fieldType),
                                         provider.GetRequiredService<ICollectionBuilderFactory>(),
                                         provider.GetRequiredService<IContextProvider>(),
+                                        provider.GetRequiredService<IDirectiveManagersFactory>(),
                                         name,
                                         setting,
                                         Array.Empty<IValidationRule>()
@@ -185,6 +187,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                         typeof(AddFormValidatableObject<>).MakeGenericType(fieldType),
                                         provider.GetRequiredService<ICollectionBuilderFactory>(),
                                         provider.GetRequiredService<IContextProvider>(),
+                                        provider.GetRequiredService<IDirectiveManagersFactory>(),
                                         name,
                                         setting,
                                         Array.Empty<IValidationRule>()
@@ -241,6 +244,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 new object?[]
                                 {
                                         provider.GetRequiredService<IContextProvider>(),
+                                        provider.GetRequiredService<IMapper>(),
                                         name,
                                         defaultValue,
                                         dropDownTemplate,
