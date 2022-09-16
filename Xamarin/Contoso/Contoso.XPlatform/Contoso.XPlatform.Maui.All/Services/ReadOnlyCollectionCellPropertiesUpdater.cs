@@ -23,12 +23,12 @@ namespace Contoso.XPlatform.Services
 
         private void UpdateReadOnlys(IEnumerable<IReadOnly> properties, Type modelType, object entity, List<ItemBindingDescriptor> itemBindings)
         {
-            IDictionary<string, object?> existingValues = mapper.Map<Dictionary<string, object?>>(entity) ?? new Dictionary<string, object?>();
+            IDictionary<string, object?> existingValues = GetExistingValues(entity, itemBindings);/*can't use IMapper.Map here because thekey includes multipart names.*/
             IDictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
 
             foreach (var binding in itemBindings)
             {
-                Type fieldType = GetModelFieldType(modelType, binding.Property);
+                Type fieldType = ReadOnlyCollectionCellPropertiesUpdater.GetModelFieldType(modelType, binding.Property);
 
                 if (binding is MultiSelectItemBindingDescriptor multiSelectItemBindingDescriptor)
                 {
@@ -56,7 +56,27 @@ namespace Contoso.XPlatform.Services
             }
         }
 
-        Type GetModelFieldType(Type modelType, string fullPropertyName)
+        private static IDictionary<string, object?> GetExistingValues(object entity, List<ItemBindingDescriptor> itemBindings) 
+            => itemBindings.Select
+            (
+                binding => new KeyValuePair<string, object?>(binding.Property, GetValue(entity, binding.Property))
+            )
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        private static Type GetModelFieldType(Type modelType, string fullPropertyName)
                 => modelType.GetMemberInfoFromFullName(fullPropertyName).GetMemberType();
+
+        private static object GetValue(object entity, string fullName)
+        {
+            string[] parts = fullName.Split('.');
+            if (parts.Length == 1)
+                return Contoso.Utils.TypeHelpers.GetPropertyValue(entity, fullName);
+            else
+                return GetValue
+                (
+                    Contoso.Utils.TypeHelpers.GetPropertyValue(entity, parts[0]),
+                    string.Join(",", parts.Skip(1))
+                );
+        }
     }
 }

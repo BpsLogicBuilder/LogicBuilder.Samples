@@ -66,6 +66,13 @@ namespace Contoso.XPlatform.Maui.Tests
             {
                 new TextItemBindingDescriptor
                 {
+                    Name = "Header",
+                    Property = "OfficeAssignment.Location",
+                    StringFormat = "{0}",
+                    TextTemplate = new TextFieldTemplateDescriptor { TemplateName = "TextTemplate" }
+                },
+                new TextItemBindingDescriptor
+                {
                     Name = "Text",
                     Property = "HireDate",
                     StringFormat = "{0:MMMM dd, yyyy}",
@@ -97,6 +104,7 @@ namespace Contoso.XPlatform.Maui.Tests
 
             //assert
             IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            Assert.Equal("Location1", propertiesDictionary["OfficeAssignment.Location"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["HireDate"]);
             Assert.Equal(1, ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]!).First().CourseID);
         }
