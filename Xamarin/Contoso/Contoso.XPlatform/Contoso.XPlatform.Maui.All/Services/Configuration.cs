@@ -10,7 +10,7 @@ namespace Microsoft.Extensions.DependencyInjection
             => services
                 .AddSingleton<UiNotificationService, UiNotificationService>()
                 .AddSingleton<ICollectionCellManager, CollectionCellManager>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
+                .AddSingleton<IValidateIfConditionsBuilder, ValidateIfConditionsBuilder>()
                 .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
                 .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
                 .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()

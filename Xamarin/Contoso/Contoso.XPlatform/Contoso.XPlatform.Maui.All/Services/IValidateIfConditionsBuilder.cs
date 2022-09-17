@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services
 {
-    public interface IConditionalValidationConditionsBuilder
+    public interface IValidateIfConditionsBuilder
     {
         List<ValidateIf<TModel>> GetConditions<TModel>(IFormGroupSettings formGroupSettings, IEnumerable<IValidatable> properties);
     }

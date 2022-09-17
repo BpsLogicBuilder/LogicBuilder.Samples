@@ -1,11 +1,8 @@
-﻿using AutoMapper;
-
-namespace Contoso.XPlatform.Services
+﻿namespace Contoso.XPlatform.Services
 {
     public class ContextProvider : IContextProvider
     {
         public ContextProvider(UiNotificationService uiNotificationService,
-            IConditionalValidationConditionsBuilder conditionalValidationConditionsBuilder,
             IEntityStateUpdater entityStateUpdater,
             IEntityUpdater entityUpdater,
             IGetItemFilterBuilder getItemFilterBuilder,
@@ -16,10 +13,10 @@ namespace Contoso.XPlatform.Services
             IReadOnlyCollectionCellPropertiesUpdater readOnlyCollectionCellPropertiesUpdater,
             IHideIfConditionalDirectiveBuilder hideIfConditionalDirectiveBuilder,
             IClearIfConditionalDirectiveBuilder clearIfConditionalDirectiveBuilder,
-            IReloadIfConditionalDirectiveBuilder reloadIfConditionalDirectiveBuilder)
+            IReloadIfConditionalDirectiveBuilder reloadIfConditionalDirectiveBuilder,
+            IValidateIfConditionsBuilder validateIfConditionsBuilder)
         {
             UiNotificationService = uiNotificationService;
-            ConditionalValidationConditionsBuilder = conditionalValidationConditionsBuilder;
             EntityStateUpdater = entityStateUpdater;
             EntityUpdater = entityUpdater;
             GetItemFilterBuilder = getItemFilterBuilder;
@@ -31,12 +28,13 @@ namespace Contoso.XPlatform.Services
             HideIfConditionalDirectiveBuilder = hideIfConditionalDirectiveBuilder;
             ClearIfConditionalDirectiveBuilder = clearIfConditionalDirectiveBuilder;
             ReloadIfConditionalDirectiveBuilder = reloadIfConditionalDirectiveBuilder;
+            ValidateIfConditionsBuilder = validateIfConditionsBuilder;
         }
 
-        public IConditionalValidationConditionsBuilder ConditionalValidationConditionsBuilder { get; }
         public IHideIfConditionalDirectiveBuilder HideIfConditionalDirectiveBuilder { get; }
         public IClearIfConditionalDirectiveBuilder ClearIfConditionalDirectiveBuilder { get; }
         public IReloadIfConditionalDirectiveBuilder ReloadIfConditionalDirectiveBuilder { get; }
+        public IValidateIfConditionsBuilder ValidateIfConditionsBuilder { get; }
         public IEntityStateUpdater EntityStateUpdater { get; }
         public IEntityUpdater EntityUpdater { get; }
         public IGetItemFilterBuilder GetItemFilterBuilder { get; }

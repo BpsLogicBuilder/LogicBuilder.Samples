@@ -18,7 +18,7 @@ namespace Contoso.XPlatform.Validators
             this.validateIfManager = directiveManagersFactory.GetValidateIfManager
             (
                 this.properties,
-                contextProvider.ConditionalValidationConditionsBuilder.GetConditions<TModel>
+                contextProvider.ValidateIfConditionsBuilder.GetConditions<TModel>
                 (
                     this.formSettings,
                     this.properties

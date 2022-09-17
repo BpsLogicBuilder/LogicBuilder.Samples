@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services
 {
-    public class ConditionalValidationConditionsBuilder : IConditionalValidationConditionsBuilder
+    public class ValidateIfConditionsBuilder : IValidateIfConditionsBuilder
     {
         private readonly IMapper mapper;
 
-        public ConditionalValidationConditionsBuilder(IMapper mapper)
+        public ValidateIfConditionsBuilder(IMapper mapper)
         {
             this.mapper = mapper;
         }
