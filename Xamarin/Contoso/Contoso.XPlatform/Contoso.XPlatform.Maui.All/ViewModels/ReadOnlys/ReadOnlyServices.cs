@@ -35,6 +35,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new ReadOnlyFieldsCollectionBuilder
                         (
+                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IDirectiveManagersFactory>(),

@@ -2,12 +2,10 @@
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.Validatables.Factories;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -21,7 +19,14 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class FormArrayValidatableObject<T, E> : ValidatableObjectBase<T> where T : ObservableCollection<E> where E : class
     {
-        public FormArrayValidatableObject(ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, IValidatableFactory validatableFactory, string name, FormGroupArraySettingsDescriptor setting, IEnumerable<IValidationRule>? validations)
+        public FormArrayValidatableObject(
+            ICollectionCellManager collectionCellManager,
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            IValidatableFactory validatableFactory,
+            string name,
+            FormGroupArraySettingsDescriptor setting,
+            IEnumerable<IValidationRule>? validations)
             : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
         {
             this.FormSettings = setting;
@@ -29,6 +34,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this.itemBindings = this.formsCollectionDisplayTemplateDescriptor.Bindings.Values.ToList();
             this.Title = this.FormSettings.Title;
             this.Placeholder = setting.Placeholder;
+            this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
             this.validatableFactory = validatableFactory;
@@ -36,6 +42,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         }
 
         private T? _initialValue;
+        private readonly ICollectionCellManager collectionCellManager;
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
         private readonly IValidatableFactory validatableFactory;
@@ -117,10 +124,9 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
                 this._entitiesDictionary = base.Value?.Select
                 (
-                    item => item.GetCollectionCellDictionaryModelPair
+                    item => this.collectionCellManager.GetCollectionCellDictionaryModelPair
                     (
-                        this.collectionBuilderFactory,
-                        this.contextProvider,
+                        item,
                         this.itemBindings
                     )
                 ).ToDictionary(k => k.Key, v => v.Value) ?? new Dictionary<Dictionary<string, IReadOnly>, E>();
@@ -335,11 +341,10 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         }
 
         private void Add()
-        {
-            var newItemPair = Activator.CreateInstance<E>().GetCollectionCellDictionaryModelPair
+        { 
+            var newItemPair = collectionCellManager.GetCollectionCellDictionaryModelPair
             (
-                this.collectionBuilderFactory,
-                this.contextProvider,
+                Activator.CreateInstance<E>(),
                 this.itemBindings
             );
 
@@ -424,7 +429,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
             var kvp = _entitiesDictionary.Single(item => object.ReferenceEquals(item.Value, ((FormValidatableObject<E>)sender!).Value));
 
-            kvp.Value.UpdateCollectionCellProperties(kvp.Key.Values, this.contextProvider, itemBindings);
+            collectionCellManager.UpdateCollectionCellProperties(kvp.Value, kvp.Key.Values, itemBindings);
 
             ((FormValidatableObject<E>)sender).Dispose();
         }

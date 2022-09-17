@@ -5,7 +5,6 @@ using Contoso.Forms.Configuration.ListForm;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
-using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,17 +15,18 @@ namespace Contoso.XPlatform.ViewModels.ListPage
 {
     public class ListPageViewModel<TModel> : ListPageViewModelBase where TModel : Domain.EntityModelBase
     {
-        public ListPageViewModel(ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, ScreenSettings<ListFormSettingsDescriptor> screenSettings) : base(screenSettings)
+        public ListPageViewModel(
+            ICollectionCellManager collectionCellManager,
+            IContextProvider contextProvider,
+            ScreenSettings<ListFormSettingsDescriptor> screenSettings) : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
-            this.collectionBuilderFactory = collectionBuilderFactory;
-            this.contextProvider = contextProvider;
+            this.collectionCellManager = collectionCellManager;
             this.httpService = contextProvider.HttpService;
             GetItems();
         }
 
-        private readonly ICollectionBuilderFactory collectionBuilderFactory;
-        private readonly IContextProvider contextProvider;
+        private readonly ICollectionCellManager collectionCellManager;
         private readonly IHttpService httpService;
         private readonly List<ItemBindingDescriptor> itemBindings;
 
@@ -69,7 +69,7 @@ namespace Contoso.XPlatform.ViewModels.ListPage
             (
                 getListResponse.List.Cast<TModel>().Select
                 (
-                    item => item.GetCollectionCellDictionaryItem(this.collectionBuilderFactory, this.contextProvider, itemBindings)
+                    item => this.collectionCellManager.GetCollectionCellDictionaryItem(item, itemBindings)
                 )
             );
         }

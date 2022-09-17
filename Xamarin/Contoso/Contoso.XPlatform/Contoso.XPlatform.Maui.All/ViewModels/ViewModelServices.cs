@@ -94,7 +94,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider,
                             typeof(ListPageViewModel<>).MakeGenericType(GetEntityType(listFormSettings.Settings.ModelType)),
-                            provider.GetRequiredService<ICollectionBuilderFactory>(),
+                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<IContextProvider>(),
                             listFormSettings
                         );
@@ -129,6 +129,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider,
                             typeof(SearchPageViewModel<>).MakeGenericType(GetEntityType(searchFormSettings.Settings.ModelType)),
+                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<IContextProvider>(),
                             searchFormSettings
                         );

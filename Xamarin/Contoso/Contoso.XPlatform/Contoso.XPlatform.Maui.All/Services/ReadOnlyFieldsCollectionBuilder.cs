@@ -15,6 +15,7 @@ namespace Contoso.XPlatform.Services
 {
     public class ReadOnlyFieldsCollectionBuilder : IReadOnlyFieldsCollectionBuilder
     {
+        private readonly ICollectionCellManager collectionCellManager;
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
         private readonly IDirectiveManagersFactory directiveManagersFactory;
@@ -26,6 +27,7 @@ namespace Contoso.XPlatform.Services
         private readonly Type modelType;
 
         public ReadOnlyFieldsCollectionBuilder(
+            ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
@@ -38,6 +40,7 @@ namespace Contoso.XPlatform.Services
         {
             this.fieldSettings = fieldSettings;
             this.groupBoxSettings = groupBoxSettings;
+            this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
             this.directiveManagersFactory = directiveManagersFactory;
@@ -341,6 +344,7 @@ namespace Contoso.XPlatform.Services
                             typeof(ObservableCollection<>).MakeGenericType(elementType),
                             elementType
                         ),
+                        this.collectionCellManager,
                         this.collectionBuilderFactory,
                         this.contextProvider,
                         this.directiveManagersFactory,

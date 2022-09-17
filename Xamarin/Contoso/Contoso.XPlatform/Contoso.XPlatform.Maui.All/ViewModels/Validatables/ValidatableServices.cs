@@ -26,6 +26,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new FieldsCollectionBuilder
                         (
+                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IValidatableFactory>(),
@@ -46,6 +47,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new UpdateOnlyFieldsCollectionBuilder
                         (
+                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IValidatableFactory>(),

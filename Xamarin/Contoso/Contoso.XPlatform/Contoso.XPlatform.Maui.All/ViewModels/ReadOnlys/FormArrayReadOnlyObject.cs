@@ -2,7 +2,6 @@
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
@@ -18,6 +17,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
     public class FormArrayReadOnlyObject<T, E> : ReadOnlyObjectBase<T> where T : ObservableCollection<E> where E : class
     {
         public FormArrayReadOnlyObject(
+            ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
@@ -30,11 +30,13 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.itemBindings = this.formsCollectionDisplayTemplateDescriptor.Bindings.Values.ToList();
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.Placeholder;
+            this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
             this.directiveManagersFactory = directiveManagersFactory;
         }
 
+        private readonly ICollectionCellManager collectionCellManager;
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
         private readonly IDirectiveManagersFactory directiveManagersFactory;
@@ -114,10 +116,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 
                 this._entitiesDictionary = base.Value?.Select
                 (
-                    item => item.GetCollectionCellDictionaryModelPair
+                    item => this.collectionCellManager.GetCollectionCellDictionaryModelPair
                     (
-                        this.collectionBuilderFactory,
-                        this.contextProvider,
+                        item,
                         this.itemBindings
                     )
                 ).ToDictionary(k => k.Key, v => v.Value) ?? new Dictionary<Dictionary<string, IReadOnly>, E>();

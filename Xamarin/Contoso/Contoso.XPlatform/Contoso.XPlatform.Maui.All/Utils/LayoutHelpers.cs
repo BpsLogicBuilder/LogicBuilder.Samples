@@ -2,10 +2,6 @@
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Constants;
-using Contoso.XPlatform.Services;
-using Contoso.XPlatform.ViewModels;
-using Contoso.XPlatform.ViewModels.Factories;
-using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 using Microsoft.Maui.Layouts;
@@ -249,85 +245,6 @@ namespace Contoso.XPlatform.Utils
 
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Returns a key value pair where the key is a dictionary of the entity's properties and the value is the entity itself.
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="contextProvider"></param>
-        /// <param name="itemBindings"></param>
-        /// <returns></returns>
-        internal static KeyValuePair<Dictionary<string, IReadOnly>, TModel> GetCollectionCellDictionaryModelPair<TModel>(this TModel entity, ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
-            => new            (
-                GetCollectionCellDictionaryItem(entity, collectionBuilderFactory, contextProvider, itemBindings),
-                entity
-            );
-
-        /// <summary>
-        /// Returns a dictionary of the entity's properties where the key is the property name and the value is an IReadOnly implementation for the property.
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="contextProvider"></param>
-        /// <param name="itemBindings"></param>
-        /// <returns></returns>
-        internal static Dictionary<string, IReadOnly> GetCollectionCellDictionaryItem<TModel>(this TModel entity, ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
-        {
-            ICollection<IReadOnly> properties = collectionBuilderFactory.GetCollectionCellItemsBuilder(typeof(TModel), itemBindings).CreateFields();
-
-            UpdateCollectionCellProperties
-            (
-                entity,
-                properties,
-                contextProvider,
-                itemBindings
-            );
-
-            return properties.ToDictionary(p => p.Name.ToBindingDictionaryKey());
-        }
-
-        /// <summary>
-        /// Updates the IReadOnly objects to reflect the entity.
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="properties"></param>
-        /// <param name="contextProvider"></param>
-        /// <param name="itemBindings"></param>
-        /// <exception cref="ArgumentException"></exception>
-        internal static void UpdateCollectionCellProperties<TModel>(this TModel entity, ICollection<IReadOnly> properties, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
-        {
-            if (entity == null)
-                return;
-
-            Dictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
-
-            contextProvider.ReadOnlyCollectionCellPropertiesUpdater.UpdateProperties
-            (
-                properties,
-                typeof(TModel),
-                entity,
-                itemBindings
-            );
-
-            itemBindings.ForEach
-            (
-                binding =>
-                {
-                    if (binding is DropDownItemBindingDescriptor dropDownItemBinding && dropDownItemBinding.RequiresReload)
-                    {
-                        if (string.IsNullOrEmpty(dropDownItemBinding.DropDownTemplate.ReloadItemsFlowName))
-                            throw new ArgumentException($"{nameof(dropDownItemBinding.DropDownTemplate.ReloadItemsFlowName)}: F8304FC1-ABB9-4F2B-9668-4955A6D36F3B");
-
-                        GetHasItemsSourceReadOnly().Reload(entity, typeof(TModel));
-                    }
-
-                    IHasItemsSource GetHasItemsSourceReadOnly()
-                        => (IHasItemsSource)propertiesDictionary[binding.Property];
-                }
-            );
         }
     }
 }

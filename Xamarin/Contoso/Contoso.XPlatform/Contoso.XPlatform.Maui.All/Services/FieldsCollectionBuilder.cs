@@ -19,6 +19,7 @@ namespace Contoso.XPlatform.Services
 {
     public class FieldsCollectionBuilder : IFieldsCollectionBuilder
     {
+        private readonly ICollectionCellManager collectionCellManager;
         protected readonly ICollectionBuilderFactory collectionBuilderFactory;
         protected readonly IContextProvider contextProvider;
         private readonly UiNotificationService uiNotificationService;
@@ -33,6 +34,7 @@ namespace Contoso.XPlatform.Services
         protected readonly Type modelType;
 
         public FieldsCollectionBuilder(
+            ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             IValidatableFactory validatableFactory,
@@ -47,6 +49,7 @@ namespace Contoso.XPlatform.Services
             this.fieldSettings = fieldSettings;
             this.groupBoxSettings = groupBoxSettings;
             this.ValidationMessages = validationMessages;
+            this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
             this.validatableFactory = validatableFactory;
@@ -429,6 +432,7 @@ namespace Contoso.XPlatform.Services
                             typeof(ObservableCollection<>).MakeGenericType(elementType),
                             elementType
                         ),
+                        this.collectionCellManager,
                         this.collectionBuilderFactory,
                         this.contextProvider,
                         this.validatableFactory,

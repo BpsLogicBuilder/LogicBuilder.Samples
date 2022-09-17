@@ -8,7 +8,6 @@ using Contoso.XPlatform.Flow.Requests;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
-using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls;
@@ -23,12 +22,14 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 {
     public class SearchPageViewModel<TModel> : SearchPageViewModelBase where TModel : Domain.EntityModelBase
     {
-        public SearchPageViewModel(ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider, ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
+        public SearchPageViewModel(
+            ICollectionCellManager collectionCellManager,
+            IContextProvider contextProvider,
+            ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
-            this.collectionBuilderFactory = collectionBuilderFactory;
-            this.contextProvider = contextProvider;
+            this.collectionCellManager = collectionCellManager;
             this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;
             this.httpService = contextProvider.HttpService;
             this.searchSelectorBuilder = contextProvider.SearchSelectorBuilder;
@@ -36,8 +37,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             GetItems();
         }
 
-        private readonly ICollectionBuilderFactory collectionBuilderFactory;
-        private readonly IContextProvider contextProvider;
+        private readonly ICollectionCellManager collectionCellManager;
         private readonly IGetItemFilterBuilder getItemFilterBuilder;
         private readonly IHttpService httpService;
         private readonly ISearchSelectorBuilder searchSelectorBuilder;
@@ -322,10 +322,9 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
             this._entitiesDictionary = getListResponse.List.Cast<TModel>().Select
             (
-                item => item.GetCollectionCellDictionaryModelPair
+                item => this.collectionCellManager.GetCollectionCellDictionaryModelPair
                 (
-                    this.collectionBuilderFactory,
-                    this.contextProvider,
+                    item,
                     this.itemBindings
                 )
             ).ToDictionary(k => k.Key, v => v.Value);
@@ -359,10 +358,9 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
             this._entitiesDictionary = getListResponse.List.Cast<TModel>().Aggregate(this._entitiesDictionary, (list, next) =>
             {
-                var kvp = next.GetCollectionCellDictionaryModelPair
+                var kvp = this.collectionCellManager.GetCollectionCellDictionaryModelPair
                 (
-                    this.collectionBuilderFactory,
-                    this.contextProvider,
+                    next,
                     this.itemBindings
                 );
                 list.Add(kvp.Key, kvp.Value);

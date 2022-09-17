@@ -11,11 +11,8 @@ namespace Contoso.XPlatform.Services
 {
     public class ReadOnlyCollectionCellPropertiesUpdater : IReadOnlyCollectionCellPropertiesUpdater
     {
-        private readonly IMapper mapper;
-
-        public ReadOnlyCollectionCellPropertiesUpdater(IMapper mapper)
+        public ReadOnlyCollectionCellPropertiesUpdater()
         {
-            this.mapper = mapper;
         }
 
         public void UpdateProperties(IEnumerable<IReadOnly> properties, Type modelType, object entity, List<ItemBindingDescriptor> itemBindings)
@@ -28,7 +25,7 @@ namespace Contoso.XPlatform.Services
 
             foreach (var binding in itemBindings)
             {
-                Type fieldType = ReadOnlyCollectionCellPropertiesUpdater.GetModelFieldType(modelType, binding.Property);
+                Type fieldType = GetModelFieldType(modelType, binding.Property);
 
                 if (binding is MultiSelectItemBindingDescriptor multiSelectItemBindingDescriptor)
                 {

@@ -13,6 +13,7 @@ namespace Contoso.XPlatform.Services
     public class UpdateOnlyFieldsCollectionBuilder : FieldsCollectionBuilder, IUpdateOnlyFieldsCollectionBuilder
     {
         public UpdateOnlyFieldsCollectionBuilder(
+            ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             IValidatableFactory validatableFactory,
@@ -23,6 +24,7 @@ namespace Contoso.XPlatform.Services
             Type modelType,
             EditFormLayout? formLayout = null,
             string? parentName = null) : base(
+                collectionCellManager,
                 collectionBuilderFactory,
                 contextProvider,
                 validatableFactory,
