@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace Contoso.XPlatform.Validators
 {
-    internal class ClearIfManager<TModel> : IDisposable
+    internal class ClearIfManager<TModel> : IClearIfManager
     {
-        public ClearIfManager(IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions, IMapper mapper, UiNotificationService uiNotificationService)
+        public ClearIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;

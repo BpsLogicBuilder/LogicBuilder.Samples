@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace Contoso.XPlatform.Validators
 {
-    internal class HideIfManager<TModel> : IDisposable
+    internal class HideIfManager<TModel> : IHideIfManager
     {
-        public HideIfManager(IEnumerable<IFormField> currentProperties, List<HideIf<TModel>> conditions, IMapper mapper, UiNotificationService uiNotificationService)
+        public HideIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<HideIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;

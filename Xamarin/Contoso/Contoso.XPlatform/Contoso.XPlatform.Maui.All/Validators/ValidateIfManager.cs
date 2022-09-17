@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace Contoso.XPlatform.Validators
 {
-    internal class ValidateIfManager<TModel> : IDisposable
+    internal class ValidateIfManager<TModel> : IValidateIfManager
     {
-        public ValidateIfManager(ICollection<IValidatable> currentProperties, List<ValidateIf<TModel>> conditions, IMapper mapper, UiNotificationService uiNotificationService)
+        public ValidateIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IValidatable> currentProperties, List<ValidateIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -24,7 +24,7 @@ namespace Contoso.XPlatform.Validators
         private readonly UiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
-        public ICollection<IValidatable> CurrentProperties { get; }
+        public IEnumerable<IValidatable> CurrentProperties { get; }
         private IDictionary<string, IValidatable> CurrentPropertiesDictionary
             => CurrentProperties.ToDictionary(p => p.Name);
 
@@ -99,7 +99,7 @@ namespace Contoso.XPlatform.Validators
             );
         }
 
-        private void DisposeSubscription(IDisposable subscription)
+        private static void DisposeSubscription(IDisposable subscription)
         {
             if (subscription != null)
             {

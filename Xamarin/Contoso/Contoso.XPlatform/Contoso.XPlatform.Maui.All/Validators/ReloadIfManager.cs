@@ -8,9 +8,9 @@ using System.Linq.Expressions;
 
 namespace Contoso.XPlatform.Validators
 {
-    internal class ReloadIfManager<TModel> : IDisposable
+    internal class ReloadIfManager<TModel> : IReloadIfManager
     {
-        public ReloadIfManager(IEnumerable<IFormField> currentProperties, List<ReloadIf<TModel>> conditions, IMapper mapper, UiNotificationService uiNotificationService)
+        public ReloadIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ReloadIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;

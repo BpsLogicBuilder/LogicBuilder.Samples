@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System;
 using System.Collections.ObjectModel;
@@ -9,59 +10,48 @@ namespace Contoso.XPlatform.Validators
 {
     internal class ReadOnlyDirectiveManagers<TModel> : IReadOnlyDirectiveManagers
     {
-        public ReadOnlyDirectiveManagers(IContextProvider contextProvider, IMapper mapper, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
-            : this(properties, formSettings, contextProvider, mapper)
-        {
-        }
-
-        public ReadOnlyDirectiveManagers(ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings, IContextProvider contextProvider, IMapper mapper)
+        public ReadOnlyDirectiveManagers(IDirectiveManagersFactory directiveManagersFactory, IContextProvider contextProvider, IMapper mapper, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
         {
             this.properties = properties;
             this.formSettings = formSettings;
 
-            this.hideIfManager = new HideIfManager<TModel>
+            this.hideIfManager = directiveManagersFactory.GetHideIfManager
             (
                 this.properties,
                 contextProvider.HideIfConditionalDirectiveBuilder.GetConditions<TModel>
                 (
                     this.formSettings,
                     this.properties
-                ),
-                mapper,
-                contextProvider.UiNotificationService
+                )
             );
 
-            this.clearIfManager = new ClearIfManager<TModel>
+            this.clearIfManager = directiveManagersFactory.GetClearIfManager
             (
                 this.properties,
                 contextProvider.ClearIfConditionalDirectiveBuilder.GetConditions<TModel>
                 (
                     this.formSettings,
                     this.properties
-                ),
-                mapper,
-                contextProvider.UiNotificationService
+                )
             );
 
-            this.reloadIfManager = new ReloadIfManager<TModel>
+            this.reloadIfManager = directiveManagersFactory.GetReloadIfManager
             (
                 this.properties,
                 contextProvider.ReloadIfConditionalDirectiveBuilder.GetConditions<TModel>
                 (
                     this.formSettings,
                     this.properties
-                ),
-                mapper,
-                contextProvider.UiNotificationService
+                )
             );
         }
 
         private readonly ObservableCollection<IReadOnly> properties;
         private readonly IFormGroupSettings formSettings;
 
-        private readonly HideIfManager<TModel> hideIfManager;
-        private readonly ClearIfManager<TModel> clearIfManager;
-        private readonly ReloadIfManager<TModel> reloadIfManager;
+        private readonly IHideIfManager hideIfManager;
+        private readonly IClearIfManager clearIfManager;
+        private readonly IReloadIfManager reloadIfManager;
 
         public void Dispose()
         {

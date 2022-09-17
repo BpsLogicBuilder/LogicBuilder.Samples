@@ -5,18 +5,14 @@ using Contoso.Forms.Configuration.SearchForm;
 using Contoso.Forms.Configuration.TextForm;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.DetailForm;
 using Contoso.XPlatform.ViewModels.EditForm;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ListPage;
-using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.SearchPage;
 using Contoso.XPlatform.ViewModels.TextPage;
-using Contoso.XPlatform.ViewModels.Validatables;
 using System;
-using System.Collections.ObjectModel;
 using System.Reflection;
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -46,22 +42,6 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
-                .AddTransient<Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers>>
-                (
-                    provider =>
-                    (modelType, properties, formSettings) =>
-                    {
-                        return (IDirectiveManagers)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(DirectiveManagers<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IContextProvider>(),
-                            properties,
-                            formSettings
-                        );
-                    }
-                )
-                .AddTransient<IDirectiveManagersFactory, DirectiveManagersFactory>()
                 .AddTransient<Func<ScreenSettingsBase, EditFormViewModelBase>>
                 (
                     provider =>
@@ -100,22 +80,6 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
-                .AddTransient<Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers>>
-                (
-                    provider =>
-                    (modelType, properties, formSettings) =>
-                    {
-                        return (IReadOnlyDirectiveManagers)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(ReadOnlyDirectiveManagers<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IContextProvider>(),
-                            provider.GetRequiredService<IMapper>(),
-                            properties,
-                            formSettings
-                        );
-                    }
-                )
                 .AddReadOnlyServices()
                 .AddTransient<Func<ScreenSettingsBase, SearchPageViewModelBase>>
                 (
@@ -151,7 +115,8 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
                 )
                 .AddTransient<ExtendedSplashViewModel>()
-                .AddValidatableServices();
+                .AddValidatableServices()
+                .AddValidatorServices();
 
 
         static Type? TypeResolver(Assembly? assembly, string typeName, bool matchCase)
