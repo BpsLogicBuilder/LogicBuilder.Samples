@@ -1,6 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.ApplicationModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
