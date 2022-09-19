@@ -1,5 +1,5 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System;
 using System.Collections.Generic;

@@ -1,13 +1,13 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Directives;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.Validatables;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Contoso.XPlatform.ViewModels.Factories
+namespace Contoso.XPlatform.Directives.Factories
 {
     public interface IDirectiveManagersFactory
     {

@@ -3,6 +3,7 @@ using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.ListForm;
 using Contoso.Forms.Configuration.SearchForm;
 using Contoso.Forms.Configuration.TextForm;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels;

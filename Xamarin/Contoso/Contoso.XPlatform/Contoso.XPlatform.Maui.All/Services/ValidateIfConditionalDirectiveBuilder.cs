@@ -2,8 +2,8 @@
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.Directives;
 using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Utils;
-using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using System;

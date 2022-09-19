@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
-using Contoso.XPlatform.ViewModels.Factories;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using System;
 using System.Collections.Generic;

@@ -1,13 +1,13 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Directives;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.Validatables;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Contoso.XPlatform.ViewModels.Factories
+namespace Contoso.XPlatform.Directives.Factories
 {
     internal class DirectiveManagersFactory : IDirectiveManagersFactory
     {
@@ -41,7 +41,7 @@ namespace Contoso.XPlatform.ViewModels.Factories
             _getReadOnlyDirectiveManagers = getReadOnlyDirectiveManagers;
         }
 
-        public IClearIfManager GetClearIfManager<TModel>(IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions) 
+        public IClearIfManager GetClearIfManager<TModel>(IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions)
             => _getClearIfManager
             (
                 typeof(TModel),

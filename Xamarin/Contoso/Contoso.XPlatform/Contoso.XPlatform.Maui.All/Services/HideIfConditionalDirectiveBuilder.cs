@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.ViewModels;
-using Contoso.XPlatform.ViewModels.Factories;
 using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services

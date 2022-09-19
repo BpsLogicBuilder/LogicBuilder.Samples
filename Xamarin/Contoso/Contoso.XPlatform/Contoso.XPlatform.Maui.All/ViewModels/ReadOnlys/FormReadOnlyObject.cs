@@ -7,6 +7,7 @@ using Microsoft.Maui.ApplicationModel;
 using System.Diagnostics.CodeAnalysis;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
