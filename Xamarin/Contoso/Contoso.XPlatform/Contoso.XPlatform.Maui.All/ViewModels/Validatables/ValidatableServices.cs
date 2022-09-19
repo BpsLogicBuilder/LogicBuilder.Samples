@@ -28,7 +28,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new FieldsCollectionBuilder
                         (
-                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IValidatableFactory>(),
@@ -49,7 +48,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new UpdateOnlyFieldsCollectionBuilder
                         (
-                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IValidatableFactory>(),
@@ -157,6 +155,33 @@ namespace Microsoft.Extensions.DependencyInjection
                                         validations ?? Array.Empty<IValidationRule>()
                                 }
                             ) ?? throw new ArgumentException($"{fieldType}: {{D2EEDDEE-0124-4B83-B4D4-520F37626570}}")
+                        );
+                    }
+                )
+                .AddTransient<Func<Type, string, FormGroupArraySettingsDescriptor, IEnumerable<IValidationRule>?, IValidatable>>
+                (
+                    provider =>
+                    (elementType, name, setting, validations) =>
+                    {
+                        if (setting.FormGroupTemplate.TemplateName != nameof(QuestionTemplateSelector.FormGroupArrayTemplate))
+                            throw new ArgumentException($"{nameof(setting.FormGroupTemplate.TemplateName)}: {{A35D2359-809D-42DF-95E1-B29DA2E1B962}}");
+
+                        return (IValidatable)(
+                            Activator.CreateInstance
+                            (
+                                typeof(FormArrayValidatableObject<,>).MakeGenericType
+                                (
+                                    typeof(ObservableCollection<>).MakeGenericType(elementType),
+                                    elementType
+                                ),
+                                provider.GetRequiredService<ICollectionCellManager>(),
+                                provider.GetRequiredService<ICollectionBuilderFactory>(),
+                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IValidatableFactory>(),
+                                name,
+                                setting,
+                                validations ?? Array.Empty<IValidationRule>()
+                            ) ?? throw new ArgumentException($"{setting.FormGroupTemplate.TemplateName}: {{3E474C92-1061-4222-929D-4C9A2C6B358F}}")
                         );
                     }
                 )

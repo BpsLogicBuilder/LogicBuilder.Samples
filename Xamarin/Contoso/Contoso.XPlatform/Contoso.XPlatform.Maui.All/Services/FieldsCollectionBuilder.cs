@@ -12,16 +12,13 @@ using LogicBuilder.Expressions.Utils;
 using LogicBuilder.RulesDirector;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Contoso.XPlatform.Services
 {
     public class FieldsCollectionBuilder : IFieldsCollectionBuilder
     {
-        private readonly ICollectionCellManager collectionCellManager;
         protected readonly ICollectionBuilderFactory collectionBuilderFactory;
-        protected readonly IContextProvider contextProvider;
         private readonly UiNotificationService uiNotificationService;
         private readonly IValidatableFactory validatableFactory;
         private readonly IValidatableValueHelper validatableValueHelper;
@@ -34,7 +31,6 @@ namespace Contoso.XPlatform.Services
         protected readonly Type modelType;
 
         public FieldsCollectionBuilder(
-            ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
             IContextProvider contextProvider,
             IValidatableFactory validatableFactory,
@@ -49,9 +45,7 @@ namespace Contoso.XPlatform.Services
             this.fieldSettings = fieldSettings;
             this.groupBoxSettings = groupBoxSettings;
             this.ValidationMessages = validationMessages;
-            this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
-            this.contextProvider = contextProvider;
             this.validatableFactory = validatableFactory;
             this.validatableValueHelper = validatableValueHelper;
             this.modelType = modelType;
@@ -416,28 +410,14 @@ namespace Contoso.XPlatform.Services
             return multiSelectValidatable;
         }
 
-        private IValidatable CreateFormArrayValidatableObject(FormGroupArraySettingsDescriptor setting)
-        {
-            return GetValidatable(Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{setting.ModelType}: {{694A445E-E460-45BE-8E6F-C0EE71B1E3CE}}"));
-            IValidatable GetValidatable(Type elementType)
-                => (IValidatable)(
-                    Activator.CreateInstance
-                    (
-                        typeof(FormArrayValidatableObject<,>).MakeGenericType
-                        (
-                            typeof(ObservableCollection<>).MakeGenericType(elementType),
-                            elementType
-                        ),
-                        this.collectionCellManager,
-                        this.collectionBuilderFactory,
-                        this.contextProvider,
-                        this.validatableFactory,
-                        GetFieldName(setting.Field),
-                        setting,
-                        Array.Empty<IValidationRule>()
-                    ) ?? throw new ArgumentException($"{setting.ModelType}: {{45FCB8EF-F39A-4DF9-AA00-FBC6534F9740}}")
-                );
-        }
+        private IValidatable CreateFormArrayValidatableObject(FormGroupArraySettingsDescriptor setting) 
+            => validatableFactory.CreateFormArrayValidatableObject
+            (
+                Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{setting.ModelType}: {{18D5D086-FC25-4BAF-AE4A-8DB037F7CD12}}"),
+                GetFieldName(setting.Field),
+                setting,
+                Array.Empty<IValidationRule>()
+            );
 
         private IValidationRule[]? GetValidationRules(FormControlSettingsDescriptor setting)
             => setting.ValidationSetting?.Validators?.Select

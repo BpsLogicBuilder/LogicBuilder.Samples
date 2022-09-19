@@ -11,6 +11,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
         private readonly Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getCheckboxValidatable;
         private readonly Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getDatePickerValidatable;
         private readonly Func<Type, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getEntryValidatable;
+        private readonly Func<Type, string, FormGroupArraySettingsDescriptor, IEnumerable<IValidationRule>?, IValidatable> getFormArrayValidatable;
         private readonly Func<Type, string, string, IChildFormGroupSettings, IEnumerable<IValidationRule>?, IValidatable> getFormValidatable;
         private readonly Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getHiddenValidatable;
         private readonly Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable;
@@ -22,6 +23,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
             Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getCheckboxValidatable,
             Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getDatePickerValidatable,
             Func<Type, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getEntryValidatable,
+            Func<Type, string, FormGroupArraySettingsDescriptor, IEnumerable<IValidationRule>?, IValidatable> getFormArrayValidatable,
             Func<Type, string, string, IChildFormGroupSettings, IEnumerable<IValidationRule>?, IValidatable> getFormValidatable,
             Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getHiddenValidatable,
             Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable,
@@ -32,6 +34,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
             this.getCheckboxValidatable = getCheckboxValidatable;
             this.getDatePickerValidatable = getDatePickerValidatable;
             this.getEntryValidatable = getEntryValidatable;
+            this.getFormArrayValidatable = getFormArrayValidatable;
             this.getFormValidatable = getFormValidatable;
             this.getHiddenValidatable = getHiddenValidatable;
             this.getLabelValidatable = getLabelValidatable;
@@ -66,6 +69,15 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
                 templateName,
                 placeholder,
                 stringFormat,
+                validations
+            );
+
+        public IValidatable CreateFormArrayValidatableObject(Type elementType, string name, FormGroupArraySettingsDescriptor setting, IEnumerable<IValidationRule>? validations) 
+            => this.getFormArrayValidatable
+            (
+                elementType,
+                name,
+                setting,
                 validations
             );
 
