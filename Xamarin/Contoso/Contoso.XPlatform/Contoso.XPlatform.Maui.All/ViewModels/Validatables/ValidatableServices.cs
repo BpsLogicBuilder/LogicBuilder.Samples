@@ -13,6 +13,7 @@ using Contoso.XPlatform.ViewModels.Validatables;
 using Contoso.XPlatform.ViewModels.Validatables.Factories;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -218,17 +219,38 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(LabelValidatableObject<>).MakeGenericType(fieldType),
-                                new object[]
-                                {
-                                        provider.GetRequiredService<UiNotificationService>(),
-                                        name,
-                                        templateName,
-                                        title,
-                                        placeholder,
-                                        stringFormat,
-                                        validations ?? Array.Empty<IValidationRule>()
-                                }
+                                provider.GetRequiredService<UiNotificationService>(),
+                                name,
+                                templateName,
+                                title,
+                                placeholder,
+                                stringFormat,
+                                validations ?? Array.Empty<IValidationRule>()
                             ) ?? throw new ArgumentException($"{fieldType}: {{891D329A-2CF5-4C7D-8AA9-924D060AA881}}")
+                        );
+                    }
+                )
+                .AddTransient<Func<Type, string, MultiSelectFormControlSettingsDescriptor, IEnumerable<IValidationRule>?, IValidatable>>
+                (
+                    provider =>
+                    (elementType, name, setting, validations) =>
+                    {
+                        if (setting.MultiSelectTemplate.TemplateName != nameof(QuestionTemplateSelector.MultiSelectTemplate))
+                            throw new ArgumentException($"{nameof(setting.MultiSelectTemplate.TemplateName)}: {{77223A01-5D5B-4F7D-8642-60D9E48F46C4}}");
+
+                        return (IValidatable)(
+                            Activator.CreateInstance
+                            (
+                                typeof(MultiSelectValidatableObject<,>).MakeGenericType
+                                (
+                                    typeof(ObservableCollection<>).MakeGenericType(elementType),
+                                    elementType
+                                ),
+                                provider.GetRequiredService<IContextProvider>(),
+                                name,
+                                setting,
+                                validations ?? Array.Empty<IValidationRule>()
+                            ) ?? throw new ArgumentException($"{setting.MultiSelectTemplate.ModelType}: {{225867FD-C54E-423D-BD87-A6A2954C824B}}")
                         );
                     }
                 )

@@ -14,6 +14,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
         private readonly Func<Type, string, string, IChildFormGroupSettings, IEnumerable<IValidationRule>?, IValidatable> getFormValidatable;
         private readonly Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getHiddenValidatable;
         private readonly Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable;
+        private readonly Func<Type, string, MultiSelectFormControlSettingsDescriptor, IEnumerable<IValidationRule>?, IValidatable> getMultiSelectValidatable;
         private readonly Func<Type, string, object?, DropDownTemplateDescriptor, IEnumerable<IValidationRule>?, IValidatable> getPickerValidatable;
         private readonly Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getSwitchValidatable;
 
@@ -24,6 +25,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
             Func<Type, string, string, IChildFormGroupSettings, IEnumerable<IValidationRule>?, IValidatable> getFormValidatable,
             Func<Type, string, string, IEnumerable<IValidationRule>?, IValidatable> getHiddenValidatable,
             Func<Type, string, string, string, string, string, IEnumerable<IValidationRule>?, IValidatable> getLabelValidatable,
+            Func<Type, string, MultiSelectFormControlSettingsDescriptor, IEnumerable<IValidationRule>?, IValidatable> getMultiSelectValidatable,
             Func<Type, string, object?, DropDownTemplateDescriptor, IEnumerable<IValidationRule>?, IValidatable> getPickerValidatable,
             Func<string, string, string, IEnumerable<IValidationRule>?, IValidatable> getSwitchValidatable)
         {
@@ -33,6 +35,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
             this.getFormValidatable = getFormValidatable;
             this.getHiddenValidatable = getHiddenValidatable;
             this.getLabelValidatable = getLabelValidatable;
+            this.getMultiSelectValidatable = getMultiSelectValidatable;
             this.getPickerValidatable = getPickerValidatable;
             this.getSwitchValidatable = getSwitchValidatable;
         }
@@ -96,6 +99,15 @@ namespace Contoso.XPlatform.ViewModels.Validatables.Factories
                 title,
                 placeholder,
                 stringFormat,
+                validations
+            );
+
+        public IValidatable CreateMultiSelectValidatableObject(Type elementType, string name, MultiSelectFormControlSettingsDescriptor setting, IEnumerable<IValidationRule>? validations) 
+            => getMultiSelectValidatable
+            (
+                elementType,
+                name,
+                setting,
                 validations
             );
 

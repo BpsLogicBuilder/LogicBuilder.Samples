@@ -385,39 +385,35 @@ namespace Contoso.XPlatform.Services
         private IValidatable CreatePickerValidatableObject(FormControlSettingsDescriptor setting, DropDownTemplateDescriptor dropDownTemplate)
         {
             Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{8FB0D8B8-5273-48AC-98F4-6CE6FC4C81CC}}");
+            object? defaultValue = validatableValueHelper.GetDefaultValue(setting, fieldType);
             IValidatable pickerValidatable = validatableFactory.CreatePickerValidatableObject
             (
                 fieldType,
                 GetFieldName(setting.Field),
-                validatableValueHelper.GetDefaultValue(setting, fieldType),
+                defaultValue,
                 dropDownTemplate,
                 GetValidationRules(setting)
             );
 
-            pickerValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            pickerValidatable.Value = defaultValue;
             return pickerValidatable;
         }
 
         private IValidatable CreateMultiSelectValidatableObject(MultiSelectFormControlSettingsDescriptor setting)
         {
-            return GetValidatable(Type.GetType(setting.MultiSelectTemplate.ModelType) ?? throw new ArgumentException($"{setting.MultiSelectTemplate.ModelType}: {{28BD997E-223F-4671-A195-290E246E371A}}"));
-            IValidatable GetValidatable(Type elementType)
-                => ValidatableObjectFactory.GetValidatable
-                (
-                    Activator.CreateInstance
-                    (
-                        typeof(MultiSelectValidatableObject<,>).MakeGenericType
-                        (
-                            typeof(ObservableCollection<>).MakeGenericType(elementType),
-                            elementType
-                        ),
-                        GetFieldName(setting.Field),
-                        setting,
-                        GetValidationRules(setting),
-                        this.contextProvider
-                    ) ?? throw new ArgumentException($"{setting.MultiSelectTemplate.ModelType}: {{E7665215-519B-434B-8CCD-A2C2D781918C}}"),
-                    setting
-                );
+            Type elementType = Type.GetType(setting.MultiSelectTemplate.ModelType) ?? throw new ArgumentException($"{setting.MultiSelectTemplate.ModelType}: {{18D5D086-FC25-4BAF-AE4A-8DB037F7CD12}}");
+            Type fieldType = Type.GetType(setting.Type) ?? throw new ArgumentException($"{setting.Type}: {{BEA37953-899A-4569-82DA-CAC9A0F6D6C9}}");
+
+            IValidatable multiSelectValidatable = validatableFactory.CreateMultiSelectValidatableObject
+            (
+                elementType,
+                GetFieldName(setting.Field),
+                setting,
+                GetValidationRules(setting)
+            );
+
+            multiSelectValidatable.Value = validatableValueHelper.GetDefaultValue(setting, fieldType);
+            return multiSelectValidatable;
         }
 
         private IValidatable CreateFormArrayValidatableObject(FormGroupArraySettingsDescriptor setting)
