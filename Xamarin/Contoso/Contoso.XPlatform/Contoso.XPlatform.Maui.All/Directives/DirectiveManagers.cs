@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
     internal class DirectiveManagers<TModel> : IDirectiveManagers
     {
@@ -14,31 +14,31 @@ namespace Contoso.XPlatform.Validators
             this.properties = properties;
             this.formSettings = formSettings;
 
-            this.validateIfManager = directiveManagersFactory.GetValidateIfManager
+            validateIfManager = directiveManagersFactory.GetValidateIfManager
             (
                 this.properties,
                 GetConditions<ValidateIf<TModel>>()
             );
 
-            this.hideIfManager = directiveManagersFactory.GetHideIfManager
+            hideIfManager = directiveManagersFactory.GetHideIfManager
             (
                 this.properties,
                 GetConditions<HideIf<TModel>>()
             );
 
-            this.clearIfManager = directiveManagersFactory.GetClearIfManager
+            clearIfManager = directiveManagersFactory.GetClearIfManager
             (
                 this.properties,
                 GetConditions<ClearIf<TModel>>()
             );
 
-            this.reloadIfManager = directiveManagersFactory.GetReloadIfManager
+            reloadIfManager = directiveManagersFactory.GetReloadIfManager
             (
                 this.properties,
                 GetConditions<ReloadIf<TModel>>()
             );
 
-            List<TConditionBase> GetConditions<TConditionBase>() where TConditionBase : ConditionBase<TModel>, new() 
+            List<TConditionBase> GetConditions<TConditionBase>() where TConditionBase : ConditionBase<TModel>, new()
                 => directiveManagersFactory.GetDirectiveConditionsBuilder<TConditionBase, TModel>
                 (
                     this.formSettings,
@@ -56,10 +56,10 @@ namespace Contoso.XPlatform.Validators
 
         public void Dispose()
         {
-            Dispose(this.validateIfManager);
-            Dispose(this.hideIfManager);
-            Dispose(this.clearIfManager);
-            Dispose(this.reloadIfManager);
+            Dispose(validateIfManager);
+            Dispose(hideIfManager);
+            Dispose(clearIfManager);
+            Dispose(reloadIfManager);
         }
 
         private static void Dispose(IDisposable disposable)

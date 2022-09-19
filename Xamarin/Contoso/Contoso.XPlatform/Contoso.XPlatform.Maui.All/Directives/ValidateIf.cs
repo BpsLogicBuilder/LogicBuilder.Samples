@@ -1,8 +1,6 @@
-﻿using Contoso.Forms.Configuration.Directives;
-using System;
-using System.Linq.Expressions;
+﻿using Contoso.XPlatform.Validators;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
     public class ValidateIf<T> : ConditionBase<T>
     {

@@ -1,9 +1,8 @@
 ﻿using Contoso.Forms.Configuration.Directives;
-using Contoso.XPlatform.Services;
 using System;
 using System.Linq.Expressions;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
     //From DirectiveDescriptor where DirectiveDescriptor.DirectiveDefinitionDescriptor.Classname == HideIf/RelaodIf/ClearIf etc
     //Evaluator is DirectiveDescriptor.FilterLambdaOperatorDescriptor

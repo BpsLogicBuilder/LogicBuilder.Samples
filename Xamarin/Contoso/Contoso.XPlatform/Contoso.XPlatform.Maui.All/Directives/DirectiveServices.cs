@@ -1,21 +1,20 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.Validatables;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Microsoft.Extensions.DependencyInjection
+namespace Contoso.XPlatform.Directives
 {
-    internal static class ValidatorServices
+    internal static class DirectiveServices
     {
-        internal static IServiceCollection AddValidatorServices(this IServiceCollection services) 
+        internal static IServiceCollection AddDirectiveServices(this IServiceCollection services)
             => services
                 .AddTransient<Func<Type, IEnumerable<IFormField>, object, IClearIfManager>>
                 (

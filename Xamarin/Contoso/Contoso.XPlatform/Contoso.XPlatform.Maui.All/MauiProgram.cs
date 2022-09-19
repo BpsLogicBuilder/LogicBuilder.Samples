@@ -1,4 +1,5 @@
 ﻿using Akavache;
+using Contoso.XPlatform.Directives;
 using Contoso.XPlatform.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls.Hosting;
@@ -56,13 +57,14 @@ namespace Contoso.XPlatform
         {
             services
                 .AddServices()
+                .AddDirectiveServices()
+                .AddFlowServices()
                 /*To use the extended splash (useful for low powered devices)
                  * 1) Comment out .AddRulesCache()
                  * 2) In App.CreateWindow(), replace return new Microsoft.Maui.Controls.Window(ServiceProvider.GetRequiredService<MainPageView>()); 
                  *          with return new Microsoft.Maui.Controls.Window(App.ServiceProvider.GetRequiredService<ExtendedSplashView>());
                  */
                 .AddRulesCache()
-                .AddFlowServices()
                 .AddViewModels()
                 .AddViews();
         }

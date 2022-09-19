@@ -1,4 +1,4 @@
-﻿using Contoso.XPlatform.Validators;
+﻿using Contoso.XPlatform.Directives;
 using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services

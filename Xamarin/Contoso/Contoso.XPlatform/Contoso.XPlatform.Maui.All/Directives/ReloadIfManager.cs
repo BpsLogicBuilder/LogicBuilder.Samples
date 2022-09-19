@@ -1,16 +1,16 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.Directives;
-using Contoso.XPlatform.ViewModels.Validatables;
+using Contoso.XPlatform.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
-    internal class ValidateIfManager<TModel> : IValidateIfManager
+    internal class ReloadIfManager<TModel> : IReloadIfManager
     {
-        public ValidateIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IValidatable> currentProperties, List<ValidateIf<TModel>> conditions)
+        public ReloadIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ReloadIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -20,41 +20,41 @@ namespace Contoso.XPlatform.Validators
         }
 
         private readonly IMapper mapper;
-        private readonly List<ValidateIf<TModel>> conditions;
+        private readonly List<ReloadIf<TModel>> conditions;
         private readonly UiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
-        public IEnumerable<IValidatable> CurrentProperties { get; }
-        private IDictionary<string, IValidatable> CurrentPropertiesDictionary
+        public IEnumerable<IFormField> CurrentProperties { get; }
+        private IDictionary<string, IFormField> CurrentPropertiesDictionary
             => CurrentProperties.ToDictionary(p => p.Name);
 
-        public void Check(ValidateIf<TModel> condition)
+        public void Check(ReloadIf<TModel> condition)
         {
             DoCheck(CurrentPropertiesDictionary[condition.Field]);
 
-            void DoCheck(IValidatable currentValidatable)
+            void DoCheck(IFormField currentField)
             {
-                HashSet<IValidationRule> existingRules = currentValidatable.Validations.ToHashSet();
-                TModel entity = mapper.Map<TModel>(CurrentProperties.ToDictionary(p => p.Name, p => p.Value));
-                if (CanValidate(entity, condition.Evaluator))
+                if (currentField is IHasItemsSource hasItemsSource)
                 {
-                    if (!existingRules.Contains(condition.Validator))
+                    TModel entity = mapper.Map<TModel>(CurrentProperties.ToDictionary(p => p.Name, p => p.Value));
+                    if
+                    (
+                        ShouldReload
+                        (
+                            entity,
+                            condition.Evaluator
+                        )
+                    )
                     {
-                        currentValidatable.Validations.Add(condition.Validator);
-                        currentValidatable.Validate();
-                    }
-                }
-                else
-                {
-                    if (existingRules.Contains(condition.Validator))
-                    {
-                        currentValidatable.Validations.Remove(condition.Validator);
-                        currentValidatable.Validate();
+                        if (entity == null)
+                            throw new ArgumentException($"{nameof(entity)}: {{48192C13-24F3-4C15-93D3-410610155783}}");
+
+                        hasItemsSource.Reload(entity, typeof(TModel));
                     }
                 }
             }
 
-            bool CanValidate(TModel entity, Expression<Func<TModel, bool>> evaluator)
+            bool ShouldReload(TModel entity, Expression<Func<TModel, bool>> evaluator)
                 => new List<TModel> { entity }.AsQueryable().All(evaluator);
         }
 
@@ -69,16 +69,16 @@ namespace Contoso.XPlatform.Validators
             (
                 condition =>
                 {
-                    if (condition.DirectiveDefinition.FunctionName == nameof(ValidateIfManager<TModel>.Check))
+                    if (condition.DirectiveDefinition.FunctionName == nameof(ReloadIfManager<TModel>.Check))
                     {
                         if (condition.DirectiveDefinition.Arguments?.Any() != true)
-                            throw new ArgumentException($"{condition.DirectiveDefinition.Arguments}: F1DA1B2F-9397-439B-BC5B-AEFB85A9E4E5");
+                            throw new ArgumentException($"{condition.DirectiveDefinition.Arguments}: 5CC8C779-D9B5-4CEC-9B2B-4D2AC8558E21");
 
                         const string fieldsToWatch = "fieldsToWatch";
                         if (!condition.DirectiveDefinition.Arguments.TryGetValue(fieldsToWatch, out DirectiveArgumentDescriptor? fieldsToWatchDescriptor))
-                            throw new ArgumentException($"{fieldsToWatch}: 36940976-0DAD-4171-A181-445216EC0A26");
+                            throw new ArgumentException($"{fieldsToWatch}: 2202BFA2-C2B4-4A93-975B-BB66DC975173");
                         if (!typeof(IEnumerable<string>).IsAssignableFrom(fieldsToWatchDescriptor.Value.GetType()))
-                            throw new ArgumentException($"{fieldsToWatchDescriptor}: 1B131DAA-276A-438E-88A8-031AF504E421");
+                            throw new ArgumentException($"{fieldsToWatchDescriptor}: 923F2F02-F65D-4F88-9612-DA5991FA0A24");
 
                         if (
                                 new HashSet<string>
@@ -92,14 +92,13 @@ namespace Contoso.XPlatform.Validators
                     }
                     else
                     {
-                        throw new ArgumentException($"{condition.DirectiveDefinition.FunctionName}: 8720D414-5352-4401-97C9-D6D7E9454292");
+                        throw new ArgumentException($"{condition.DirectiveDefinition.FunctionName}: CF744C7B-399B-4332-8431-62758B473248");
                     }
-
                 }
             );
         }
 
-        private static void DisposeSubscription(IDisposable subscription)
+        private void DisposeSubscription(IDisposable subscription)
         {
             if (subscription != null)
             {

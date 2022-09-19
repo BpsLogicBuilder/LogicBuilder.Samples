@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
     internal class ReadOnlyDirectiveManagers<TModel> : IReadOnlyDirectiveManagers
     {
@@ -14,19 +14,19 @@ namespace Contoso.XPlatform.Validators
             this.properties = properties;
             this.formSettings = formSettings;
 
-            this.hideIfManager = directiveManagersFactory.GetHideIfManager
+            hideIfManager = directiveManagersFactory.GetHideIfManager
             (
                 this.properties,
                 GetConditions<HideIf<TModel>>()
             );
 
-            this.clearIfManager = directiveManagersFactory.GetClearIfManager
+            clearIfManager = directiveManagersFactory.GetClearIfManager
             (
                 this.properties,
                 GetConditions<ClearIf<TModel>>()
             );
 
-            this.reloadIfManager = directiveManagersFactory.GetReloadIfManager
+            reloadIfManager = directiveManagersFactory.GetReloadIfManager
             (
                 this.properties,
                 GetConditions<ReloadIf<TModel>>()
@@ -49,9 +49,9 @@ namespace Contoso.XPlatform.Validators
 
         public void Dispose()
         {
-            Dispose(this.hideIfManager);
-            Dispose(this.clearIfManager);
-            Dispose(this.reloadIfManager);
+            Dispose(hideIfManager);
+            Dispose(clearIfManager);
+            Dispose(reloadIfManager);
         }
 
         private static void Dispose(IDisposable disposable)

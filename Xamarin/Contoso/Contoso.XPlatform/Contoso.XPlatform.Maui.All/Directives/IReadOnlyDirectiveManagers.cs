@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
     public interface IReadOnlyDirectiveManagers : IDisposable
     {

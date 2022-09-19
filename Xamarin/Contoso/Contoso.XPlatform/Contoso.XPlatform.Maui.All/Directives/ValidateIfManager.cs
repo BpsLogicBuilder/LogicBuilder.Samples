@@ -1,16 +1,17 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.Directives;
-using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Validatables;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
-    internal class ClearIfManager<TModel> : IClearIfManager
+    internal class ValidateIfManager<TModel> : IValidateIfManager
     {
-        public ClearIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions)
+        public ValidateIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IValidatable> currentProperties, List<ValidateIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -20,34 +21,41 @@ namespace Contoso.XPlatform.Validators
         }
 
         private readonly IMapper mapper;
-        private readonly List<ClearIf<TModel>> conditions;
+        private readonly List<ValidateIf<TModel>> conditions;
         private readonly UiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
-        public IEnumerable<IFormField> CurrentProperties { get; }
-        private IDictionary<string, IFormField> CurrentPropertiesDictionary
+        public IEnumerable<IValidatable> CurrentProperties { get; }
+        private IDictionary<string, IValidatable> CurrentPropertiesDictionary
             => CurrentProperties.ToDictionary(p => p.Name);
 
-        public void Check(ClearIf<TModel> condition)
+        public void Check(ValidateIf<TModel> condition)
         {
             DoCheck(CurrentPropertiesDictionary[condition.Field]);
 
-            void DoCheck(IFormField currentField)
+            void DoCheck(IValidatable currentValidatable)
             {
-                if
-                (
-                    ShouldClear
-                    (
-                        mapper.Map<TModel>(CurrentProperties.ToDictionary(p => p.Name, p => p.Value)),
-                        condition.Evaluator
-                    )
-                )
+                HashSet<IValidationRule> existingRules = currentValidatable.Validations.ToHashSet();
+                TModel entity = mapper.Map<TModel>(CurrentProperties.ToDictionary(p => p.Name, p => p.Value));
+                if (CanValidate(entity, condition.Evaluator))
                 {
-                    currentField.Clear();
+                    if (!existingRules.Contains(condition.Validator))
+                    {
+                        currentValidatable.Validations.Add(condition.Validator);
+                        currentValidatable.Validate();
+                    }
+                }
+                else
+                {
+                    if (existingRules.Contains(condition.Validator))
+                    {
+                        currentValidatable.Validations.Remove(condition.Validator);
+                        currentValidatable.Validate();
+                    }
                 }
             }
 
-            bool ShouldClear(TModel entity, Expression<Func<TModel, bool>> evaluator)
+            bool CanValidate(TModel entity, Expression<Func<TModel, bool>> evaluator)
                 => new List<TModel> { entity }.AsQueryable().All(evaluator);
         }
 
@@ -62,16 +70,16 @@ namespace Contoso.XPlatform.Validators
             (
                 condition =>
                 {
-                    if (condition.DirectiveDefinition.FunctionName == nameof(ClearIfManager<TModel>.Check))
+                    if (condition.DirectiveDefinition.FunctionName == nameof(ValidateIfManager<TModel>.Check))
                     {
                         if (condition.DirectiveDefinition.Arguments?.Any() != true)
-                            throw new ArgumentException($"{condition.DirectiveDefinition.Arguments}: 9D4514A4-AE19-432B-B419-7BB43111EC41");
+                            throw new ArgumentException($"{condition.DirectiveDefinition.Arguments}: F1DA1B2F-9397-439B-BC5B-AEFB85A9E4E5");
 
                         const string fieldsToWatch = "fieldsToWatch";
                         if (!condition.DirectiveDefinition.Arguments.TryGetValue(fieldsToWatch, out DirectiveArgumentDescriptor? fieldsToWatchDescriptor))
-                            throw new ArgumentException($"{fieldsToWatch}: 6534ABBA-9599-43F8-BA64-2FDD1205C855");
+                            throw new ArgumentException($"{fieldsToWatch}: 36940976-0DAD-4171-A181-445216EC0A26");
                         if (!typeof(IEnumerable<string>).IsAssignableFrom(fieldsToWatchDescriptor.Value.GetType()))
-                            throw new ArgumentException($"{fieldsToWatchDescriptor}: CB7F6C35-B3FE-4BF3-9C8E-BD84C2A72001");
+                            throw new ArgumentException($"{fieldsToWatchDescriptor}: 1B131DAA-276A-438E-88A8-031AF504E421");
 
                         if (
                                 new HashSet<string>
@@ -85,13 +93,14 @@ namespace Contoso.XPlatform.Validators
                     }
                     else
                     {
-                        throw new ArgumentException($"{condition.DirectiveDefinition.FunctionName}: 0579B28B-0A54-4ED1-A4FC-7FB99CD2BE77");
+                        throw new ArgumentException($"{condition.DirectiveDefinition.FunctionName}: 8720D414-5352-4401-97C9-D6D7E9454292");
                     }
+
                 }
             );
         }
 
-        private void DisposeSubscription(IDisposable subscription)
+        private static void DisposeSubscription(IDisposable subscription)
         {
             if (subscription != null)
             {

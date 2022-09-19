@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.Directives;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using System.Collections.Generic;

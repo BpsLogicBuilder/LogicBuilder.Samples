@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Contoso.XPlatform.Validators
+namespace Contoso.XPlatform.Directives
 {
-    internal class ReloadIfManager<TModel> : IReloadIfManager
+    internal class ClearIfManager<TModel> : IClearIfManager
     {
-        public ReloadIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ReloadIf<TModel>> conditions)
+        public ClearIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.Validators
         }
 
         private readonly IMapper mapper;
-        private readonly List<ReloadIf<TModel>> conditions;
+        private readonly List<ClearIf<TModel>> conditions;
         private readonly UiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
@@ -28,33 +28,26 @@ namespace Contoso.XPlatform.Validators
         private IDictionary<string, IFormField> CurrentPropertiesDictionary
             => CurrentProperties.ToDictionary(p => p.Name);
 
-        public void Check(ReloadIf<TModel> condition)
+        public void Check(ClearIf<TModel> condition)
         {
             DoCheck(CurrentPropertiesDictionary[condition.Field]);
 
             void DoCheck(IFormField currentField)
             {
-                if (currentField is IHasItemsSource hasItemsSource)
-                {
-                    TModel entity = mapper.Map<TModel>(CurrentProperties.ToDictionary(p => p.Name, p => p.Value));
-                    if
+                if
+                (
+                    ShouldClear
                     (
-                        ShouldReload
-                        (
-                            entity,
-                            condition.Evaluator
-                        )
+                        mapper.Map<TModel>(CurrentProperties.ToDictionary(p => p.Name, p => p.Value)),
+                        condition.Evaluator
                     )
-                    {
-                        if (entity == null)
-                            throw new ArgumentException($"{nameof(entity)}: {{48192C13-24F3-4C15-93D3-410610155783}}");
-
-                        hasItemsSource.Reload(entity, typeof(TModel));
-                    }
+                )
+                {
+                    currentField.Clear();
                 }
             }
 
-            bool ShouldReload(TModel entity, Expression<Func<TModel, bool>> evaluator)
+            bool ShouldClear(TModel entity, Expression<Func<TModel, bool>> evaluator)
                 => new List<TModel> { entity }.AsQueryable().All(evaluator);
         }
 
@@ -69,16 +62,16 @@ namespace Contoso.XPlatform.Validators
             (
                 condition =>
                 {
-                    if (condition.DirectiveDefinition.FunctionName == nameof(ReloadIfManager<TModel>.Check))
+                    if (condition.DirectiveDefinition.FunctionName == nameof(ClearIfManager<TModel>.Check))
                     {
                         if (condition.DirectiveDefinition.Arguments?.Any() != true)
-                            throw new ArgumentException($"{condition.DirectiveDefinition.Arguments}: 5CC8C779-D9B5-4CEC-9B2B-4D2AC8558E21");
+                            throw new ArgumentException($"{condition.DirectiveDefinition.Arguments}: 9D4514A4-AE19-432B-B419-7BB43111EC41");
 
                         const string fieldsToWatch = "fieldsToWatch";
                         if (!condition.DirectiveDefinition.Arguments.TryGetValue(fieldsToWatch, out DirectiveArgumentDescriptor? fieldsToWatchDescriptor))
-                            throw new ArgumentException($"{fieldsToWatch}: 2202BFA2-C2B4-4A93-975B-BB66DC975173");
+                            throw new ArgumentException($"{fieldsToWatch}: 6534ABBA-9599-43F8-BA64-2FDD1205C855");
                         if (!typeof(IEnumerable<string>).IsAssignableFrom(fieldsToWatchDescriptor.Value.GetType()))
-                            throw new ArgumentException($"{fieldsToWatchDescriptor}: 923F2F02-F65D-4F88-9612-DA5991FA0A24");
+                            throw new ArgumentException($"{fieldsToWatchDescriptor}: CB7F6C35-B3FE-4BF3-9C8E-BD84C2A72001");
 
                         if (
                                 new HashSet<string>
@@ -92,7 +85,7 @@ namespace Contoso.XPlatform.Validators
                     }
                     else
                     {
-                        throw new ArgumentException($"{condition.DirectiveDefinition.FunctionName}: CF744C7B-399B-4332-8431-62758B473248");
+                        throw new ArgumentException($"{condition.DirectiveDefinition.FunctionName}: 0579B28B-0A54-4ED1-A4FC-7FB99CD2BE77");
                     }
                 }
             );
