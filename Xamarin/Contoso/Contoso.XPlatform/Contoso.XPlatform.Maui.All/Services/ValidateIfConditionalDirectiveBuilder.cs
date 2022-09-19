@@ -13,7 +13,7 @@ using System.Linq.Expressions;
 
 namespace Contoso.XPlatform.Services
 {
-    public class ValidateIfConditionsBuilder<TModel> : IConditionalDirectiveBuilder<ValidateIf<TModel>, TModel>
+    public class ValidateIfConditionalDirectiveBuilder<TModel> : IConditionalDirectiveBuilder<ValidateIf<TModel>, TModel>
     {
         private readonly IDirectiveManagersFactory directiveManagersFactory;
         private readonly IMapper mapper;
@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Services
         private readonly IEnumerable<IValidatable> properties;
         const string PARAMETERS_KEY = "parameters";
 
-        public ValidateIfConditionsBuilder(IDirectiveManagersFactory directiveManagersFactory, IMapper mapper, IFormGroupSettings formGroupSettings, IEnumerable<IValidatable> properties, List<ValidateIf<TModel>>? parentList = null, string? parentName = null)
+        public ValidateIfConditionalDirectiveBuilder(IDirectiveManagersFactory directiveManagersFactory, IMapper mapper, IFormGroupSettings formGroupSettings, IEnumerable<IValidatable> properties, List<ValidateIf<TModel>>? parentList = null, string? parentName = null)
         {
             this.directiveManagersFactory = directiveManagersFactory;
             this.mapper = mapper;

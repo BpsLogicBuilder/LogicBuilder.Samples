@@ -121,7 +121,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             else if (directiveType == typeof(ReloadIf<>))
                                 return typeof(ReloadIfConditionalDirectiveBuilder<>);
                             else if (directiveType == typeof(ValidateIf<>))
-                                return typeof(ValidateIfConditionsBuilder<>);
+                                return typeof(ValidateIfConditionalDirectiveBuilder<>);
                             else
                                 throw new ArgumentException($"{directiveType}: {{6238A9BB-B079-4720-9CFE-B7ECC6A06C6E}}");
                         }
