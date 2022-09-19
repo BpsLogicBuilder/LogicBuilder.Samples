@@ -85,7 +85,7 @@ namespace Contoso.XPlatform.Validators
             );
         }
 
-        private void DisposeSubscription(IDisposable subscription)
+        private static void DisposeSubscription(IDisposable subscription)
         {
             if (subscription != null)
             {
@@ -93,7 +93,7 @@ namespace Contoso.XPlatform.Validators
             }
         }
 
-        private string GetFieldName(string field, string? parentName)
+        private static string GetFieldName(string field, string? parentName)
                 => parentName == null ? field : $"{parentName}.{field}";
     }
 }

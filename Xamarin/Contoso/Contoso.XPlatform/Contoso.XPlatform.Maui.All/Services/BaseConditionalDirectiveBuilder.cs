@@ -1,17 +1,20 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Contoso.XPlatform.Utils
+namespace Contoso.XPlatform.Services
 {
-    abstract public class BaseConditionalDirectiveHelper<TConditionBase, TModel> where TConditionBase : ConditionBase<TModel>, new()
+    abstract public class BaseConditionalDirectiveBuilder<TConditionBase, TModel> : IConditionalDirectiveBuilder<TConditionBase, TModel> where TConditionBase : ConditionBase<TModel>, new()
     {
+        private readonly IDirectiveManagersFactory directiveManagersFactory;
         private readonly IFormGroupSettings formGroupSettings;
         private readonly IEnumerable<IFormField> properties;
         private readonly IMapper mapper;
@@ -19,11 +22,12 @@ namespace Contoso.XPlatform.Utils
         private readonly string? parentName;
         const string PARAMETERS_KEY = "parameters";
 
-        public BaseConditionalDirectiveHelper(IFormGroupSettings formGroupSettings, IEnumerable<IFormField> properties, IMapper mapper, List<TConditionBase>? parentList = null, string? parentName = null)
+        public BaseConditionalDirectiveBuilder(IDirectiveManagersFactory directiveManagersFactory, IMapper mapper, IFormGroupSettings formGroupSettings, IEnumerable<IFormField> properties, List<TConditionBase>? parentList = null, string? parentName = null)
         {
+            this.directiveManagersFactory = directiveManagersFactory;
+            this.mapper = mapper;
             this.formGroupSettings = formGroupSettings;
             this.properties = properties;
-            this.mapper = mapper;
             this.parentList = parentList;
             this.parentName = parentName;
         }
@@ -77,19 +81,12 @@ namespace Contoso.XPlatform.Utils
                 if ((childForm.FormGroupTemplate?.TemplateName) != FromGroupTemplateNames.InlineFormGroupTemplate)
                     return;
 
-                var helper = (BaseConditionalDirectiveHelper<TConditionBase, TModel>)(
-                    Activator.CreateInstance
-                    (
-                        this.GetType(),
-                        new object[]
-                        {
-                            childForm,
-                            properties,
-                            mapper,
-                            conditions,
-                            GetFieldName(childForm.Field)
-                        }
-                    ) ?? throw new ArgumentException($"{childForm.Field}: {{5340A6E4-45B0-4B75-982E-DE531260EE27}}")
+                var helper = directiveManagersFactory.GetDirectiveConditionsBuilder<TConditionBase, TModel>
+                (
+                    childForm,
+                    properties,
+                    conditions,
+                    GetFieldName(childForm.Field)
                 );
 
                 conditions = helper.GetConditions();
@@ -98,5 +95,6 @@ namespace Contoso.XPlatform.Utils
 
         string GetFieldName(string field)
                 => parentName == null ? field : $"{parentName}.{field}";
+
     }
 }

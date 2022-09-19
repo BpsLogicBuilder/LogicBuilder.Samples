@@ -1,27 +1,28 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services
 {
-    public class ReloadIfConditionalDirectiveBuilder : IReloadIfConditionalDirectiveBuilder
+    public class ReloadIfConditionalDirectiveBuilder<TModel> : BaseConditionalDirectiveBuilder<ReloadIf<TModel>, TModel>
     {
-        private readonly IMapper mapper;
-
-        public ReloadIfConditionalDirectiveBuilder(IMapper mapper)
-        {
-            this.mapper = mapper;
-        }
-
-        public List<ReloadIf<TModel>> GetConditions<TModel>(IFormGroupSettings formGroupSettings, IEnumerable<IFormField> properties)
-            => new ReloadIfConditionalDirectiveHelper<TModel>
-            (
+        public ReloadIfConditionalDirectiveBuilder(
+            IDirectiveManagersFactory directiveManagersFactory,
+            IMapper mapper,
+            IFormGroupSettings formGroupSettings,
+            IEnumerable<IFormField> properties,
+            List<ReloadIf<TModel>>? parentList = null,
+            string? parentName = null) : base(
+                directiveManagersFactory,
+                mapper,
                 formGroupSettings,
                 properties,
-                mapper
-            ).GetConditions();
+                parentList,
+                parentName)
+        {
+        }
     }
 }

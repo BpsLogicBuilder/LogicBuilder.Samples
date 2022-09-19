@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Services;
+﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Validators
 {
     internal class DirectiveManagers<TModel> : IDirectiveManagers
     {
-        public DirectiveManagers(IDirectiveManagersFactory directiveManagersFactory,  IContextProvider contextProvider, IMapper mapper, ObservableCollection<IValidatable> properties, IFormGroupSettings formSettings)
+        public DirectiveManagers(IDirectiveManagersFactory directiveManagersFactory, ObservableCollection<IValidatable> properties, IFormGroupSettings formSettings)
         {
             this.properties = properties;
             this.formSettings = formSettings;
@@ -18,42 +17,33 @@ namespace Contoso.XPlatform.Validators
             this.validateIfManager = directiveManagersFactory.GetValidateIfManager
             (
                 this.properties,
-                contextProvider.ValidateIfConditionsBuilder.GetConditions<TModel>
-                (
-                    this.formSettings,
-                    this.properties
-                )
+                GetConditions<ValidateIf<TModel>>()
             );
 
             this.hideIfManager = directiveManagersFactory.GetHideIfManager
             (
                 this.properties,
-                contextProvider.HideIfConditionalDirectiveBuilder.GetConditions<TModel>
-                (
-                    this.formSettings,
-                    this.properties
-                )
+                GetConditions<HideIf<TModel>>()
             );
 
             this.clearIfManager = directiveManagersFactory.GetClearIfManager
             (
                 this.properties,
-                contextProvider.ClearIfConditionalDirectiveBuilder.GetConditions<TModel>
-                (
-                    this.formSettings,
-                    this.properties
-                )
+                GetConditions<ClearIf<TModel>>()
             );
 
             this.reloadIfManager = directiveManagersFactory.GetReloadIfManager
             (
                 this.properties,
-                contextProvider.ReloadIfConditionalDirectiveBuilder.GetConditions<TModel>
+                GetConditions<ReloadIf<TModel>>()
+            );
+
+            List<TConditionBase> GetConditions<TConditionBase>() where TConditionBase : ConditionBase<TModel>, new() 
+                => directiveManagersFactory.GetDirectiveConditionsBuilder<TConditionBase, TModel>
                 (
                     this.formSettings,
                     this.properties
-                )
-            );
+                ).GetConditions();
         }
 
         private readonly ObservableCollection<IValidatable> properties;
@@ -72,7 +62,7 @@ namespace Contoso.XPlatform.Validators
             Dispose(this.reloadIfManager);
         }
 
-        private void Dispose(IDisposable disposable)
+        private static void Dispose(IDisposable disposable)
         {
             if (disposable != null)
                 disposable.Dispose();

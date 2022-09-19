@@ -1,16 +1,15 @@
-﻿using AutoMapper;
-using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Services;
+﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Validators
 {
     internal class ReadOnlyDirectiveManagers<TModel> : IReadOnlyDirectiveManagers
     {
-        public ReadOnlyDirectiveManagers(IDirectiveManagersFactory directiveManagersFactory, IContextProvider contextProvider, IMapper mapper, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
+        public ReadOnlyDirectiveManagers(IDirectiveManagersFactory directiveManagersFactory, ObservableCollection<IReadOnly> properties, IFormGroupSettings formSettings)
         {
             this.properties = properties;
             this.formSettings = formSettings;
@@ -18,32 +17,27 @@ namespace Contoso.XPlatform.Validators
             this.hideIfManager = directiveManagersFactory.GetHideIfManager
             (
                 this.properties,
-                contextProvider.HideIfConditionalDirectiveBuilder.GetConditions<TModel>
-                (
-                    this.formSettings,
-                    this.properties
-                )
+                GetConditions<HideIf<TModel>>()
             );
 
             this.clearIfManager = directiveManagersFactory.GetClearIfManager
             (
                 this.properties,
-                contextProvider.ClearIfConditionalDirectiveBuilder.GetConditions<TModel>
-                (
-                    this.formSettings,
-                    this.properties
-                )
+                GetConditions<ClearIf<TModel>>()
             );
 
             this.reloadIfManager = directiveManagersFactory.GetReloadIfManager
             (
                 this.properties,
-                contextProvider.ReloadIfConditionalDirectiveBuilder.GetConditions<TModel>
+                GetConditions<ReloadIf<TModel>>()
+            );
+
+            List<TConditionBase> GetConditions<TConditionBase>() where TConditionBase : ConditionBase<TModel>, new()
+                => directiveManagersFactory.GetDirectiveConditionsBuilder<TConditionBase, TModel>
                 (
                     this.formSettings,
                     this.properties
-                )
-            );
+                ).GetConditions();
         }
 
         private readonly ObservableCollection<IReadOnly> properties;

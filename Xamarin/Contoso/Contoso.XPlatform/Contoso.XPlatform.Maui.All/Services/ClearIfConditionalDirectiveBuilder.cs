@@ -1,27 +1,28 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.ViewModels.Factories;
 using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services
 {
-    public class ClearIfConditionalDirectiveBuilder : IClearIfConditionalDirectiveBuilder
+    public class ClearIfConditionalDirectiveBuilder<TModel> : BaseConditionalDirectiveBuilder<ClearIf<TModel>, TModel>
     {
-        private readonly IMapper mapper;
-
-        public ClearIfConditionalDirectiveBuilder(IMapper mapper)
-        {
-            this.mapper = mapper;
-        }
-
-        public List<ClearIf<TModel>> GetConditions<TModel>(IFormGroupSettings formGroupSettings, IEnumerable<IFormField> properties)
-            => new ClearIfConditionalDirectiveHelper<TModel>
-            (
+        public ClearIfConditionalDirectiveBuilder(
+            IDirectiveManagersFactory directiveManagersFactory,
+            IMapper mapper,
+            IFormGroupSettings formGroupSettings,
+            IEnumerable<IFormField> properties,
+            List<ClearIf<TModel>>? parentList = null,
+            string? parentName = null) : base(
+                directiveManagersFactory,
+                mapper,
                 formGroupSettings,
                 properties,
-                mapper
-            ).GetConditions();
+                parentList,
+                parentName)
+        {
+        }
     }
 }

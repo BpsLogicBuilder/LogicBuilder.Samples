@@ -10,11 +10,7 @@
             ISearchSelectorBuilder searchSelectorBuilder,
             IPropertiesUpdater propertiesUpdater,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
-            IReadOnlyCollectionCellPropertiesUpdater readOnlyCollectionCellPropertiesUpdater,
-            IHideIfConditionalDirectiveBuilder hideIfConditionalDirectiveBuilder,
-            IClearIfConditionalDirectiveBuilder clearIfConditionalDirectiveBuilder,
-            IReloadIfConditionalDirectiveBuilder reloadIfConditionalDirectiveBuilder,
-            IValidateIfConditionsBuilder validateIfConditionsBuilder)
+            IReadOnlyCollectionCellPropertiesUpdater readOnlyCollectionCellPropertiesUpdater)
         {
             UiNotificationService = uiNotificationService;
             EntityStateUpdater = entityStateUpdater;
@@ -25,16 +21,8 @@
             PropertiesUpdater = propertiesUpdater;
             ReadOnlyPropertiesUpdater = readOnlyPropertiesUpdater;
             ReadOnlyCollectionCellPropertiesUpdater = readOnlyCollectionCellPropertiesUpdater;
-            HideIfConditionalDirectiveBuilder = hideIfConditionalDirectiveBuilder;
-            ClearIfConditionalDirectiveBuilder = clearIfConditionalDirectiveBuilder;
-            ReloadIfConditionalDirectiveBuilder = reloadIfConditionalDirectiveBuilder;
-            ValidateIfConditionsBuilder = validateIfConditionsBuilder;
         }
 
-        public IHideIfConditionalDirectiveBuilder HideIfConditionalDirectiveBuilder { get; }
-        public IClearIfConditionalDirectiveBuilder ClearIfConditionalDirectiveBuilder { get; }
-        public IReloadIfConditionalDirectiveBuilder ReloadIfConditionalDirectiveBuilder { get; }
-        public IValidateIfConditionsBuilder ValidateIfConditionsBuilder { get; }
         public IEntityStateUpdater EntityStateUpdater { get; }
         public IEntityUpdater EntityUpdater { get; }
         public IGetItemFilterBuilder GetItemFilterBuilder { get; }
