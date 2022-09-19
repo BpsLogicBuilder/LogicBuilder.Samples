@@ -5,6 +5,7 @@ using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
+using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
 using LogicBuilder.Expressions.Utils;
 using LogicBuilder.RulesDirector;
 using System;
@@ -21,6 +22,7 @@ namespace Contoso.XPlatform.Services
         private readonly IContextProvider contextProvider;
         private readonly IDirectiveManagersFactory directiveManagersFactory;
         private readonly IMapper mapper;
+        private readonly IReadOnlyFactory readOnlyFactory;
         private readonly List<FormItemSettingsDescriptor> fieldSettings;
         private readonly IFormGroupBoxSettings groupBoxSettings;
         private readonly DetailFormLayout formLayout;
@@ -33,6 +35,7 @@ namespace Contoso.XPlatform.Services
             IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
             IMapper mapper,
+            IReadOnlyFactory readOnlyFactory,
             List<FormItemSettingsDescriptor> fieldSettings,
             IFormGroupBoxSettings groupBoxSettings,
             Type modelType,
@@ -46,6 +49,7 @@ namespace Contoso.XPlatform.Services
             this.contextProvider = contextProvider;
             this.directiveManagersFactory = directiveManagersFactory;
             this.mapper = mapper;
+            this.readOnlyFactory = readOnlyFactory;
             this.modelType = modelType;
 
             if (formLayout == null)
@@ -236,17 +240,12 @@ namespace Contoso.XPlatform.Services
         string GetFieldName(string field)
                 => parentName == null ? field : $"{parentName}.{field}";
 
-        private IReadOnly CreateFormReadOnlyObject(FormGroupSettingsDescriptor setting)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(FormReadOnlyObject<>).MakeGenericType(Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{23DF0B63-07A2-4CA3-86BB-EAE91DFAF89E}}")),
-                    this.collectionBuilderFactory,
-                    this.contextProvider,
-                    this.directiveManagersFactory,
-                    GetFieldName(setting.Field),
-                    setting
-                ) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{25724F9B-35C1-4A41-8481-3140670E4542}}")
+        private IReadOnly CreateFormReadOnlyObject(FormGroupSettingsDescriptor setting) 
+            => this.readOnlyFactory.CreateFormReadOnlyObject
+            (
+                Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{setting.ModelType}: {{12B7ADCA-C821-48A4-809F-D503C586119B}}"),
+                GetFieldName(setting.Field),
+                setting
             );
 
         private IReadOnly CreateHiddenReadOnlyObject(FormControlSettingsDescriptor setting)
