@@ -27,6 +27,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         (
                             provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IMapper>(),
+                            provider.GetRequiredService<IReadOnlyFactory>(),
                             itemBindings,
                             modelType
                         );
@@ -37,23 +38,42 @@ namespace Microsoft.Extensions.DependencyInjection
                     provider =>
                     (fieldType, name, setting) =>
                     {
-                        if (setting.FormGroupTemplate.TemplateName == nameof(ReadOnlyControlTemplateSelector.PopupFormGroupTemplate)
-                            || setting.FormGroupTemplate.TemplateName == nameof(ReadOnlyControlTemplateSelector.FormGroupArrayTemplate))
+                        if (setting.FormGroupTemplate.TemplateName != nameof(ReadOnlyControlTemplateSelector.PopupFormGroupTemplate)
+                            && setting.FormGroupTemplate.TemplateName != nameof(ReadOnlyControlTemplateSelector.FormGroupArrayTemplate))
                         {
-                            return (IReadOnly)(
-                                Activator.CreateInstance
-                                (
-                                    typeof(FormReadOnlyObject<>).MakeGenericType(fieldType),
-                                    provider.GetRequiredService<ICollectionBuilderFactory>(),
-                                    provider.GetRequiredService<IContextProvider>(),
-                                    provider.GetRequiredService<IDirectiveManagersFactory>(),
-                                    name,
-                                    setting
-                                ) ?? throw new ArgumentException($"{fieldType}: {{C61BFCD8-C88D-4E00-AD96-18587A603F57}}")
-                            );
+                            throw new ArgumentException($"{nameof(setting.FormGroupTemplate.TemplateName)}: {{E8F5BC05-4696-456F-AD02-66A484394A9E}}");
                         }
 
-                        throw new ArgumentException($"{nameof(setting.FormGroupTemplate.TemplateName)}: {{E8F5BC05-4696-456F-AD02-66A484394A9E}}");
+                        return (IReadOnly)(
+                            Activator.CreateInstance
+                            (
+                                typeof(FormReadOnlyObject<>).MakeGenericType(fieldType),
+                                provider.GetRequiredService<ICollectionBuilderFactory>(),
+                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                name,
+                                setting
+                            ) ?? throw new ArgumentException($"{fieldType}: {{C61BFCD8-C88D-4E00-AD96-18587A603F57}}")
+                        );
+                    }
+                )
+                .AddTransient<Func<Type, string, string, IReadOnly>>
+                (
+                    provider =>
+                    (fieldType, name, templateName) =>
+                    {
+                        if (templateName != nameof(ReadOnlyControlTemplateSelector.HiddenTemplate))
+                            throw new ArgumentException($"{nameof(templateName)}: {{6468B98E-E937-4536-AB39-3A0D6A390603}}");
+
+                        return (IReadOnly)(
+                            Activator.CreateInstance
+                            (
+                                typeof(HiddenReadOnlyObject<>).MakeGenericType(fieldType),
+                                provider.GetRequiredService<IContextProvider>(),
+                                name,
+                                templateName
+                            ) ?? throw new ArgumentException($"{fieldType}: {{7A00C8A1-0BB5-41AA-8857-082D81B0A7C3}}")
+                        );
                     }
                 )
                 .AddTransient<IReadOnlyFactory, ReadOnlyFactory>()

@@ -2,6 +2,7 @@
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
+using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
 using LogicBuilder.Expressions.Utils;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,22 @@ namespace Contoso.XPlatform.Services
     {
         private readonly IContextProvider contextProvider;
         private readonly IMapper mapper;
+        private readonly IReadOnlyFactory readOnlyFactory;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private readonly Type modelType;
         public ICollection<IReadOnly> Properties { get; }
 
-        public CollectionCellItemsBuilder(IContextProvider contextProvider, IMapper mapper, List<ItemBindingDescriptor> itemBindings, Type modelType)
+        public CollectionCellItemsBuilder(
+            IContextProvider contextProvider,
+            IMapper mapper,
+            IReadOnlyFactory readOnlyFactory,
+            List<ItemBindingDescriptor> itemBindings,
+            Type modelType)
         {
             this.itemBindings = itemBindings;
             this.contextProvider = contextProvider;
             this.mapper = mapper;
+            this.readOnlyFactory = readOnlyFactory;
             this.modelType = modelType;
             Properties = new List<IReadOnly>();
         }
@@ -82,15 +90,12 @@ namespace Contoso.XPlatform.Services
             }
         }
 
-        private IReadOnly CreateHiddenReadOnlyObject(TextItemBindingDescriptor binding)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(HiddenReadOnlyObject<>).MakeGenericType(GetModelFieldType(binding.Property)),
-                    binding.Property,
-                    binding.TextTemplate.TemplateName,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{binding.Property}: {{BFEB64A2-F3A8-4508-94A4-03F57703BFF5}}")
+        private IReadOnly CreateHiddenReadOnlyObject(TextItemBindingDescriptor binding) 
+            => readOnlyFactory.CreateHiddenReadOnlyObject
+            (
+                GetModelFieldType(binding.Property),
+                binding.Property,
+                binding.TextTemplate.TemplateName
             );
 
         private IReadOnly CreateCheckboxReadOnlyObject(TextItemBindingDescriptor binding)

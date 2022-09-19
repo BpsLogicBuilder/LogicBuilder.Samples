@@ -248,15 +248,12 @@ namespace Contoso.XPlatform.Services
                 setting
             );
 
-        private IReadOnly CreateHiddenReadOnlyObject(FormControlSettingsDescriptor setting)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(HiddenReadOnlyObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{CC170AD8-8C4C-451B-B113-6F90FF445F0C}}")),
-                    GetFieldName(setting.Field),
-                    setting.TextTemplate.TemplateName,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{4715332F-A214-4268-8AE4-F4D667EDC6F4}}")
+        private IReadOnly CreateHiddenReadOnlyObject(FormControlSettingsDescriptor setting) 
+            => readOnlyFactory.CreateHiddenReadOnlyObject
+            (
+                Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{CC170AD8-8C4C-451B-B113-6F90FF445F0C}}"),
+                GetFieldName(setting.Field),
+                setting.TextTemplate.TemplateName
             );
 
         private IReadOnly CreateCheckboxReadOnlyObject(FormControlSettingsDescriptor setting)
