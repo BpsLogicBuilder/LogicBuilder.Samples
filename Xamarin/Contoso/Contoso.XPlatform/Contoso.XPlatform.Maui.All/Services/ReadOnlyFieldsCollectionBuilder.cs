@@ -303,27 +303,13 @@ namespace Contoso.XPlatform.Services
                 setting.MultiSelectTemplate
             );
 
-        private IReadOnly CreateFormArrayReadOnlyObject(FormGroupArraySettingsDescriptor setting)
-        {
-            return GetValidatable(Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{A5D1BE9A-1B9C-4BF3-AA9D-6A49CB0BD2C6}}"));
-            IReadOnly GetValidatable(Type elementType)
-                => (IReadOnly)(
-                    Activator.CreateInstance
-                    (
-                        typeof(FormArrayReadOnlyObject<,>).MakeGenericType
-                        (
-                            typeof(ObservableCollection<>).MakeGenericType(elementType),
-                            elementType
-                        ),
-                        this.collectionCellManager,
-                        this.collectionBuilderFactory,
-                        this.contextProvider,
-                        this.directiveManagersFactory,
-                        GetFieldName(setting.Field),
-                        setting
-                    ) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{7C95B79B-78C5-480D-922F-EA21D21EC120}}")
-                );
-        }
+        private IReadOnly CreateFormArrayReadOnlyObject(FormGroupArraySettingsDescriptor setting) 
+            => readOnlyFactory.CreateFormArrayReadOnlyObject
+            (
+                Type.GetType(setting.ModelType) ?? throw new ArgumentException($"{nameof(setting.ModelType)}: {{A5D1BE9A-1B9C-4BF3-AA9D-6A49CB0BD2C6}}"),
+                GetFieldName(setting.Field),
+                setting
+            );
 
         private void ValidateSettingType(string fullPropertyName, string settingFieldType)
         {

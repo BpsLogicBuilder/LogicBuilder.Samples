@@ -8,6 +8,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
     internal class ReadOnlyFactory : IReadOnlyFactory
     {
         private readonly Func<string, string, string, IReadOnly> getCheckboxReadOnly;
+        private readonly Func<Type, string, FormGroupArraySettingsDescriptor, IReadOnly> getFormArrayReadOnly;
         private readonly Func<Type, string, IChildFormGroupSettings, IReadOnly> getFormReadOnly;
         private readonly Func<Type, string, string, IReadOnly> getHiddenReadOnly;
         private readonly Func<Type, string, List<string>, string, string, MultiSelectTemplateDescriptor, IReadOnly> getMultiSelectReadOnly;
@@ -17,6 +18,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
 
         public ReadOnlyFactory(
             Func<string, string, string, IReadOnly> getCheckboxReadOnly,
+            Func<Type, string, FormGroupArraySettingsDescriptor, IReadOnly> getFormArrayReadOnly,
             Func<Type, string, IChildFormGroupSettings, IReadOnly> getFormReadOnly,
             Func<Type, string, string, IReadOnly> getHiddenReadOnly,
             Func<Type, string, List<string>, string, string, MultiSelectTemplateDescriptor, IReadOnly> getMultiSelectReadOnly,
@@ -25,6 +27,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
             Func<Type, string, string, string, string, IReadOnly> getTextFieldReadOnly)
         {
             this.getCheckboxReadOnly = getCheckboxReadOnly;
+            this.getFormArrayReadOnly = getFormArrayReadOnly;
             this.getFormReadOnly = getFormReadOnly;
             this.getHiddenReadOnly = getHiddenReadOnly;
             this.getMultiSelectReadOnly = getMultiSelectReadOnly;
@@ -39,6 +42,14 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
                 name, 
                 templateName, 
                 checkboxLabel
+            );
+
+        public IReadOnly CreateFormArrayReadOnlyObject(Type elementType, string name, FormGroupArraySettingsDescriptor setting)
+            => this.getFormArrayReadOnly
+            (
+                elementType,
+                name,
+                setting
             );
 
         public IReadOnly CreateFormReadOnlyObject(Type fieldType, string name, IChildFormGroupSettings setting) 

@@ -9,7 +9,6 @@ using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
-using LogicBuilder.Expressions.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -63,6 +62,32 @@ namespace Microsoft.Extensions.DependencyInjection
                         }
 
                         throw new ArgumentException($"{nameof(templateName)}: {{B3EE00C4-130A-4C00-843B-A21CD41241DC}}");
+                    }
+                )
+                .AddTransient<Func<Type, string, FormGroupArraySettingsDescriptor, IReadOnly>>
+                (
+                    provider =>
+                    (elementType, name, setting) =>
+                    {
+                        if (setting.FormGroupTemplate.TemplateName != nameof(ReadOnlyControlTemplateSelector.FormGroupArrayTemplate))
+                            throw new ArgumentException($"{nameof(setting.FormGroupTemplate.TemplateName)}: {{0F3DD1E6-F5C2-4208-9007-418E4503FF63}}");
+
+                        return (IReadOnly)(
+                            Activator.CreateInstance
+                            (
+                                typeof(FormArrayReadOnlyObject<,>).MakeGenericType
+                                (
+                                    typeof(ObservableCollection<>).MakeGenericType(elementType),
+                                    elementType
+                                ),
+                                provider.GetRequiredService<ICollectionCellManager>(),
+                                provider.GetRequiredService<ICollectionBuilderFactory>(),
+                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                name,
+                                setting
+                            ) ?? throw new ArgumentException($"{elementType}: {{F0633351-B095-4AEE-BF7B-A9E6D74201E9}}")
+                        );
                     }
                 )
                 .AddTransient<Func<Type, string, IChildFormGroupSettings, IReadOnly>>
