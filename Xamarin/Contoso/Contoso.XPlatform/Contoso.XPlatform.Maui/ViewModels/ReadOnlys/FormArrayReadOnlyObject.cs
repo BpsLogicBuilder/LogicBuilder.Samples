@@ -1,22 +1,29 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.ViewModels.Factories;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.ApplicationModel;
-using System;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class FormArrayReadOnlyObject<T, E> : ReadOnlyObjectBase<T> where T : ObservableCollection<E> where E : class
     {
-        public FormArrayReadOnlyObject(string name, FormGroupArraySettingsDescriptor setting, IContextProvider contextProvider) 
+        public FormArrayReadOnlyObject(
+            ICollectionCellManager collectionCellManager,
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            IDirectiveManagersFactory directiveManagersFactory,
+            string name,
+            FormGroupArraySettingsDescriptor setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
         {
             this.FormSettings = setting;
@@ -24,10 +31,16 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.itemBindings = this.formsCollectionDisplayTemplateDescriptor.Bindings.Values.ToList();
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.Placeholder;
+            this.collectionCellManager = collectionCellManager;
+            this.collectionBuilderFactory = collectionBuilderFactory;
             this.contextProvider = contextProvider;
+            this.directiveManagersFactory = directiveManagersFactory;
         }
 
+        private readonly ICollectionCellManager collectionCellManager;
+        private readonly ICollectionBuilderFactory collectionBuilderFactory;
         private readonly IContextProvider contextProvider;
+        private readonly IDirectiveManagersFactory directiveManagersFactory;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, E>? _entitiesDictionary;
@@ -104,9 +117,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 
                 this._entitiesDictionary = base.Value?.Select
                 (
-                    item => item.GetCollectionCellDictionaryModelPair
+                    item => this.collectionCellManager.GetCollectionCellDictionaryModelPair
                     (
-                        this.contextProvider,
+                        item,
                         this.itemBindings
                     )
                 ).ToDictionary(k => k.Key, v => v.Value) ?? new Dictionary<Dictionary<string, IReadOnly>, E>();
@@ -224,9 +237,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                         (
                             new FormReadOnlyObject<E>
                             (
+                                this.collectionBuilderFactory,
+                                this.contextProvider,
+                                this.directiveManagersFactory,
                                 Value.IndexOf(this._entitiesDictionary[this.SelectedItem]).ToString(),
-                                this.FormSettings,
-                                this.contextProvider
+                                this.FormSettings
                             )
                             {
                                 Value = this._entitiesDictionary[this.SelectedItem]

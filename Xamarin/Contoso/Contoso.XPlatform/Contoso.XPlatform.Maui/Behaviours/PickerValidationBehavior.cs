@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Contoso.XPlatform.Constants;
+using Microsoft.Maui.Controls;
 
 namespace Contoso.XPlatform.Behaviours
 {
@@ -62,9 +63,9 @@ namespace Contoso.XPlatform.Behaviours
                 return;
 
             if (!isDirty || isValid)
-                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, "TertiaryTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, ColorKeys.TertiaryTextColor);
             else
-                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, "ErrorTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, ColorKeys.ErrorTextColor);
         }
     }
 }

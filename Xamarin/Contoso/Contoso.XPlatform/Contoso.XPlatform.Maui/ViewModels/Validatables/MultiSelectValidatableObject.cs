@@ -18,7 +18,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class MultiSelectValidatableObject<T, E> : ValidatableObjectBase<T>, IHasItemsSourceValidatable where T : ObservableCollection<E>
     {
-        public MultiSelectValidatableObject(string name, MultiSelectFormControlSettingsDescriptor setting, IEnumerable<IValidationRule>? validations, IContextProvider contextProvider)
+        public MultiSelectValidatableObject(IContextProvider contextProvider, string name, MultiSelectFormControlSettingsDescriptor setting, IEnumerable<IValidationRule>? validations)
             : base(name, setting.MultiSelectTemplate.TemplateName, validations, contextProvider.UiNotificationService)
         {
             this._multiSelectFormControlSettingsDescriptor = setting;
@@ -102,6 +102,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             }
         }
 
+        /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
         ObservableCollection<object> _selectedItems;
         public ObservableCollection<object> SelectedItems
         {
@@ -251,15 +252,17 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
                 _openCommand = new Command
                 (
-                    () =>
+                    async () =>
                     {
-                        MainThread.BeginInvokeOnMainThread
+                        await MainThread.InvokeOnMainThreadAsync
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync
                             (
                                 new Views.MultiSelectPageCS(this)
                             )
                         );
+
+                        OnPropertyChanged(nameof(SelectedItems));/*needed for iOS*/
                     });
 
                 return _openCommand;

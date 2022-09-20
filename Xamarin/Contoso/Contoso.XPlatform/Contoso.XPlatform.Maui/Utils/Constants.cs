@@ -2012,16 +2012,18 @@ namespace Contoso.XPlatform.Utils
         public const string YinYang = "\uf6ad";
     }
 
-    public struct Platforms
+    public struct AppConstants
     {
-        public const string iOS = "iOS";
-        public const string Android = "Android";
+        public const string ApplicationName = "Contoso.XPlatform";
     }
 
     public struct FontAwesomeFontFamily
     {
-        public const string iOSSolid = "Font Awesome 5 Free Solid";
         public const string AndroidSolid = "FontAwesome5Solid900.otf#Regular";
+        public const string iOSSolid = "Font Awesome 5 Free Solid";
+        public const string MacCatalystSolid = "Font Awesome 5 Free Solid";
+        public const string TizenSolid = "";
+        public const string WinUISolid = "/Assets/FontAwesome5Solid900.otf#Font Awesome 5 Free";
     }
 
     public struct FromGroupTemplateNames

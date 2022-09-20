@@ -1,6 +1,9 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -13,22 +16,46 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class FormValidatableObject<T> : ValidatableObjectBase<T>, IDisposable where T : class
     {
-        public FormValidatableObject(string name, IChildFormGroupSettings setting, IEnumerable<IValidationRule>? validations, IContextProvider contextProvider) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public FormValidatableObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IContextProvider contextProvider,
+            IDirectiveManagersFactory directiveManagersFactory,
+            string name,
+            IChildFormGroupSettings setting,
+            IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
         {
             this.FormSettings = setting;
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.ValidFormControlText;
             this.entityUpdater = contextProvider.EntityUpdater;
             this.propertiesUpdater = contextProvider.PropertiesUpdater;
-            this.fieldsCollectionBuilder = contextProvider.FieldsCollectionBuilder;
-            this.updateOnlyFieldsCollectionBuilder = contextProvider.UpdateOnlyFieldsCollectionBuilder;
+            this.fieldsCollectionBuilder = collectionBuilderFactory.GetFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            );
+
+            this.updateOnlyFieldsCollectionBuilder = collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            );
+
             CreateFieldsCollection();
 
-            this.directiveManagers = new DirectiveManagers<T>
+            this.directiveManagers = (DirectiveManagers<T>)directiveManagersFactory.GetDirectiveManagers
             (
+                typeof(T),
                 FormLayout.Properties,
-                FormSettings,
-                contextProvider
+                FormSettings
             );
 
             propertyChangedSubscription = this.uiNotificationService.ValueChanged.Subscribe(FieldChanged);
@@ -37,7 +64,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         [MemberNotNull(nameof(FormLayout))]
         protected virtual void CreateFieldsCollection()
         {
-            FormLayout = updateOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(T));
+            FormLayout = updateOnlyFieldsCollectionBuilder.CreateFields();
         }
 
         public event EventHandler? Cancelled;
@@ -215,6 +242,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                 if (property is IDisposable disposable)
                     Dispose(disposable);
             }
+            GC.SuppressFinalize(this);
         }
 
         public override bool Validate()

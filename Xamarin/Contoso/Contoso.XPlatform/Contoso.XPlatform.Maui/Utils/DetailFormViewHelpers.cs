@@ -1,19 +1,18 @@
-﻿using Contoso.XPlatform.ViewModels;
+﻿using Contoso.XPlatform.Constants;
+using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
-using System.Collections.ObjectModel;
 using Microsoft.Maui.Controls;
-using Microsoft.Maui;
-using Microsoft.Maui.Graphics;
+using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Utils
 {
     public static class DetailFormViewHelpers
     {
-        public static ReadOnlyControlTemplateSelector ReadOnlyControlTemplateSelector => new ReadOnlyControlTemplateSelector
+        public static ReadOnlyControlTemplateSelector ReadOnlyControlTemplateSelector => new()
         {
             CheckboxTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -24,7 +23,7 @@ namespace Contoso.XPlatform.Utils
             ),
             DateTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -35,7 +34,7 @@ namespace Contoso.XPlatform.Utils
             ),
             FormGroupArrayTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -46,7 +45,7 @@ namespace Contoso.XPlatform.Utils
             ),
             HiddenTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     IsVisible = false,
                     HeightRequest = 1
@@ -54,7 +53,7 @@ namespace Contoso.XPlatform.Utils
             ),
             MultiSelectTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -65,7 +64,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PasswordTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -76,7 +75,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PopupFormGroupTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -87,7 +86,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PickerTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -98,7 +97,7 @@ namespace Contoso.XPlatform.Utils
             ),
             SwitchTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -109,7 +108,7 @@ namespace Contoso.XPlatform.Utils
             ),
             TextTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -127,10 +126,9 @@ namespace Contoso.XPlatform.Utils
                 nameof(TextFieldReadOnlyObject<string>.DisplayText)
             );
 
-        private static StackLayout GetCheckboxControl()
-            => new StackLayout()
+        private static HorizontalStackLayout GetCheckboxControl()
+            => new()
             {
-                Orientation = StackOrientation.Horizontal,
                 IsEnabled = false,
                 Children =
                 {
@@ -148,24 +146,19 @@ namespace Contoso.XPlatform.Utils
                 }
             };
 
-        private static StackLayout GetSwitchFieldControl()
-            => new StackLayout()
+        private static HorizontalStackLayout GetSwitchFieldControl()
+            => new()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch
                     {
-                        IsEnabled = false
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailSwitchStyle)
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchReadOnlyObject.Value)))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchReadOnlyObject.Value))),
                     new Label
                     {
-                        Margin = new Thickness(2),
-                        Padding = new Thickness(7),
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(SwitchReadOnlyObject.SwitchLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -257,7 +250,7 @@ namespace Contoso.XPlatform.Utils
         private static View GetTextField(string titleBinding, string valueBinding, bool isPassword = false)
             => new Label
             {
-                Style = LayoutHelpers.GetStaticStyleResource("DetailFormLabel"),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormLabel),
                 FormattedText = new FormattedString
                 {
                     Spans =
@@ -272,9 +265,7 @@ namespace Contoso.XPlatform.Utils
             }.AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
 
         static Entry GetEntry()
-            => new Entry() { Style = LayoutHelpers.GetStaticStyleResource("DetailFormEntryStyle") }
-            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "EntryBackgroundColor")
-            .AssignDynamicResource(Entry.TextColorProperty, "PrimaryTextColor")
+            => new Entry() { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormEntryStyle) }
             .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
     }
 }

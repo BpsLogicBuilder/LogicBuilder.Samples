@@ -1,4 +1,5 @@
-﻿using Contoso.XPlatform.Utils;
+﻿using Contoso.XPlatform.Constants;
+using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ListPage;
 
@@ -10,15 +11,15 @@ namespace Contoso.XPlatform.Views
 {
     public class ListPageViewCS : ContentPage
     {
-        public ListPageViewCS(ListPageViewModel listPageViewModel)
+        public ListPageViewCS(ListPageViewModelBase listPageViewModel)
         {
-            this.listPageCollectionViewModel = listPageViewModel.ListPageCollectionViewModel;
+            this.listPageCollectionViewModel = listPageViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.listPageCollectionViewModel;
         }
 
-        public ListPageCollectionViewModelBase listPageCollectionViewModel { get; set; }
+        public ListPageViewModelBase listPageCollectionViewModel { get; set; }
         private Grid transitionGrid;
         private Grid page;
 
@@ -42,7 +43,7 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new Grid
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ListPageViewLayoutStyle),
                             RowDefinitions = 
                             { 
                                 new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) }, 
@@ -52,30 +53,29 @@ namespace Contoso.XPlatform.Views
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
-                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageCollectionViewModelBase.Title)))
+                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageViewModelBase.Title)))
                                 .SetGridRow(0),
                                 new CollectionView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("ListFormCollectionViewStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ListFormCollectionViewStyle),
                                     ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                     (
                                         this.listPageCollectionViewModel.FormSettings.ItemTemplateName,
                                         this.listPageCollectionViewModel.FormSettings.Bindings
                                     )
                                 }
-                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageCollectionViewModel<Domain.EntityModelBase>.Items)))
+                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageViewModel<Domain.EntityModelBase>.Items)))
                                 .SetGridRow(1)
                             }
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty,
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

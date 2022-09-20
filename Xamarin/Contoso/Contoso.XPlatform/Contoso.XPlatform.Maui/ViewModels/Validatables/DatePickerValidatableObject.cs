@@ -1,15 +1,13 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Validators;
-using System;
+﻿using Contoso.XPlatform.Validators;
+using Microsoft.Maui.Controls;
 using System.Collections.Generic;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class DatePickerValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public DatePickerValidatableObject(string name, string templateName, IEnumerable<IValidationRule>? validations, UiNotificationService uiNotificationService) 
+        public DatePickerValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, IEnumerable<IValidationRule>? validations) 
             : base(name, templateName, validations, uiNotificationService)
         {
         }

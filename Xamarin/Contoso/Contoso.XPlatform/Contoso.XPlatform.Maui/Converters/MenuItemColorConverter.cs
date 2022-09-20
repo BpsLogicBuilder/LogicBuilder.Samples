@@ -1,4 +1,5 @@
-﻿using Microsoft.Maui.Controls;
+﻿using Contoso.XPlatform.Constants;
+using Microsoft.Maui.Controls;
 using System;
 using System.Globalization;
 
@@ -9,20 +10,20 @@ namespace Contoso.XPlatform.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (Application.Current == null)
-                throw new ArgumentException("PrimaryColor");
+                throw new ArgumentException(nameof(Application.Current));
 
             bool active = (bool)value;
             if (active)
             {
-                if (!Application.Current.Resources.TryGetValue("PrimaryColor", out object color))
-                    throw new ArgumentException("PrimaryColor");
+                if (!Application.Current.Resources.TryGetValue(ColorKeys.PrimaryColor, out object color))
+                    throw new ArgumentException(ColorKeys.PrimaryColor);
 
                 return color;
             }
             else
             {
-                if (!Application.Current.Resources.TryGetValue("PrimaryTextColor", out object color))
-                    throw new ArgumentException("PrimaryTextColor");
+                if (!Application.Current.Resources.TryGetValue(ColorKeys.PrimaryTextColor, out object color))
+                    throw new ArgumentException(ColorKeys.PrimaryTextColor);
 
                 return color;
             }

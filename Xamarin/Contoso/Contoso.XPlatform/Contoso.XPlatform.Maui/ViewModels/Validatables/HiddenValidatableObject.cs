@@ -5,7 +5,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class HiddenValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public HiddenValidatableObject(string name, string templateName, IEnumerable<IValidationRule>? validations, UiNotificationService uiNotificationService) : base(name, templateName, validations, uiNotificationService)
+        public HiddenValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, IEnumerable<IValidationRule>? validations) : base(name, templateName, validations, uiNotificationService)
         {
         }
     }

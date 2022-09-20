@@ -1,29 +1,29 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.EditForm;
 using Contoso.XPlatform.ViewModels.Validatables;
-using System.Linq;
-using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 namespace Contoso.XPlatform.Views
 {
     public class EditFormViewCS : ContentPage
     {
-        public EditFormViewCS(EditFormViewModel editFormViewModel)
+        public EditFormViewCS(EditFormViewModelBase editFormViewModel)
         {
-            this.editFormEntityViewModel = editFormViewModel.EditFormEntityViewModel;
+            this.editFormEntityViewModel = editFormViewModel;
             AddContent();
             //Visual = VisualMarker.Default;
             BindingContext = this.editFormEntityViewModel;
         }
 
-        private EditFormEntityViewModelBase editFormEntityViewModel;
+        private readonly EditFormViewModelBase editFormEntityViewModel;
         private Grid transitionGrid;
-        private StackLayout page;
+        private VerticalStackLayout page;
 
         protected async override void OnAppearing()
         {
@@ -60,14 +60,14 @@ namespace Contoso.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new StackLayout
+                        page = new VerticalStackLayout
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormStackLayoutStyle),
                             Children =
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
                                 .AddBinding
                                 (
@@ -75,14 +75,14 @@ namespace Contoso.XPlatform.Views
                                     GetHeaderBinding
                                     (
                                         editFormEntityViewModel.FormSettings.HeaderBindings,
-                                        $"{nameof(EditFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        $"{nameof(EditFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new ScrollView
                                 {
                                     Content = editFormEntityViewModel.FormLayout.ControlGroupBoxList.Aggregate
                                     (
-                                        new StackLayout(),
+                                        new VerticalStackLayout(),
                                         (stackLayout, controlBox) =>
                                         {
                                             if (controlBox.IsVisible == false)
@@ -92,7 +92,7 @@ namespace Contoso.XPlatform.Views
                                             (
                                                 new Label
                                                 {
-                                                    Style = LayoutHelpers.GetStaticStyleResource("EditFormGroupHeaderStyle"),
+                                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormGroupHeaderStyle),
                                                     BindingContext = controlBox
                                                 }
                                                 .AddBinding
@@ -103,7 +103,7 @@ namespace Contoso.XPlatform.Views
                                             );
                                             stackLayout.Children.Add
                                             (
-                                                new StackLayout
+                                                new VerticalStackLayout
                                                 {
                                                     VerticalOptions = LayoutOptions.Start,
                                                     BindingContext = controlBox
@@ -120,11 +120,10 @@ namespace Contoso.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty, 
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

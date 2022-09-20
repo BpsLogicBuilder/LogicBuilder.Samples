@@ -1,13 +1,13 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.XPlatform.Behaviours;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Converters;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Validatables;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Devices;
 using System;
 using System.Collections.ObjectModel;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui;
-using Microsoft.Maui.Devices;
 
 namespace Contoso.XPlatform.Utils
 {
@@ -21,24 +21,20 @@ namespace Contoso.XPlatform.Utils
                 (
                     () => new Grid
                     {
-                        Style = LayoutHelpers.GetStaticStyleResource("MultiSelectItemStyle"),
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectItemStyle),
                         Children =
                         {
-                            new StackLayout
+                            new VerticalStackLayout
                             {
-                                Margin = new Thickness(2),
-                                Padding = new Thickness(7),
+                                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectSingleFieldLayoutStyle),
                                 Children =
                                 {
                                     new Label
                                     {
-                                        VerticalOptions = LayoutOptions.Center,
-                                        HorizontalOptions = LayoutOptions.Center,
-                                        FontAttributes = FontAttributes.Bold
+                                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectSingleFieldLabelStyle),
                                     }.AddBinding(Label.TextProperty, new Binding(multiSelectTemplateDescriptor.TextField))
                                 }
                             }
-                            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                         }
                     }
                 )
@@ -49,7 +45,7 @@ namespace Contoso.XPlatform.Utils
         {
             TextTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -61,7 +57,7 @@ namespace Contoso.XPlatform.Utils
             ),
             LabelTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -73,7 +69,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PasswordTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -85,7 +81,7 @@ namespace Contoso.XPlatform.Utils
             ),
             DateTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -97,7 +93,7 @@ namespace Contoso.XPlatform.Utils
             ),
             CheckboxTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -109,7 +105,7 @@ namespace Contoso.XPlatform.Utils
             ),
             SwitchTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -121,7 +117,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PickerTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -133,7 +129,7 @@ namespace Contoso.XPlatform.Utils
             ),
             MultiSelectTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -145,7 +141,7 @@ namespace Contoso.XPlatform.Utils
             ),
             PopupFormGroupTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -157,7 +153,7 @@ namespace Contoso.XPlatform.Utils
             ),
             FormGroupArrayTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
                     Children =
                     {
@@ -169,18 +165,16 @@ namespace Contoso.XPlatform.Utils
             ),
             HiddenTemplate = new DataTemplate
             (
-                () => new StackLayout
+                () => new VerticalStackLayout
                 {
-                    IsVisible = false,
-                    HeightRequest = 1
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HiddenTemplateStyle)
                 }
             )
         };
 
-        public static StackLayout GetCheckboxForValidation()
-            => new StackLayout()
+        public static HorizontalStackLayout GetCheckboxForValidation()
+            => new()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new CheckBox
@@ -197,17 +191,16 @@ namespace Contoso.XPlatform.Utils
                     .AddBinding(CheckBox.IsCheckedProperty, new Binding(nameof(CheckboxValidatableObject.Value))),
                     new Label
                     {
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.CheckBoxLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(CheckboxValidatableObject.CheckboxLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
                 }
             };
 
-        public static StackLayout GetSwitchForValidation()
-            => new StackLayout()
+        public static HorizontalStackLayout GetSwitchForValidation()
+            => new()
             {
-                Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch
@@ -221,14 +214,10 @@ namespace Contoso.XPlatform.Utils
                             .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SwitchValidatableObject.ToggledCommand)))
                         }
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value)))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value))),
                     new Label
                     {
-                        Margin = new Thickness(2),
-                        Padding = new Thickness(7),
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(SwitchValidatableObject.SwitchLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -372,7 +361,7 @@ namespace Contoso.XPlatform.Utils
         {
             return AddBindingWithStringFormat(GetEntry(isPassword));
 
-            Entry AddBindingWithStringFormat(Entry entry)
+            static Entry AddBindingWithStringFormat(Entry entry)
                 => entry.AddBinding
                 (
                     Entry.TextProperty,
@@ -405,13 +394,12 @@ namespace Contoso.XPlatform.Utils
                     }
             }
             .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(EntryValidatableObject<string>.Placeholder)))
-            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "EntryBackgroundColor")
-            .AssignDynamicResource(Entry.TextColorProperty, "PrimaryTextColor")
             .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
 
         public static Label GetLabelForValidation()
             => new Label
             {
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ValidationMessageLabelStyle),
                 Behaviors =
                 {
                     new ErrorLabelValidationBehavior()
@@ -419,8 +407,7 @@ namespace Contoso.XPlatform.Utils
                         .AddBinding(ErrorLabelValidationBehavior.IsDirtyProperty, new Binding(nameof(EntryValidatableObject<string>.IsDirty)))
                 }
             }
-            .AddBinding(Label.TextProperty, new Binding(path: nameof(ValidatableObjectBase<object>.Errors), converter: new FirstValidationErrorConverter()))
-            .AssignDynamicResource(Label.TextColorProperty, "ErrorTextColor");
+            .AddBinding(Label.TextProperty, new Binding(path: nameof(ValidatableObjectBase<object>.Errors), converter: new FirstValidationErrorConverter()));
 
         public static string GetFontAwesomeFontFamily()
         {
@@ -428,6 +415,12 @@ namespace Contoso.XPlatform.Utils
                 return FontAwesomeFontFamily.AndroidSolid;
             else if (DeviceInfo.Platform == DevicePlatform.iOS)
                 return FontAwesomeFontFamily.iOSSolid;
+            else if (DeviceInfo.Platform == DevicePlatform.MacCatalyst)
+                return FontAwesomeFontFamily.MacCatalystSolid;
+            else if (DeviceInfo.Platform == DevicePlatform.Tizen)
+                return FontAwesomeFontFamily.TizenSolid;
+            else if (DeviceInfo.Platform == DevicePlatform.WinUI)
+                return FontAwesomeFontFamily.WinUISolid;
             else
                 throw new ArgumentOutOfRangeException(nameof(DeviceInfo.Platform));
         }
@@ -443,7 +436,7 @@ namespace Contoso.XPlatform.Utils
         private static View GetLabel(string titleBinding, string valueBinding, bool isPassword = false)
             => new Label
             {
-                Style = LayoutHelpers.GetStaticStyleResource("EditFormLabel"),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormLabel),
                 FormattedText = new FormattedString
                 {
                     Spans =
