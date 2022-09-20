@@ -272,17 +272,14 @@ namespace Contoso.XPlatform.Services
                 setting.Title
             );
 
-        private IReadOnly CreateTextFieldReadOnlyObject(FormControlSettingsDescriptor setting)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(TextFieldReadOnlyObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{B878CBF2-F63A-43EC-B386-DB999557EAD2}}")),
-                    GetFieldName(setting.Field),
-                    setting.TextTemplate.TemplateName,
-                    setting.Title,
-                    setting.StringFormat,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{850A8D6B-B41A-4A7A-99C0-0094E96A3589}}")
+        private IReadOnly CreateTextFieldReadOnlyObject(FormControlSettingsDescriptor setting) 
+            => readOnlyFactory.CreateTextFieldReadOnlyObject
+            (
+                Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{B878CBF2-F63A-43EC-B386-DB999557EAD2}}"),
+                GetFieldName(setting.Field),
+                setting.TextTemplate.TemplateName,
+                setting.Title,
+                setting.StringFormat
             );
 
         private IReadOnly CreatePickerReadOnlyObject(FormControlSettingsDescriptor setting)

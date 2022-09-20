@@ -1,6 +1,4 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Services;
-using Microsoft.Maui;
+﻿using Contoso.XPlatform.Services;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -9,7 +7,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class TextFieldReadOnlyObject<T> : ReadOnlyObjectBase<T>
     {
-        public TextFieldReadOnlyObject(string name, string templateName, string title, string stringFormat, IContextProvider contextProvider) : base(name, templateName, contextProvider.UiNotificationService)
+        public TextFieldReadOnlyObject(IContextProvider contextProvider, string name, string templateName, string title, string stringFormat) : base(name, templateName, contextProvider.UiNotificationService)
         {
             this.Title = title;
             this._stringFormat = stringFormat;
@@ -21,7 +19,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         {
             get
             {
-                if (EqualityComparer<T>.Default.Equals(Value, default(T)))
+                if (EqualityComparer<T>.Default.Equals(Value, default))
                     return string.Empty;
 
                 if (string.IsNullOrEmpty(this._stringFormat))

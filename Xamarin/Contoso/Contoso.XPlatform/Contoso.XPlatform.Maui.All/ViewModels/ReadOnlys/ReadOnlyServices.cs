@@ -106,6 +106,29 @@ namespace Microsoft.Extensions.DependencyInjection
                     }
                 )
                 .AddTransient<IReadOnlyFactory, ReadOnlyFactory>()
+                .AddTransient<Func<Type, string, string, string, string, IReadOnly>>
+                (
+                    provider =>
+                    (fieldType, name, templateName, title, stringFormat) =>
+                    {
+                        if (templateName != nameof(ReadOnlyControlTemplateSelector.DateTemplate)
+                            && templateName != nameof(ReadOnlyControlTemplateSelector.PickerTemplate)
+                            && templateName != nameof(ReadOnlyControlTemplateSelector.TextTemplate))
+                            throw new ArgumentException($"{nameof(templateName)}: {{73A3F1FE-2B6B-4AF5-A0E8-FDF32C05FF67}}");
+
+                        return (IReadOnly)(
+                            Activator.CreateInstance
+                            (
+                                typeof(TextFieldReadOnlyObject<>).MakeGenericType(fieldType),
+                                provider.GetRequiredService<IContextProvider>(),
+                                name,
+                                templateName, 
+                                title, 
+                                stringFormat
+                            ) ?? throw new ArgumentException($"{fieldType}: {{BAA4ED68-BF23-44F5-9760-C2E19C45C376}}")
+                        );
+                    }
+                )
                 .AddTransient<Func<Type, List<FormItemSettingsDescriptor>, IFormGroupBoxSettings, DetailFormLayout?, string?, IReadOnlyFieldsCollectionBuilder>>
                 (
                     provider =>

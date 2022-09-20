@@ -114,17 +114,14 @@ namespace Contoso.XPlatform.Services
                 binding.Title
             );
 
-        private IReadOnly CreateTextFieldReadOnlyObject(TextItemBindingDescriptor binding)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(TextFieldReadOnlyObject<>).MakeGenericType(GetModelFieldType(binding.Property)),
-                    binding.Property,
-                    binding.TextTemplate.TemplateName,
-                    binding.Title,
-                    binding.StringFormat,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{binding.Property}: {{9EF8E935-40F9-4904-8625-500B74481F03}}")
+        private IReadOnly CreateTextFieldReadOnlyObject(TextItemBindingDescriptor binding) 
+            => readOnlyFactory.CreateTextFieldReadOnlyObject
+            (
+                GetModelFieldType(binding.Property),
+                binding.Property,
+                binding.TextTemplate.TemplateName,
+                binding.Title,
+                binding.StringFormat
             );
 
         private void AddMultiSelectCell(MultiSelectItemBindingDescriptor binding)

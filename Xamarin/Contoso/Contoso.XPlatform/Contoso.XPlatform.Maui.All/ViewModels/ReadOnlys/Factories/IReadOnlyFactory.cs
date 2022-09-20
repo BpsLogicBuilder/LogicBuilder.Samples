@@ -9,5 +9,6 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
         IReadOnly CreateFormReadOnlyObject(Type fieldType, string name, IChildFormGroupSettings setting);
         IReadOnly CreateHiddenReadOnlyObject(Type fieldType, string name, string templateName);
         IReadOnly CreateSwitchReadOnlyObject(string name, string templateName, string switchLabel);
+        IReadOnly CreateTextFieldReadOnlyObject(Type fieldType, string name, string templateName, string title, string stringFormat);
     }
 }

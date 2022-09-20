@@ -9,17 +9,20 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
         private readonly Func<Type, string, IChildFormGroupSettings, IReadOnly> getFormReadOnly;
         private readonly Func<Type, string, string, IReadOnly> getHiddenReadOnly;
         private readonly Func<string, string, string, IReadOnly> getSwitchReadOnly;
+        private readonly Func<Type, string, string, string, string, IReadOnly> getTextFieldReadOnly;
 
         public ReadOnlyFactory(
             Func<string, string, string, IReadOnly> getCheckboxReadOnly,
             Func<Type, string, IChildFormGroupSettings, IReadOnly> getFormReadOnly,
             Func<Type, string, string, IReadOnly> getHiddenReadOnly,
-            Func<string, string, string, IReadOnly> getSwitchReadOnly)
+            Func<string, string, string, IReadOnly> getSwitchReadOnly,
+            Func<Type, string, string, string, string, IReadOnly> getTextFieldReadOnly)
         {
             this.getCheckboxReadOnly = getCheckboxReadOnly;
             this.getFormReadOnly = getFormReadOnly;
             this.getHiddenReadOnly = getHiddenReadOnly;
             this.getSwitchReadOnly = getSwitchReadOnly;
+            this.getTextFieldReadOnly = getTextFieldReadOnly;
         }
 
         public IReadOnly CreateCheckboxReadOnlyObject(string name, string templateName, string checkboxLabel)
@@ -52,6 +55,16 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys.Factories
                 name,
                 templateName,
                 switchLabel
+            );
+
+        public IReadOnly CreateTextFieldReadOnlyObject(Type fieldType, string name, string templateName, string title, string stringFormat)
+            => getTextFieldReadOnly
+            (
+                fieldType, 
+                name, 
+                templateName, 
+                title, 
+                stringFormat
             );
     }
 }
