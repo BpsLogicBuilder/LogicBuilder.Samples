@@ -1,9 +1,5 @@
-﻿using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Requests;
-using Contoso.XPlatform.Flow.Settings;
-using System;
+﻿using Contoso.XPlatform.Flow.Settings;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
 
 namespace Contoso.XPlatform
 {
