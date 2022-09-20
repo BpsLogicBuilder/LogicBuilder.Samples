@@ -144,27 +144,17 @@ namespace Contoso.XPlatform.Services
         {
             Type type = GetModelFieldType(binding.Property);
             if (!type.IsList())
-                throw new ArgumentException($"{nameof(type)}: 4F67CC2A-21B8-49B4-BFC2-4D949518AB34");
+                throw new ArgumentException($"{nameof(type)}: {{FC9E3842-11E3-420C-8A34-ED94DA56126E}}");
 
-            return GetValidatable(type.GetUnderlyingElementType());
-
-            IReadOnly GetValidatable(Type elementType)
-                => (IReadOnly)(
-                    Activator.CreateInstance
-                    (
-                        typeof(MultiSelectReadOnlyObject<,>).MakeGenericType
-                        (
-                            typeof(ObservableCollection<>).MakeGenericType(elementType),
-                            elementType
-                        ),
-                        binding.Property,
-                        binding.KeyFields,
-                        binding.Title,
-                        binding.StringFormat,
-                        binding.MultiSelectTemplate,
-                        this.contextProvider
-                    ) ?? throw new ArgumentException($"{elementType}: {{D7A4FD1B-6F25-41EF-BDE1-1840702483D7}}")
-                );
+            return readOnlyFactory.CreateMultiSelectReadOnlyObject
+            (
+                type.GetUnderlyingElementType(),
+                binding.Property,
+                binding.KeyFields,
+                binding.Title,
+                binding.StringFormat,
+                binding.MultiSelectTemplate
+            );
         }
 
         Type GetModelFieldType(string fullPropertyName)

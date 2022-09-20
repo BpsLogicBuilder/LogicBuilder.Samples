@@ -292,27 +292,16 @@ namespace Contoso.XPlatform.Services
                 setting.DropDownTemplate
             );
 
-        private IReadOnly CreateMultiSelectReadOnlyObject(MultiSelectFormControlSettingsDescriptor setting)
-        {
-            return GetValidatable(Type.GetType(setting.MultiSelectTemplate.ModelType) ?? throw new ArgumentException($"{nameof(setting.MultiSelectTemplate.ModelType)}: {{BE6E97BF-7843-45D5-BC46-BA5B73804DE5}}"));
-            IReadOnly GetValidatable(Type elementType)
-                => (IReadOnly)(
-                    Activator.CreateInstance
-                    (
-                        typeof(MultiSelectReadOnlyObject<,>).MakeGenericType
-                        (
-                            typeof(ObservableCollection<>).MakeGenericType(elementType),
-                            elementType
-                        ),
-                        GetFieldName(setting.Field),
-                        setting.KeyFields,
-                        setting.Title,
-                        setting.StringFormat,
-                        setting.MultiSelectTemplate,
-                        this.contextProvider
-                    ) ?? throw new ArgumentException($"{nameof(setting.MultiSelectTemplate.ModelType)}: {{CE0B6A1A-22E9-40D2-8EEE-B1C8D1BC08B7}}")
-                );
-        }
+        private IReadOnly CreateMultiSelectReadOnlyObject(MultiSelectFormControlSettingsDescriptor setting) 
+            => readOnlyFactory.CreateMultiSelectReadOnlyObject
+            (
+                Type.GetType(setting.MultiSelectTemplate.ModelType) ?? throw new ArgumentException($"{nameof(setting.MultiSelectTemplate.ModelType)}: {{BE6E97BF-7843-45D5-BC46-BA5B73804DE5}}"),
+                GetFieldName(setting.Field),
+                setting.KeyFields,
+                setting.Title,
+                setting.StringFormat,
+                setting.MultiSelectTemplate
+            );
 
         private IReadOnly CreateFormArrayReadOnlyObject(FormGroupArraySettingsDescriptor setting)
         {

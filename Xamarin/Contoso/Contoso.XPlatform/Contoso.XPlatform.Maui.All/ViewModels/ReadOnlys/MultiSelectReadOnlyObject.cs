@@ -18,7 +18,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class MultiSelectReadOnlyObject<T, E> : ReadOnlyObjectBase<T>, IHasItemsSourceReadOnly where T : ObservableCollection<E>
     {
-        public MultiSelectReadOnlyObject(string name, List<string> keyFields, string title, string stringFormat, MultiSelectTemplateDescriptor multiSelectTemplate, IContextProvider contextProvider)
+        public MultiSelectReadOnlyObject(IContextProvider contextProvider, string name, List<string> keyFields, string title, string stringFormat, MultiSelectTemplateDescriptor multiSelectTemplate)
             : base(name, multiSelectTemplate.TemplateName, contextProvider.UiNotificationService)
         {
             this._multiSelectTemplate = multiSelectTemplate;

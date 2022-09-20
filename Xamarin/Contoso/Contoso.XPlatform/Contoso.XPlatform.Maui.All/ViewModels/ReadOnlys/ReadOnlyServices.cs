@@ -9,8 +9,10 @@ using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
+using LogicBuilder.Expressions.Utils;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -103,6 +105,32 @@ namespace Microsoft.Extensions.DependencyInjection
                                 name,
                                 templateName
                             ) ?? throw new ArgumentException($"{fieldType}: {{7A00C8A1-0BB5-41AA-8857-082D81B0A7C3}}")
+                        );
+                    }
+                )
+                .AddTransient<Func<Type, string, List<string>, string, string, MultiSelectTemplateDescriptor, IReadOnly>>
+                (
+                    provider =>
+                    (elementType, name, keyFields, title, stringFormat, multiSelectTemplate) =>
+                    {
+                        if (multiSelectTemplate.TemplateName != nameof(ReadOnlyControlTemplateSelector.MultiSelectTemplate))
+                            throw new ArgumentException($"{nameof(multiSelectTemplate.TemplateName)}: {{085E7940-E203-42A2-975C-A21CBA0D7D97}}");
+
+                        return (IReadOnly)(
+                            Activator.CreateInstance
+                            (
+                                typeof(MultiSelectReadOnlyObject<,>).MakeGenericType
+                                (
+                                    typeof(ObservableCollection<>).MakeGenericType(elementType),
+                                    elementType
+                                ),
+                                provider.GetRequiredService<IContextProvider>(),
+                                name, 
+                                keyFields, 
+                                title, 
+                                stringFormat, 
+                                multiSelectTemplate
+                            ) ?? throw new ArgumentException($"{elementType}: {{A3652A4E-A2F2-437C-AD6B-517EF0F14A67}}")
                         );
                     }
                 )
