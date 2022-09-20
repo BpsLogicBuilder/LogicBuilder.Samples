@@ -130,18 +130,14 @@ namespace Contoso.XPlatform.Services
                 binding.StringFormat
             );
 
-        private IReadOnly CreatePickerReadOnlyObject(DropDownItemBindingDescriptor binding)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(PickerReadOnlyObject<>).MakeGenericType(GetModelFieldType(binding.Property)),
-                    binding.Property,
-                    binding.Title,
-                    binding.StringFormat,
-                    binding.DropDownTemplate,
-                    this.contextProvider,
-                    this.mapper
-                ) ?? throw new ArgumentException($"{binding.Property}: {{15DACB56-2914-4A2A-8089-48FBC5BBBA49}}")
+        private IReadOnly CreatePickerReadOnlyObject(DropDownItemBindingDescriptor binding) 
+            => readOnlyFactory.CreatePickerReadOnlyObject
+            (
+                GetModelFieldType(binding.Property),
+                binding.Property,
+                binding.Title,
+                binding.StringFormat,
+                binding.DropDownTemplate
             );
 
         private IReadOnly CreateMultiSelectReadOnlyObject(MultiSelectItemBindingDescriptor binding)

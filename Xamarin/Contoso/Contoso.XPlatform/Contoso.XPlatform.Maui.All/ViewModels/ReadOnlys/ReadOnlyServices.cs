@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Directives.Factories;
@@ -105,6 +106,28 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
+                .AddTransient<Func<Type, string, string, string, DropDownTemplateDescriptor, IReadOnly>>
+                (
+                    provider =>
+                    (fieldType, name, title, stringFormat, dropDownTemplate) =>
+                    {
+                        if (dropDownTemplate.TemplateName != nameof(ReadOnlyControlTemplateSelector.PickerTemplate))
+                            throw new ArgumentException($"{nameof(dropDownTemplate.TemplateName)}: {{51404CE9-710F-44DD-A7BB-691055BB6BA7}}");
+
+                        return (IReadOnly)(
+                            Activator.CreateInstance
+                            (
+                                typeof(PickerReadOnlyObject<>).MakeGenericType(fieldType),
+                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IMapper>(),
+                                name,
+                                title,
+                                stringFormat,
+                                dropDownTemplate
+                            ) ?? throw new ArgumentException($"{fieldType}: {{547A766E-039E-498E-AFA0-3131A03376A3}}")
+                        );
+                    }
+                )
                 .AddTransient<IReadOnlyFactory, ReadOnlyFactory>()
                 .AddTransient<Func<Type, string, string, string, string, IReadOnly>>
                 (
@@ -112,7 +135,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     (fieldType, name, templateName, title, stringFormat) =>
                     {
                         if (templateName != nameof(ReadOnlyControlTemplateSelector.DateTemplate)
-                            && templateName != nameof(ReadOnlyControlTemplateSelector.PickerTemplate)
                             && templateName != nameof(ReadOnlyControlTemplateSelector.TextTemplate))
                             throw new ArgumentException($"{nameof(templateName)}: {{73A3F1FE-2B6B-4AF5-A0E8-FDF32C05FF67}}");
 

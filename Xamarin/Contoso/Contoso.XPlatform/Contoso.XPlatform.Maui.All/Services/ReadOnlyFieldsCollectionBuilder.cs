@@ -282,18 +282,14 @@ namespace Contoso.XPlatform.Services
                 setting.StringFormat
             );
 
-        private IReadOnly CreatePickerReadOnlyObject(FormControlSettingsDescriptor setting)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(PickerReadOnlyObject<>).MakeGenericType(Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{F70FE8A1-B481-4303-BB65-892A4408B113}}")),
-                    GetFieldName(setting.Field),
-                    setting.Title,
-                    setting.StringFormat,
-                    setting.DropDownTemplate,
-                    this.contextProvider,
-                    this.mapper
-                ) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{F610E13D-1934-4075-98AD-5C31889163AC}}")
+        private IReadOnly CreatePickerReadOnlyObject(FormControlSettingsDescriptor setting) 
+            => readOnlyFactory.CreatePickerReadOnlyObject
+            (
+                Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(setting.Type)}: {{F70FE8A1-B481-4303-BB65-892A4408B113}}"),
+                GetFieldName(setting.Field),
+                setting.Title,
+                setting.StringFormat,
+                setting.DropDownTemplate
             );
 
         private IReadOnly CreateMultiSelectReadOnlyObject(MultiSelectFormControlSettingsDescriptor setting)

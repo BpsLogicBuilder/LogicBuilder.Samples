@@ -14,9 +14,9 @@ namespace Contoso.XPlatform.Utils
             {
                 nameof(ReadOnlyControlTemplateSelector.CheckboxTemplate) => GetCheckboxControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.DateTemplate)
-                    or nameof(ReadOnlyControlTemplateSelector.PickerTemplate)
                     or nameof(ReadOnlyControlTemplateSelector.TextTemplate) => GetTextFieldControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.PasswordTemplate) => GetPasswordTextFieldControl(field, fontAttributes),
+                nameof(ReadOnlyControlTemplateSelector.PickerTemplate) => GetPickerFieldControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.SwitchTemplate) => GetSwitchFieldControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.MultiSelectTemplate) => GetMultiSelectFieldControl(field, fontAttributes),
                 _ => throw new ArgumentException($"{nameof(templateName)}: 65783D5D-D80C-46BC-AD6B-0419CE37D987"),
@@ -77,6 +77,14 @@ namespace Contoso.XPlatform.Utils
                     new BoxView()
                 }
             };
+
+        private static View GetPickerFieldControl(string field, FontAttributes fontAttributes)
+            => GetTextField
+            (
+                $"[{field}].{nameof(PickerReadOnlyObject<string>.Title)}",
+                $"[{field}].{nameof(PickerReadOnlyObject<string>.DisplayText)}",
+                fontAttributes
+            );
 
         private static View GetTextFieldControl(string field, FontAttributes fontAttributes)
             => GetTextField
