@@ -90,6 +90,12 @@ namespace Contoso.XPlatform.Services
             }
         }
 
+        private void AddMultiSelectCell(MultiSelectItemBindingDescriptor binding)
+            => Properties.Add(CreateMultiSelectReadOnlyObject(binding));
+
+        private void AddDropDowCell(DropDownItemBindingDescriptor binding)
+            => Properties.Add(CreatePickerReadOnlyObject(binding));
+
         private IReadOnly CreateHiddenReadOnlyObject(TextItemBindingDescriptor binding) 
             => readOnlyFactory.CreateHiddenReadOnlyObject
             (
@@ -123,12 +129,6 @@ namespace Contoso.XPlatform.Services
                 binding.Title,
                 binding.StringFormat
             );
-
-        private void AddMultiSelectCell(MultiSelectItemBindingDescriptor binding)
-            => Properties.Add(CreateMultiSelectReadOnlyObject(binding));
-
-        private void AddDropDowCell(DropDownItemBindingDescriptor binding)
-            => Properties.Add(CreatePickerReadOnlyObject(binding));
 
         private IReadOnly CreatePickerReadOnlyObject(DropDownItemBindingDescriptor binding)
             => (IReadOnly)(
