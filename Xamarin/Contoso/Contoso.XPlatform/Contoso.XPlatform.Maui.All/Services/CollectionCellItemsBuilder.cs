@@ -98,27 +98,20 @@ namespace Contoso.XPlatform.Services
                 binding.TextTemplate.TemplateName
             );
 
-        private IReadOnly CreateCheckboxReadOnlyObject(TextItemBindingDescriptor binding)
-            => (IReadOnly)(Activator.CreateInstance
-                (
-                    typeof(CheckboxReadOnlyObject),
-                    binding.Property,
-                    binding.TextTemplate.TemplateName,
-                    binding.Title,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{typeof(CheckboxReadOnlyObject)}: {{368F5D2C-B20F-41F6-89F1-CE073DF4B04E}}")
+        private IReadOnly CreateCheckboxReadOnlyObject(TextItemBindingDescriptor binding) 
+            => readOnlyFactory.CreateCheckboxReadOnlyObject
+            (
+                binding.Property,
+                binding.TextTemplate.TemplateName,
+                binding.Title
             );
 
-        private IReadOnly CreateSwitchReadOnlyObject(TextItemBindingDescriptor binding)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(SwitchReadOnlyObject),
-                    binding.Property,
-                    binding.TextTemplate.TemplateName,
-                    binding.Title,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{typeof(SwitchReadOnlyObject)}: {{0CDD3611-8C67-47A7-8D6E-40D061D2E87F}}")
+        private IReadOnly CreateSwitchReadOnlyObject(TextItemBindingDescriptor binding) 
+            => readOnlyFactory.CreateSwitchReadOnlyObject
+            (
+                binding.Property,
+                binding.TextTemplate.TemplateName,
+                binding.Title
             );
 
         private IReadOnly CreateTextFieldReadOnlyObject(TextItemBindingDescriptor binding)

@@ -256,28 +256,20 @@ namespace Contoso.XPlatform.Services
                 setting.TextTemplate.TemplateName
             );
 
-        private IReadOnly CreateCheckboxReadOnlyObject(FormControlSettingsDescriptor setting)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(CheckboxReadOnlyObject),
-                    GetFieldName(setting.Field),
-                    setting.TextTemplate.TemplateName,
-                    setting.Title,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{typeof(CheckboxReadOnlyObject)}: {{EE7AD874-D517-4E6C-A980-11D7195C85DA}}")
+        private IReadOnly CreateCheckboxReadOnlyObject(FormControlSettingsDescriptor setting) 
+            => readOnlyFactory.CreateCheckboxReadOnlyObject
+            (
+                GetFieldName(setting.Field),
+                setting.TextTemplate.TemplateName,
+                setting.Title
             );
 
-        private IReadOnly CreateSwitchReadOnlyObject(FormControlSettingsDescriptor setting)
-            => (IReadOnly)(
-                Activator.CreateInstance
-                (
-                    typeof(SwitchReadOnlyObject),
-                    GetFieldName(setting.Field),
-                    setting.TextTemplate.TemplateName,
-                    setting.Title,
-                    this.contextProvider
-                ) ?? throw new ArgumentException($"{typeof(CheckboxReadOnlyObject)}: {{8BD811BB-0EE9-4552-9BC9-D13DA261AF36}}")
+        private IReadOnly CreateSwitchReadOnlyObject(FormControlSettingsDescriptor setting) 
+            => readOnlyFactory.CreateSwitchReadOnlyObject
+            (
+                GetFieldName(setting.Field),
+                setting.TextTemplate.TemplateName,
+                setting.Title
             );
 
         private IReadOnly CreateTextFieldReadOnlyObject(FormControlSettingsDescriptor setting)

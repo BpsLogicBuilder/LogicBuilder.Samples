@@ -33,6 +33,35 @@ namespace Microsoft.Extensions.DependencyInjection
                         );
                     }
                 )
+                .AddTransient<Func<string, string, string, IReadOnly>>
+                (//switch and checkbox read-onlys have the same signature
+                    provider =>
+                    (name, templateName, label) =>
+                    {
+                        if (templateName == nameof(ReadOnlyControlTemplateSelector.CheckboxTemplate))
+                        {
+                            return new CheckboxReadOnlyObject
+                            (
+                                provider.GetRequiredService<IContextProvider>(),
+                                name,
+                                templateName,
+                                label
+                            );
+                        }
+                        else if (templateName == nameof(ReadOnlyControlTemplateSelector.SwitchTemplate))
+                        {
+                            return new SwitchReadOnlyObject
+                            (
+                                provider.GetRequiredService<IContextProvider>(),
+                                name,
+                                templateName,
+                                label
+                            );
+                        }
+
+                        throw new ArgumentException($"{nameof(templateName)}: {{B3EE00C4-130A-4C00-843B-A21CD41241DC}}");
+                    }
+                )
                 .AddTransient<Func<Type, string, IChildFormGroupSettings, IReadOnly>>
                 (
                     provider =>
