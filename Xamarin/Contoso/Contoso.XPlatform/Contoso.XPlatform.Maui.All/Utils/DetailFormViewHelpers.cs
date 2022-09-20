@@ -8,7 +8,7 @@ namespace Contoso.XPlatform.Utils
 {
     public static class DetailFormViewHelpers
     {
-        public static ReadOnlyControlTemplateSelector ReadOnlyControlTemplateSelector => new ReadOnlyControlTemplateSelector
+        public static ReadOnlyControlTemplateSelector ReadOnlyControlTemplateSelector => new()
         {
             CheckboxTemplate = new DataTemplate
             (
@@ -127,7 +127,7 @@ namespace Contoso.XPlatform.Utils
             );
 
         private static HorizontalStackLayout GetCheckboxControl()
-            => new HorizontalStackLayout()
+            => new()
             {
                 IsEnabled = false,
                 Children =
@@ -147,7 +147,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static HorizontalStackLayout GetSwitchFieldControl()
-            => new HorizontalStackLayout()
+            => new()
             {
                 Children =
                 {
