@@ -7,6 +7,7 @@ using Contoso.Parameters.Expressions;
 using Contoso.Utils;
 using Contoso.XPlatform.Flow.Requests;
 using Contoso.XPlatform.Services;
+using Contoso.XPlatform.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -196,12 +197,12 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                     }
                 );
 
-                if ((flowManagerService.GetFlowDataCacheItem($"Get_{this.Name}_Selector_Success") ?? false).Equals(false))
+                if ((flowManagerService.GetFlowDataCacheItem(FlowVariableNames.Get_Selector_Success) ?? false).Equals(false))
                     return;
 
                 SelectorLambdaOperatorDescriptor selector = this.mapper.Map<SelectorLambdaOperatorDescriptor>
                 (
-                    flowManagerService.GetFlowDataCacheItem($"{this.Name}_{typeof(SelectorLambdaOperatorParameters).FullName}")
+                    flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
                 );
 
                 this.Title = this._dropDownTemplate.LoadingIndicatorText;

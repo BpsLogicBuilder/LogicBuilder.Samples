@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
+using Contoso.XPlatform.Utils;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
 {
@@ -191,12 +192,12 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                     }
                 );
 
-                if ((flowManagerService.GetFlowDataCacheItem($"Get_{this.Name}_Selector_Success") ?? false).Equals(false))
+                if ((flowManagerService.GetFlowDataCacheItem(FlowVariableNames.Get_Selector_Success) ?? false).Equals(false))
                     return;
 
                 SelectorLambdaOperatorDescriptor selector = this.mapper.Map<SelectorLambdaOperatorDescriptor>
                 (
-                    flowManagerService.GetFlowDataCacheItem($"{this.Name}_{typeof(SelectorLambdaOperatorParameters).FullName}")
+                    flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
                 );
 
                 this.Title = this._dropDownTemplate.LoadingIndicatorText;
