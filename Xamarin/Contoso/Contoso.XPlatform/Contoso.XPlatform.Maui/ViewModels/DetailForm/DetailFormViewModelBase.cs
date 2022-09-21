@@ -17,9 +17,11 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
 {
     public abstract class DetailFormViewModelBase : ViewModelBase
     {
-        protected DetailFormViewModelBase(ScreenSettings<DataFormSettingsDescriptor> screenSettings, IContextProvider contextProvider)
+        protected DetailFormViewModelBase(
+            ScreenSettings<DataFormSettingsDescriptor> screenSettings,
+            UiNotificationService uiNotificationService)
         {
-            this.UiNotificationService = contextProvider.UiNotificationService;
+            this.UiNotificationService = uiNotificationService;
             FormSettings = screenSettings.Settings;
             Buttons = new ObservableCollection<CommandButtonDescriptor>(screenSettings.CommandButtons);
         }
@@ -49,24 +51,22 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
             }
         }
 
-        protected void Next(CommandButtonDescriptor button)
+        protected static void Next(CommandButtonDescriptor button)
         {
             NavigateNext(button);
         }
 
-        protected Task NavigateNext(CommandButtonDescriptor button)
+        protected static Task NavigateNext(CommandButtonDescriptor button)
         {
-            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-            {
-                flowManagerService.CopyFlowItems();
-                return flowManagerService.Next
-                (
-                    new CommandButtonRequest
-                    {
-                        NewSelection = button.ShortString
-                    }
-                );
-            }
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.CopyFlowItems();
+            return flowManagerService.Next
+            (
+                new CommandButtonRequest
+                {
+                    NewSelection = button.ShortString
+                }
+            );
         }
     }
 }

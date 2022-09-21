@@ -1,12 +1,14 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Services;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class SwitchReadOnlyObject : ReadOnlyObjectBase<bool>
     {
-        public SwitchReadOnlyObject(IContextProvider contextProvider, string name, string templateName, string switchLabel) : base(name, templateName, contextProvider.UiNotificationService)
+        public SwitchReadOnlyObject(
+            UiNotificationService uiNotificationService,
+            string name,
+            string templateName,
+            string switchLabel) : base(name, templateName, uiNotificationService)
         {
             SwitchLabel = switchLabel;
         }

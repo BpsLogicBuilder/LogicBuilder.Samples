@@ -21,10 +21,13 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
     {
         public DetailFormViewModel(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
+            IGetItemFilterBuilder getItemFilterBuilder,
+            IHttpService httpService,
+            IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
+            UiNotificationService uiNotificationService,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
-            : base(screenSettings, contextProvider)
+            : base(screenSettings, uiNotificationService)
         {
             FormLayout = collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (
@@ -35,9 +38,9 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
                 null
             ).CreateFields();
 
-            this.httpService = contextProvider.HttpService;
-            this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
-            this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;
+            this.httpService = httpService;
+            this.propertiesUpdater = readOnlyPropertiesUpdater;
+            this.getItemFilterBuilder = getItemFilterBuilder;
 
             this.directiveManagers = (ReadOnlyDirectiveManagers<TModel>)directiveManagersFactory.GetReadOnlyDirectiveManagers
             (

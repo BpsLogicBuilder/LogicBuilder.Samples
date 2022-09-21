@@ -1,34 +1,26 @@
-﻿using AutoMapper;
-using Contoso.Forms.Configuration.Bindings;
+﻿using Contoso.Forms.Configuration.Bindings;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
 using LogicBuilder.Expressions.Utils;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace Contoso.XPlatform.Services
 {
     public class CollectionCellItemsBuilder : ICollectionCellItemsBuilder
     {
-        private readonly IContextProvider contextProvider;
-        private readonly IMapper mapper;
         private readonly IReadOnlyFactory readOnlyFactory;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private readonly Type modelType;
         public ICollection<IReadOnly> Properties { get; }
 
         public CollectionCellItemsBuilder(
-            IContextProvider contextProvider,
-            IMapper mapper,
             IReadOnlyFactory readOnlyFactory,
             List<ItemBindingDescriptor> itemBindings,
             Type modelType)
         {
             this.itemBindings = itemBindings;
-            this.contextProvider = contextProvider;
-            this.mapper = mapper;
             this.readOnlyFactory = readOnlyFactory;
             this.modelType = modelType;
             Properties = new List<IReadOnly>();

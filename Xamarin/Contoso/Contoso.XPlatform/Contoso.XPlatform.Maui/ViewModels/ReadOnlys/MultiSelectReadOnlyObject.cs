@@ -1,30 +1,36 @@
 ﻿using Contoso.Bsl.Business.Requests;
 using Contoso.Bsl.Business.Responses;
 using Contoso.Forms.Configuration;
-using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.ApplicationModel;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class MultiSelectReadOnlyObject<T, E> : ReadOnlyObjectBase<T>, IHasItemsSourceReadOnly where T : ObservableCollection<E>
     {
-        public MultiSelectReadOnlyObject(IContextProvider contextProvider, string name, List<string> keyFields, string title, string stringFormat, MultiSelectTemplateDescriptor multiSelectTemplate)
-            : base(name, multiSelectTemplate.TemplateName, contextProvider.UiNotificationService)
+        public MultiSelectReadOnlyObject(
+            IHttpService httpService,
+            UiNotificationService uiNotificationService,
+            string name,
+            List<string> keyFields,
+            string title,
+            string stringFormat,
+            MultiSelectTemplateDescriptor multiSelectTemplate)
+            : base(name, multiSelectTemplate.TemplateName, uiNotificationService)
         {
             this._multiSelectTemplate = multiSelectTemplate;
             this._keyFields = keyFields;
             this._stringFormat = stringFormat;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
             this.Title = title;
             this.Placeholder = this._multiSelectTemplate.LoadingIndicatorText;
             itemComparer = new MultiSelectItemComparer<E>(this._keyFields);

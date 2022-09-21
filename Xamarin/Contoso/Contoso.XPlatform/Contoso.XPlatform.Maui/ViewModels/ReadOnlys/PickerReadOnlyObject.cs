@@ -19,10 +19,17 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class PickerReadOnlyObject<T> : ReadOnlyObjectBase<T>, IHasItemsSourceReadOnly
     {
-        public PickerReadOnlyObject(IContextProvider contextProvider, IMapper mapper, string name, string title, string stringFormat, DropDownTemplateDescriptor dropDownTemplate) : base(name, dropDownTemplate.TemplateName, contextProvider.UiNotificationService)
+        public PickerReadOnlyObject(
+            IHttpService httpService,
+            IMapper mapper,
+            UiNotificationService uiNotificationService,
+            string name,
+            string title,
+            string stringFormat,
+            DropDownTemplateDescriptor dropDownTemplate) : base(name, dropDownTemplate.TemplateName, uiNotificationService)
         {
             this._dropDownTemplate = dropDownTemplate;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
             _defaultTitle = title;
             _stringFormat = stringFormat;
             this.Title = _defaultTitle;

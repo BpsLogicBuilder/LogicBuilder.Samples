@@ -272,7 +272,23 @@ namespace Contoso.XPlatform.Maui.Tests
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
             {
-                GetUrl = "/Department/GetSingle"
+                GetUrl = "/Department/GetSingle",
+                ModelType = typeof(DepartmentModel).AssemblyQualifiedName,
+                DataType = typeof(Department).AssemblyQualifiedName,
+                Filter = new FilterLambdaOperatorDescriptor
+                {
+                    FilterBody = new EqualsBinaryOperatorDescriptor
+                    {
+                        Left = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "f" },
+                            MemberFullName = "DepartmentID"
+                        },
+                        Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 1 }
+                    },
+                    SourceElementType = typeof(DepartmentModel).AssemblyQualifiedName,
+                    ParameterName = "f"
+                }
             },
             FieldSettings = new List<FormItemSettingsDescriptor>
             {

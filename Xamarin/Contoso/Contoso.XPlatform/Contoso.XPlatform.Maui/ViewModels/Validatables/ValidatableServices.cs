@@ -29,7 +29,6 @@ namespace Microsoft.Extensions.DependencyInjection
                         return new FieldsCollectionBuilder
                         (
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
-                            provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IValidatableFactory>(),
                             provider.GetRequiredService<IValidatableValueHelper>(),
                             fieldSettings,
@@ -49,7 +48,6 @@ namespace Microsoft.Extensions.DependencyInjection
                         return new UpdateOnlyFieldsCollectionBuilder
                         (
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
-                            provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IValidatableFactory>(),
                             provider.GetRequiredService<IValidatableValueHelper>(),
                             fieldSettings,
@@ -176,8 +174,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                 ),
                                 provider.GetRequiredService<ICollectionCellManager>(),
                                 provider.GetRequiredService<ICollectionBuilderFactory>(),
-                                provider.GetRequiredService<IContextProvider>(),
                                 provider.GetRequiredService<IValidatableFactory>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 setting,
                                 validations ?? Array.Empty<IValidationRule>()
@@ -200,8 +198,10 @@ namespace Microsoft.Extensions.DependencyInjection
                                     (
                                         typeof(FormValidatableObject<>).MakeGenericType(fieldType),
                                         provider.GetRequiredService<ICollectionBuilderFactory>(),
-                                        provider.GetRequiredService<IContextProvider>(),
                                         provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                        provider.GetRequiredService<IEntityUpdater>(),
+                                        provider.GetRequiredService<IPropertiesUpdater>(),
+                                        provider.GetRequiredService<UiNotificationService>(),
                                         name,
                                         setting,
                                         Array.Empty<IValidationRule>()
@@ -215,8 +215,10 @@ namespace Microsoft.Extensions.DependencyInjection
                                     (
                                         typeof(AddFormValidatableObject<>).MakeGenericType(fieldType),
                                         provider.GetRequiredService<ICollectionBuilderFactory>(),
-                                        provider.GetRequiredService<IContextProvider>(),
                                         provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                        provider.GetRequiredService<IEntityUpdater>(),
+                                        provider.GetRequiredService<IPropertiesUpdater>(),
+                                        provider.GetRequiredService<UiNotificationService>(),
                                         name,
                                         setting,
                                         Array.Empty<IValidationRule>()
@@ -271,7 +273,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                     typeof(ObservableCollection<>).MakeGenericType(elementType),
                                     elementType
                                 ),
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IHttpService>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 setting,
                                 validations ?? Array.Empty<IValidationRule>()
@@ -291,15 +294,13 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(PickerValidatableObject<>).MakeGenericType(fieldType),
-                                new object?[]
-                                {
-                                        provider.GetRequiredService<IContextProvider>(),
-                                        provider.GetRequiredService<IMapper>(),
-                                        name,
-                                        defaultValue,
-                                        dropDownTemplate,
-                                        validations ?? Array.Empty<IValidationRule>()
-                                }
+                                provider.GetRequiredService<IHttpService>(),
+                                provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<UiNotificationService>(),
+                                name,
+                                defaultValue,
+                                dropDownTemplate,
+                                validations ?? Array.Empty<IValidationRule>()
                             ) ?? throw new ArgumentException($"{fieldType}: {{79B782E6-21DD-4579-93DD-DC901D0D3CD8}}")
                         );
                     }

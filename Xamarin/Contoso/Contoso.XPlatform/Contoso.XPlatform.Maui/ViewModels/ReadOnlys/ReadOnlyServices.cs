@@ -2,6 +2,7 @@
 using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform;
 using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
@@ -27,8 +28,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new CollectionCellItemsBuilder
                         (
-                            provider.GetRequiredService<IContextProvider>(),
-                            provider.GetRequiredService<IMapper>(),
                             provider.GetRequiredService<IReadOnlyFactory>(),
                             itemBindings,
                             modelType
@@ -44,7 +43,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             return new CheckboxReadOnlyObject
                             (
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 templateName,
                                 label
@@ -54,7 +53,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             return new SwitchReadOnlyObject
                             (
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 templateName,
                                 label
@@ -81,9 +80,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                     elementType
                                 ),
                                 provider.GetRequiredService<ICollectionCellManager>(),
-                                provider.GetRequiredService<ICollectionBuilderFactory>(),
-                                provider.GetRequiredService<IContextProvider>(),
-                                provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                provider.GetRequiredService<IReadOnlyFactory>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 setting
                             ) ?? throw new ArgumentException($"{elementType}: {{F0633351-B095-4AEE-BF7B-A9E6D74201E9}}")
@@ -106,8 +104,9 @@ namespace Microsoft.Extensions.DependencyInjection
                             (
                                 typeof(FormReadOnlyObject<>).MakeGenericType(fieldType),
                                 provider.GetRequiredService<ICollectionBuilderFactory>(),
-                                provider.GetRequiredService<IContextProvider>(),
                                 provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                provider.GetRequiredService<IReadOnlyPropertiesUpdater>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 setting
                             ) ?? throw new ArgumentException($"{fieldType}: {{C61BFCD8-C88D-4E00-AD96-18587A603F57}}")
@@ -126,7 +125,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(HiddenReadOnlyObject<>).MakeGenericType(fieldType),
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 templateName
                             ) ?? throw new ArgumentException($"{fieldType}: {{7A00C8A1-0BB5-41AA-8857-082D81B0A7C3}}")
@@ -149,7 +148,8 @@ namespace Microsoft.Extensions.DependencyInjection
                                     typeof(ObservableCollection<>).MakeGenericType(elementType),
                                     elementType
                                 ),
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IHttpService>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name, 
                                 keyFields, 
                                 title, 
@@ -171,8 +171,9 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(PickerReadOnlyObject<>).MakeGenericType(fieldType),
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 title,
                                 stringFormat,
@@ -195,7 +196,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(TextFieldReadOnlyObject<>).MakeGenericType(fieldType),
-                                provider.GetRequiredService<IContextProvider>(),
+                                provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 templateName, 
                                 title, 
@@ -211,11 +212,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         return new ReadOnlyFieldsCollectionBuilder
                         (
-                            provider.GetRequiredService<ICollectionCellManager>(),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
-                            provider.GetRequiredService<IContextProvider>(),
-                            provider.GetRequiredService<IDirectiveManagersFactory>(),
-                            provider.GetRequiredService<IMapper>(),
                             provider.GetRequiredService<IReadOnlyFactory>(),
                             fieldSettings,
                             groupBoxSettings,

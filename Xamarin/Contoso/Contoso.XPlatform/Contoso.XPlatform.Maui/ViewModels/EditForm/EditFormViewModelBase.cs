@@ -18,9 +18,11 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 {
     public abstract class EditFormViewModelBase : ViewModelBase, IDisposable
     {
-        protected EditFormViewModelBase(ScreenSettings<DataFormSettingsDescriptor> screenSettings, IContextProvider contextProvider)
+        protected EditFormViewModelBase(
+            ScreenSettings<DataFormSettingsDescriptor> screenSettings,
+            UiNotificationService uiNotificationService)
         {
-            this.UiNotificationService = contextProvider.UiNotificationService;
+            this.UiNotificationService = uiNotificationService;
             FormSettings = screenSettings.Settings;
             Buttons = new ObservableCollection<CommandButtonDescriptor>(screenSettings.CommandButtons);
         }

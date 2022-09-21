@@ -18,17 +18,19 @@ namespace Contoso.XPlatform.ViewModels.Validatables
     {
         public FormValidatableObject(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
+            IEntityUpdater entityUpdater,
+            IPropertiesUpdater propertiesUpdater,
+            UiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting,
-            IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+            IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, uiNotificationService)
         {
             this.FormSettings = setting;
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.ValidFormControlText;
-            this.entityUpdater = contextProvider.EntityUpdater;
-            this.propertiesUpdater = contextProvider.PropertiesUpdater;
+            this.entityUpdater = entityUpdater;
+            this.propertiesUpdater = propertiesUpdater;
             this.fieldsCollectionBuilder = collectionBuilderFactory.GetFieldsCollectionBuilder
             (
                 typeof(T),

@@ -14,7 +14,6 @@ namespace Contoso.XPlatform.Services
     {
         public UpdateOnlyFieldsCollectionBuilder(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IValidatableFactory validatableFactory,
             IValidatableValueHelper validatableValueHelper,
             List<FormItemSettingsDescriptor> fieldSettings,
@@ -24,7 +23,6 @@ namespace Contoso.XPlatform.Services
             EditFormLayout? formLayout = null,
             string? parentName = null) : base(
                 collectionBuilderFactory,
-                contextProvider,
                 validatableFactory,
                 validatableValueHelper,
                 fieldSettings,

@@ -3,6 +3,7 @@ using Contoso.Forms.Configuration.DataForm;
 using Contoso.Forms.Configuration.ListForm;
 using Contoso.Forms.Configuration.SearchForm;
 using Contoso.Forms.Configuration.TextForm;
+using Contoso.XPlatform;
 using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
@@ -37,8 +38,11 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(DetailFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
-                            provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IDirectiveManagersFactory>(),
+                            provider.GetRequiredService<IGetItemFilterBuilder>(),
+                            provider.GetRequiredService<IHttpService>(),
+                            provider.GetRequiredService<IReadOnlyPropertiesUpdater>(),
+                            provider.GetRequiredService<UiNotificationService>(),
                             dataFormSettings
                         );
                     }
@@ -56,9 +60,12 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(EditFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<ICollectionBuilderFactory>(),
-                            provider.GetRequiredService<IContextProvider>(),
                             provider.GetRequiredService<IDirectiveManagersFactory>(),
+                            provider.GetRequiredService<IEntityStateUpdater>(),
+                            provider.GetRequiredService<IHttpService>(),
                             provider.GetRequiredService<IMapper>(),
+                            provider.GetRequiredService<IPropertiesUpdater>(),
+                            provider.GetRequiredService<UiNotificationService>(),
                             dataFormSettings
                         );
                     }
@@ -76,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(ListPageViewModel<>).MakeGenericType(GetEntityType(listFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<ICollectionCellManager>(),
-                            provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<IHttpService>(),
                             listFormSettings
                         );
                     }
@@ -95,7 +102,9 @@ namespace Microsoft.Extensions.DependencyInjection
                             provider,
                             typeof(SearchPageViewModel<>).MakeGenericType(GetEntityType(searchFormSettings.Settings.ModelType)),
                             provider.GetRequiredService<ICollectionCellManager>(),
-                            provider.GetRequiredService<IContextProvider>(),
+                            provider.GetRequiredService<IGetItemFilterBuilder>(),
+                            provider.GetRequiredService<IHttpService>(),
+                            provider.GetRequiredService<ISearchSelectorBuilder>(),
                             searchFormSettings
                         );
                     }

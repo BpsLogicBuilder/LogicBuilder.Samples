@@ -24,15 +24,17 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
     {
         public SearchPageViewModel(
             ICollectionCellManager collectionCellManager,
-            IContextProvider contextProvider,
+            IGetItemFilterBuilder getItemFilterBuilder,
+            IHttpService httpService,
+            ISearchSelectorBuilder searchSelectorBuilder,
             ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.collectionCellManager = collectionCellManager;
-            this.getItemFilterBuilder = contextProvider.GetItemFilterBuilder;
-            this.httpService = contextProvider.HttpService;
-            this.searchSelectorBuilder = contextProvider.SearchSelectorBuilder;
+            this.getItemFilterBuilder = getItemFilterBuilder;
+            this.httpService = httpService;
+            this.searchSelectorBuilder = searchSelectorBuilder;
             defaultSkip = FormSettings.SortCollection.Skip;
             GetItems();
         }

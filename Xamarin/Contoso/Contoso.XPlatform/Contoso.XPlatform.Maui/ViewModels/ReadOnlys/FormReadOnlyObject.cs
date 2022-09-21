@@ -15,15 +15,16 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
     {
         public FormReadOnlyObject(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
+            IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
+            UiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting) 
-            : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
+            : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)
         {
             this.FormSettings = setting;
             this.Title = this.FormSettings.Title;
-            this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
+            this.propertiesUpdater = readOnlyPropertiesUpdater;
             this.Placeholder = this.FormSettings.Placeholder;
             FormLayout = collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (

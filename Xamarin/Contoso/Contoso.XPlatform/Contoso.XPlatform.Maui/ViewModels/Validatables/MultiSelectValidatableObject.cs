@@ -18,13 +18,18 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class MultiSelectValidatableObject<T, E> : ValidatableObjectBase<T>, IHasItemsSourceValidatable where T : ObservableCollection<E>
     {
-        public MultiSelectValidatableObject(IContextProvider contextProvider, string name, MultiSelectFormControlSettingsDescriptor setting, IEnumerable<IValidationRule>? validations)
-            : base(name, setting.MultiSelectTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public MultiSelectValidatableObject(
+            IHttpService httpService,
+            UiNotificationService uiNotificationService,
+            string name,
+            MultiSelectFormControlSettingsDescriptor setting,
+            IEnumerable<IValidationRule>? validations)
+            : base(name, setting.MultiSelectTemplate.TemplateName, validations, uiNotificationService)
         {
             this._multiSelectFormControlSettingsDescriptor = setting;
             this._multiSelectTemplate = setting.MultiSelectTemplate;
             this.Title = this._multiSelectTemplate.LoadingIndicatorText;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
             itemComparer = new MultiSelectItemComparer<E>(_multiSelectFormControlSettingsDescriptor.KeyFields);
             SelectedItems = new ObservableCollection<object>();
             this.canExecute = false;

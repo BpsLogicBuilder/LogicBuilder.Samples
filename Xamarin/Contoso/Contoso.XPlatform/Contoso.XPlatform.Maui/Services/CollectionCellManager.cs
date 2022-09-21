@@ -12,12 +12,14 @@ namespace Contoso.XPlatform.Services
     internal class CollectionCellManager : ICollectionCellManager
     {
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
-        private readonly IContextProvider contextProvider;
+        private readonly IReadOnlyCollectionCellPropertiesUpdater readOnlyCollectionCellPropertiesUpdater;
 
-        public CollectionCellManager(ICollectionBuilderFactory collectionBuilderFactory, IContextProvider contextProvider)
+        public CollectionCellManager(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IReadOnlyCollectionCellPropertiesUpdater readOnlyCollectionCellPropertiesUpdater)
         {
             this.collectionBuilderFactory = collectionBuilderFactory;
-            this.contextProvider = contextProvider;
+            this.readOnlyCollectionCellPropertiesUpdater = readOnlyCollectionCellPropertiesUpdater;
         }
 
         public Dictionary<string, IReadOnly> GetCollectionCellDictionaryItem<TModel>(TModel entity, List<ItemBindingDescriptor> itemBindings)
@@ -47,7 +49,7 @@ namespace Contoso.XPlatform.Services
 
             Dictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
 
-            contextProvider.ReadOnlyCollectionCellPropertiesUpdater.UpdateProperties
+            this.readOnlyCollectionCellPropertiesUpdater.UpdateProperties
             (
                 properties,
                 typeof(TModel),

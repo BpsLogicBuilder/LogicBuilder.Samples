@@ -17,12 +17,12 @@ namespace Contoso.XPlatform.ViewModels.ListPage
     {
         public ListPageViewModel(
             ICollectionCellManager collectionCellManager,
-            IContextProvider contextProvider,
+            IHttpService httpService,
             ScreenSettings<ListFormSettingsDescriptor> screenSettings) : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.collectionCellManager = collectionCellManager;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
             GetItems();
         }
 

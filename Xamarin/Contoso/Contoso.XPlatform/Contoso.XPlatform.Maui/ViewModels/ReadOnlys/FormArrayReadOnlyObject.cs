@@ -1,9 +1,8 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -19,12 +18,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
     {
         public FormArrayReadOnlyObject(
             ICollectionCellManager collectionCellManager,
-            ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
-            IDirectiveManagersFactory directiveManagersFactory,
+            IReadOnlyFactory readOnlyFactory,
+            UiNotificationService uiNotificationService,
             string name,
             FormGroupArraySettingsDescriptor setting) 
-            : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
+            : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)
         {
             this.FormSettings = setting;
             this.formsCollectionDisplayTemplateDescriptor = setting.FormsCollectionDisplayTemplate;
@@ -32,15 +30,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.Placeholder;
             this.collectionCellManager = collectionCellManager;
-            this.collectionBuilderFactory = collectionBuilderFactory;
-            this.contextProvider = contextProvider;
-            this.directiveManagersFactory = directiveManagersFactory;
+            this.readOnlyFactory = readOnlyFactory;
         }
 
         private readonly ICollectionCellManager collectionCellManager;
-        private readonly ICollectionBuilderFactory collectionBuilderFactory;
-        private readonly IContextProvider contextProvider;
-        private readonly IDirectiveManagersFactory directiveManagersFactory;
+        private readonly IReadOnlyFactory readOnlyFactory;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, E>? _entitiesDictionary;
@@ -231,21 +225,19 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                     if (this._entitiesDictionary == null)
                         throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{BCD0ED11-4BBE-4570-BA68-857B918AF4F8}}");
 
+                    var formValidatable = this.readOnlyFactory.CreateFormReadOnlyObject
+                    (
+                        typeof(E),
+                        Value.IndexOf(this._entitiesDictionary[this.SelectedItem]).ToString(),
+                        this.FormSettings
+                    );
+                    formValidatable.Value = this._entitiesDictionary[this.SelectedItem];
+
                     App.Current!.MainPage!.Navigation.PushModalAsync
                     (
                         new Views.ReadOnlyChildFormPageCS
                         (
-                            new FormReadOnlyObject<E>
-                            (
-                                this.collectionBuilderFactory,
-                                this.contextProvider,
-                                this.directiveManagersFactory,
-                                Value.IndexOf(this._entitiesDictionary[this.SelectedItem]).ToString(),
-                                this.FormSettings
-                            )
-                            {
-                                Value = this._entitiesDictionary[this.SelectedItem]
-                            }
+                            formValidatable
                         )
                     );
                 });

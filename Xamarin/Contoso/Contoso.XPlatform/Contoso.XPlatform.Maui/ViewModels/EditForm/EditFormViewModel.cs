@@ -20,11 +20,14 @@ namespace Contoso.XPlatform.ViewModels.EditForm
     {
         public EditFormViewModel(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
+            IEntityStateUpdater entityStateUpdater,
+            IHttpService httpService,
             IMapper mapper,
+            IPropertiesUpdater propertiesUpdater,
+            UiNotificationService uiNotificationService,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings)
-            : base(screenSettings, contextProvider)
+            : base(screenSettings, uiNotificationService)
         {
             FormLayout = collectionBuilderFactory.GetFieldsCollectionBuilder
             (
@@ -36,9 +39,9 @@ namespace Contoso.XPlatform.ViewModels.EditForm
                 null
             ).CreateFields();
 
-            this.entityStateUpdater = contextProvider.EntityStateUpdater;
-            this.httpService = contextProvider.HttpService;
-            this.propertiesUpdater = contextProvider.PropertiesUpdater;
+            this.entityStateUpdater = entityStateUpdater;
+            this.httpService = httpService;
+            this.propertiesUpdater = propertiesUpdater;
             this.mapper = mapper;
             this.directiveManagers = (DirectiveManagers<TModel>)directiveManagersFactory.GetDirectiveManagers
             (

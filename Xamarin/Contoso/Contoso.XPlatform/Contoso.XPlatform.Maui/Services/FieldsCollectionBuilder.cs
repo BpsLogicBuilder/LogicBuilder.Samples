@@ -19,7 +19,6 @@ namespace Contoso.XPlatform.Services
     public class FieldsCollectionBuilder : IFieldsCollectionBuilder
     {
         protected readonly ICollectionBuilderFactory collectionBuilderFactory;
-        private readonly UiNotificationService uiNotificationService;
         private readonly IValidatableFactory validatableFactory;
         private readonly IValidatableValueHelper validatableValueHelper;
 
@@ -32,7 +31,6 @@ namespace Contoso.XPlatform.Services
 
         public FieldsCollectionBuilder(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IValidatableFactory validatableFactory,
             IValidatableValueHelper validatableValueHelper,
             List<FormItemSettingsDescriptor> fieldSettings,
@@ -49,7 +47,6 @@ namespace Contoso.XPlatform.Services
             this.validatableFactory = validatableFactory;
             this.validatableValueHelper = validatableValueHelper;
             this.modelType = modelType;
-            this.uiNotificationService = contextProvider.UiNotificationService;
 
             if (formLayout == null)
             {

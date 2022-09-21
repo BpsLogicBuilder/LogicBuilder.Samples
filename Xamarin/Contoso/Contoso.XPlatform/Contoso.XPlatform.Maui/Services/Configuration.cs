@@ -20,7 +20,6 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddSingleton<IHttpService, HttpService>()
                 .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
                 .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<IContextProvider, ContextProvider>()
                 .AddSingleton<IRulesLoader, RulesLoader>()
                 .AddTransient<IScopedFlowManagerService, ScopedFlowManagerService>();
     }

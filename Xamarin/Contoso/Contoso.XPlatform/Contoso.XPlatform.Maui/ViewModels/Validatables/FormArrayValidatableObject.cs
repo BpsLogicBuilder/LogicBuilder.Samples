@@ -22,12 +22,12 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         public FormArrayValidatableObject(
             ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IValidatableFactory validatableFactory,
+            UiNotificationService uiNotificationService,
             string name,
             FormGroupArraySettingsDescriptor setting,
             IEnumerable<IValidationRule>? validations)
-            : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+            : base(name, setting.FormGroupTemplate.TemplateName, validations, uiNotificationService)
         {
             this.FormSettings = setting;
             this.formsCollectionDisplayTemplateDescriptor = setting.FormsCollectionDisplayTemplate;
@@ -36,7 +36,6 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this.Placeholder = setting.Placeholder;
             this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
-            this.contextProvider = contextProvider;
             this.validatableFactory = validatableFactory;
             Value = (T)new ObservableCollection<E>();
         }
@@ -44,7 +43,6 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private T? _initialValue;
         private readonly ICollectionCellManager collectionCellManager;
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
-        private readonly IContextProvider contextProvider;
         private readonly IValidatableFactory validatableFactory;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;

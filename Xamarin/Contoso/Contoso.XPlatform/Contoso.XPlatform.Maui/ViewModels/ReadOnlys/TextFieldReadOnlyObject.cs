@@ -1,5 +1,4 @@
-﻿using Contoso.XPlatform.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
@@ -7,7 +6,12 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class TextFieldReadOnlyObject<T> : ReadOnlyObjectBase<T>
     {
-        public TextFieldReadOnlyObject(IContextProvider contextProvider, string name, string templateName, string title, string stringFormat) : base(name, templateName, contextProvider.UiNotificationService)
+        public TextFieldReadOnlyObject(
+            UiNotificationService uiNotificationService,
+            string name,
+            string templateName,
+            string title,
+            string stringFormat) : base(name, templateName, uiNotificationService)
         {
             this.Title = title;
             this._stringFormat = stringFormat;

@@ -12,11 +12,13 @@ namespace Contoso.XPlatform.ViewModels.Validatables
     {
         public AddFormValidatableObject(
             ICollectionBuilderFactory collectionBuilderFactory,
-            IContextProvider contextProvider,
             IDirectiveManagersFactory directiveManagersFactory,
+            IEntityUpdater entityUpdater,
+            IPropertiesUpdater propertiesUpdater,
+            UiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting,
-            IEnumerable<IValidationRule> validations) : base(collectionBuilderFactory, contextProvider, directiveManagersFactory, name, setting, validations)
+            IEnumerable<IValidationRule> validations) : base(collectionBuilderFactory, directiveManagersFactory, entityUpdater, propertiesUpdater, uiNotificationService, name, setting, validations)
         {
         }
 

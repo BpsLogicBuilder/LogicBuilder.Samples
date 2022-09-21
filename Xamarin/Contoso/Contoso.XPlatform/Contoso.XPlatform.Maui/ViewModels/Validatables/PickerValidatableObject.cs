@@ -21,12 +21,19 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class PickerValidatableObject<T> : ValidatableObjectBase<T>, IHasItemsSourceValidatable
     {
-        public PickerValidatableObject(IContextProvider contextProvider, IMapper mapper, string name, T defaultValue, DropDownTemplateDescriptor dropDownTemplate, IEnumerable<IValidationRule>? validations)
-            : base(name, dropDownTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public PickerValidatableObject(
+            IHttpService httpService,
+            IMapper mapper,
+            UiNotificationService uiNotificationService,
+            string name,
+            T defaultValue,
+            DropDownTemplateDescriptor dropDownTemplate,
+            IEnumerable<IValidationRule>? validations)
+            : base(name, dropDownTemplate.TemplateName, validations, uiNotificationService)
         {
             this.defaultValue = defaultValue;
             this._dropDownTemplate = dropDownTemplate;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
             this.Title = this._dropDownTemplate.LoadingIndicatorText;
             this.mapper = mapper;
             GetItemSource();
