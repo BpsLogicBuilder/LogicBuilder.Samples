@@ -3,6 +3,7 @@ using Contoso.Bsl.Business.Responses;
 using Contoso.Forms.Configuration;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.Views.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -19,6 +20,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
     {
         public MultiSelectReadOnlyObject(
             IHttpService httpService,
+            IPopupFormFactory popupFormFactory,
             UiNotificationService uiNotificationService,
             string name,
             List<string> keyFields,
@@ -31,6 +33,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this._keyFields = keyFields;
             this._stringFormat = stringFormat;
             this.httpService = httpService;
+            this.popupFormFactory = popupFormFactory;
             this.Title = title;
             this.Placeholder = this._multiSelectTemplate.LoadingIndicatorText;
             itemComparer = new MultiSelectItemComparer<E>(this._keyFields);
@@ -39,6 +42,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         }
 
         private readonly IHttpService httpService;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly List<string> _keyFields;
         private readonly string _stringFormat;
         private readonly MultiSelectTemplateDescriptor _multiSelectTemplate;
@@ -230,7 +234,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
-                                new Views.ReadOnlyMultiSelectPageCS(this)
+                                popupFormFactory.CreateReadOnlyMultiSelectPage(this)
                             )
                         );
                     });

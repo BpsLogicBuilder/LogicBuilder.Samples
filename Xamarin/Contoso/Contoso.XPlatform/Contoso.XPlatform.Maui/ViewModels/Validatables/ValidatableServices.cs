@@ -11,6 +11,7 @@ using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
 using Contoso.XPlatform.ViewModels.Validatables.Factories;
+using Contoso.XPlatform.Views.Factories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -174,6 +175,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 ),
                                 provider.GetRequiredService<ICollectionCellManager>(),
                                 provider.GetRequiredService<ICollectionBuilderFactory>(),
+                                provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<IValidatableFactory>(),
                                 provider.GetRequiredService<UiNotificationService>(),
                                 name,
@@ -200,6 +202,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                         provider.GetRequiredService<ICollectionBuilderFactory>(),
                                         provider.GetRequiredService<IDirectiveManagersFactory>(),
                                         provider.GetRequiredService<IEntityUpdater>(),
+                                        provider.GetRequiredService<IPopupFormFactory>(),
                                         provider.GetRequiredService<IPropertiesUpdater>(),
                                         provider.GetRequiredService<UiNotificationService>(),
                                         name,
@@ -217,6 +220,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                         provider.GetRequiredService<ICollectionBuilderFactory>(),
                                         provider.GetRequiredService<IDirectiveManagersFactory>(),
                                         provider.GetRequiredService<IEntityUpdater>(),
+                                        provider.GetRequiredService<IPopupFormFactory>(),
                                         provider.GetRequiredService<IPropertiesUpdater>(),
                                         provider.GetRequiredService<UiNotificationService>(),
                                         name,
@@ -274,6 +278,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                     elementType
                                 ),
                                 provider.GetRequiredService<IHttpService>(),
+                                provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<UiNotificationService>(),
                                 name,
                                 setting,

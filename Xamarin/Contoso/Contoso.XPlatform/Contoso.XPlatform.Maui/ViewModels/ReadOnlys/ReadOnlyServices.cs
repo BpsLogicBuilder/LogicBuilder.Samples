@@ -10,6 +10,7 @@ using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
+using Contoso.XPlatform.Views.Factories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -80,6 +81,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                     elementType
                                 ),
                                 provider.GetRequiredService<ICollectionCellManager>(),
+                                provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<IReadOnlyFactory>(),
                                 provider.GetRequiredService<UiNotificationService>(),
                                 name,
@@ -105,6 +107,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(FormReadOnlyObject<>).MakeGenericType(fieldType),
                                 provider.GetRequiredService<ICollectionBuilderFactory>(),
                                 provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<IReadOnlyPropertiesUpdater>(),
                                 provider.GetRequiredService<UiNotificationService>(),
                                 name,
@@ -149,6 +152,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                     elementType
                                 ),
                                 provider.GetRequiredService<IHttpService>(),
+                                provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<UiNotificationService>(),
                                 name, 
                                 keyFields, 

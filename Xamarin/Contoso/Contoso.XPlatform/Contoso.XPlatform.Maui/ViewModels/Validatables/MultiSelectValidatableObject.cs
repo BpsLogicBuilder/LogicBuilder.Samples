@@ -5,14 +5,15 @@ using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.Views.Factories;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.ApplicationModel;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
 {
@@ -20,6 +21,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
     {
         public MultiSelectValidatableObject(
             IHttpService httpService,
+            IPopupFormFactory popupFormFactory,
             UiNotificationService uiNotificationService,
             string name,
             MultiSelectFormControlSettingsDescriptor setting,
@@ -30,6 +32,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this._multiSelectTemplate = setting.MultiSelectTemplate;
             this.Title = this._multiSelectTemplate.LoadingIndicatorText;
             this.httpService = httpService;
+            this.popupFormFactory = popupFormFactory;
             itemComparer = new MultiSelectItemComparer<E>(_multiSelectFormControlSettingsDescriptor.KeyFields);
             SelectedItems = new ObservableCollection<object>();
             this.canExecute = false;
@@ -38,6 +41,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         }
 
         private readonly IHttpService httpService;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly MultiSelectTemplateDescriptor _multiSelectTemplate;
         private readonly MultiSelectFormControlSettingsDescriptor _multiSelectFormControlSettingsDescriptor;
         private readonly MultiSelectItemComparer<E> itemComparer;
@@ -263,7 +267,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync
                             (
-                                new Views.MultiSelectPageCS(this)
+                                popupFormFactory.CreateMultiSelectPage(this)
                             )
                         );
 

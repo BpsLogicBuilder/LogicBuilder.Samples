@@ -10,6 +10,7 @@ namespace Contoso.XPlatform.Views.Factories
                 .AddTransient<IFlyoutDetailPageFactory, FlyoutDetailPageFactory>()
                 .AddTransient<IEditFormFactory, EditFormFactory>()
                 .AddTransient<IListPageFactory, ListPageFactory>()
+                .AddTransient<IPopupFormFactory, PopupFormFactory>()
                 .AddTransient<ISearchPageFactory, SearchPageFactory>()
                 .AddTransient<ITextPageFactory, TextPageFactory>();
     }

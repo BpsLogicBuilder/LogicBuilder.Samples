@@ -6,6 +6,7 @@ using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.Validatables.Factories;
+using Contoso.XPlatform.Views.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -22,6 +23,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         public FormArrayValidatableObject(
             ICollectionCellManager collectionCellManager,
             ICollectionBuilderFactory collectionBuilderFactory,
+            IPopupFormFactory popupFormFactory,
             IValidatableFactory validatableFactory,
             UiNotificationService uiNotificationService,
             string name,
@@ -36,6 +38,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this.Placeholder = setting.Placeholder;
             this.collectionCellManager = collectionCellManager;
             this.collectionBuilderFactory = collectionBuilderFactory;
+            this.popupFormFactory = popupFormFactory;
             this.validatableFactory = validatableFactory;
             Value = (T)new ObservableCollection<E>();
         }
@@ -43,6 +46,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private T? _initialValue;
         private readonly ICollectionCellManager collectionCellManager;
         private readonly ICollectionBuilderFactory collectionBuilderFactory;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly IValidatableFactory validatableFactory;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;
@@ -190,7 +194,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync
                             (
-                                new Views.ChildFormArrayPageCS(this)
+                                popupFormFactory.CreateChildFormArrayPage(this)
                             )
                         );
                     });
@@ -333,7 +337,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             (
                 () => App.Current!.MainPage!.Navigation.PushModalAsync
                 (
-                    new Views.ChildFormPageCS(formValidatable)
+                    popupFormFactory.CreateChildFormPage(formValidatable)
                 )
             );
         }
@@ -377,7 +381,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             (
                 () => App.Current!.MainPage!.Navigation.PushModalAsync
                 (
-                    new Views.ChildFormPageCS(addValidatable)
+                    popupFormFactory.CreateChildFormPage(addValidatable)
                 )
             );
         }

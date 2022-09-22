@@ -3,6 +3,7 @@ using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.Views.Factories;
 using System;
 using System.Collections.Generic;
 
@@ -14,11 +15,21 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             ICollectionBuilderFactory collectionBuilderFactory,
             IDirectiveManagersFactory directiveManagersFactory,
             IEntityUpdater entityUpdater,
+            IPopupFormFactory popupFormFactory,
             IPropertiesUpdater propertiesUpdater,
             UiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting,
-            IEnumerable<IValidationRule> validations) : base(collectionBuilderFactory, directiveManagersFactory, entityUpdater, propertiesUpdater, uiNotificationService, name, setting, validations)
+            IEnumerable<IValidationRule> validations) : base(
+                collectionBuilderFactory,
+                directiveManagersFactory,
+                entityUpdater,
+                popupFormFactory,
+                propertiesUpdater,
+                uiNotificationService,
+                name,
+                setting,
+                validations)
         {
         }
 

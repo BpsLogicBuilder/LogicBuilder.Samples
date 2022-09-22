@@ -3,6 +3,7 @@ using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
+using Contoso.XPlatform.Views.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -18,6 +19,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
     {
         public FormArrayReadOnlyObject(
             ICollectionCellManager collectionCellManager,
+            IPopupFormFactory popupFormFactory,
             IReadOnlyFactory readOnlyFactory,
             UiNotificationService uiNotificationService,
             string name,
@@ -30,10 +32,12 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.Placeholder;
             this.collectionCellManager = collectionCellManager;
+            this.popupFormFactory = popupFormFactory;
             this.readOnlyFactory = readOnlyFactory;
         }
 
         private readonly ICollectionCellManager collectionCellManager;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly IReadOnlyFactory readOnlyFactory;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;
@@ -141,7 +145,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
-                                new Views.ReadOnlyChildFormArrayPageCS(this)
+                                popupFormFactory.CreateReadOnlyChildFormArrayPage(this)
                             )
                         );
                     });
@@ -235,7 +239,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 
                     App.Current!.MainPage!.Navigation.PushModalAsync
                     (
-                        new Views.ReadOnlyChildFormPageCS
+                        popupFormFactory.CreateReadOnlyChildFormPage
                         (
                             formValidatable
                         )

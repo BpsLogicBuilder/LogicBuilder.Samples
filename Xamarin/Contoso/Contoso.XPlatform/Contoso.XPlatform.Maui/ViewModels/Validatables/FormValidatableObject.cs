@@ -4,6 +4,7 @@ using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Validators;
 using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.Views.Factories;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
 using System;
@@ -20,6 +21,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             ICollectionBuilderFactory collectionBuilderFactory,
             IDirectiveManagersFactory directiveManagersFactory,
             IEntityUpdater entityUpdater,
+            IPopupFormFactory popupFormFactory,
             IPropertiesUpdater propertiesUpdater,
             UiNotificationService uiNotificationService,
             string name,
@@ -30,6 +32,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.ValidFormControlText;
             this.entityUpdater = entityUpdater;
+            this.popupFormFactory = popupFormFactory;
             this.propertiesUpdater = propertiesUpdater;
             this.fieldsCollectionBuilder = collectionBuilderFactory.GetFieldsCollectionBuilder
             (
@@ -81,6 +84,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private readonly DirectiveManagers<T> directiveManagers;
 
         protected readonly IFieldsCollectionBuilder fieldsCollectionBuilder;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly IUpdateOnlyFieldsCollectionBuilder updateOnlyFieldsCollectionBuilder;
 
         private string _title;
@@ -198,7 +202,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null here*/
                             (
-                                new Views.ChildFormPageCS(this)
+                                popupFormFactory.CreateChildFormPage(this)
                             )
                         );
                     }

@@ -1,13 +1,14 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Services;
-using System;
-using System.Windows.Input;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.ApplicationModel;
-using System.Diagnostics.CodeAnalysis;
-using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.Directives;
 using Contoso.XPlatform.Directives.Factories;
+using Contoso.XPlatform.Services;
+using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.Views.Factories;
+using Microsoft.Maui.ApplicationModel;
+using Microsoft.Maui.Controls;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Windows.Input;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
@@ -16,6 +17,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         public FormReadOnlyObject(
             ICollectionBuilderFactory collectionBuilderFactory,
             IDirectiveManagersFactory directiveManagersFactory,
+            IPopupFormFactory popupFormFactory,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
             UiNotificationService uiNotificationService,
             string name,
@@ -24,6 +26,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         {
             this.FormSettings = setting;
             this.Title = this.FormSettings.Title;
+            this.popupFormFactory = popupFormFactory;
             this.propertiesUpdater = readOnlyPropertiesUpdater;
             this.Placeholder = this.FormSettings.Placeholder;
             FormLayout = collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
@@ -44,6 +47,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         }
 
         public IChildFormGroupSettings FormSettings { get; set; }
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly IReadOnlyPropertiesUpdater propertiesUpdater;
         private readonly ReadOnlyDirectiveManagers<T> directiveManagers;
 
@@ -112,7 +116,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                         (
                             () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
-                                new Views.ReadOnlyChildFormPageCS(this)
+                                popupFormFactory.CreateReadOnlyChildFormPage(this)
                             )
                         );
                     }
