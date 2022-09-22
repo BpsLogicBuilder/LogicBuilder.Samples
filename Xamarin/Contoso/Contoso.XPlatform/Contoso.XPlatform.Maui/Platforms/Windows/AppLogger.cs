@@ -1,9 +1,4 @@
 ﻿using Contoso.XPlatform.Flow;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Contoso.XPlatform
 {
@@ -11,6 +6,7 @@ namespace Contoso.XPlatform
     {
         public void LogMessage(string group, string message)
         {
+            System.Diagnostics.Debug.WriteLine($"{group}: {message}");
         }
     }
 }
