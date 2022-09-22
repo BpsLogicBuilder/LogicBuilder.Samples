@@ -131,6 +131,7 @@ namespace Contoso.XPlatform.Views
 
             using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
             {
+                flowManagerService.CopyPersistentFlowItems();
                 await flowManagerService.NewFlowStart
                 (
                     new Flow.Requests.NewFlowRequest { InitialModuleName = item.InitialModule }

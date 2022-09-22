@@ -115,6 +115,12 @@
                         </VisualState.Setters>
                     </VisualState>
 
+                    <VisualState Name="Disabled">
+                        <VisualState.Setters>
+                            <Setter Property="Color" Value="{DynamicResource CheckBoxDisabledColor}" />
+                        </VisualState.Setters>
+                    </VisualState>
+
                     <VisualState x:Name="IsChecked">
                         <VisualState.Setters>
                             <Setter Property="Color" Value="{DynamicResource CheckBoxCheckedColor}" />
@@ -336,7 +342,7 @@
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="Margin" Value="0,15,0,0" />
+        <Setter Property="Margin" Value="0,30,0,0" />
     </Style>
 
     <Style TargetType="Label" x:Key="DetailFormLabel" BaseResourceKey="BodyTextStyle">
@@ -350,7 +356,7 @@
         <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
         <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
         <Setter Property="FontAttributes" Value="Bold" />
-        <Setter Property="Margin" Value="0,15,0,0" />
+        <Setter Property="Margin" Value="0,30,0,0" />
     </Style>
 
     <Style TargetType="Label" x:Key="EditFormLabel" BaseResourceKey="BodyTextStyle">

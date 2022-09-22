@@ -142,6 +142,7 @@ public partial class MainPageView : FlyoutPage
 
         using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
         {
+            flowManagerService.CopyPersistentFlowItems();
             await flowManagerService.NewFlowStart
             (
                 new Flow.Requests.NewFlowRequest { InitialModuleName = item.InitialModule }

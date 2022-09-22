@@ -148,6 +148,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                 Items = null;
                 await System.Threading.Tasks.Task.Delay(400);
                 Items = ((GetListResponse)response).List.Cast<object>().ToList();
+                OnPropertyChanged(nameof(SelectedItem));
 
                 this.Title = this._dropDownTemplate.TitleText;
             }
