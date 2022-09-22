@@ -3,8 +3,12 @@ using System.Collections.Generic;
 
 namespace Contoso.XPlatform.Services
 {
-    public interface IConditionalDirectiveBuilder<TConditionBase, TModel> where TConditionBase : ConditionBase<TModel>, new()
+    public interface IConditionalDirectiveBuilder<TConditionBase, TModel> : IConditionalDirectiveBuilder where TConditionBase : ConditionBase<TModel>, new()
     {
         List<TConditionBase> GetConditions();
+    }
+
+    public interface IConditionalDirectiveBuilder
+    {
     }
 }

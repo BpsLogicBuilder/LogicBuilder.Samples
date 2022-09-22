@@ -21,14 +21,15 @@ namespace Contoso.XPlatform.Directives
                     provider =>
                     (modelType, currentProperties, conditions) =>
                     {
-                        return (IClearIfManager)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(ClearIfManager<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IMapper>(),
-                            provider.GetRequiredService<UiNotificationService>(),
-                            currentProperties,
-                            conditions
+                        return (IClearIfManager)(
+                            Activator.CreateInstance
+                            (
+                                typeof(ClearIfManager<>).MakeGenericType(modelType),
+                                provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<UiNotificationService>(),
+                                currentProperties,
+                                conditions
+                            ) ?? throw new ArgumentException($"{modelType}: {{5290B2FB-5FE0-4A1C-BE83-62FDD75B6457}}")
                         );
                     }
                 )
@@ -37,13 +38,14 @@ namespace Contoso.XPlatform.Directives
                     provider =>
                     (modelType, properties, formSettings) =>
                     {
-                        return (IDirectiveManagers)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(DirectiveManagers<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IDirectiveManagersFactory>(),
-                            properties,
-                            formSettings
+                        return (IDirectiveManagers)(
+                            Activator.CreateInstance
+                            (
+                                typeof(DirectiveManagers<>).MakeGenericType(modelType),
+                                provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                properties,
+                                formSettings
+                            ) ?? throw new ArgumentException($"{modelType}: {{47406905-5EF2-4081-AC6C-F3016F3853BB}}")
                         );
                     }
                 )
@@ -53,14 +55,15 @@ namespace Contoso.XPlatform.Directives
                     provider =>
                     (modelType, currentProperties, conditions) =>
                     {
-                        return (IHideIfManager)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(HideIfManager<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IMapper>(),
-                            provider.GetRequiredService<UiNotificationService>(),
-                            currentProperties,
-                            conditions
+                        return (IHideIfManager)(
+                            Activator.CreateInstance
+                            (
+                                typeof(HideIfManager<>).MakeGenericType(modelType),
+                                provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<UiNotificationService>(),
+                                currentProperties,
+                                conditions
+                            ) ?? throw new ArgumentException($"{modelType}: {{A0C36BDC-17D9-4860-870E-C57CD3B0E476}}")
                         );
                     }
                 )
@@ -69,13 +72,14 @@ namespace Contoso.XPlatform.Directives
                     provider =>
                     (modelType, properties, formSettings) =>
                     {
-                        return (IReadOnlyDirectiveManagers)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(ReadOnlyDirectiveManagers<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IDirectiveManagersFactory>(),
-                            properties,
-                            formSettings
+                        return (IReadOnlyDirectiveManagers)(
+                            Activator.CreateInstance
+                            (
+                                typeof(ReadOnlyDirectiveManagers<>).MakeGenericType(modelType),
+                                provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                properties,
+                                formSettings
+                            ) ?? throw new ArgumentException($"{modelType}: {{80EE6859-8C06-4263-AFA8-0BF3A51E97C6}}")
                         );
                     }
                 )
@@ -84,32 +88,35 @@ namespace Contoso.XPlatform.Directives
                     provider =>
                     (modelType, currentProperties, conditions) =>
                     {
-                        return (IReloadIfManager)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(ReloadIfManager<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IMapper>(),
-                            provider.GetRequiredService<UiNotificationService>(),
-                            currentProperties,
-                            conditions
+                        return (IReloadIfManager)(
+                            Activator.CreateInstance
+                            (
+                                typeof(ReloadIfManager<>).MakeGenericType(modelType),
+                                provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<UiNotificationService>(),
+                                currentProperties,
+                                conditions
+                            ) ?? throw new ArgumentException($"{modelType}: {{5A5873D7-EDC7-464B-953A-F8BBF068C569}}")
                         );
                     }
                 )
-                .AddTransient<Func<Type, Type, IFormGroupSettings, IEnumerable<IFormField>, object?, string?, object>>
+                .AddTransient<Func<Type, Type, IFormGroupSettings, IEnumerable<IFormField>, object?, string?, IConditionalDirectiveBuilder>>
                 (
                     provider =>
                     (modelType, directiveType, formGroupSettings, properties, parentList, parentName) =>
                     {
-                        return Activator.CreateInstance
-                        (
-                            GetBuilderGenericTypeDefinition().MakeGenericType(modelType),
-                            provider.GetRequiredService<IDirectiveManagersFactory>(),
-                            provider.GetRequiredService<IMapper>(),
-                            formGroupSettings,
-                            properties,
-                            parentList,
-                            parentName
-                        ) ?? throw new ArgumentException($"{modelType}: {{7CC0018D-3143-417B-B116-6E6FC9E7E6BC}}");
+                        return (IConditionalDirectiveBuilder)(
+                            Activator.CreateInstance
+                            (
+                                GetBuilderGenericTypeDefinition().MakeGenericType(modelType),
+                                provider.GetRequiredService<IDirectiveManagersFactory>(),
+                                provider.GetRequiredService<IMapper>(),
+                                formGroupSettings,
+                                properties,
+                                parentList,
+                                parentName
+                            ) ?? throw new ArgumentException($"{modelType}: {{7CC0018D-3143-417B-B116-6E6FC9E7E6BC}}")
+                        );
 
                         Type GetBuilderGenericTypeDefinition()
                         {
@@ -131,14 +138,15 @@ namespace Contoso.XPlatform.Directives
                     provider =>
                     (modelType, currentProperties, conditions) =>
                     {
-                        return (IValidateIfManager)ActivatorUtilities.CreateInstance
-                        (
-                            provider,
-                            typeof(ValidateIfManager<>).MakeGenericType(modelType),
-                            provider.GetRequiredService<IMapper>(),
-                            provider.GetRequiredService<UiNotificationService>(),
-                            currentProperties,
-                            conditions
+                        return (IValidateIfManager)(
+                            Activator.CreateInstance
+                            (
+                                typeof(ValidateIfManager<>).MakeGenericType(modelType),
+                                provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<UiNotificationService>(),
+                                currentProperties,
+                                conditions
+                            ) ?? throw new ArgumentException($"{modelType}: {{EC839E00-CB19-4BDF-B9A9-E68CEC9B300E}}")
                         );
                     }
                 );

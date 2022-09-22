@@ -16,7 +16,7 @@ namespace Contoso.XPlatform.Directives.Factories
         private readonly Func<Type, IEnumerable<IFormField>, object, IReloadIfManager> _getReloadIfManager;
         private readonly Func<Type, IEnumerable<IFormField>, object, IValidateIfManager> _getValidateIfManager;
 
-        private readonly Func<Type, Type, IFormGroupSettings, IEnumerable<IFormField>, object?, string?, object> _getDirectiveConditionsBuilder;
+        private readonly Func<Type, Type, IFormGroupSettings, IEnumerable<IFormField>, object?, string?, IConditionalDirectiveBuilder> _getDirectiveConditionsBuilder;
 
         private readonly Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers> _getDirectiveManagers;
         private readonly Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers> _getReadOnlyDirectiveManagers;
@@ -26,7 +26,7 @@ namespace Contoso.XPlatform.Directives.Factories
             Func<Type, IEnumerable<IFormField>, object, IHideIfManager> getHideIfManager,
             Func<Type, IEnumerable<IFormField>, object, IReloadIfManager> getReloadIfManager,
             Func<Type, IEnumerable<IFormField>, object, IValidateIfManager> getValidateIfManager,
-            Func<Type, Type, IFormGroupSettings, IEnumerable<IFormField>, object?, string?, object> getDirectiveConditionsBuilder,
+            Func<Type, Type, IFormGroupSettings, IEnumerable<IFormField>, object?, string?, IConditionalDirectiveBuilder> getDirectiveConditionsBuilder,
             Func<Type, ObservableCollection<IValidatable>, IFormGroupSettings, IDirectiveManagers> getDirectiveManagers,
             Func<Type, ObservableCollection<IReadOnly>, IFormGroupSettings, IReadOnlyDirectiveManagers> getReadOnlyDirectiveManagers)
         {

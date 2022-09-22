@@ -22,99 +22,88 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddTransient<Func<IValidatable, ChildFormArrayPageCS>>
                 (
                     provider =>
-                    validatable => ActivatorUtilities.CreateInstance<ChildFormArrayPageCS>
+                    validatable => new ChildFormArrayPageCS
                     (
-                        provider,
                         validatable
                     )
                 )
                 .AddTransient<Func<IValidatable, ChildFormPageCS>>
                 (
                     provider =>
-                    validatable => ActivatorUtilities.CreateInstance<ChildFormPageCS>
+                    validatable => new ChildFormPageCS
                     (
-                        provider,
                         validatable
                     )
                 )
                 .AddTransient<Func<DetailFormViewModelBase, DetailFormViewCS>>
                 (
                     provider =>
-                    viewModel => ActivatorUtilities.CreateInstance<DetailFormViewCS>
+                    viewModel => new DetailFormViewCS
                     (
-                        provider,
                         viewModel
                     )
                 )
                 .AddTransient<Func<EditFormViewModelBase, EditFormViewCS>>
                 (
                     provider =>
-                    viewModel => ActivatorUtilities.CreateInstance<EditFormViewCS>
+                    viewModel => new EditFormViewCS
                     (
-                        provider,
                         viewModel
                     )
                 )
                 .AddTransient<Func<ListPageViewModelBase, ListPageViewCS>>
                 (
                     provider =>
-                    viewModel => ActivatorUtilities.CreateInstance<ListPageViewCS>
+                    viewModel => new ListPageViewCS
                     (
-                        provider,
                         viewModel
                     )
                 )
                 .AddTransient<Func<IValidatable, MultiSelectPageCS>>
                 (
                     provider =>
-                    validatable => ActivatorUtilities.CreateInstance<MultiSelectPageCS>
+                    validatable => new MultiSelectPageCS
                     (
-                        provider,
                         validatable
                     )
                 )
                 .AddTransient<Func<IReadOnly, ReadOnlyChildFormArrayPageCS>>
                 (
                     provider =>
-                    readOnly => ActivatorUtilities.CreateInstance<ReadOnlyChildFormArrayPageCS>
+                    readOnly => new ReadOnlyChildFormArrayPageCS
                     (
-                        provider,
                         readOnly
                     )
                 )
                 .AddTransient<Func<IReadOnly, ReadOnlyChildFormPageCS>>
                 (
                     provider =>
-                    readOnly => ActivatorUtilities.CreateInstance<ReadOnlyChildFormPageCS>
+                    readOnly => new ReadOnlyChildFormPageCS
                     (
-                        provider,
                         readOnly
                     )
                 )
                 .AddTransient<Func<IReadOnly, ReadOnlyMultiSelectPageCS>>
                 (
                     provider =>
-                    readOnly => ActivatorUtilities.CreateInstance<ReadOnlyMultiSelectPageCS>
+                    readOnly => new ReadOnlyMultiSelectPageCS
                     (
-                        provider,
                         readOnly
                     )
                 )
                 .AddTransient<Func<SearchPageViewModelBase, SearchPageViewCS>>
                 (
                     provider =>
-                    viewModel => ActivatorUtilities.CreateInstance<SearchPageViewCS>
+                    viewModel => new SearchPageViewCS
                     (
-                        provider,
                         viewModel
                     )
                 )
                 .AddTransient<Func<TextPageViewModel, TextPageViewCS>>
                 (
                     provider =>
-                    viewModel => ActivatorUtilities.CreateInstance<TextPageViewCS>
+                    viewModel => new TextPageViewCS
                     (
-                        provider,
                         viewModel
                     )
                 )
