@@ -1,6 +1,6 @@
 ﻿using Akavache;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Directives;
-using Contoso.XPlatform.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Devices;

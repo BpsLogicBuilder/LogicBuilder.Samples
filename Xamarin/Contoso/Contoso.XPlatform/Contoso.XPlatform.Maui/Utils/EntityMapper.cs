@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.ViewModels.Validatables;
 using System;
 using System.Collections.Generic;

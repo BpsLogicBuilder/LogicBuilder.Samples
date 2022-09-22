@@ -1,7 +1,7 @@
-﻿using Contoso.XPlatform.Utils;
-using System;
+﻿using System;
 using System.Globalization;
 using Microsoft.Maui.Controls;
+using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.Converters
 {

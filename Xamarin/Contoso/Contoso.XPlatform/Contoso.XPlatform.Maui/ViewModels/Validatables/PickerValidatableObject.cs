@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
-using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.Constants;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
 {

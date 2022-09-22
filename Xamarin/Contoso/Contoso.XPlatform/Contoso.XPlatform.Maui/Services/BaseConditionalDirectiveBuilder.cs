@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Directives;
 using Contoso.XPlatform.Directives.Factories;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using System;

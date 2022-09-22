@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System;
 using System.Collections.Generic;
