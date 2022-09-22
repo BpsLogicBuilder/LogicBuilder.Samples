@@ -1,5 +1,4 @@
-﻿using Contoso.XPlatform.ViewModels;
-using Contoso.XPlatform.ViewModels.DetailForm;
+﻿using Contoso.XPlatform.ViewModels.DetailForm;
 using Contoso.XPlatform.ViewModels.EditForm;
 using Contoso.XPlatform.ViewModels.ListPage;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
