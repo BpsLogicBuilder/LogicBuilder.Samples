@@ -1,10 +1,13 @@
-﻿using Contoso.XPlatform.Utils;
+﻿using Enrollment.XPlatform.Utils;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
-namespace Contoso.XPlatform.Maui.Tests
+namespace Enrollment.XPlatform.Maui.Tests
 {
     public class DictionaryComparisonTests
     {

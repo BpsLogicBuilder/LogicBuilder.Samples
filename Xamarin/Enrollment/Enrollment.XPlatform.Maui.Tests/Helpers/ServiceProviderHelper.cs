@@ -1,13 +1,13 @@
-﻿using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Maui.Tests.Mocks;
-using Contoso.XPlatform.Services;
+﻿using Enrollment.XPlatform.Flow;
+using Enrollment.XPlatform.Maui.Tests.Mocks;
+using Enrollment.XPlatform.Services;
 using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 
-namespace Contoso.XPlatform.Maui.Tests.Helpers
+namespace Enrollment.XPlatform.Maui.Tests.Helpers
 {
     internal static class ServiceProviderHelper
     {

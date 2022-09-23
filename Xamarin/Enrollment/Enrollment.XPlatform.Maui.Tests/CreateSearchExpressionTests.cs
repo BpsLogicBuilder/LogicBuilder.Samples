@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Contoso.Common.Configuration.ExpansionDescriptors;
-using Contoso.Common.Configuration.ExpressionDescriptors;
-using Contoso.Common.Utils;
-using Contoso.Domain.Entities;
-using Contoso.Forms.Configuration.SearchForm;
-using Contoso.XPlatform.Maui.Tests.Helpers;
-using Contoso.XPlatform.Services;
+using Enrollment.Common.Configuration.ExpansionDescriptors;
+using Enrollment.Common.Configuration.ExpressionDescriptors;
+using Enrollment.Common.Utils;
+using Enrollment.Domain.Entities;
+using Enrollment.Forms.Configuration.SearchForm;
+using Enrollment.XPlatform.Maui.Tests.Helpers;
+using Enrollment.XPlatform.Services;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 
-namespace Contoso.XPlatform.Maui.Tests
+namespace Enrollment.XPlatform.Maui.Tests
 {
     public class CreateSearchExpressionTests
     {
@@ -34,17 +34,17 @@ namespace Contoso.XPlatform.Maui.Tests
             FilterLambdaOperatorDescriptor filterLambdaOperatorDescriptor = serviceProvider.GetRequiredService<ISearchSelectorBuilder>().CreateFilter
             (
                 searchFilterGroupDescriptor,
-                typeof(StudentModel),
+                typeof(PersonalModel),
                 "xxx"
             );
             FilterLambdaOperator filterLambdaOperator = (FilterLambdaOperator)serviceProvider.GetRequiredService<IMapper>().MapToOperator(filterLambdaOperatorDescriptor);
-            Expression<Func<StudentModel, bool>> filter = (Expression<Func<StudentModel, bool>>)filterLambdaOperator.Build();
+            Expression<Func<PersonalModel, bool>> filter = (Expression<Func<PersonalModel, bool>>)filterLambdaOperator.Build();
 
             //assert
             AssertFilterStringIsCorrect
             (
                 filter,
-                "f => (f.EnrollmentDateString.Contains(\"xxx\") OrElse (f.FirstName.Contains(\"xxx\") OrElse f.LastName.Contains(\"xxx\")))"
+                "f => (f.MiddleName.Contains(\"xxx\") OrElse (f.FirstName.Contains(\"xxx\") OrElse f.LastName.Contains(\"xxx\")))"
             );
         }
 
@@ -55,13 +55,13 @@ namespace Contoso.XPlatform.Maui.Tests
             SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = serviceProvider.GetRequiredService<ISearchSelectorBuilder>().CreatePagingSelector
             (
                 sortCollectionDescriptor,
-                typeof(StudentModel),
+                typeof(PersonalModel),
                 searchFilterGroupDescriptor,
                 string.Empty
             );
 
             SelectorLambdaOperator selectorLambdaOperator = (SelectorLambdaOperator)serviceProvider.GetRequiredService<IMapper>().MapToOperator(selectorLambdaOperatorDescriptor);
-            Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>> selector = (Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>>)selectorLambdaOperator.Build();
+            Expression<Func<IQueryable<PersonalModel>, IQueryable<PersonalModel>>> selector = (Expression<Func<IQueryable<PersonalModel>, IQueryable<PersonalModel>>>)selectorLambdaOperator.Build();
 
             //assert
             AssertFilterStringIsCorrect
@@ -78,23 +78,23 @@ namespace Contoso.XPlatform.Maui.Tests
             SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = serviceProvider.GetRequiredService<ISearchSelectorBuilder>().CreatePagingSelector
             (
                 sortCollectionDescriptor,
-                typeof(StudentModel),
+                typeof(PersonalModel),
                 searchFilterGroupDescriptor,
                 "xxx"
             );
 
             SelectorLambdaOperator selectorLambdaOperator = (SelectorLambdaOperator)serviceProvider.GetRequiredService<IMapper>().MapToOperator(selectorLambdaOperatorDescriptor);
-            Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>> selector = (Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>>)selectorLambdaOperator.Build();
+            Expression<Func<IQueryable<PersonalModel>, IQueryable<PersonalModel>>> selector = (Expression<Func<IQueryable<PersonalModel>, IQueryable<PersonalModel>>>)selectorLambdaOperator.Build();
 
             //assert
             AssertFilterStringIsCorrect
             (
                 selector,
-                "q => q.Where(f => (f.EnrollmentDateString.Contains(\"xxx\") OrElse (f.FirstName.Contains(\"xxx\") OrElse f.LastName.Contains(\"xxx\")))).OrderBy(s => s.FirstName).ThenBy(s => s.LastName).Skip(3).Take(2)"
+                "q => q.Where(f => (f.MiddleName.Contains(\"xxx\") OrElse (f.FirstName.Contains(\"xxx\") OrElse f.LastName.Contains(\"xxx\")))).OrderBy(s => s.FirstName).ThenBy(s => s.LastName).Skip(3).Take(2)"
             );
         }
 
-        private void AssertFilterStringIsCorrect(Expression expression, string expected)
+        private static void AssertFilterStringIsCorrect(Expression expression, string expected)
         {
             AssertStringIsCorrect(ExpressionStringBuilder.ToString(expression));
 
@@ -106,11 +106,11 @@ namespace Contoso.XPlatform.Maui.Tests
                 );
         }
 
-        SearchFilterGroupDescriptor searchFilterGroupDescriptor = new()
+        readonly SearchFilterGroupDescriptor searchFilterGroupDescriptor = new()
         {
             Filters = new List<SearchFilterDescriptorBase>
                 {
-                    new SearchFilterDescriptor { Field = "EnrollmentDateString" },
+                    new SearchFilterDescriptor { Field = "MiddleName" },
                     new SearchFilterGroupDescriptor
                     {
                         Filters = new List<SearchFilterDescriptorBase>
@@ -121,8 +121,7 @@ namespace Contoso.XPlatform.Maui.Tests
                     }
                 }
         };
-
-        SortCollectionDescriptor sortCollectionDescriptor = new()
+        readonly SortCollectionDescriptor sortCollectionDescriptor = new()
         {
             SortDescriptions = new List<SortDescriptionDescriptor>
             {
