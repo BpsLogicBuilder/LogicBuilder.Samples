@@ -122,12 +122,16 @@ namespace Contoso.XPlatform.Views
                 return;
 
             if (item.Active)
+            {
+                IsPresented = false;
                 return;
+            }
 
             DisposeCurrentPageBindingContext(Detail);
 
             using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
             {
+                flowManagerService.CopyPersistentFlowItems();
                 await flowManagerService.NewFlowStart
                 (
                     new Flow.Requests.NewFlowRequest { InitialModuleName = item.InitialModule }

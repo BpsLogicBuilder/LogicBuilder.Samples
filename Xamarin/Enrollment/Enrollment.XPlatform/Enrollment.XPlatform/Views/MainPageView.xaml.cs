@@ -122,7 +122,10 @@ namespace Enrollment.XPlatform.Views
                 return;
 
             if (item.Active)
+            {
+                IsPresented = false;
                 return;
+            }
 
             DisposeCurrentPageBindingContext(Detail);
 

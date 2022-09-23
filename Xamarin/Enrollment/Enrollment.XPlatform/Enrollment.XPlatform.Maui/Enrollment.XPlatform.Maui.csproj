@@ -1,0 +1,207 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net6.0-android;net6.0-ios;net6.0-maccatalyst;net6.0</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net6.0-windows10.0.19041.0</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net6.0-tizen</TargetFrameworks> -->
+		<OutputType Condition="$(TargetFramework) == 'net6.0-android' OR $(TargetFramework) == 'net6.0-ios' OR $(TargetFramework) == 'net6.0-maccatalyst' OR $(TargetFramework) == 'net6.0-windows10.0.19041.0'">Exe</OutputType>
+		<OutputType Condition="$(TargetFramework) == 'net6.0'">Library</OutputType>
+		<RootNamespace>Enrollment.XPlatform</RootNamespace>
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+		<Nullable>enable</Nullable>
+		<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+		<!-- Display name -->
+		<ApplicationTitle>Enrollment.XPlatform</ApplicationTitle>
+
+		<!-- App Identifier -->
+		<ApplicationId>com.companyname.enrollment.xplatform</ApplicationId>
+		<ApplicationIdGuid>4B6B009E-4336-4916-9F12-68A19555D429</ApplicationIdGuid>
+
+		<!-- Versions -->
+		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+		<ApplicationVersion>1</ApplicationVersion>
+
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.4</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">15.4</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">31.0</SupportedOSPlatformVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</SupportedOSPlatformVersion>
+		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.19041.0</TargetPlatformMinVersion>
+		<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<!-- App Icon -->
+		<MauiIcon Include="Resources\AppIcon\appicon.png" BaseSize="456,456" Color="#000000" />
+
+		<!-- Splash Screen -->
+		<MauiSplashScreen Include="Resources\Splash\splash.png" BaseSize="128,128" Color="#000000" />
+
+		<!-- Images -->
+		<MauiImage Include="Resources\Images\*" />
+		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+		<MauiImage Update="Resources\Images\hamburger.png" BaseSize="14,15" />
+		<MauiImage Update="Resources\Images\splash_logo.png" BaseSize="310,150" />
+
+		<!-- Custom Fonts -->
+		<MauiFont Include="Resources\Fonts\*" />
+
+		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Rulesets\academic.module" />
+	  <None Remove="Rulesets\academic.resources" />
+	  <None Remove="Rulesets\admin.module" />
+	  <None Remove="Rulesets\admin.resources" />
+	  <None Remove="Rulesets\admissions.module" />
+	  <None Remove="Rulesets\admissions.resources" />
+	  <None Remove="Rulesets\admissionsprogramselector.module" />
+	  <None Remove="Rulesets\admissionsprogramselector.resources" />
+	  <None Remove="Rulesets\certification.module" />
+	  <None Remove="Rulesets\certification.resources" />
+	  <None Remove="Rulesets\contactinfo.module" />
+	  <None Remove="Rulesets\contactinfo.resources" />
+	  <None Remove="Rulesets\home.module" />
+	  <None Remove="Rulesets\home.resources" />
+	  <None Remove="Rulesets\init_academic.module" />
+	  <None Remove="Rulesets\init_academic.resources" />
+	  <None Remove="Rulesets\init_admissions.module" />
+	  <None Remove="Rulesets\init_admissions.resources" />
+	  <None Remove="Rulesets\init_certification.module" />
+	  <None Remove="Rulesets\init_certification.resources" />
+	  <None Remove="Rulesets\init_contactinfo.module" />
+	  <None Remove="Rulesets\init_contactinfo.resources" />
+	  <None Remove="Rulesets\init_moreinfo.module" />
+	  <None Remove="Rulesets\init_moreinfo.resources" />
+	  <None Remove="Rulesets\init_personal.module" />
+	  <None Remove="Rulesets\init_personal.resources" />
+	  <None Remove="Rulesets\init_residency.module" />
+	  <None Remove="Rulesets\init_residency.resources" />
+	  <None Remove="Rulesets\init_summary.module" />
+	  <None Remove="Rulesets\init_summary.resources" />
+	  <None Remove="Rulesets\institutionnameselector.module" />
+	  <None Remove="Rulesets\institutionnameselector.resources" />
+	  <None Remove="Rulesets\moreinfo.module" />
+	  <None Remove="Rulesets\moreinfo.resources" />
+	  <None Remove="Rulesets\nav_academic.module" />
+	  <None Remove="Rulesets\nav_academic.resources" />
+	  <None Remove="Rulesets\nav_admin.module" />
+	  <None Remove="Rulesets\nav_admin.resources" />
+	  <None Remove="Rulesets\nav_admissions.module" />
+	  <None Remove="Rulesets\nav_admissions.resources" />
+	  <None Remove="Rulesets\nav_certification.module" />
+	  <None Remove="Rulesets\nav_certification.resources" />
+	  <None Remove="Rulesets\nav_contactinfo.module" />
+	  <None Remove="Rulesets\nav_contactinfo.resources" />
+	  <None Remove="Rulesets\nav_home.module" />
+	  <None Remove="Rulesets\nav_home.resources" />
+	  <None Remove="Rulesets\nav_moreinfo.module" />
+	  <None Remove="Rulesets\nav_moreinfo.resources" />
+	  <None Remove="Rulesets\nav_personal.module" />
+	  <None Remove="Rulesets\nav_personal.resources" />
+	  <None Remove="Rulesets\nav_residency.module" />
+	  <None Remove="Rulesets\nav_residency.resources" />
+	  <None Remove="Rulesets\nav_summary.module" />
+	  <None Remove="Rulesets\nav_summary.resources" />
+	  <None Remove="Rulesets\personal.module" />
+	  <None Remove="Rulesets\personal.resources" />
+	  <None Remove="Rulesets\personalcountyselector.module" />
+	  <None Remove="Rulesets\personalcountyselector.resources" />
+	  <None Remove="Rulesets\residency.module" />
+	  <None Remove="Rulesets\residency.resources" />
+	  <None Remove="Rulesets\setitemfilter.module" />
+	  <None Remove="Rulesets\setitemfilter.resources" />
+	  <None Remove="Rulesets\summary.module" />
+	  <None Remove="Rulesets\summary.resources" />
+	  <None Remove="Rulesets\VariablesMetadata.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Rulesets\academic.module" />
+	  <EmbeddedResource Include="Rulesets\academic.resources" />
+	  <EmbeddedResource Include="Rulesets\admin.module" />
+	  <EmbeddedResource Include="Rulesets\admin.resources" />
+	  <EmbeddedResource Include="Rulesets\admissions.module" />
+	  <EmbeddedResource Include="Rulesets\admissions.resources" />
+	  <EmbeddedResource Include="Rulesets\admissionsprogramselector.module" />
+	  <EmbeddedResource Include="Rulesets\admissionsprogramselector.resources" />
+	  <EmbeddedResource Include="Rulesets\certification.module" />
+	  <EmbeddedResource Include="Rulesets\certification.resources" />
+	  <EmbeddedResource Include="Rulesets\contactinfo.module" />
+	  <EmbeddedResource Include="Rulesets\contactinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\home.module" />
+	  <EmbeddedResource Include="Rulesets\home.resources" />
+	  <EmbeddedResource Include="Rulesets\init_academic.module" />
+	  <EmbeddedResource Include="Rulesets\init_academic.resources" />
+	  <EmbeddedResource Include="Rulesets\init_admissions.module" />
+	  <EmbeddedResource Include="Rulesets\init_admissions.resources" />
+	  <EmbeddedResource Include="Rulesets\init_certification.module" />
+	  <EmbeddedResource Include="Rulesets\init_certification.resources" />
+	  <EmbeddedResource Include="Rulesets\init_contactinfo.module" />
+	  <EmbeddedResource Include="Rulesets\init_contactinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\init_moreinfo.module" />
+	  <EmbeddedResource Include="Rulesets\init_moreinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\init_personal.module" />
+	  <EmbeddedResource Include="Rulesets\init_personal.resources" />
+	  <EmbeddedResource Include="Rulesets\init_residency.module" />
+	  <EmbeddedResource Include="Rulesets\init_residency.resources" />
+	  <EmbeddedResource Include="Rulesets\init_summary.module" />
+	  <EmbeddedResource Include="Rulesets\init_summary.resources" />
+	  <EmbeddedResource Include="Rulesets\institutionnameselector.module" />
+	  <EmbeddedResource Include="Rulesets\institutionnameselector.resources" />
+	  <EmbeddedResource Include="Rulesets\moreinfo.module" />
+	  <EmbeddedResource Include="Rulesets\moreinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_academic.module" />
+	  <EmbeddedResource Include="Rulesets\nav_academic.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_admin.module" />
+	  <EmbeddedResource Include="Rulesets\nav_admin.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_admissions.module" />
+	  <EmbeddedResource Include="Rulesets\nav_admissions.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_certification.module" />
+	  <EmbeddedResource Include="Rulesets\nav_certification.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_contactinfo.module" />
+	  <EmbeddedResource Include="Rulesets\nav_contactinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_home.module" />
+	  <EmbeddedResource Include="Rulesets\nav_home.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_moreinfo.module" />
+	  <EmbeddedResource Include="Rulesets\nav_moreinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_personal.module" />
+	  <EmbeddedResource Include="Rulesets\nav_personal.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_residency.module" />
+	  <EmbeddedResource Include="Rulesets\nav_residency.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_summary.module" />
+	  <EmbeddedResource Include="Rulesets\nav_summary.resources" />
+	  <EmbeddedResource Include="Rulesets\personal.module" />
+	  <EmbeddedResource Include="Rulesets\personal.resources" />
+	  <EmbeddedResource Include="Rulesets\personalcountyselector.module" />
+	  <EmbeddedResource Include="Rulesets\personalcountyselector.resources" />
+	  <EmbeddedResource Include="Rulesets\residency.module" />
+	  <EmbeddedResource Include="Rulesets\residency.resources" />
+	  <EmbeddedResource Include="Rulesets\setitemfilter.module" />
+	  <EmbeddedResource Include="Rulesets\setitemfilter.resources" />
+	  <EmbeddedResource Include="Rulesets\summary.module" />
+	  <EmbeddedResource Include="Rulesets\summary.resources" />
+	  <EmbeddedResource Include="Rulesets\VariablesMetadata.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="akavache" Version="9.0.1" />
+		<PackageReference Include="AutoMapper" Version="11.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+		<PackageReference Include="Polly" Version="7.2.3" />
+		<PackageReference Include="System.Reactive" Version="5.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Enrollment.AutoMapperProfiles\Enrollment.AutoMapperProfiles.csproj" />
+		<ProjectReference Include="..\..\Enrollment.Bsl.Business\Enrollment.Bsl.Business.csproj" />
+		<ProjectReference Include="..\..\Enrollment.XPlatform.AutoMapperProfiles\Enrollment.XPlatform.AutoMapperProfiles.csproj" />
+		<ProjectReference Include="..\..\Enrollment.XPlatform.Flow\Enrollment.XPlatform.Flow.csproj" />
+	</ItemGroup>
+
+</Project>

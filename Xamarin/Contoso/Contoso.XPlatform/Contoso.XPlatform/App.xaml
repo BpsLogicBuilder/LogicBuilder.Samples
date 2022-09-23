@@ -58,24 +58,24 @@
                 <Setter Property="LineBreakMode" Value="NoWrap" />
             </Style>
 
-            <Style TargetType="Label" x:Key="DetailFormDeleteQuestionStyle" BaseResourceKey="SubtitleStyle">
-                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
-                <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
-                <Setter Property="Margin" Value="0,5,0,0" />
-            </Style>
-
             <Style TargetType="Label" x:Key="EditFormGroupHeaderStyle" BaseResourceKey="SubtitleStyle">
                 <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
                 <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="Margin" Value="0,15,0,0" />
+                <Setter Property="Margin" Value="0,30,0,0" />
             </Style>
 
             <Style TargetType="Label" x:Key="DetailFormGroupHeaderStyle" BaseResourceKey="SubtitleStyle">
                 <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
                 <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
                 <Setter Property="FontAttributes" Value="Bold" />
-                <Setter Property="Margin" Value="0,15,0,0" />
+                <Setter Property="Margin" Value="0,30,0,0" />
+            </Style>
+
+            <Style TargetType="Label" x:Key="DetailFormDeleteQuestionStyle" BaseResourceKey="SubtitleStyle">
+                <Setter Property="TextColor" Value="{DynamicResource PrimaryTextColor}" />
+                <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
+                <Setter Property="Margin" Value="0,5,0,0" />
             </Style>
 
             <Style TargetType="Label" x:Key="TextFormGroupHeaderStyle" BaseResourceKey="SubtitleStyle">
@@ -128,6 +128,12 @@
                             <VisualState x:Name="Normal">
                                 <VisualState.Setters>
                                     <Setter Property="Color" Value="{DynamicResource CheckBoxColor}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState Name="Disabled">
+                                <VisualState.Setters>
+                                    <Setter Property="Color" Value="{DynamicResource CheckBoxDisabledColor}" />
                                 </VisualState.Setters>
                             </VisualState>
 

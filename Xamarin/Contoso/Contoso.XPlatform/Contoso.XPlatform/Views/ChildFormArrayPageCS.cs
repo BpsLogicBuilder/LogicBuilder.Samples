@@ -112,7 +112,7 @@ namespace Contoso.XPlatform.Views
             this.BindingContext = this.formArrayValidatable;
         }
 
-        private IValidatable formArrayValidatable;
-        private FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
+        private readonly IValidatable formArrayValidatable;
+        private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
     }
 }

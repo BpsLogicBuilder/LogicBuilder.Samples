@@ -2029,4 +2029,9 @@ namespace Contoso.XPlatform.Utils
         public const string InlineFormGroupTemplate = "InlineFormGroupTemplate";
         public const string PopupFormGroupTemplate = "PopupFormGroupTemplate";
     }
+
+    public struct FlowVariableNames
+    {
+        public const string Get_Selector_Success = "Get_Selector_Success";
+    }
 }
