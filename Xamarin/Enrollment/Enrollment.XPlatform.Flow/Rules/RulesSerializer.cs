@@ -20,6 +20,7 @@ namespace Enrollment.XPlatform.Flow.Rules
             typeof(Parameters.Expansions.SortCollectionParameters).Assembly,
             typeof(Common.Configuration.ExpansionDescriptors.SortCollectionDescriptor).Assembly,
             typeof(Common.Utils.MappingOperations).Assembly,
+            typeof(Utils.TypeHelpers).Assembly,
             typeof(LogicBuilder.Forms.Parameters.ConnectorParameters).Assembly,
             typeof(Data.BaseDataClass).Assembly,
             typeof(Domain.BaseModelClass).Assembly,

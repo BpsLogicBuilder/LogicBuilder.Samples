@@ -190,6 +190,26 @@
     <Style TargetType="Entry" BasedOn="{StaticResource BaseEntryStyle}">
     </Style>
 
+    <Style TargetType="Grid" x:Key="DetailFormGridStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
+    <Style TargetType="Grid" x:Key="EditFormGridStyle">
+        <Setter Property="Padding">
+            <OnPlatform x:TypeArguments="Thickness">
+                <On Platform="Android, Tizen">30</On>
+                <On Platform="iOS, MacCatalyst">30</On>
+                <On Platform="WinUI">30</On>
+            </OnPlatform>
+        </Setter>
+    </Style>
+
     <Style TargetType="Grid" x:Key="ListItemStyle">
         <Setter Property="Margin" Value="5" />
         <Setter Property="VisualStateManager.VisualStateGroups">
@@ -544,26 +564,6 @@
         <Setter Property="Padding" Value="10,0" />
         <Setter Property="HorizontalOptions" Value="Center"/>
         <Setter Property="VerticalOptions" Value="Center"/>
-    </Style>
-
-    <Style TargetType="VerticalStackLayout" x:Key="DetailFormStackLayoutStyle">
-        <Setter Property="Padding">
-            <OnPlatform x:TypeArguments="Thickness">
-                <On Platform="Android, Tizen">30</On>
-                <On Platform="iOS, MacCatalyst">30</On>
-                <On Platform="WinUI">30</On>
-            </OnPlatform>
-        </Setter>
-    </Style>
-
-    <Style TargetType="VerticalStackLayout" x:Key="EditFormStackLayoutStyle">
-        <Setter Property="Padding">
-            <OnPlatform x:TypeArguments="Thickness">
-                <On Platform="Android, Tizen">30</On>
-                <On Platform="iOS, MacCatalyst">30</On>
-                <On Platform="WinUI">30</On>
-            </OnPlatform>
-        </Setter>
     </Style>
 
     <Style TargetType="VerticalStackLayout" x:Key="FormArrayPopupViewStyle">

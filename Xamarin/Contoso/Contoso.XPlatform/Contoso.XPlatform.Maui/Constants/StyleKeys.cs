@@ -11,14 +11,14 @@
 
         public const string DetailFormDeleteQuestionStyle = nameof(DetailFormDeleteQuestionStyle);
         public const string DetailFormEntryStyle = nameof(DetailFormEntryStyle);
+        public const string DetailFormGridStyle = nameof(DetailFormGridStyle);
         public const string DetailFormGroupHeaderStyle = nameof(DetailFormGroupHeaderStyle);
         public const string DetailFormLabel = nameof(DetailFormLabel);
-        public const string DetailFormStackLayoutStyle = nameof(DetailFormStackLayoutStyle);
         public const string DetailSwitchStyle = nameof(DetailSwitchStyle);
 
+        public const string EditFormGridStyle = nameof(EditFormGridStyle);
         public const string EditFormGroupHeaderStyle = nameof(EditFormGroupHeaderStyle);
         public const string EditFormLabel = nameof(EditFormLabel);
-        public const string EditFormStackLayoutStyle = nameof(EditFormStackLayoutStyle);
 
         public const string FormArrayPopupCollectionViewStyle = nameof(FormArrayPopupCollectionViewStyle);
         public const string FormArrayPopupViewStyle = nameof(FormArrayPopupViewStyle);

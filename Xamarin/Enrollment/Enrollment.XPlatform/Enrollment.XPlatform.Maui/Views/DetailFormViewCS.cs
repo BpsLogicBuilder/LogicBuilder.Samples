@@ -5,6 +5,7 @@ using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.ViewModels;
 using Enrollment.XPlatform.ViewModels.DetailForm;
 using Enrollment.XPlatform.ViewModels.ReadOnlys;
+using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Enrollment.XPlatform.Views
 
         private readonly DetailFormViewModelBase detailFormEntityViewModel;
         private Grid transitionGrid;
-        private VerticalStackLayout page;
+        private Grid page;
 
         protected async override void OnAppearing()
         {
@@ -60,9 +61,15 @@ namespace Enrollment.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new VerticalStackLayout
+                        page = new Grid
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormStackLayoutStyle),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormGridStyle),
+                            RowDefinitions =
+                            {
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                            },
                             Children =
                             {
                                 new Label
@@ -77,7 +84,8 @@ namespace Enrollment.XPlatform.Views
                                         detailFormEntityViewModel.FormSettings.HeaderBindings,
                                         $"{nameof(DetailFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
-                                ),
+                                )
+                                .SetGridRow(0),
                                 new Label
                                 {
                                     IsVisible = detailFormEntityViewModel.FormSettings.FormType == FormType.Delete,
@@ -91,7 +99,8 @@ namespace Enrollment.XPlatform.Views
                                         detailFormEntityViewModel.FormSettings.SubtitleBindings,
                                         $"{nameof(DetailFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
-                                ),
+                                )
+                                .SetGridRow(1),
                                 new ScrollView
                                 {
                                     Content = detailFormEntityViewModel.FormLayout.ControlGroupBoxList.Aggregate
@@ -130,6 +139,7 @@ namespace Enrollment.XPlatform.Views
                                         }
                                     )
                                 }
+                                .SetGridRow(2)
                             }
                         }
                     ),

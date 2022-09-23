@@ -23,7 +23,7 @@ namespace Enrollment.XPlatform
             //return new Microsoft.Maui.Controls.Window(App.ServiceProvider.GetRequiredService<ExtendedSplashView>()); 
         }
 
-        public const string BASE_URL = "https://contosoapibps.azurewebsites.net/";
+        public const string BASE_URL = "https://enrollmentapibps.azurewebsites.net/";
 
 
         #region Properties

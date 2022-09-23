@@ -5,6 +5,7 @@ using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.EditForm;
 using Contoso.XPlatform.ViewModels.Validatables;
+using Microsoft.Maui;
 using Microsoft.Maui.Controls;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -23,7 +24,7 @@ namespace Contoso.XPlatform.Views
 
         private readonly EditFormViewModelBase editFormEntityViewModel;
         private Grid transitionGrid;
-        private VerticalStackLayout page;
+        private Grid page;
 
         protected async override void OnAppearing()
         {
@@ -60,9 +61,14 @@ namespace Contoso.XPlatform.Views
                 Children =
                 {
                     (
-                        page = new VerticalStackLayout
+                        page = new Grid
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormStackLayoutStyle),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormGridStyle),
+                            RowDefinitions =
+                            {
+                                new RowDefinition { Height = new GridLength(0, GridUnitType.Auto) },
+                                new RowDefinition { Height = new GridLength(1, GridUnitType.Star) }
+                            },
                             Children =
                             {
                                 new Label
@@ -77,7 +83,8 @@ namespace Contoso.XPlatform.Views
                                         editFormEntityViewModel.FormSettings.HeaderBindings,
                                         $"{nameof(EditFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
-                                ),
+                                )
+                                .SetGridRow(0),
                                 new ScrollView
                                 {
                                     Content = editFormEntityViewModel.FormLayout.ControlGroupBoxList.Aggregate
@@ -116,6 +123,7 @@ namespace Contoso.XPlatform.Views
                                         }
                                     )
                                 }
+                                .SetGridRow(1)
                             }
                         }
                     ),

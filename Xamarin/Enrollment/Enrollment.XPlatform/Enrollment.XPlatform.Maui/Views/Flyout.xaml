@@ -6,7 +6,7 @@
              BackgroundColor="{DynamicResource PageBackgroundColor}"
              Padding="0,60,0,0"
              IconImageSource="hamburger.png"
-             Title="Contoso">
+             Title="Enrollment">
     <ContentPage.Resources>
         <converters:FontAwesomeConverter x:Key="FontAwesomeConverter" />
         <converters:InverseBoolConverter x:Key="InverseBoolConverter" />
