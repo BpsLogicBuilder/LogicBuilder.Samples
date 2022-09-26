@@ -4,7 +4,6 @@
              xmlns:themes="clr-namespace:Contoso.XPlatform.Themes"
              xmlns:config="clr-namespace:Contoso.Forms.Configuration;assembly=Contoso.Forms.Configuration"
              xmlns:utils="clr-namespace:Contoso.XPlatform.Constants"
-             xmlns:vm="clr-namespace:Contoso.XPlatform.ViewModels"
              x:Class="Contoso.XPlatform.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -31,6 +30,21 @@
                 <On Platform="UWP" Value="/Assets/FontAwesome5Regular400.otf#Font Awesome 5 Free" />
             </OnPlatform>
 
+            <Style TargetType="AbsoluteLayout" x:Key="PopupDialogAbsoluteLayoutStyle">
+                <Setter Property="HorizontalOptions" Value="Fill" />
+                <Setter Property="VerticalOptions" Value="Fill" />
+            </Style>
+
+            <Style TargetType="ContentView" x:Key="PopupDialogContentViewStyle">
+                <Setter Property="BackgroundColor" Value="{DynamicResource PopupViewBackgroundColor}" />
+                <Setter Property="AbsoluteLayout.LayoutBounds" Value="0.00, 0.00, 1, 1" />
+                <Setter Property="AbsoluteLayout.LayoutFlags" Value="All" />
+            </Style>
+
+            <Style TargetType="Grid" x:Key="TransitionGridStyle">
+                <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}" />
+            </Style>
+
             <Style TargetType="NavigationPage" ApplyToDerivedTypes="True">
                 <Setter Property="BarBackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
                 <Setter Property="BarTextColor" Value="{DynamicResource PrimaryTextColor}"/>
@@ -39,6 +53,66 @@
             <Style TargetType="Page" ApplyToDerivedTypes="True">
                 <Setter Property="Padding" Value="0"/>
                 <Setter Property="BackgroundColor" Value="{DynamicResource PageBackgroundColor}"/>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="DetailFormStackLayoutStyle">
+                <Setter Property="Padding">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">30</On>
+                        <On Platform="iOS">30</On>
+                    </OnPlatform>
+                </Setter>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="EditFormStackLayoutStyle">
+                <Setter Property="Padding">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">30</On>
+                        <On Platform="iOS">30</On>
+                    </OnPlatform>
+                </Setter>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="ListPageViewLayoutStyle">
+                <Setter Property="Padding">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">30</On>
+                        <On Platform="iOS">30</On>
+                    </OnPlatform>
+                </Setter>
+            </Style>
+
+            <Style TargetType="RefreshView" x:Key="SearchFormRefreshViewStyle">
+                <Setter Property="Margin">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">0, 10, 0, 0</On>
+                        <On Platform="iOS">0</On>
+                    </OnPlatform>
+                </Setter>
+                <Setter Property="Padding">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">0</On>
+                        <On Platform="iOS">0</On>
+                    </OnPlatform>
+                </Setter>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="SearchPageViewLayoutStyle">
+                <Setter Property="Padding">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">30</On>
+                        <On Platform="iOS">30</On>
+                    </OnPlatform>
+                </Setter>
+            </Style>
+
+            <Style TargetType="StackLayout" x:Key="TextPageStackLayoutStyle">
+                <Setter Property="Padding">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">30</On>
+                        <On Platform="iOS">30</On>
+                    </OnPlatform>
+                </Setter>
             </Style>
 
             <Style TargetType="Frame" x:Key="ResultListFrameStyle">

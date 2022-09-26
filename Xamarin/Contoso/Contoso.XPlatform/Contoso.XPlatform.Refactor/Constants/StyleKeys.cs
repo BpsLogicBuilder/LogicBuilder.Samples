@@ -7,21 +7,21 @@
 
         public const string CheckBoxLabelStyle = nameof(CheckBoxLabelStyle);
         public const string ChildFormPopupScrollViewStyle = nameof(ChildFormPopupScrollViewStyle);
-        public const string ChildFormPopupViewStyle = nameof(ChildFormPopupViewStyle);/*Change to StackLayout*/
+        public const string ChildFormPopupViewStyle = nameof(ChildFormPopupViewStyle);
 
         public const string DetailFormDeleteQuestionStyle = nameof(DetailFormDeleteQuestionStyle);
         public const string DetailFormEntryStyle = nameof(DetailFormEntryStyle);
-        public const string DetailFormGridStyle = nameof(DetailFormGridStyle);/*Change to StackLayout*/
         public const string DetailFormGroupHeaderStyle = nameof(DetailFormGroupHeaderStyle);
         public const string DetailFormLabel = nameof(DetailFormLabel);
+        public const string DetailFormStackLayoutStyle = nameof(DetailFormStackLayoutStyle);
         public const string DetailSwitchStyle = nameof(DetailSwitchStyle);
 
-        public const string EditFormGridStyle = nameof(EditFormGridStyle);/*Add and Change to StackLayout*/
         public const string EditFormGroupHeaderStyle = nameof(EditFormGroupHeaderStyle);
+        public const string EditFormStackLayoutStyle = nameof(EditFormStackLayoutStyle);
         public const string EditFormLabel = nameof(EditFormLabel);
 
         public const string FormArrayPopupCollectionViewStyle = nameof(FormArrayPopupCollectionViewStyle);
-        public const string FormArrayPopupViewStyle = nameof(FormArrayPopupViewStyle); /*Change to StackLayout*/
+        public const string FormArrayPopupViewStyle = nameof(FormArrayPopupViewStyle);
 
         public const string HeaderStyle = nameof(HeaderStyle);
         public const string HeaderTextDetailListItemStyle = nameof(HeaderTextDetailListItemStyle);
@@ -31,11 +31,11 @@
         public const string ListFormCollectionViewStyle = nameof(ListFormCollectionViewStyle);
         public const string ListItemStyle = nameof(ListItemStyle);
         public const string ListItemTextStyle = nameof(ListItemTextStyle);
-        public const string ListPageViewLayoutStyle = nameof(ListPageViewLayoutStyle);/*Add and Change to StackLayout*/
+        public const string ListPageViewLayoutStyle = nameof(ListPageViewLayoutStyle);
 
         public const string MultiSelectItemStyle = nameof(MultiSelectItemStyle);
         public const string MultiSelectPopupCollectionViewStyle = nameof(MultiSelectPopupCollectionViewStyle);
-        public const string MultiSelectPopupViewStyle = nameof(MultiSelectPopupViewStyle); /*Change to StackLayout*/
+        public const string MultiSelectPopupViewStyle = nameof(MultiSelectPopupViewStyle);
         public const string MultiSelectSingleFieldLabelStyle = nameof(MultiSelectSingleFieldLabelStyle);
         public const string MultiSelectSingleFieldLayoutStyle = nameof(MultiSelectSingleFieldLayoutStyle);
 
@@ -44,8 +44,8 @@
         public const string PopupCancelButtonStyle = nameof(PopupCancelButtonStyle);
         public const string PopupDeleteButtonStyle = nameof(PopupDeleteButtonStyle);
         public const string PopupDetailButtonStyle = nameof(PopupDetailButtonStyle);
-        public const string PopupDialogAbsoluteLayoutStyle = nameof(PopupDialogAbsoluteLayoutStyle);/*Need to add*/
-        public const string PopupDialogContentViewStyle = nameof(PopupDialogContentViewStyle); /*Need to add*/
+        public const string PopupDialogAbsoluteLayoutStyle = nameof(PopupDialogAbsoluteLayoutStyle);
+        public const string PopupDialogContentViewStyle = nameof(PopupDialogContentViewStyle);
         public const string PopupEditButtonStyle = nameof(PopupEditButtonStyle);
         public const string PopupFooterSeparatorStyle = nameof(PopupFooterSeparatorStyle);
         public const string PopupFooterStyle = nameof(PopupFooterStyle);
@@ -54,8 +54,8 @@
         public const string PullButtonStyle = nameof(PullButtonStyle);
 
         public const string SearchFormCollectionViewStyle = nameof(SearchFormCollectionViewStyle);
-        public const string SearchFormRefreshViewStyle = nameof(SearchFormRefreshViewStyle);/*Need to add*/
-        public const string SearchPageViewLayoutStyle = nameof(SearchPageViewLayoutStyle);/*Add and Change to StackLayout*/
+        public const string SearchFormRefreshViewStyle = nameof(SearchFormRefreshViewStyle);
+        public const string SearchPageViewLayoutStyle = nameof(SearchPageViewLayoutStyle);
         public const string SubtitleTextStyle = nameof(SubtitleTextStyle);
         public const string SwitchCollectionCellLabelStyle = nameof(SwitchCollectionCellLabelStyle);
         public const string SwitchLabelStyle = nameof(SwitchLabelStyle);
@@ -67,9 +67,9 @@
         public const string TextFormHyperLinkSpanStyle = nameof(TextFormHyperLinkSpanStyle);
         public const string TextFormItemLabelStyle = nameof(TextFormItemLabelStyle);
         public const string TextFormItemSpanStyle = nameof(TextFormItemSpanStyle);
-        public const string TextPageStackLayoutStyle = nameof(TextPageStackLayoutStyle);/*Need to add*/
+        public const string TextPageStackLayoutStyle = nameof(TextPageStackLayoutStyle);
         public const string TitleTextStyle = nameof(TitleTextStyle);
-        public const string TransitionGridStyle = nameof(TransitionGridStyle);/*Need to add*/
+        public const string TransitionGridStyle = nameof(TransitionGridStyle);
 
         public const string ValidationMessageLabelStyle = nameof(ValidationMessageLabelStyle);
     }

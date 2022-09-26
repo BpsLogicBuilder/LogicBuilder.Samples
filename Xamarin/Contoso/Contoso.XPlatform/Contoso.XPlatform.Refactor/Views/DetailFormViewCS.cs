@@ -66,7 +66,7 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new StackLayout
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormGridStyle),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormStackLayoutStyle),
                             Children =
                             {
                                 new Label
