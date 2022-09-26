@@ -4,9 +4,9 @@ using Enrollment.XPlatform.ViewModels;
 
 namespace Enrollment.XPlatform.MappingProfiles
 {
-    public class MeuItemProfile : Profile
+    public class MenuItemProfile : Profile
     {
-        public MeuItemProfile()
+        public MenuItemProfile()
         {
             CreateMap<NavigationMenuItemDescriptor, FlyoutMenuItem>();
         }
