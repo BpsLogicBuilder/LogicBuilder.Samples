@@ -1,12 +1,7 @@
 ﻿using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Configuration.Bindings;
 using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.XPlatform.Flow.Settings.Screen;
-using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.ViewModels;
-using Enrollment.XPlatform.ViewModels.ReadOnlys;
-using Enrollment.XPlatform.Views;
-using Microsoft.Extensions.DependencyInjection;
+using Enrollment.XPlatform.Constants;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -50,9 +45,21 @@ namespace Enrollment.XPlatform.Utils
             return bindable;
         }
 
+        public static T SetGridColumnSpan<T>(this T bindable, int columnSpan) where T : BindableObject
+        {
+            Grid.SetColumnSpan(bindable, columnSpan);
+            return bindable;
+        }
+
         public static T SetGridRow<T>(this T bindable, int row) where T : BindableObject
         {
             Grid.SetRow(bindable, row);
+            return bindable;
+        }
+
+        public static T SetGridRowSpan<T>(this T bindable, int rowSpan) where T : BindableObject
+        {
+            Grid.SetRowSpan(bindable, rowSpan);
             return bindable;
         }
 
@@ -62,7 +69,7 @@ namespace Enrollment.XPlatform.Utils
             return bindable;
         }
 
-        public static T SetAbsoluteLayoutBounds<T>(this T bindable, Rectangle rectangle) where T : BindableObject
+        public static T SetAbsoluteLayoutBounds<T>(this T bindable, Rect rectangle) where T : BindableObject
         {
             AbsoluteLayout.SetLayoutBounds(bindable, rectangle);
             return bindable;
@@ -76,121 +83,89 @@ namespace Enrollment.XPlatform.Utils
 
         public static Style GetStaticStyleResource(string styleName)
         {
+            if (Application.Current == null)
+                throw new ArgumentException($"{nameof(Application.Current)}: {{E118848A-872E-48DA-A6D4-A1E5A0D57070}}");
             if (Application.Current.Resources.TryGetValue(styleName, out object resource)
                 && resource is Style style)
                 return style;
 
-            throw new ArgumentException($"{nameof(styleName)}: DF65BD5C-E8A5-409C-A736-F6DF1B29D5E7");
+            throw new ArgumentException($"{styleName}: DF65BD5C-E8A5-409C-A736-F6DF1B29D5E7");
         }
 
-        internal static Page CreatePage(this ScreenSettingsBase screenSettings)
-        {
-            return CreatePage(Enum.GetName(typeof(ViewType), screenSettings.ViewType));
-
-            Page CreatePage(string viewName)
-            {
-                FlyoutDetailViewModelBase viewModel = (FlyoutDetailViewModelBase)App.ServiceProvider.GetRequiredService
-                (
-                    typeof(FlyoutDetailViewModelBase).Assembly.GetType
-                    (
-                        $"Enrollment.XPlatform.ViewModels.{viewName}ViewModel"
-                    )
-                );
-
-                viewModel.Initialize(screenSettings);
-
-                return (Page)Activator.CreateInstance
-                (
-                    typeof(MainPageView).Assembly.GetType
-                    (
-                        $"Enrollment.XPlatform.Views.{viewName}ViewCS"
-                    ),
-                    viewModel
-                );
-            }
-        }
-        
         internal static DataTemplate GetCollectionViewItemTemplate(string templateName,
             Dictionary<string, ItemBindingDescriptor> bindings)
         {
-            switch (templateName)
+            return templateName switch
             {
-                case TemplateNames.HeaderTextDetailTemplate:
-                    return new DataTemplate
-                    (
-                        () => new Grid
+                TemplateNames.HeaderTextDetailTemplate => new DataTemplate
+                (
+                    () => new Grid
+                    {
+                        Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailListItemStyle),
+                        Children =
                         {
-                            Style = GetStaticStyleResource(ItemStyleNames.HeaderTextDetailListItemStyle),
-                            Children =
+                            new StackLayout
                             {
-                                new StackLayout
+                                Style = GetStaticStyleResource(StyleKeys.HeaderTextDetailItemLayout),
+                                Children =
                                 {
-                                    Margin = new Thickness(2),
-                                    Padding = new Thickness(7),
-                                    Children =
-                                    {
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Header].TemplateName, 
-                                            bindings[BindingNames.Header].Property, 
-                                            FontAttributes.Bold
-                                        ),
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Text].TemplateName, 
-                                            bindings[BindingNames.Text].Property, 
-                                            FontAttributes.None
-                                        ),
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Detail].TemplateName, 
-                                            bindings[BindingNames.Detail].Property, 
-                                            FontAttributes.Italic
-                                        )
-                                    }
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Header].TemplateName,
+                                        bindings[BindingNames.Header].Property,
+                                        FontAttributes.Bold
+                                    ),
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Text].TemplateName,
+                                        bindings[BindingNames.Text].Property,
+                                        FontAttributes.None
+                                    ),
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Detail].TemplateName,
+                                        bindings[BindingNames.Detail].Property,
+                                        FontAttributes.Italic
+                                    )
                                 }
-                                .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                             }
                         }
-                    );
-                case TemplateNames.TextDetailTemplate:
-                    return new DataTemplate
-                    (
-                        () => new Grid
+                    }
+                ),
+                TemplateNames.TextDetailTemplate => new DataTemplate
+                (
+                    () => new Grid
+                    {
+                        Style = GetStaticStyleResource(StyleKeys.TextDetailListItemStyle),
+                        Children =
                         {
-                            Style = GetStaticStyleResource(ItemStyleNames.TextDetailListItemStyle),
-                            Children =
+                            new StackLayout
                             {
-                                new StackLayout
+                                Style = GetStaticStyleResource(StyleKeys.TextDetailItemLayout),
+                                Children =
                                 {
-                                    Margin = new Thickness(2),
-                                    Padding = new Thickness(7),
-                                    Children =
-                                    {
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Text].TemplateName, 
-                                            bindings[BindingNames.Text].Property, 
-                                            FontAttributes.Bold
-                                        ),
-                                        CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
-                                        (
-                                            bindings[BindingNames.Detail].TemplateName, 
-                                            bindings[BindingNames.Detail].Property, 
-                                            FontAttributes.Italic
-                                        )
-                                    }
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Text].TemplateName,
+                                        bindings[BindingNames.Text].Property,
+                                        FontAttributes.Bold
+                                    ),
+                                    CollectionCellIViewHelpers.GetCollectionViewItemTemplateItem
+                                    (
+                                        bindings[BindingNames.Detail].TemplateName,
+                                        bindings[BindingNames.Detail].Property,
+                                        FontAttributes.Italic
+                                    )
                                 }
-                                .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                             }
                         }
-                    );
-                default:
-                    throw new ArgumentException
-                    (
-                        $"{nameof(templateName)}: 83C55FEE-9A93-45D3-A972-2335BA0F16AE"
-                    );
-            }
+                    }
+                ),
+                _ => throw new ArgumentException
+                (
+                    $"{nameof(templateName)}: 83C55FEE-9A93-45D3-A972-2335BA0F16AE"
+                ),
+            };
         }
 
         private struct TemplateNames
@@ -206,12 +181,6 @@ namespace Enrollment.XPlatform.Utils
             public const string Detail = "Detail";
         }
 
-        private struct ItemStyleNames
-        {
-            public const string TextDetailListItemStyle = "TextDetailListItemStyle";
-            public const string HeaderTextDetailListItemStyle = "HeaderTextDetailListItemStyle";
-        }
-
         internal static void AddToolBarItems(IList<ToolbarItem> toolbarItems, ICollection<CommandButtonDescriptor> buttons)
         {
             foreach (var button in buttons)
@@ -222,8 +191,8 @@ namespace Enrollment.XPlatform.Utils
             => new ToolbarItem
             {
                 AutomationId = button.ShortString,
-                    //Text = button.LongString,
-                    IconImageSource = new FontImageSource
+                //Text = button.LongString,
+                IconImageSource = new FontImageSource
                 {
                     FontFamily = EditFormViewHelpers.GetFontAwesomeFontFamily(),
                     Glyph = FontAwesomeIcons.Solid[button.ButtonIcon],
@@ -257,7 +226,7 @@ namespace Enrollment.XPlatform.Utils
         {
             return descriptors.Aggregate(false, DoAggregate);
 
-            bool DoAggregate(bool shouldAdd, FormItemSettingsDescriptor next)
+            static bool DoAggregate(bool shouldAdd, FormItemSettingsDescriptor next)
             {
                 if (shouldAdd) return shouldAdd;
 
@@ -274,84 +243,6 @@ namespace Enrollment.XPlatform.Utils
 
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Returns a key value pair where the key is a dictionary of the entity's properties and the value is the entity itself.
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="collectionCellItemsBuilder"></param>
-        /// <param name="propertiesUpdater"></param>
-        /// <param name="itemBindings"></param>
-        /// <returns></returns>
-        internal static KeyValuePair<Dictionary<string, IReadOnly>, TModel> GetCollectionCellDictionaryModelPair<TModel>(this TModel entity, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings) 
-            => new KeyValuePair<Dictionary<string, IReadOnly>, TModel>
-            (
-                GetCollectionCellDictionaryItem(entity, contextProvider, itemBindings),
-                entity
-            );
-
-        /// <summary>
-        /// Returns a dictionary of the entity's properties where the key is the property name and the value is an IReadOnly implementation for the property.
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="contextProvider"></param>
-        /// <param name="itemBindings"></param>
-        /// <returns></returns>
-        internal static Dictionary<string, IReadOnly> GetCollectionCellDictionaryItem<TModel>(this TModel entity, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
-        {
-            ICollection<IReadOnly> properties = contextProvider.CollectionCellItemsBuilder.CreateCellsCollection(itemBindings, typeof(TModel));
-
-            UpdateCollectionCellProperties
-            (
-                entity,
-                properties, 
-                contextProvider, 
-                itemBindings
-            );
-
-            return properties.ToDictionary(p => p.Name.ToBindingDictionaryKey());
-        }
-
-        /// <summary>
-        /// Updates the IReadOnly objects to reflect the entity.
-        /// </summary>
-        /// <typeparam name="TModel"></typeparam>
-        /// <param name="entity"></param>
-        /// <param name="properties"></param>
-        /// <param name="contextProvider"></param>
-        /// <param name="itemBindings"></param>
-        /// <exception cref="ArgumentException"></exception>
-        internal static void UpdateCollectionCellProperties<TModel>(this TModel entity, ICollection<IReadOnly> properties, IContextProvider contextProvider, List<ItemBindingDescriptor> itemBindings)
-        {
-            Dictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
-
-            contextProvider.ReadOnlyCollectionCellPropertiesUpdater.UpdateProperties
-            (
-                properties,
-                typeof(TModel),
-                entity,
-                itemBindings
-            );
-
-            itemBindings.ForEach
-            (
-                binding =>
-                {
-                    if (binding is DropDownItemBindingDescriptor dropDownItemBinding && dropDownItemBinding.RequiresReload)
-                    {
-                        if (string.IsNullOrEmpty(dropDownItemBinding.DropDownTemplate.ReloadItemsFlowName))
-                            throw new ArgumentException($"{nameof(dropDownItemBinding.DropDownTemplate.ReloadItemsFlowName)}: F8304FC1-ABB9-4F2B-9668-4955A6D36F3B");
-
-                        GetHasItemsSourceReadOnly().Reload(entity, typeof(TModel));
-                    }
-
-                    IHasItemsSource GetHasItemsSourceReadOnly()
-                        => (IHasItemsSource)propertiesDictionary[binding.Property];
-                }
-            );
         }
     }
 }

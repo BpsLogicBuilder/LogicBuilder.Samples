@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.ViewModels.Validatables;
 using System;
 using System.Collections.Generic;
@@ -10,31 +11,33 @@ namespace Enrollment.XPlatform.Utils
 {
     public static class EntityMapper
     {
-        public static Dictionary<string, object> EntityToObjectDictionary(this object entity, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
-            => mapper.Map<Dictionary<string, object>>(entity).ToObjectDictionaryFromEntity(mapper, fieldSettings);
+        public static Dictionary<string, object?> EntityToObjectDictionary(this object? entity, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
+            => mapper.Map<Dictionary<string, object?>>(entity).ToObjectDictionaryFromEntity(mapper, fieldSettings);
 
-        public static Dictionary<string, object> ValidatableListToObjectDictionary(this IEnumerable<IValidatable> properties, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
+        public static Dictionary<string, object?> ValidatableListToObjectDictionary(this IEnumerable<IValidatable> properties, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
             => properties.ToDictionary(p => p.Name, p => p.Value).ToObjectDictionaryFromValidatableObjects(mapper, fieldSettings);
 
-        public static object ToModelObject(this IEnumerable<IValidatable> properties, Type entityType, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, object destination = null)
+        public static object ToModelObject(this IEnumerable<IValidatable> properties, Type entityType, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, object? destination = null)
         {
-            MethodInfo methodInfo = typeof(EntityMapper).GetMethod
-            (
-                "ToModelObject",
-                1,
-                new Type[]
-                {
-                    typeof(IEnumerable<IValidatable>),
-                    typeof(IMapper),
-                    typeof(List<FormItemSettingsDescriptor>),
-                    entityType
-                }
-            ).MakeGenericMethod(entityType);
+            MethodInfo methodInfo = (
+                typeof(EntityMapper).GetMethod
+                (
+                    nameof(ToModelObject),
+                    1,
+                    new Type[]
+                    {
+                        typeof(IEnumerable<IValidatable>),
+                        typeof(IMapper),
+                        typeof(List<FormItemSettingsDescriptor>),
+                        entityType
+                    }
+                ) ?? throw new ArgumentException($"{nameof(ToModelObject)}: {{9054A00C-E98D-4F57-84AF-06EC13899654}}")
+            ).MakeGenericMethod(entityType); /*ToModelObject is local*/
 
-            return methodInfo.Invoke(null, new object[] { properties, mapper, fieldSettings, destination });
+            return methodInfo.Invoke(null, new object?[] { properties, mapper, fieldSettings, destination })!;
         }
 
-        public static T ToModelObject<T>(this IEnumerable<IValidatable> properties, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, T destination = null) where T : class
+        public static T ToModelObject<T>(this IEnumerable<IValidatable> properties, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, T? destination = null) where T : class
         {
             if (destination == null)
             {
@@ -48,7 +51,7 @@ namespace Enrollment.XPlatform.Utils
             (
                 properties.ValidatableListToObjectDictionary(mapper, fieldSettings),
                 destination,
-                typeof(Dictionary<string, object>),
+                typeof(Dictionary<string, object?>),
                 typeof(T)
             );
         }
@@ -61,11 +64,11 @@ namespace Enrollment.XPlatform.Utils
         /// <param name="fieldSettings"></param>
         /// <param name="parentField"></param>
         /// <returns></returns>
-        private static Dictionary<string, object> ToObjectDictionaryFromValidatableObjects(this IDictionary<string, object> propertiesDictionary, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, string parentField = null)
+        private static Dictionary<string, object?> ToObjectDictionaryFromValidatableObjects(this IDictionary<string, object?> propertiesDictionary, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings, string? parentField = null)
         {
-            return fieldSettings.Aggregate(new Dictionary<string, object>(), DoAggregation);
+            return fieldSettings.Aggregate(new Dictionary<string, object?>(), DoAggregation);
 
-            Dictionary<string, object> DoAggregation(Dictionary<string, object> objectDictionary, FormItemSettingsDescriptor setting)
+            Dictionary<string, object?> DoAggregation(Dictionary<string, object?> objectDictionary, FormItemSettingsDescriptor setting)
             {
                 if (setting is MultiSelectFormControlSettingsDescriptor multiSelectFormControlSetting)
                     AddMultiSelects(multiSelectFormControlSetting);
@@ -87,7 +90,7 @@ namespace Enrollment.XPlatform.Utils
                     AddFormGroupArray(formGroupArraySetting);
                 else if (setting is FormGroupBoxSettingsDescriptor groupBoxSettingsDescriptor)
                 {
-                    groupBoxSettingsDescriptor.FieldSettings.Aggregate(objectDictionary, DoAggregation);
+                    objectDictionary = groupBoxSettingsDescriptor.FieldSettings.Aggregate(objectDictionary, DoAggregation);
                 }
                 else
                     throw new ArgumentException($"{nameof(setting)}: 82FDF6AC-C2DB-4655-AA03-673E5C6B4E0A");
@@ -97,14 +100,14 @@ namespace Enrollment.XPlatform.Utils
                 void AddFormGroupArray(FormGroupArraySettingsDescriptor formGroupArraySetting) => objectDictionary.Add
                 (
                     formGroupArraySetting.Field,
-                    mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object>>>
+                    mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object?>>>
                     (
-                        (IEnumerable<object>)propertiesDictionary[GetFieldName(formGroupArraySetting.Field)]
+                        (IEnumerable<object>)(propertiesDictionary[GetFieldName(formGroupArraySetting.Field)] ?? new List<object>())
                     )
                     .Select
                     (
                         dictionary => dictionary.ToObjectDictionaryFromValidatableObjects(mapper, formGroupArraySetting.FieldSettings)
-                    ).ToList()//Need an ICollection<Dictionary<string, object>>
+                    ).ToList()//Need an ICollection<Dictionary<string, object?>>
                 );
 
                 void AddFormGroupPopup(FormGroupSettingsDescriptor formGroupSetting)
@@ -118,7 +121,7 @@ namespace Enrollment.XPlatform.Utils
                     objectDictionary.Add
                     (
                         formGroupSetting.Field,
-                        mapper.Map<Dictionary<string, object>>
+                        mapper.Map<Dictionary<string, object?>>
                         (
                             propertiesDictionary[GetFieldName(formGroupSetting.Field)]
                         ).ToObjectDictionaryFromValidatableObjects(mapper, formGroupSetting.FieldSettings)
@@ -149,9 +152,9 @@ namespace Enrollment.XPlatform.Utils
                     objectDictionary.Add
                     (
                         multiSelectFormControlSetting.Field,
-                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object>>>
+                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object?>>>
                         (
-                            (IEnumerable<object>)propertiesDictionary[GetFieldName(multiSelectFormControlSetting.Field)]
+                            (IEnumerable<object>)(propertiesDictionary[GetFieldName(multiSelectFormControlSetting.Field)] ?? new List<object>())
                         )
                     );
                 }
@@ -169,14 +172,14 @@ namespace Enrollment.XPlatform.Utils
                     : $"{parentField}.{field}";
         }
 
-        private static Dictionary<string, object> ToObjectDictionaryFromEntity(this Dictionary<string, object> propertiesDictionary, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
+        private static Dictionary<string, object?> ToObjectDictionaryFromEntity(this Dictionary<string, object?> propertiesDictionary, IMapper mapper, List<FormItemSettingsDescriptor> fieldSettings)
         {
             if (propertiesDictionary.IsEmpty())//object must be null - no fields to update
-                return new Dictionary<string, object>();
+                return new Dictionary<string, object?>();
 
-            return fieldSettings.Aggregate(new Dictionary<string, object>(), DoAggregation);
+            return fieldSettings.Aggregate(new Dictionary<string, object?>(), DoAggregation);
 
-            Dictionary<string, object> DoAggregation(Dictionary<string, object>  objectDictionary, FormItemSettingsDescriptor setting)
+            Dictionary<string, object?> DoAggregation(Dictionary<string, object?> objectDictionary, FormItemSettingsDescriptor setting)
             {
                 if (setting is MultiSelectFormControlSettingsDescriptor multiSelectFormControlSetting)
                     AddMultiSelects(multiSelectFormControlSetting);
@@ -190,7 +193,7 @@ namespace Enrollment.XPlatform.Utils
                     AddFormGroupArray(formGroupArraySetting);
                 else if (setting is FormGroupBoxSettingsDescriptor groupBoxSettingsDescriptor)
                 {
-                    groupBoxSettingsDescriptor.FieldSettings.Aggregate(objectDictionary, DoAggregation);
+                    objectDictionary = groupBoxSettingsDescriptor.FieldSettings.Aggregate(objectDictionary, DoAggregation);
                 }
                 else
                     throw new ArgumentException($"{nameof(setting)}: CC7AD9E6-1CA5-4B9D-B1DF-D28AF8D6D757");
@@ -200,14 +203,14 @@ namespace Enrollment.XPlatform.Utils
                 void AddFormGroupArray(FormGroupArraySettingsDescriptor formGroupArraySetting) => objectDictionary.Add
                 (
                     formGroupArraySetting.Field,
-                    mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object>>>
+                    mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object?>>>
                     (
-                        (IEnumerable<object>)propertiesDictionary[formGroupArraySetting.Field]
+                        (IEnumerable<object>)(propertiesDictionary[formGroupArraySetting.Field] ?? new List<object>())
                     )
                     .Select
                     (
                         dictionary => dictionary.ToObjectDictionaryFromEntity(mapper, formGroupArraySetting.FieldSettings)
-                    ).ToList()//Need an ICollection<Dictionary<string, object>>
+                    ).ToList()//Need an ICollection<Dictionary<string, object?>>
                 );
 
                 void AddFormGroup(FormGroupSettingsDescriptor formGroupSetting)
@@ -221,7 +224,7 @@ namespace Enrollment.XPlatform.Utils
                     objectDictionary.Add
                     (
                         formGroupSetting.Field,
-                        mapper.Map<Dictionary<string, object>>
+                        mapper.Map<Dictionary<string, object?>>
                         (
                             propertiesDictionary[formGroupSetting.Field]
                         ).ToObjectDictionaryFromEntity(mapper, formGroupSetting.FieldSettings)
@@ -240,9 +243,9 @@ namespace Enrollment.XPlatform.Utils
                     objectDictionary.Add
                     (
                         multiSelectFormControlSetting.Field,
-                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object>>>
+                        mapper.Map<IEnumerable<object>, IEnumerable<Dictionary<string, object?>>>
                         (
-                            (IEnumerable<object>)propertiesDictionary[multiSelectFormControlSetting.Field]
+                            (IEnumerable<object>)(propertiesDictionary[multiSelectFormControlSetting.Field] ?? new List<object>())
                         )
                     );
                 }
@@ -256,7 +259,7 @@ namespace Enrollment.XPlatform.Utils
         }
 
         const string EntityState = "EntityState";
-        public static void UpdateEntityStates(Dictionary<string, object> existing, Dictionary<string, object> current, List<FormItemSettingsDescriptor> fieldSettings)
+        public static void UpdateEntityStates(Dictionary<string, object?> existing, Dictionary<string, object?> current, List<FormItemSettingsDescriptor> fieldSettings)
         {
             if (current.IsEmpty() && existing.IsEmpty() == false)
             {
@@ -285,14 +288,19 @@ namespace Enrollment.XPlatform.Utils
             {
                 if (setting is FormGroupSettingsDescriptor formGroupSetting)
                 {
-                    existing.TryGetValue(formGroupSetting.Field, out object existingObject);
-                    UpdateEntityStates((Dictionary<string, object>)existingObject ?? new Dictionary<string, object>(), (Dictionary<string, object>)current[formGroupSetting.Field], formGroupSetting.FieldSettings);
+                    existing.TryGetValue(formGroupSetting.Field, out object? existingObject);
+                    UpdateEntityStates
+                    (
+                        (Dictionary<string, object?>)(existingObject ?? new Dictionary<string, object?>()), 
+                        (Dictionary<string, object?>)(current[formGroupSetting.Field] ?? new Dictionary<string, object?>()), 
+                        formGroupSetting.FieldSettings
+                    );
                 }
                 else if (setting is MultiSelectFormControlSettingsDescriptor multiSelectFormControlSettingsDescriptor)
                 {
-                    existing.TryGetValue(multiSelectFormControlSettingsDescriptor.Field, out object existingCollection);
-                    ICollection<Dictionary<string, object>> existingList = (ICollection<Dictionary<string, object>>)existingCollection ?? new List<Dictionary<string, object>>();
-                    ICollection<Dictionary<string, object>> currentList = (ICollection<Dictionary<string, object>>)current[multiSelectFormControlSettingsDescriptor.Field] ?? new List<Dictionary<string, object>>();
+                    existing.TryGetValue(multiSelectFormControlSettingsDescriptor.Field, out object? existingCollection);
+                    ICollection<Dictionary<string, object?>> existingList = (ICollection<Dictionary<string, object?>>)(existingCollection ?? new List<Dictionary<string, object?>>());
+                    ICollection<Dictionary<string, object?>> currentList = (ICollection<Dictionary<string, object?>>)(current[multiSelectFormControlSettingsDescriptor.Field] ?? new List<Dictionary<string, object?>>());
 
                     if (currentList.Any() == true)
                     {
@@ -319,18 +327,18 @@ namespace Enrollment.XPlatform.Utils
                 }
                 else if (setting is FormGroupArraySettingsDescriptor formGroupArraySetting)
                 {
-                    existing.TryGetValue(formGroupArraySetting.Field, out object existingCollection);
-                    ICollection<Dictionary<string, object>> existingList = (ICollection<Dictionary<string, object>>)existingCollection ?? new List<Dictionary<string, object>>();
-                    ICollection<Dictionary<string, object>> currentList = (ICollection<Dictionary<string, object>>)current[formGroupArraySetting.Field];
+                    existing.TryGetValue(formGroupArraySetting.Field, out object? existingCollection);
+                    ICollection<Dictionary<string, object?>> existingList = (ICollection<Dictionary<string, object?>>)(existingCollection ?? new List<Dictionary<string, object?>>());
+                    ICollection<Dictionary<string, object?>> currentList = (ICollection<Dictionary<string, object?>>)(current[formGroupArraySetting.Field] ?? new List<Dictionary<string, object?>>());
 
                     if (currentList.Any() == true)
                     {
                         foreach (var entry in currentList)
                         {
-                            Dictionary<string, object> existingEntry = entry.GetExistingEntry(existingList, formGroupArraySetting.KeyFields);
+                            Dictionary<string, object?>? existingEntry = entry.GetExistingEntry(existingList, formGroupArraySetting.KeyFields);
                             UpdateEntityStates
                             (
-                                existingEntry ?? new Dictionary<string, object>(),
+                                existingEntry ?? new Dictionary<string, object?>(),
                                 entry,
                                 formGroupArraySetting.FieldSettings
                             );
@@ -356,7 +364,7 @@ namespace Enrollment.XPlatform.Utils
             }
         }
 
-        private static bool IsEmpty(this IDictionary<string, object> dictionary)
+        private static bool IsEmpty(this IDictionary<string, object?> dictionary)
             => dictionary?.Any() != true;
     }
 }

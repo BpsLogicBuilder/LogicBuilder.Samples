@@ -17,7 +17,7 @@ namespace Contoso.XPlatform.Validators.Rules
 
         public override bool Check()
         {
-            if (!EqualityComparer<T>.Default.Equals(Value, OtherValidatable.Value)) 
+            if (!EqualityComparer<T>.Default.Equals(Value!, OtherValidatable.Value!)) /*EqualityComparer not built for nullable reference types in 2.1*/
                 return false;
 
             if (!OtherValidatable.Errors.ContainsKey(nameof(IsMatchRule<T>)))

@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Contoso.Domain.Entities;
-using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Cache;
+﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Tests.Helpers;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Tests.Mocks;
 using Contoso.XPlatform.ViewModels;
-using LogicBuilder.RulesDirector;
+using Contoso.XPlatform.ViewModels.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
@@ -17,21 +15,22 @@ namespace Contoso.XPlatform.Tests
     {
         public ReadOnlyFieldsCollectionBuilderTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void CreateDetailFormLayoutForDepartment_NoGroups()
         {
-            DetailFormLayout formLayout = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            DetailFormLayout formLayout = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            );
+            )
+            .CreateFields();
 
             Assert.Single(formLayout.ControlGroupBoxList);
             Assert.Equal(6, formLayout.ControlGroupBoxList.Single().Count);
@@ -41,11 +40,12 @@ namespace Contoso.XPlatform.Tests
         [Fact]
         public void CreateDetailFormLayoutForDepartment_AllFieldsGrouped()
         {
-            DetailFormLayout formLayout = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            DetailFormLayout formLayout = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentFormWithAllItemsGrouped,
                 typeof(DepartmentModel)
-            );
+            )
+            .CreateFields();
 
             Assert.Equal(2, formLayout.ControlGroupBoxList.Count);
             Assert.Equal(3, formLayout.ControlGroupBoxList.Single(cg => cg.GroupHeader == "GroupOne").Count);
@@ -55,11 +55,12 @@ namespace Contoso.XPlatform.Tests
         [Fact]
         public void CreateDetailFormLayoutForDepartment_SomeFieldsGrouped()
         {
-            DetailFormLayout formLayout = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            DetailFormLayout formLayout = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentFormWithSomeItemsGrouped,
                 typeof(DepartmentModel)
-            );
+            )
+            .CreateFields();
 
 
             Assert.Equal(2, formLayout.ControlGroupBoxList.Count);
@@ -68,51 +69,16 @@ namespace Contoso.XPlatform.Tests
             Assert.Equal("Department", formLayout.ControlGroupBoxList.First().GroupHeader);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private IReadOnlyFieldsCollectionBuilder GetReadOnlyFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IUpdateOnlyFieldsCollectionBuilder, UpdateOnlyFieldsCollectionBuilder>()
-                .AddSingleton<IReadOnlyFieldsCollectionBuilder, ReadOnlyFieldsCollectionBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetReadOnlyFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                null,
+                null
+            );
         }
     }
 }

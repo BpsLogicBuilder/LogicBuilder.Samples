@@ -5,12 +5,13 @@ using Enrollment.Common.Configuration.ExpressionDescriptors;
 using Enrollment.Forms.Configuration;
 using Enrollment.Parameters.Expressions;
 using Enrollment.Utils;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Flow.Requests;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,20 +20,30 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
 {
     public class PickerReadOnlyObject<T> : ReadOnlyObjectBase<T>, IHasItemsSourceReadOnly
     {
-        public PickerReadOnlyObject(string name, string title, string stringFormat, DropDownTemplateDescriptor dropDownTemplate, IContextProvider contextProvider) : base(name, dropDownTemplate.TemplateName, contextProvider.UiNotificationService)
+        public PickerReadOnlyObject(
+            IHttpService httpService,
+            IMapper mapper,
+            UiNotificationService uiNotificationService,
+            string name,
+            string title,
+            string stringFormat,
+            DropDownTemplateDescriptor dropDownTemplate) : base(name, dropDownTemplate.TemplateName, uiNotificationService)
         {
             this._dropDownTemplate = dropDownTemplate;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
             _defaultTitle = title;
             _stringFormat = stringFormat;
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = _defaultTitle;
-            this.mapper = contextProvider.Mapper;
+            this.mapper = mapper;
             GetItemSource();
         }
 
         private readonly IHttpService httpService;
         private readonly DropDownTemplateDescriptor _dropDownTemplate;
-        private List<object> _items;
+        private List<object>? _items;
         private readonly IMapper mapper;
         private readonly string _defaultTitle;
         private readonly string _stringFormat;
@@ -62,6 +73,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -72,10 +84,11 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private string _placeholder;
-        public string Placeholder
+        private string? _placeholder;
+        public string? Placeholder
         {
-            get => _placeholder; set
+            get => _placeholder;
+            set
             {
                 if (_placeholder == value)
                     return;
@@ -85,7 +98,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        public object SelectedItem
+        public object? SelectedItem
         {
             get
             {
@@ -96,14 +109,14 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                 (
                     i => EqualityComparer<T>.Default.Equals
                     (
-                        Value,
+                        Value!,/*EqualityComparer not built for nullable reference types in 2.1*/
                         i.GetPropertyValue<T>(_dropDownTemplate.ValueField)
                     )
                 );
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -113,7 +126,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        public List<object> Items
+        public List<object>? Items
         {
             get => _items;
             set
@@ -147,10 +160,10 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                     this._dropDownTemplate.RequestDetails.DataSourceUrl
                 );
 
-                if (response?.Success != true)
+                if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current.MainPage.DisplayAlert
+                    await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null at this point*/
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),
@@ -173,7 +186,11 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         {
             using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
             {
-                flowManagerService.SetFlowDataCacheItem(entityType.FullName, entity);
+                flowManagerService.SetFlowDataCacheItem
+                (
+                    entityType.FullName ?? throw new ArgumentException($"{nameof(entityType.FullName)}: {{2C2CB57D-A9D0-40C0-80C5-95E1CDE100E4}}"), 
+                    entity
+                );
 
                 await flowManagerService.RunFlow
                 (
@@ -188,7 +205,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
 
                 SelectorLambdaOperatorDescriptor selector = this.mapper.Map<SelectorLambdaOperatorDescriptor>
                 (
-                    flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName)
+                    flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
                 );
 
                 this.Title = this._dropDownTemplate.LoadingIndicatorText;
@@ -200,13 +217,13 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
 
             Value = GetExistingValue() ?? default;
 
-            T GetExistingValue()
+            T? GetExistingValue()
             {
-                object existing = Items.FirstOrDefault
+                object? existing = Items?.FirstOrDefault
                 (
                     i => EqualityComparer<T>.Default.Equals
                     (
-                        Value,
+                        Value!,/*EqualityComparer not built for nullable reference types in 2.1*/
                         i.GetPropertyValue<T>(_dropDownTemplate.ValueField)
                     )
                 );

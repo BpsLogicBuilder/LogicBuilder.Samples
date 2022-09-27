@@ -5,9 +5,9 @@ namespace Enrollment.XPlatform.Behaviours
 {
     public class BehaviorBase<T> : Behavior<T> where T : BindableObject
     {
-        public T AssociatedObject { get; private set; }
+        public T? AssociatedObject { get; private set; }
 
-        private void OnBindingContextChanged(object sender, EventArgs e) 
+        private void OnBindingContextChanged(object? sender, EventArgs e)
             => OnBindingContextChanged();
 
         protected override void OnAttachedTo(T bindable)
@@ -30,7 +30,7 @@ namespace Enrollment.XPlatform.Behaviours
         protected override void OnBindingContextChanged()
         {
             base.OnBindingContextChanged();
-            BindingContext = AssociatedObject.BindingContext;
+            BindingContext = AssociatedObject?.BindingContext;
         }
     }
 }

@@ -1,19 +1,14 @@
-﻿using AutoMapper;
-using Contoso.Domain.Entities;
+﻿using Contoso.Domain.Entities;
 using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Cache;
+using Contoso.XPlatform.Tests.Helpers;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Tests.Mocks;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
-using Contoso.XPlatform.ViewModels.Validatables;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using Xunit;
 
@@ -23,18 +18,18 @@ namespace Contoso.XPlatform.Tests
     {
         public ReadOnlyCollectionCellPropertiesUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapInstructorModelToIReadOnlyList()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -67,8 +62,15 @@ namespace Contoso.XPlatform.Tests
                 }
             };
 
-            List<ItemBindingDescriptor> itemBindings = new List<ItemBindingDescriptor>
+            List<ItemBindingDescriptor> itemBindings = new()
             {
+                new TextItemBindingDescriptor
+                {
+                    Name = "Header",
+                    Property = "OfficeAssignment.Location",
+                    StringFormat = "{0}",
+                    TextTemplate = new TextFieldTemplateDescriptor { TemplateName = "TextTemplate" }
+                },
                 new TextItemBindingDescriptor
                 {
                     Name = "Text",
@@ -85,11 +87,11 @@ namespace Contoso.XPlatform.Tests
                 }
             };
 
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 itemBindings,
                 typeof(InstructorModel)
-            );
+            ).CreateFields();
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyCollectionCellPropertiesUpdater>().UpdateProperties
@@ -101,23 +103,24 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            Assert.Equal("Location1", propertiesDictionary["OfficeAssignment.Location"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["HireDate"]);
-            Assert.Equal(1, ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]).First().CourseID);
+            Assert.Equal(1, ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]!).First().CourseID);
         }
 
         [Fact]
         public void MapCourseModelToIReadOnlyList()
         {
             //arrange
-            CourseModel course = new CourseModel
+            CourseModel course = new()
             {
                 CourseID = 3,
                 Title = "Chemistry",
                 Credits = 5
             };
 
-            List<ItemBindingDescriptor> itemBindings = new List<ItemBindingDescriptor>
+            List<ItemBindingDescriptor> itemBindings = new()
             {
                 new TextItemBindingDescriptor
                 {
@@ -142,11 +145,12 @@ namespace Contoso.XPlatform.Tests
                 }
             };
 
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 itemBindings,
                 typeof(CourseModel)
-            );
+            )
+            .CreateFields();
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyCollectionCellPropertiesUpdater>().UpdateProperties
@@ -158,55 +162,19 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["CourseID"]);
             Assert.Equal("Chemistry", propertiesDictionary["Title"]);
             Assert.Equal(5, propertiesDictionary["Credits"]);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private ICollectionCellItemsBuilder GetCollectionCellItemsBuilder(List<ItemBindingDescriptor> bindingDescriptors, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetCollectionCellItemsBuilder
+            (
+                modelType,
+                bindingDescriptors
+            );
         }
     }
 }

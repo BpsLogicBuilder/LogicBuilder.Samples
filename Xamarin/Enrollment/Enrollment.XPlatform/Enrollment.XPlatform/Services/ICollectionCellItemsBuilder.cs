@@ -7,6 +7,6 @@ namespace Enrollment.XPlatform.Services
 {
     public interface ICollectionCellItemsBuilder
     {
-        ICollection<IReadOnly> CreateCellsCollection(List<ItemBindingDescriptor> itemBindings, Type modelType);
+        ICollection<IReadOnly> CreateFields();
     }
 }

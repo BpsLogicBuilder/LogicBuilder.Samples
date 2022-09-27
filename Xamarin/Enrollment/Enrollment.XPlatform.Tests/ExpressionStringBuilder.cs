@@ -12,7 +12,7 @@ namespace Enrollment.XPlatform.Tests
 {
     public class ExpressionStringBuilder : ExpressionVisitor
     {
-        private StringBuilder _builder = new StringBuilder();
+        private readonly StringBuilder _builder = new();
 
         private ExpressionStringBuilder()
         {
@@ -20,7 +20,7 @@ namespace Enrollment.XPlatform.Tests
 
         public static string ToString(Expression expression)
         {
-            ExpressionStringBuilder visitor = new ExpressionStringBuilder();
+            ExpressionStringBuilder visitor = new();
             visitor.Visit(expression);
             return visitor._builder.ToString();
         }
@@ -47,7 +47,7 @@ namespace Enrollment.XPlatform.Tests
 
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            Out(node.Name);
+            Out(node.Name ?? "");
             return node;
         }
 
@@ -57,9 +57,9 @@ namespace Enrollment.XPlatform.Tests
             if (node.Expression == null && node.NodeType == ExpressionType.MemberAccess)
             {
                 Visit(node.Expression);
-                Out(node.Member.DeclaringType.Name + "." + node.Member.Name);
+                Out(node.Member.DeclaringType?.Name + "." + node.Member.Name);
             }
-            else if (node.Expression.NodeType == ExpressionType.Constant)
+            else if (node.Expression?.NodeType == ExpressionType.Constant)
             {
                 Visit(node.Expression);
                 if (!typeof(ConstantContainer).IsAssignableFrom(node.Expression?.Type))
@@ -171,7 +171,6 @@ namespace Enrollment.XPlatform.Tests
 
         protected override Expression VisitMethodCall(MethodCallExpression node)
         {
-            int argindex = 0;
             Visit(node.Object);
 
             IEnumerable<Expression> arguments = node.Arguments;
@@ -179,7 +178,6 @@ namespace Enrollment.XPlatform.Tests
             {
                 Visit(arguments.First());
                 arguments = arguments.Skip(1);
-                argindex++;
             }
 
             Out("." + node.Method.Name + "(");
@@ -230,45 +228,27 @@ namespace Enrollment.XPlatform.Tests
 
         private static string ToString(ExpressionType type)
         {
-            switch (type)
+            return type switch
             {
-                case ExpressionType.Add:
-                    return "+";
-                case ExpressionType.And:
-                    return "&";
-                case ExpressionType.AndAlso:
-                    return "AndAlso";
-                case ExpressionType.Divide:
-                    return "/";
-                case ExpressionType.Equal:
-                    return "==";
-                case ExpressionType.GreaterThan:
-                    return ">";
-                case ExpressionType.GreaterThanOrEqual:
-                    return ">=";
-                case ExpressionType.LessThan:
-                    return "<";
-                case ExpressionType.LessThanOrEqual:
-                    return "<=";
-                case ExpressionType.Modulo:
-                    return "%";
-                case ExpressionType.Multiply:
-                    return "*";
-                case ExpressionType.Negate:
-                    return "-";
-                case ExpressionType.Not:
-                    return "!";
-                case ExpressionType.NotEqual:
-                    return "!=";
-                case ExpressionType.Or:
-                    return "|";
-                case ExpressionType.OrElse:
-                    return "OrElse";
-                case ExpressionType.Subtract:
-                    return "-";
-                default:
-                    throw new NotImplementedException();
-            }
+                ExpressionType.Add => "+",
+                ExpressionType.And => "&",
+                ExpressionType.AndAlso => "AndAlso",
+                ExpressionType.Divide => "/",
+                ExpressionType.Equal => "==",
+                ExpressionType.GreaterThan => ">",
+                ExpressionType.GreaterThanOrEqual => ">=",
+                ExpressionType.LessThan => "<",
+                ExpressionType.LessThanOrEqual => "<=",
+                ExpressionType.Modulo => "%",
+                ExpressionType.Multiply => "*",
+                ExpressionType.Negate => "-",
+                ExpressionType.Not => "!",
+                ExpressionType.NotEqual => "!=",
+                ExpressionType.Or => "|",
+                ExpressionType.OrElse => "OrElse",
+                ExpressionType.Subtract => "-",
+                _ => throw new NotImplementedException(),
+            };
         }
 
         private void Out(string s)

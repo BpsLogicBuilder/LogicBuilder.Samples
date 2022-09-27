@@ -12,7 +12,7 @@ namespace Enrollment.XPlatform.Utils
         private static readonly string selectorParameterName = "s";
         private static readonly string filterParameterName = "f";
 
-        public static SelectorLambdaOperatorDescriptor CreatePagingSelector(SortCollectionDescriptor sortDescriptor, Type modelType, SearchFilterGroupDescriptor filterGroupDescriptor, string searchText)
+        public static SelectorLambdaOperatorDescriptor CreatePagingSelector(SortCollectionDescriptor sortDescriptor, Type modelType, SearchFilterGroupDescriptor filterGroupDescriptor, string? searchText)
             => string.IsNullOrEmpty(searchText)
                 ? CreatePagingSelector(sortDescriptor, modelType)
                 : GetSelector

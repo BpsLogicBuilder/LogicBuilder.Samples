@@ -22,7 +22,7 @@ namespace Contoso.XPlatform.Services
             cache = BlobCache.LocalMachine;
         }
 
-        public async Task<BaseResponse> GetObjectDropDown(GetTypedListRequest request, string url = null)
+        public async Task<BaseResponse> GetObjectDropDown(GetTypedListRequest request, string? url = null)
         {
             string jsonRequest = JsonSerializer.Serialize(request);
             var response = await GetFromCache<GetListResponse>(jsonRequest);
@@ -45,7 +45,7 @@ namespace Contoso.XPlatform.Services
             return response;
         }
 
-        public Task<BaseResponse> GetList(GetTypedListRequest request, string url = null) 
+        public Task<BaseResponse> GetList(GetTypedListRequest request, string? url = null) 
             => PollyHelpers.ExecutePolicyAsync
             (
                 () => this.factory.PostAsync<BaseResponse>
@@ -56,7 +56,7 @@ namespace Contoso.XPlatform.Services
                 )
             );
 
-        public Task<BaseResponse> GetEntity(GetEntityRequest request, string url = null)
+        public Task<BaseResponse> GetEntity(GetEntityRequest request, string? url = null)
             => PollyHelpers.ExecutePolicyAsync
             (
                 () => this.factory.PostAsync<BaseResponse>
@@ -67,7 +67,7 @@ namespace Contoso.XPlatform.Services
                 )
             );
 
-        public Task<BaseResponse> DeleteEntity(DeleteEntityRequest request, string url = null)
+        public Task<BaseResponse> DeleteEntity(DeleteEntityRequest request, string url)
             => PollyHelpers.ExecutePolicyAsync
             (
                 () => this.factory.PostAsync<BaseResponse>
@@ -99,7 +99,7 @@ namespace Contoso.XPlatform.Services
             );
         }
 
-        public async Task<T> GetFromCache<T>(string cacheName)
+        private async Task<T?> GetFromCache<T>(string cacheName)
         {
             try
             {

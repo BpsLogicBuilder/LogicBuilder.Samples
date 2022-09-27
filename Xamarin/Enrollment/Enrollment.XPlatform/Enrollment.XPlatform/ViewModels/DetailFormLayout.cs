@@ -20,14 +20,14 @@ namespace Enrollment.XPlatform.ViewModels
             Properties.Add(readOnly);
 
             if (!ControlGroupBoxList.Any())
-                throw new InvalidOperationException("{40FA092B-D705-44B4-A1B8-151BD2FCD2CD}");
+                throw new InvalidOperationException("{196C3BD2-23A7-4AB1-ACA0-62F627F904EB}");
 
             ControlGroupBoxList
                 .Single(g => object.ReferenceEquals(g.GroupBoxSettings, groupBoxSettings))
                 .Add(readOnly);
         }
 
-        public void AddControlGroupBox(IFormGroupBoxSettings groupBoxSettings) 
+        public void AddControlGroupBox(IFormGroupBoxSettings groupBoxSettings)
             => ControlGroupBoxList.Add(new ReadOnlyControlGroupBox(groupBoxSettings));
 
         public List<ReadOnlyControlGroupBox> ControlGroupBoxList { get; }

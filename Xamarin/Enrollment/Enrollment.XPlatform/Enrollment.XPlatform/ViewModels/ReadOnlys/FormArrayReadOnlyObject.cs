@@ -2,32 +2,50 @@
 using Enrollment.Forms.Configuration.Bindings;
 using Enrollment.Forms.Configuration.DataForm;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Utils;
+using Enrollment.XPlatform.ViewModels.ReadOnlys.Factories;
+using Enrollment.XPlatform.Views.Factories;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.ViewModels.ReadOnlys
 {
     public class FormArrayReadOnlyObject<T, E> : ReadOnlyObjectBase<T> where T : ObservableCollection<E> where E : class
     {
-        public FormArrayReadOnlyObject(string name, FormGroupArraySettingsDescriptor setting, IContextProvider contextProvider) 
-            : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
+        public FormArrayReadOnlyObject(
+            ICollectionCellManager collectionCellManager,
+            IPopupFormFactory popupFormFactory,
+            IReadOnlyFactory readOnlyFactory,
+            UiNotificationService uiNotificationService,
+            string name,
+            FormGroupArraySettingsDescriptor setting) 
+            : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)
         {
             this.FormSettings = setting;
             this.formsCollectionDisplayTemplateDescriptor = setting.FormsCollectionDisplayTemplate;
             this.itemBindings = this.formsCollectionDisplayTemplateDescriptor.Bindings.Values.ToList();
+
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            _placeholder = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = this.FormSettings.Title;
-            this.Placeholder= this.FormSettings.Placeholder;
-            this.contextProvider = contextProvider;
+            this.Placeholder = this.FormSettings.Placeholder;
+            this.collectionCellManager = collectionCellManager;
+            this.popupFormFactory = popupFormFactory;
+            this.readOnlyFactory = readOnlyFactory;
         }
 
-        private readonly IContextProvider contextProvider;
+        private readonly ICollectionCellManager collectionCellManager;
+        private readonly IPopupFormFactory popupFormFactory;
+        private readonly IReadOnlyFactory readOnlyFactory;
         private readonly FormsCollectionDisplayTemplateDescriptor formsCollectionDisplayTemplateDescriptor;
         private readonly List<ItemBindingDescriptor> itemBindings;
-        private Dictionary<Dictionary<string, IReadOnly>, E> _entitiesDictionary;
+        private Dictionary<Dictionary<string, IReadOnly>, E>? _entitiesDictionary;
         public IChildFormGroupSettings FormSettings { get; set; }
         public FormsCollectionDisplayTemplateDescriptor FormsCollectionDisplayTemplate => formsCollectionDisplayTemplateDescriptor;
 
@@ -37,6 +55,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -50,7 +69,9 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         private string _placeholder;
         public string Placeholder
         {
-            get => _placeholder; set
+            get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
+            set
             {
                 if (_placeholder == value)
                     return;
@@ -60,8 +81,8 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private Dictionary<string, IReadOnly> _selectedItem;
-        public Dictionary<string, IReadOnly> SelectedItem
+        private Dictionary<string, IReadOnly>? _selectedItem;
+        public Dictionary<string, IReadOnly>? SelectedItem
         {
             get
             {
@@ -78,8 +99,8 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ObservableCollection<Dictionary<string, IReadOnly>> _items;
-        public ObservableCollection<Dictionary<string, IReadOnly>> Items
+        private ObservableCollection<Dictionary<string, IReadOnly>>? _items;
+        public ObservableCollection<Dictionary<string, IReadOnly>>? Items
         {
             get => _items;
             set
@@ -89,21 +110,21 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get => base.Value;
             set
             {
                 base.Value = value;
 
-                this._entitiesDictionary = base.Value.Select
+                this._entitiesDictionary = base.Value?.Select
                 (
-                    item => item.GetCollectionCellDictionaryModelPair
+                    item => this.collectionCellManager.GetCollectionCellDictionaryModelPair
                     (
-                        this.contextProvider,
+                        item,
                         this.itemBindings
                     )
-                ).ToDictionary(k => k.Key, v => v.Value);
+                ).ToDictionary(k => k.Key, v => v.Value) ?? new Dictionary<Dictionary<string, IReadOnly>, E>();
 
                 this.Items = new ObservableCollection<Dictionary<string, IReadOnly>>
                 (
@@ -112,7 +133,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _openCommand;
+        private ICommand? _openCommand;
         public ICommand OpenCommand
         {
             get
@@ -124,11 +145,11 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PushModalAsync
+                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
-                                new Views.ReadOnlyChildFormArrayPageCS(this)
+                                popupFormFactory.CreateReadOnlyChildFormArrayPage(this)
                             )
                         );
                     });
@@ -137,7 +158,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _cancelCommand;
+        private ICommand? _cancelCommand;
         public ICommand CancelCommand
         {
             get
@@ -149,9 +170,9 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PopModalAsync()
+                            () => App.Current!.MainPage!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
                         );
                     });
 
@@ -159,7 +180,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _detailCommand;
+        private ICommand? _detailCommand;
         public ICommand DetailCommand
         {
             get
@@ -177,7 +198,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _selectionChangedCommand;
+        private ICommand? _selectionChangedCommand;
         public ICommand SelectionChangedCommand
         {
             get
@@ -196,29 +217,38 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
 
         private void CheckCanExecute()
         {
-            (DetailCommand as Command).ChangeCanExecute();
+            ((Command)DetailCommand).ChangeCanExecute();
         }
 
         private void Detail()
         {
-            Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+            MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current.MainPage.Navigation.PushModalAsync
-                (
-                    new Views.ReadOnlyChildFormPageCS
+                () =>
+                {
+                    if (this.Value == null)
+                        throw new ArgumentException($"{nameof(this.Value)}: {{A780FCF5-993A-4D2B-91D8-6854AFD70547}}");
+                    if (this.SelectedItem == null)
+                        throw new ArgumentException($"{nameof(this.SelectedItem)}: {{A6846EA8-B79F-4694-A283-1F647A0C9375}}");
+                    if (this._entitiesDictionary == null)
+                        throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{BCD0ED11-4BBE-4570-BA68-857B918AF4F8}}");
+
+                    var formValidatable = this.readOnlyFactory.CreateFormReadOnlyObject
                     (
-                        new FormReadOnlyObject<E>
+                        typeof(E),
+                        Value.IndexOf(this._entitiesDictionary[this.SelectedItem]).ToString(),
+                        this.FormSettings
+                    );
+                    formValidatable.Value = this._entitiesDictionary[this.SelectedItem];
+
+                    App.Current!.MainPage!.Navigation.PushModalAsync
+                    (
+                        popupFormFactory.CreateReadOnlyChildFormPage
                         (
-                            Value.IndexOf(this._entitiesDictionary[this.SelectedItem]).ToString(),
-                            this.FormSettings,
-                            this.contextProvider
+                            formValidatable
                         )
-                        {
-                            Value = this._entitiesDictionary[this.SelectedItem]
-                        }
-                    )
-                )
-            );
+                    );
+                });
         }
     }
 }

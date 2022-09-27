@@ -1,13 +1,12 @@
-﻿using Contoso.Forms.Configuration.Navigation;
-using Contoso.XPlatform.Flow;
+﻿using AutoMapper;
 using Contoso.XPlatform.Flow.Settings;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
+using Contoso.XPlatform.Views.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -17,16 +16,23 @@ namespace Contoso.XPlatform.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MainPageView : FlyoutPage
     {
-        public MainPageView()
+        public MainPageView(
+            IFlyoutDetailPageFactory detailPageFactory,
+            IMapper mapper,
+            MainPageViewModel mainPageViewModel,
+            UiNotificationService uiNotificationService)
         {
+            _detailPageFactory = detailPageFactory;
+            _mapper = mapper;
+            _uiNotificationService = uiNotificationService;
             InitializeComponent();
             Visual = VisualMarker.Material;
             flyout.ListView.SelectionChanged += ListView_SelectionChanged;
-            ViewModel = App.ServiceProvider.GetRequiredService<MainPageViewModel>();
+            ViewModel = mainPageViewModel;
             this.BindingContext = ViewModel;
             flyout.BindingContext = ViewModel;
 
-            UiNotificationService.FlowSettingsSubject.Subscribe(FlowSettingsChanged);
+            _uiNotificationService.FlowSettingsSubject.Subscribe(FlowSettingsChanged);
 
             if (!DesignMode.IsDesignModeEnabled)
             {
@@ -35,56 +41,21 @@ namespace Contoso.XPlatform.Views
         }
 
         #region Fields
-        private UiNotificationService _uiNotificationService;
-        private IAppLogger _appLogger;
+        private readonly IFlyoutDetailPageFactory _detailPageFactory;
+        private readonly IMapper _mapper;
+        private readonly UiNotificationService _uiNotificationService;
         #endregion Fields
 
         #region Properties
         public MainPageViewModel ViewModel { get; }
         private bool IsPortrait => Width < Height;
-
-        public UiNotificationService UiNotificationService
-        {
-            get
-            {
-                if (_uiNotificationService == null)
-                {
-                    DateTime dt = DateTime.Now;
-                    _uiNotificationService = App.ServiceProvider.GetRequiredService<UiNotificationService>();
-                    DateTime dt2 = DateTime.Now;
-
-                    AppLogger.LogMessage(nameof(MainPageView), $"Get UiNotificationService (milliseconds) = {(dt2 - dt).TotalMilliseconds}");
-                }
-
-                return _uiNotificationService;
-            }
-        }
-
-        public IAppLogger AppLogger
-        {
-            get
-            {
-                if (_appLogger == null)
-                {
-                    DateTime dt = DateTime.Now;
-                    _appLogger = App.ServiceProvider.GetRequiredService<IAppLogger>();
-                    DateTime dt2 = DateTime.Now;
-
-                    AppLogger.LogMessage(nameof(MainPageView), $"Get AppLogger (milliseconds) = {(dt2 - dt).TotalMilliseconds}");
-                }
-
-                return _appLogger;
-            }
-        }
         #endregion Properties
 
         #region Methods
         private async void Start()
         {
-            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
-            {
-                await flowManagerService.Start();
-            }
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            await flowManagerService.Start();
         }
 
         private void FlowSettingsChanged(FlowSettings flowSettings)
@@ -92,13 +63,34 @@ namespace Contoso.XPlatform.Views
             flowSettings.FlowDataCache.NavigationBar.MenuItems
                 .ForEach(item => item.Active = item.InitialModule == flowSettings.FlowDataCache.NavigationBar.CurrentModule);
 
-            ChangePage(flowSettings.ScreenSettings.CreatePage());
+            ChangePage(_detailPageFactory.CreatePage(flowSettings.ScreenSettings));
 
             UpdateNavigationMenu(flowSettings);
         }
 
         private void UpdateNavigationMenu(FlowSettings flowSettings)
-            => ViewModel.MenuItems = new ObservableCollection<NavigationMenuItemDescriptor>(flowSettings.FlowDataCache.NavigationBar.MenuItems);
+        {
+            List<FlyoutMenuItem> menuItems = _mapper.Map<List<FlyoutMenuItem>>(flowSettings.FlowDataCache.NavigationBar.MenuItems);
+
+            if (menuItems.Count == ViewModel.MenuItems.Count)
+            {
+                for (int i = 0; i < menuItems.Count; i++)
+                {
+                    if (!menuItems[i].Equals(ViewModel.MenuItems[i]))
+                    {
+                        ViewModel.MenuItems[i].Text = menuItems[i].Text;
+                        ViewModel.MenuItems[i].Active = menuItems[i].Active;
+                    }
+                }
+
+                return;//Updating the active state prevents flicker on WinUI
+            }
+
+            ViewModel.MenuItems = new ObservableCollection<FlyoutMenuItem>
+            (
+                menuItems
+            );
+        }
 
         private void ChangePage(Page page)
         {
@@ -107,9 +99,17 @@ namespace Contoso.XPlatform.Views
                 () => Detail = GetNavigationPage(page)
             );
 
-            IsPresented = false;
+            CloseFlyout();
 
             flyout.ListView.SelectedItem = null;
+        }
+
+        private void CloseFlyout()
+        {
+            if (!IsPortrait)
+                return;
+
+            IsPresented = false;
         }
         #endregion Methods
 
@@ -118,12 +118,12 @@ namespace Contoso.XPlatform.Views
             if (e.CurrentSelection.Count != 1)
                 return;
 
-            if (!(e.CurrentSelection.First() is NavigationMenuItemDescriptor item))
+            if (e.CurrentSelection[0] is not FlyoutMenuItem item)
                 return;
 
             if (item.Active)
             {
-                IsPresented = false;
+                CloseFlyout();
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace Contoso.XPlatform.Views
                 );
             }
 
-            void DisposeCurrentPageBindingContext(Page detail)
+            static void DisposeCurrentPageBindingContext(Page detail)
             {
                 if (detail is not NavigationPage navigationPage)
                     return;
@@ -153,12 +153,7 @@ namespace Contoso.XPlatform.Views
         private NavigationPage GetNavigationPage(Page page)
         {
             NavigationPage.SetHasBackButton(page, false);
-            page.SetDynamicResource(Page.BackgroundColorProperty, "PageBackgroundColor");
-            var navigationPage = new NavigationPage(page);
-            navigationPage.SetDynamicResource(NavigationPage.BarBackgroundColorProperty, "PageBackgroundColor");
-            navigationPage.SetDynamicResource(NavigationPage.BarTextColorProperty, "PrimaryTextColor");
-
-            return navigationPage;
+            return new NavigationPage(page);
         }
     }
 }

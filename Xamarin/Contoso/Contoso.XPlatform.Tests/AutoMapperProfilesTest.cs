@@ -1,13 +1,19 @@
 ﻿using AutoMapper;
 using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Contoso.XPlatform.Tests
 {
     public class AutoMapperProfilesTest
     {
-        public AutoMapperProfilesTest()
+        static AutoMapperProfilesTest()
         {
             SetupAutoMapper();
         }
@@ -19,6 +25,7 @@ namespace Contoso.XPlatform.Tests
         }
 
         static MapperConfiguration config;
+        [MemberNotNull(nameof(config))]
         private static void SetupAutoMapper()
         {
             config = new MapperConfiguration(cfg =>

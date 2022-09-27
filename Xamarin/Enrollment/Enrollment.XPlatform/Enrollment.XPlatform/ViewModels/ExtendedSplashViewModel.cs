@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.ViewModels
 {
@@ -111,7 +110,7 @@ namespace Enrollment.XPlatform.ViewModels
 
         private static byte[] GetBytes(string file, Assembly assembly)
         {
-            using (Stream platformStream = assembly.GetManifestResourceStream(file))
+            using (Stream platformStream = assembly.GetManifestResourceStream(file)!)
             {
                 byte[] byteArray = new byte[platformStream.Length];
                 platformStream.Read(byteArray, 0, byteArray.Length);

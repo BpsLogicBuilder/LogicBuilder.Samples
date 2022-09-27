@@ -1,10 +1,14 @@
-﻿using AutoMapper;
-using Enrollment.XPlatform.Flow;
-using Enrollment.XPlatform.Flow.Cache;
-using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Tests.Mocks;
-using Enrollment.XPlatform.ViewModels;
-using LogicBuilder.RulesDirector;
+﻿using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.Forms.Configuration.ListForm;
+using Enrollment.Forms.Configuration.SearchForm;
+using Enrollment.Forms.Configuration.TextForm;
+using Enrollment.XPlatform.Flow.Settings.Screen;
+using Enrollment.XPlatform.Tests.Helpers;
+using Enrollment.XPlatform.ViewModels.DetailForm;
+using Enrollment.XPlatform.ViewModels.EditForm;
+using Enrollment.XPlatform.ViewModels.ListPage;
+using Enrollment.XPlatform.ViewModels.SearchPage;
+using Enrollment.XPlatform.ViewModels.TextPage;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Xunit;
@@ -15,71 +19,65 @@ namespace Enrollment.XPlatform.Tests
     {
         public DependencyResolverTests()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void CanResolveEditFormViewModel()
         {
-            EditFormViewModel editFormViewModel = serviceProvider.GetRequiredService<EditFormViewModel>();
+            ScreenSettingsBase settings = new ScreenSettings<DataFormSettingsDescriptor>(Descriptors.ResidencyForm, Descriptors.ButtonDescriptors, ViewType.EditForm);
+            Func<ScreenSettingsBase, EditFormViewModelBase> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, EditFormViewModelBase>>();
+            EditFormViewModelBase editFormViewModel = factoryFunc(settings);
             Assert.NotNull(editFormViewModel);
         }
 
         [Fact]
         public void CanResolveEditFormViewModelWithNonGenericConstructor()
         {
-            EditFormViewModel editFormViewModel = (EditFormViewModel)serviceProvider.GetRequiredService(typeof(EditFormViewModel));
+            ScreenSettingsBase settings = new ScreenSettings<DataFormSettingsDescriptor>(Descriptors.ResidencyForm, Descriptors.ButtonDescriptors, ViewType.EditForm);
+            Func<ScreenSettingsBase, EditFormViewModelBase> factoryFunc = (Func<ScreenSettingsBase, EditFormViewModelBase>)serviceProvider.GetRequiredService(typeof(Func<ScreenSettingsBase, EditFormViewModelBase>));
+            EditFormViewModelBase editFormViewModel = factoryFunc(settings);
             Assert.NotNull(editFormViewModel);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        [Fact]
+        public void CanCreateDetailViewMode()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .AddTransient<EditFormViewModel, EditFormViewModel>()
-                .BuildServiceProvider();
+            ScreenSettingsBase settings = new ScreenSettings<DataFormSettingsDescriptor>(ReadOnlyDescriptors.ResidencyForm, Descriptors.ButtonDescriptors, ViewType.DetailForm);
+            Func<ScreenSettingsBase, DetailFormViewModelBase> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, DetailFormViewModelBase>>();
+            DetailFormViewModelBase viewModel = factoryFunc(settings);
+            Assert.NotNull(viewModel);
+        }
+
+        [Fact]
+        public void CanCreateListPageViewMode()
+        {
+            ScreenSettingsBase settings = new ScreenSettings<ListFormSettingsDescriptor>(ListFormDescriptors.AboutForm, Descriptors.ButtonDescriptors, ViewType.ListPage);
+            Func<ScreenSettingsBase, ListPageViewModelBase> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, ListPageViewModelBase>>();
+            ListPageViewModelBase viewModel = factoryFunc(settings);
+            Assert.NotNull(viewModel);
+        }
+
+        [Fact]
+        public void CanCreateSearchPageViewMode()
+        {
+            ScreenSettingsBase settings = new ScreenSettings<SearchFormSettingsDescriptor>(SearchFormDescriptors.SudentsForm, Descriptors.ButtonDescriptors, ViewType.SearchPage);
+            Func<ScreenSettingsBase, SearchPageViewModelBase> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, SearchPageViewModelBase>>();
+            SearchPageViewModelBase viewModel = factoryFunc(settings);
+            Assert.NotNull(viewModel);
+        }
+
+        [Fact]
+        public void CanCreateTextPageViewMode()
+        {
+            ScreenSettingsBase settings = new ScreenSettings<TextFormSettingsDescriptor>(TextFormDescriptors.HomePage, Descriptors.ButtonDescriptors, ViewType.TextPage);
+            Func<ScreenSettingsBase, TextPageViewModel> factoryFunc = serviceProvider.GetRequiredService<Func<ScreenSettingsBase, TextPageViewModel>>();
+            TextPageViewModel viewModel = factoryFunc(settings);
+            Assert.NotNull(viewModel);
         }
     }
 }

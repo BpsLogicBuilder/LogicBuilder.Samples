@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
 namespace Enrollment.XPlatform.ViewModels.ReadOnlys
@@ -8,25 +9,30 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
     {
         protected ReadOnlyObjectBase(string name, string templateName, UiNotificationService uiNotificationService)
         {
+            /*MemberNotNull unvailable in 2.1*/
+            _name = null!;
+            _templateName = null!;
+            /*MemberNotNull unavailable in 2.1*/
             Name = name;
             TemplateName = templateName;
             this.uiNotificationService = uiNotificationService;
         }
 
         #region Fields
-        private T _value;
+        private T? _value;
         private string _name;
         private string _templateName;
         private bool _isVisible = true;
         protected UiNotificationService uiNotificationService;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion Fields
 
         #region Properties
         public string Name
         {
             get => _name;
+            //[MemberNotNull(nameof(_name))]
             set
             {
                 if (_name == value)
@@ -40,6 +46,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         public string TemplateName
         {
             get => _templateName;
+            //[MemberNotNull(nameof(_templateName))]
             set
             {
                 if (_templateName == value)
@@ -50,14 +57,14 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        public virtual T Value
+        public virtual T? Value
         {
             get => _value;
             set
             {
-                if (EqualityComparer<T>.Default.Equals(_value, value))
+                if (EqualityComparer<T>.Default.Equals(_value!, value!))/*EqualityComparer not built for nullable reference types in 2.1*/
                 {
-                    if (EqualityComparer<T>.Default.Equals(_value, default))
+                    if (EqualityComparer<T>.Default.Equals(_value!, default!))/*EqualityComparer not built for nullable reference types in 2.1*/
                     {
                         this.uiNotificationService.NotifyPropertyChanged(this.Name);
                     }
@@ -84,7 +91,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        object IFormField.Value { get => Value; set => Value = (T)value; }
+        object? IFormField.Value { get => Value; set => Value = (T?)value; }
         #endregion Properties
 
         public virtual void Clear()
@@ -92,7 +99,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             Value = default;
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

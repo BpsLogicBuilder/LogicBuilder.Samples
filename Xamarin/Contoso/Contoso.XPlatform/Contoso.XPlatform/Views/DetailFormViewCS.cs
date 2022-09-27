@@ -1,5 +1,6 @@
 ﻿using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.DetailForm;
@@ -12,15 +13,19 @@ namespace Contoso.XPlatform.Views
 {
     public class DetailFormViewCS : ContentPage
     {
-        public DetailFormViewCS(DetailFormViewModel detailFormViewModel)
+        public DetailFormViewCS(DetailFormViewModelBase detailFormViewModel)
         {
-            this.detailFormEntityViewModel = detailFormViewModel.DetailFormEntityViewModel;
+            this.detailFormEntityViewModel = detailFormViewModel;
+            /*MemberNotNull unvailable in 2.1*/
+            transitionGrid = null!;
+            page = null!;
+            /*MemberNotNull unvailable in 2.1*/
             AddContent();
             Visual = VisualMarker.Material;
             BindingContext = this.detailFormEntityViewModel;
         }
 
-        private DetailFormEntityViewModelBase detailFormEntityViewModel;
+        private readonly DetailFormViewModelBase detailFormEntityViewModel;
         private Grid transitionGrid;
         private StackLayout page;
 
@@ -31,6 +36,7 @@ namespace Contoso.XPlatform.Views
                 await page.EntranceTransition(transitionGrid, 150);
         }
 
+        //[MemberNotNull(nameof(transitionGrid), nameof(page))]
         private void AddContent()
         {
             LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.detailFormEntityViewModel.Buttons);
@@ -60,12 +66,12 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new StackLayout
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormStackLayoutStyle),
                             Children =
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
                                 .AddBinding
                                 (
@@ -73,13 +79,13 @@ namespace Contoso.XPlatform.Views
                                     GetLabelBinding
                                     (
                                         detailFormEntityViewModel.FormSettings.HeaderBindings,
-                                        $"{nameof(DetailFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        $"{nameof(DetailFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new Label
                                 {
                                     IsVisible = detailFormEntityViewModel.FormSettings.FormType == FormType.Delete,
-                                    Style = LayoutHelpers.GetStaticStyleResource("DetailFormDeleteQuestionStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormDeleteQuestionStyle)
                                 }
                                 .AddBinding
                                 (
@@ -87,7 +93,7 @@ namespace Contoso.XPlatform.Views
                                     GetLabelBinding
                                     (
                                         detailFormEntityViewModel.FormSettings.SubtitleBindings,
-                                        $"{nameof(DetailFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        $"{nameof(DetailFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new ScrollView
@@ -104,7 +110,7 @@ namespace Contoso.XPlatform.Views
                                             (
                                                 new Label
                                                 {
-                                                    Style = LayoutHelpers.GetStaticStyleResource("DetailFormGroupHeaderStyle"),
+                                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormGroupHeaderStyle),
                                                     BindingContext = controlBox
                                                 }
                                                 .AddBinding
@@ -132,11 +138,10 @@ namespace Contoso.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty,
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

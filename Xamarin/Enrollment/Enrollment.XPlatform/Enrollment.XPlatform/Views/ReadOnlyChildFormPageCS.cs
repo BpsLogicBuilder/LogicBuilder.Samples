@@ -1,7 +1,9 @@
 ﻿using Enrollment.Forms.Configuration;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.ViewModels;
 using Enrollment.XPlatform.ViewModels.ReadOnlys;
+using System;
 using System.Linq;
 using Xamarin.Forms;
 
@@ -12,37 +14,44 @@ namespace Enrollment.XPlatform.Views
         public ReadOnlyChildFormPageCS(IReadOnly formReadOnly)
         {
             this.formReadOnly = formReadOnly;
-            this.formLayout = (DetailFormLayout)this.formReadOnly.GetType()
-                .GetProperty(nameof(FormReadOnlyObject<string>.FormLayout))
-                .GetValue(this.formReadOnly);
+            this.formLayout = (DetailFormLayout)
+            (
+                (
+                    this.formReadOnly.GetType()
+                    .GetProperty(nameof(FormReadOnlyObject<string>.FormLayout))
+                         ?? throw new ArgumentException($"{nameof(FormReadOnlyObject<string>.FormLayout)}: {{16836217-4D19-479F-9281-CBF604C62302}}")
+                )
+                .GetValue(this.formReadOnly) ?? throw new ArgumentException($"{nameof(formReadOnly)}: {{9C6FA403-A084-462A-9591-0BEFEA3EC831}}")
+            );
+
 
             Content = new AbsoluteLayout
             {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogAbsoluteLayoutStyle),
                 Children =
                 {
                     new ContentView
                     {
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogContentViewStyle),
                         Content = new StackLayout
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource("ChildFormPopupViewStyle"),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ChildFormPopupViewStyle),
                             Children =
                             {
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderStyle),
                                     Children =
                                     {
                                         new Label
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
-                                        }.AddBinding(Label.TextProperty, new Binding("Title"))
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderLabelStyle),
+                                        }.AddBinding(Label.TextProperty, new Binding(nameof(FormReadOnlyObject<string>.Title)))
                                     }
                                 },
                                 new ScrollView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("ChildFormPopupScrollViewStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ChildFormPopupScrollViewStyle),
                                     Content = this.formLayout.ControlGroupBoxList.Aggregate
                                     (
                                         new StackLayout(),
@@ -55,7 +64,7 @@ namespace Enrollment.XPlatform.Views
                                             (
                                                 new Label
                                                 {
-                                                    Style = LayoutHelpers.GetStaticStyleResource("DetailFormGroupHeaderStyle"),
+                                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormGroupHeaderStyle),
                                                     BindingContext = controlBox
                                                 }
                                                 .AddBinding
@@ -79,10 +88,10 @@ namespace Enrollment.XPlatform.Views
                                         }
                                     )
                                 },
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") },
+                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) },
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterStyle),
                                     ColumnDefinitions =
                                     {
                                         new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) },
@@ -93,22 +102,19 @@ namespace Enrollment.XPlatform.Views
                                     {
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupCancelButtonStyle)
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding("CancelCommand"))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(FormReadOnlyObject<string>.CancelCommand)))
                                         .SetGridColumn(2)
                                     }
                                 }
                             }
                         }
                     }
-                    .AssignDynamicResource(VisualElement.BackgroundColorProperty, "PopupViewBackgroundColor")
-                    .SetAbsoluteLayoutBounds(new Rectangle(0, 0, 1, 1))
-                    .SetAbsoluteLayoutFlags(AbsoluteLayoutFlags.All)
                 }
             };
 
-            this.BackgroundColor = Color.Transparent; 
+            this.BackgroundColor = Color.Transparent;
             Visual = VisualMarker.Material;
             this.BindingContext = this.formReadOnly;
 
@@ -130,7 +136,7 @@ namespace Enrollment.XPlatform.Views
             }
         }
 
-        private IReadOnly formReadOnly;
-        private DetailFormLayout formLayout;
+        private readonly IReadOnly formReadOnly;
+        private readonly DetailFormLayout formLayout;
     }
 }

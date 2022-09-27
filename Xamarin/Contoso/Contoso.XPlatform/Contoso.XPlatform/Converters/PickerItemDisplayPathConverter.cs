@@ -12,7 +12,7 @@ namespace Contoso.XPlatform.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null)
-                return null;
+                return null!;/*ok to return null for converters*/
 
             object bindingContext = ((VisualElement)parameter).BindingContext;
             var dropDownTemplate = bindingContext.GetPropertyValue<DropDownTemplateDescriptor>

@@ -1,4 +1,5 @@
-﻿using Contoso.XPlatform.Utils;
+﻿using Contoso.XPlatform.Constants;
+using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ListPage;
 
@@ -8,15 +9,19 @@ namespace Contoso.XPlatform.Views
 {
     public class ListPageViewCS : ContentPage
     {
-        public ListPageViewCS(ListPageViewModel listPageViewModel)
+        public ListPageViewCS(ListPageViewModelBase listPageViewModel)
         {
-            this.listPageCollectionViewModel = listPageViewModel.ListPageCollectionViewModel;
+            this.listPageCollectionViewModel = listPageViewModel;
+            /*MemberNotNull unvailable in 2.1*/
+            transitionGrid = null!;
+            page = null!;
+            /*MemberNotNull unvailable in 2.1*/
             AddContent();
             Visual = VisualMarker.Material;
             BindingContext = this.listPageCollectionViewModel;
         }
 
-        public ListPageCollectionViewModelBase listPageCollectionViewModel { get; set; }
+        public ListPageViewModelBase listPageCollectionViewModel { get; set; }
         private Grid transitionGrid;
         private StackLayout page;
 
@@ -27,6 +32,7 @@ namespace Contoso.XPlatform.Views
                 await page.EntranceTransition(transitionGrid, 150);
         }
 
+        //[MemberNotNull(nameof(transitionGrid), nameof(page))]
         private void AddContent()
         {
             LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.listPageCollectionViewModel.Buttons);
@@ -39,33 +45,32 @@ namespace Contoso.XPlatform.Views
                     (
                         page = new StackLayout
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ListPageViewLayoutStyle),
                             Children =
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
-                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageCollectionViewModelBase.Title))),
+                                .AddBinding(Label.TextProperty, new Binding(nameof(ListPageViewModelBase.Title))),
                                 new CollectionView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("ListFormCollectionViewStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ListFormCollectionViewStyle),
                                     ItemTemplate = LayoutHelpers.GetCollectionViewItemTemplate
                                     (
                                         this.listPageCollectionViewModel.FormSettings.ItemTemplateName,
                                         this.listPageCollectionViewModel.FormSettings.Bindings
                                     )
                                 }
-                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageCollectionViewModel<Domain.EntityModelBase>.Items)))
+                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(ListPageViewModel<Domain.EntityModelBase>.Items)))
                             }
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty,
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

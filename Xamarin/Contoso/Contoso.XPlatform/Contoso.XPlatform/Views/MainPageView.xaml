@@ -2,7 +2,9 @@
 <FlyoutPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.XPlatform.Views.MainPageView"
-             xmlns:pages="clr-namespace:Contoso.XPlatform.Views">
+             xmlns:pages="clr-namespace:Contoso.XPlatform.Views"
+             BackgroundColor="{DynamicResource PageBackgroundColor}"
+             Title="MainPageView">
     <FlyoutPage.Flyout>
         <pages:Flyout x:Name="flyout" />
     </FlyoutPage.Flyout>

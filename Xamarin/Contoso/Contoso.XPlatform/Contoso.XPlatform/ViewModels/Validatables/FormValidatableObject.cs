@@ -1,45 +1,83 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.Views.Factories;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class FormValidatableObject<T> : ValidatableObjectBase<T>, IDisposable where T : class
     {
-        public FormValidatableObject(string name, IChildFormGroupSettings setting, IEnumerable<IValidationRule> validations, IContextProvider contextProvider) : base(name, setting.FormGroupTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public FormValidatableObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IDirectiveManagersFactory directiveManagersFactory,
+            IEntityUpdater entityUpdater,
+            IPopupFormFactory popupFormFactory,
+            IPropertiesUpdater propertiesUpdater,
+            UiNotificationService uiNotificationService,
+            string name,
+            IChildFormGroupSettings setting,
+            IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, uiNotificationService)
         {
             this.FormSettings = setting;
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            _placeholder = null!;
+            FormLayout = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = this.FormSettings.Title;
             this.Placeholder = this.FormSettings.ValidFormControlText;
-            this.entityUpdater = contextProvider.EntityUpdater;
-            this.propertiesUpdater = contextProvider.PropertiesUpdater;
-            this.fieldsCollectionBuilder = contextProvider.FieldsCollectionBuilder;
-            this.updateOnlyFieldsCollectionBuilder = contextProvider.UpdateOnlyFieldsCollectionBuilder;
+            this.entityUpdater = entityUpdater;
+            this.popupFormFactory = popupFormFactory;
+            this.propertiesUpdater = propertiesUpdater;
+            this.fieldsCollectionBuilder = collectionBuilderFactory.GetFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            );
+
+            this.updateOnlyFieldsCollectionBuilder = collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
+            (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                this.FormSettings.ValidationMessages,
+                null,
+                null
+            );
+
             CreateFieldsCollection();
 
-            this.directiveManagers = new DirectiveManagers<T>
+            this.directiveManagers = (DirectiveManagers<T>)directiveManagersFactory.GetDirectiveManagers
             (
+                typeof(T),
                 FormLayout.Properties,
-                FormSettings,
-                contextProvider
+                FormSettings
             );
 
             propertyChangedSubscription = this.uiNotificationService.ValueChanged.Subscribe(FieldChanged);
         }
 
+        //[MemberNotNull(nameof(FormLayout))]
         protected virtual void CreateFieldsCollection()
         {
-            FormLayout = updateOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(T));
+            FormLayout = updateOnlyFieldsCollectionBuilder.CreateFields();
         }
 
-        public event EventHandler Cancelled;
-        public event EventHandler Submitted;
+        public event EventHandler? Cancelled;
+        public event EventHandler? Submitted;
 
         public EditFormLayout FormLayout { get; set; }
         
@@ -50,12 +88,14 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private readonly DirectiveManagers<T> directiveManagers;
 
         protected readonly IFieldsCollectionBuilder fieldsCollectionBuilder;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly IUpdateOnlyFieldsCollectionBuilder updateOnlyFieldsCollectionBuilder;
 
         private string _title;
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -71,7 +111,8 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private string _placeholder;
         public string Placeholder
         {
-            get => _placeholder; 
+            get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
             set
             {
                 if (_placeholder == value)
@@ -82,7 +123,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -114,7 +155,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             }
         );
 
-        private ICommand _submitCommand;
+        private ICommand? _submitCommand;
         public ICommand SubmitCommand
         {
             get
@@ -135,9 +176,9 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
                         Placeholder = IsValid ? this.FormSettings.ValidFormControlText : this.FormSettings.InvalidFormControlText;
 
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PopModalAsync()
+                            () => App.Current!.MainPage!.Navigation.PopModalAsync()
                         );
 
                         Submitted?.Invoke(this, new EventArgs());
@@ -149,7 +190,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             }
         }
 
-        private ICommand _openCommand;
+        private ICommand? _openCommand;
         public ICommand OpenCommand
         {
             get
@@ -161,11 +202,11 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PushModalAsync
+                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null here*/
                             (
-                                new Views.ChildFormPageCS(this)
+                                popupFormFactory.CreateChildFormPage(this)
                             )
                         );
                     }
@@ -175,7 +216,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             }
         }
 
-        private ICommand _cancelCommand;
+        private ICommand? _cancelCommand;
         public ICommand CancelCommand
         {
             get
@@ -194,9 +235,9 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
         protected virtual void Cancel()
         {
-            Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+            MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current.MainPage.Navigation.PopModalAsync()
+                () => App.Current!.MainPage!.Navigation.PopModalAsync()
             );
 
             Cancelled?.Invoke(this, new EventArgs());
@@ -211,6 +252,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                 if (property is IDisposable disposable)
                     Dispose(disposable);
             }
+            GC.SuppressFinalize(this);
         }
 
         public override bool Validate()
@@ -238,7 +280,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
         private void FieldChanged(string fieldName)
         {
-            (SubmitCommand as Command).ChangeCanExecute();
+            ((Command)SubmitCommand).ChangeCanExecute();
         }
     }
 }

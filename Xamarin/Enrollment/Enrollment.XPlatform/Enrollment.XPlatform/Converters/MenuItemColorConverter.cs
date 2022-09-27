@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Enrollment.XPlatform.Constants;
+using System;
 using System.Globalization;
-using System.Text;
 using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.Converters
@@ -10,18 +9,21 @@ namespace Enrollment.XPlatform.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            if (Application.Current == null)
+                throw new ArgumentException(nameof(Application.Current));
+
             bool active = (bool)value;
             if (active)
             {
-                if (!Application.Current.Resources.TryGetValue("PrimaryColor", out object color))
-                    throw new ArgumentException("PrimaryColor");
+                if (!Application.Current.Resources.TryGetValue(ColorKeys.PrimaryColor, out object color))
+                    throw new ArgumentException(ColorKeys.PrimaryColor);
 
                 return color;
             }
             else
             {
-                if (!Application.Current.Resources.TryGetValue("PrimaryTextColor", out object color))
-                    throw new ArgumentException("PrimaryTextColor");
+                if (!Application.Current.Resources.TryGetValue(ColorKeys.PrimaryTextColor, out object color))
+                    throw new ArgumentException(ColorKeys.PrimaryTextColor);
 
                 return color;
             }

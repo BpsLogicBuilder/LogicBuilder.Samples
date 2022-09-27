@@ -6,6 +6,6 @@ namespace Enrollment.XPlatform.Services
 {
     public interface IReadOnlyFieldsCollectionBuilder
     {
-        DetailFormLayout CreateFieldsCollection(IFormGroupSettings formSettings, Type modelType);
+        DetailFormLayout CreateFields();
     }
 }

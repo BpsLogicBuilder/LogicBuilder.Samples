@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Contoso.Domain.Entities;
-using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Cache;
+﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Tests.Helpers;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Tests.Mocks;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,18 +17,18 @@ namespace Contoso.XPlatform.Tests
     {
         public ReadOnlyPropertiesUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapInstructorModelToIReadOnlyListWithInlineOfficeAssignment()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -62,11 +60,13 @@ namespace Contoso.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -77,20 +77,20 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["ID"]);
             Assert.Equal("John", propertiesDictionary["FirstName"]);
             Assert.Equal("Smith", propertiesDictionary["LastName"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["HireDate"]);
             Assert.Equal("Location1", propertiesDictionary["OfficeAssignment.Location"]);
-            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]).First().CourseTitle);
+            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]!).First().CourseTitle);
         }
 
         [Fact]
         public void MapInstructorModelToIReadOnlyeListWithPopupOfficeAssignment()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -122,11 +122,13 @@ namespace Contoso.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -137,20 +139,20 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["ID"]);
             Assert.Equal("John", propertiesDictionary["FirstName"]);
             Assert.Equal("Smith", propertiesDictionary["LastName"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["HireDate"]);
-            Assert.Equal("Location1", ((OfficeAssignmentModel)propertiesDictionary["OfficeAssignment"]).Location);
-            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]).First().CourseTitle);
+            Assert.Equal("Location1", ((OfficeAssignmentModel)propertiesDictionary["OfficeAssignment"]!).Location);
+            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]!).First().CourseTitle);
         }
 
         [Fact]
         public void MapDepartmentModelToIReadOnlyList()
         {
             //arrange
-            DepartmentModel department = new DepartmentModel
+            DepartmentModel department = new()
             {
                 DepartmentID = 1,
                 Name = "Mathematics",
@@ -179,11 +181,13 @@ namespace Contoso.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -194,21 +198,21 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
 
             Assert.Equal(1, propertiesDictionary["DepartmentID"]);
             Assert.Equal("Mathematics", propertiesDictionary["Name"]);
             Assert.Equal(100000m, propertiesDictionary["Budget"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["StartDate"]);
             Assert.Equal(1, propertiesDictionary["InstructorID"]);
-            Assert.Equal("Trigonometry", ((IEnumerable<CourseModel>)propertiesDictionary["Courses"]).First().Title);
+            Assert.Equal("Trigonometry", ((IEnumerable<CourseModel>)propertiesDictionary["Courses"]!).First().Title);
         }
 
         [Fact]
         public void MapCourseModel_WithMultipleGroupBoxSettingsDescriptorFields_ToIReadOnlyList()
         {
             //arrange
-            CourseModel courseModel = new CourseModel
+            CourseModel courseModel = new()
             {
                 CourseID = 1,
                 Credits = 3,
@@ -216,11 +220,13 @@ namespace Contoso.XPlatform.Tests
                 DepartmentID = 2
             };
 
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.CourseForm,
                 typeof(CourseModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -230,57 +236,23 @@ namespace Contoso.XPlatform.Tests
                 ReadOnlyDescriptors.CourseForm.FieldSettings
             );
 
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(1, propertiesDictionary["CourseID"]);
             Assert.Equal(3, propertiesDictionary["Credits"]);
             Assert.Equal("Trigonometry", propertiesDictionary["Title"]);
             Assert.Equal(2, propertiesDictionary["DepartmentID"]);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private IReadOnlyFieldsCollectionBuilder GetReadOnlyFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IReadOnlyFieldsCollectionBuilder, ReadOnlyFieldsCollectionBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetReadOnlyFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                null,
+                null
+            );
         }
     }
 }

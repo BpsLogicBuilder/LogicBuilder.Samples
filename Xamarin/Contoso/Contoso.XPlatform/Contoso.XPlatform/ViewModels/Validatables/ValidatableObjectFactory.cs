@@ -15,8 +15,11 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             return (IValidatable)validatable;
         }
 
-        public static object GetValue(FormControlSettingsDescriptor setting)
-            => typeof(ValidatableObjectFactory)
+        public static object? GetValue(FormControlSettingsDescriptor setting)
+        {
+            return
+            (
+                typeof(ValidatableObjectFactory)
                 .GetMethod
                 (
                     "_GetValue",
@@ -25,12 +28,17 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                     null,
                     new Type[]
                     {
-                        typeof(FormControlSettingsDescriptor)
+                typeof(FormControlSettingsDescriptor)
                     },
                     null
-                )
-                .MakeGenericMethod(Type.GetType(setting.Type))
-                .Invoke(null, new object[] { setting });
+                ) ?? throw new ArgumentException($"{nameof(_GetValue)}: {{3A81E2A1-3431-4B49-A319-741C431AB7F2}}")
+            )
+            .MakeGenericMethod
+            (
+                Type.GetType(setting.Type) ?? throw new ArgumentException($"{nameof(_GetValue)}: {{0A43E0B0-8BC6-4DF1-A159-E5E0F30521CB}}")
+            )
+            .Invoke(null, new object[] { setting });
+        }
 
         private static T _GetValue<T>(FormControlSettingsDescriptor setting, object defaultValue)
         {
@@ -45,7 +53,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             => _GetValue<T>
             (
                 setting, 
-                typeof(T) == typeof(DateTime) ? DefaultDateTime : default(T)
+                typeof(T) == typeof(DateTime) ? DefaultDateTime : default(T)!
             );
     }
 }

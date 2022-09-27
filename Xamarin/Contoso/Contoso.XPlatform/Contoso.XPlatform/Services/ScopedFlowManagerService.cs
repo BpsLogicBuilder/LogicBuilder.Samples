@@ -82,17 +82,17 @@ namespace Contoso.XPlatform.Services
             this.FlowManager.FlowDataCache.Items[key] = value;
         }
 
-        public object GetFlowDataCacheItem(string key)
+        public object? GetFlowDataCacheItem(string key)
         {
             if (this.FlowManager.FlowDataCache.Items == null)
                 return null;
 
-            return this.FlowManager.FlowDataCache.Items.TryGetValue(key, out object value) ? value : null;
+            return this.FlowManager.FlowDataCache.Items.TryGetValue(key, out object? value) ? value : null;
         }
 
         public void CopyFlowItems()
         {
-            this.FlowManager.FlowState = uiNotificationService.FlowSettings.FlowState;
+            this.FlowManager.FlowState = uiNotificationService.FlowSettings!.FlowState;/*FlowSettings not null here*/
             this.FlowManager.FlowDataCache.PersistentKeys = new List<string>(uiNotificationService.FlowSettings.FlowDataCache.PersistentKeys);
             this.FlowManager.FlowDataCache.Items = new Dictionary<string, object>(uiNotificationService.FlowSettings.FlowDataCache.Items);
             this.FlowManager.FlowDataCache.NavigationBar = new NavigationBarDescriptor
@@ -105,13 +105,13 @@ namespace Contoso.XPlatform.Services
 
         public void CopyPersistentFlowItems()
         {
-            this.FlowManager.FlowDataCache.PersistentKeys = new List<string>(uiNotificationService.FlowSettings.FlowDataCache.PersistentKeys);
+            this.FlowManager.FlowDataCache.PersistentKeys = new List<string>(uiNotificationService.FlowSettings?.FlowDataCache.PersistentKeys ?? new List<string>());
             this.FlowManager.FlowDataCache.Items = new Dictionary<string, object>
             (
-                uiNotificationService.FlowSettings.FlowDataCache.Items.Where
+                uiNotificationService.FlowSettings?.FlowDataCache.Items.Where
                 (
                     kvp => uiNotificationService.FlowSettings.FlowDataCache.PersistentKeys.Contains(kvp.Key)
-                )
+                ) ?? new List<KeyValuePair<string, object>>()
             );
         }
     }

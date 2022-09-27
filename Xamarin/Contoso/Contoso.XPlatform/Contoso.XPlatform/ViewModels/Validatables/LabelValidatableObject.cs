@@ -1,15 +1,19 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Validators;
+﻿using Contoso.XPlatform.Validators;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class LabelValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public LabelValidatableObject(string name, string templateName, string title, string placeholder, string stringFormat, IEnumerable<IValidationRule> validations, UiNotificationService uiNotificationService)
+        public LabelValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string title, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations)
             : base(name, templateName, validations, uiNotificationService)
         {
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            _placeholder = null!;
+            /*MemberNotNull unavailable in 2.1*/
             Placeholder = placeholder;
             Title = title;
             this.stringFormat = stringFormat;
@@ -21,17 +25,17 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         {
             get
             {
-                if (EqualityComparer<T>.Default.Equals(Value, default(T)))
+                if (EqualityComparer<T>.Default.Equals(Value!, default(T)!))/*EqualityComparer not built for nullable reference types in 2.1*/
                     return string.Empty;
 
                 if (string.IsNullOrEmpty(this.stringFormat))
-                    return Value.ToString();
+                    return Value?.ToString() ?? string.Empty;
 
                 return string.Format(CultureInfo.CurrentCulture, this.stringFormat, Value);
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -46,6 +50,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -59,7 +64,9 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private string _placeholder;
         public string Placeholder
         {
-            get => _placeholder; set
+            get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
+            set
             {
                 if (_placeholder == value)
                     return;

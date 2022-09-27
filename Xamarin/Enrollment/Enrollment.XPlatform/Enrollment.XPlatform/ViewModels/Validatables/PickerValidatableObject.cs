@@ -5,9 +5,9 @@ using Enrollment.Common.Configuration.ExpressionDescriptors;
 using Enrollment.Forms.Configuration;
 using Enrollment.Parameters.Expressions;
 using Enrollment.Utils;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Flow.Requests;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.Validators;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,18 +21,28 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class PickerValidatableObject<T> : ValidatableObjectBase<T>, IHasItemsSourceValidatable
     {
-        public PickerValidatableObject(string name, T defaultValue, DropDownTemplateDescriptor dropDownTemplate, IEnumerable<IValidationRule> validations, IContextProvider contextProvider) 
-            : base(name, dropDownTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public PickerValidatableObject(
+            IHttpService httpService,
+            IMapper mapper,
+            UiNotificationService uiNotificationService,
+            string name,
+            T defaultValue,
+            DropDownTemplateDescriptor dropDownTemplate,
+            IEnumerable<IValidationRule>? validations)
+            : base(name, dropDownTemplate.TemplateName, validations, uiNotificationService)
         {
             this.defaultValue = defaultValue;
             this._dropDownTemplate = dropDownTemplate;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = this._dropDownTemplate.LoadingIndicatorText;
-            this.mapper = contextProvider.Mapper;
+            this.mapper = mapper;
             GetItemSource();
         }
 
-        private T defaultValue;
+        private readonly T defaultValue;
         private readonly IHttpService httpService;
         private readonly DropDownTemplateDescriptor _dropDownTemplate;
         private readonly IMapper mapper;
@@ -43,6 +53,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -53,8 +64,8 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        private object _selectedItem;
-        public object SelectedItem
+        private object? _selectedItem;
+        public object? SelectedItem
         {
             get
             {
@@ -65,7 +76,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                 (
                     i => EqualityComparer<T>.Default.Equals
                     (
-                        Value,
+                        Value!,/*EqualityComparer not built for nullable reference types in 2.1*/
                         i.GetPropertyValue<T>(_dropDownTemplate.ValueField)
                     )
                 );
@@ -88,7 +99,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -98,8 +109,8 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        private List<object> _items;
-        public List<object> Items
+        private List<object>? _items;
+        public List<object>? Items
         {
             get => _items;
             set
@@ -132,10 +143,10 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     this._dropDownTemplate.RequestDetails.DataSourceUrl
                 );
 
-                if (response?.Success != true)
+                if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current.MainPage.DisplayAlert
+                    await App.Current!.MainPage!.DisplayAlert
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),
@@ -144,10 +155,16 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 #endif
                     return;
                 }
-
-                Items = null;
-                await System.Threading.Tasks.Task.Delay(400);
-                Items = ((GetListResponse)response).List.Cast<object>().ToList();
+#if ANDROID
+                //This Xamarin.Forms Android issue no longer seems to be a problem in MAUI
+                //Items = null;
+                //await System.Threading.Tasks.Task.Delay(400);
+#endif
+#if WINDOWS
+                //MAUI bug https://github.com/dotnet/maui/issues/9739
+                Items = new List<object>(((GetListResponse)response).List);
+#endif
+                Items = new List<object>(((GetListResponse)response).List);
                 OnPropertyChanged(nameof(SelectedItem));
 
                 this.Title = this._dropDownTemplate.TitleText;
@@ -161,9 +178,13 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
         public async void Reload(object entity, Type entityType)
         {
-            using(IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
+            using (IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>())
             {
-                flowManagerService.SetFlowDataCacheItem(entityType.FullName, entity);
+                flowManagerService.SetFlowDataCacheItem
+                (
+                    entityType.FullName ?? throw new ArgumentException($"{nameof(entityType.FullName)}: {{65A904DC-79FE-4870-B6DA-EF68600CC7C4}}"), 
+                    entity
+                );
 
                 await flowManagerService.RunFlow
                 (
@@ -178,7 +199,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
                 SelectorLambdaOperatorDescriptor selector = this.mapper.Map<SelectorLambdaOperatorDescriptor>
                 (
-                    flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName)
+                    flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
                 );
 
                 this.Title = this._dropDownTemplate.LoadingIndicatorText;
@@ -190,19 +211,19 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
             IsValid = Validate();
 
-            T GetExistingValue()
+            T? GetExistingValue()
             {
-                object existing = Items?.FirstOrDefault
+                object? existing = Items?.FirstOrDefault
                 (
                     i => EqualityComparer<T>.Default.Equals
                     (
-                        Value,
+                        Value!,/*EqualityComparer not built for nullable reference types in 2.1*/
                         i.GetPropertyValue<T>(_dropDownTemplate.ValueField)
                     )
                 );
 
-                return existing == null 
-                    ? this.defaultValue ?? default 
+                return existing == null
+                    ? this.defaultValue ?? default
                     : existing.GetPropertyValue<T>(_dropDownTemplate.ValueField);
             }
         }

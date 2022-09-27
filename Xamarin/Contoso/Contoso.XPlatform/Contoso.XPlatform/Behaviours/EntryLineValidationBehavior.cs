@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Contoso.XPlatform.Constants;
+using Xamarin.Forms;
 
 namespace Contoso.XPlatform.Behaviours
 {
@@ -6,12 +7,12 @@ namespace Contoso.XPlatform.Behaviours
     {
         public static readonly BindableProperty IsValidProperty = BindableProperty.Create
         (
-            nameof(IsValid), 
-            typeof(bool), 
-            typeof(EntryLineValidationBehavior), 
-            true, 
-            BindingMode.Default, 
-            null, 
+            nameof(IsValid),
+            typeof(bool),
+            typeof(EntryLineValidationBehavior),
+            true,
+            BindingMode.Default,
+            null,
             (bindable, oldValue, newValue) => OnIsValidChanged(bindable, newValue)
         );
 
@@ -58,10 +59,13 @@ namespace Contoso.XPlatform.Behaviours
 
         private static void UpdatePlaceholderColor(bool isDirty, bool isValid, EntryLineValidationBehavior isValidBehavior)
         {
+            if (isValidBehavior.AssociatedObject == null)
+                return;
+
             if (!isDirty || isValid)
-                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, "TertiaryTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, ColorKeys.TertiaryTextColor);
             else
-                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, "ErrorTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, ColorKeys.ErrorTextColor);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Enrollment.XPlatform.Constants;
+using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.Behaviours
 {
@@ -6,12 +7,12 @@ namespace Enrollment.XPlatform.Behaviours
     {
         public static readonly BindableProperty IsValidProperty = BindableProperty.Create
         (
-            nameof(IsValid), 
-            typeof(bool), 
-            typeof(EntryLineValidationBehavior), 
-            true, 
-            BindingMode.Default, 
-            null, 
+            nameof(IsValid),
+            typeof(bool),
+            typeof(EntryLineValidationBehavior),
+            true,
+            BindingMode.Default,
+            null,
             (bindable, oldValue, newValue) => OnIsValidChanged(bindable, newValue)
         );
 
@@ -58,10 +59,13 @@ namespace Enrollment.XPlatform.Behaviours
 
         private static void UpdatePlaceholderColor(bool isDirty, bool isValid, EntryLineValidationBehavior isValidBehavior)
         {
+            if (isValidBehavior.AssociatedObject == null)
+                return;
+
             if (!isDirty || isValid)
-                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, "TertiaryTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, ColorKeys.TertiaryTextColor);
             else
-                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, "ErrorTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Entry.PlaceholderColorProperty, ColorKeys.ErrorTextColor);
         }
     }
 }

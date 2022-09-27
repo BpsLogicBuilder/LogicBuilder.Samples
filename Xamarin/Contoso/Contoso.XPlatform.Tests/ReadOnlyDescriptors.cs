@@ -4,14 +4,17 @@ using Contoso.Domain.Entities;
 using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.DataForm;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Contoso.XPlatform.Tests
 {
-    public static class ReadOnlyDescriptors
+    internal static class ReadOnlyDescriptors
     {
-        internal static DataFormSettingsDescriptor InstructorFormWithInlineOfficeAssignment = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor InstructorFormWithInlineOfficeAssignment = new()
         {
             Title = "Instructor",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -137,7 +140,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.InstructorModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor InstructorFormWithPopupOfficeAssignment = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor InstructorFormWithPopupOfficeAssignment = new()
         {
             Title = "Instructor",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -264,12 +267,28 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.InstructorModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor DepartmentForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor DepartmentForm = new()
         {
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
             {
-                GetUrl = "/Department/GetSingle"
+                GetUrl = "/Department/GetSingle",
+                ModelType = typeof(DepartmentModel).AssemblyQualifiedName,
+                DataType = typeof(Department).AssemblyQualifiedName,
+                Filter = new FilterLambdaOperatorDescriptor
+                {
+                    FilterBody = new EqualsBinaryOperatorDescriptor
+                    {
+                        Left = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "f" },
+                            MemberFullName = "DepartmentID"
+                        },
+                        Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 1 }
+                    },
+                    SourceElementType = typeof(DepartmentModel).AssemblyQualifiedName,
+                    ParameterName = "f"
+                }
             },
             FieldSettings = new List<FormItemSettingsDescriptor>
             {
@@ -569,7 +588,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.DepartmentModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor DepartmentFormWithAllItemsGrouped = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor DepartmentFormWithAllItemsGrouped = new()
         {
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -888,7 +907,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.DepartmentModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor DepartmentFormWithSomeItemsGrouped = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor DepartmentFormWithSomeItemsGrouped = new()
         {
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -1200,7 +1219,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.DepartmentModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor CourseForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor CourseForm = new()
         {
             Title = "Course",
             RequestDetails = new FormRequestDetailsDescriptor

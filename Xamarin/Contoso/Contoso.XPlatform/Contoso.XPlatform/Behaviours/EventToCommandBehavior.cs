@@ -7,7 +7,7 @@ namespace Contoso.XPlatform.Behaviours
 {
     public class EventToCommandBehavior : BehaviorBase<VisualElement>
     {
-        Delegate eventHandler;
+        Delegate? eventHandler;
 
         public static readonly BindableProperty EventNameProperty = BindableProperty.Create("EventName", typeof(string), typeof(EventToCommandBehavior), null, propertyChanged: OnEventNameChanged);
         public static readonly BindableProperty CommandProperty = BindableProperty.Create("Command", typeof(ICommand), typeof(EventToCommandBehavior), null);
@@ -57,13 +57,13 @@ namespace Contoso.XPlatform.Behaviours
                 return;
             }
 
-            EventInfo eventInfo = AssociatedObject.GetType().GetRuntimeEvent(name);
-            if (eventInfo == null)
+            EventInfo? eventInfo = AssociatedObject?.GetType().GetRuntimeEvent(name);
+            if (eventInfo?.EventHandlerType == null)
             {
                 throw new ArgumentException(string.Format("EventToCommandBehavior: Can't register the '{0}' event.", EventName));
             }
-            MethodInfo methodInfo = typeof(EventToCommandBehavior).GetTypeInfo().GetDeclaredMethod("OnEvent");
-            eventHandler = methodInfo.CreateDelegate(eventInfo.EventHandlerType, this);
+            MethodInfo? methodInfo = typeof(EventToCommandBehavior).GetTypeInfo().GetDeclaredMethod("OnEvent");
+            eventHandler = methodInfo?.CreateDelegate(eventInfo.EventHandlerType, this);
             eventInfo.AddEventHandler(AssociatedObject, eventHandler);
         }
 
@@ -78,7 +78,7 @@ namespace Contoso.XPlatform.Behaviours
             {
                 return;
             }
-            EventInfo eventInfo = AssociatedObject.GetType().GetRuntimeEvent(name);
+            EventInfo? eventInfo = AssociatedObject?.GetType().GetRuntimeEvent(name);
             if (eventInfo == null)
             {
                 throw new ArgumentException(string.Format("EventToCommandBehavior: Can't de-register the '{0}' event.", EventName));

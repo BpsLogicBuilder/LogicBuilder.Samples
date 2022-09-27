@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Contoso.XPlatform.Constants;
+using Xamarin.Forms;
 
 namespace Contoso.XPlatform.Behaviours
 {
@@ -58,10 +59,13 @@ namespace Contoso.XPlatform.Behaviours
 
         private static void UpdatePlaceholderColor(bool isDirty, bool isValid, PickerValidationBehavior isValidBehavior)
         {
+            if (isValidBehavior.AssociatedObject == null)
+                return;
+
             if (!isDirty || isValid)
-                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, "TertiaryTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, ColorKeys.TertiaryTextColor);
             else
-                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, "ErrorTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, ColorKeys.ErrorTextColor);
         }
     }
 }

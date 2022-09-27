@@ -3,13 +3,14 @@ using Contoso.Forms.Configuration;
 using Contoso.Forms.Parameters;
 using Contoso.XPlatform.AutoMapperProfiles;
 using LogicBuilder.Forms.Parameters;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace Contoso.XPlatform.Tests
 {
     public class CommandButtonTests
     {
-        public CommandButtonTests()
+        static CommandButtonTests()
         {
             SetupAutoMapper();
         }
@@ -20,7 +21,7 @@ namespace Contoso.XPlatform.Tests
         [Fact]
         public void Map_ConnectorParameters_To_CommandButtonDescriptor()
         {
-            ConnectorParameters parameters = new ConnectorParameters
+            ConnectorParameters parameters = new()
             {
                 Id = 1,
                 ShortString = "EDT",
@@ -36,6 +37,7 @@ namespace Contoso.XPlatform.Tests
             Assert.Equal("SubmitCommand", button.Command);
         }
 
+        [MemberNotNull(nameof(mapper))]
         private static void SetupAutoMapper()
         {
             var config = new MapperConfiguration(cfg =>

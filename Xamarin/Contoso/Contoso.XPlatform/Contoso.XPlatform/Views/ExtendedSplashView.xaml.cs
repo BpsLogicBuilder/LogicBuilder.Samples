@@ -10,26 +10,27 @@ namespace Contoso.XPlatform.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ExtendedSplashView : ContentPage
     {
-        public ExtendedSplashView()
+        public ExtendedSplashView(ExtendedSplashViewModel extendedSplashViewModel)
         {
             InitializeComponent();
             Visual = VisualMarker.Material;
-            this.BindingContext = App.ServiceProvider.GetRequiredService<ExtendedSplashViewModel>();
+            this.BindingContext = extendedSplashViewModel;
         }
 
         protected async override void OnAppearing()
         {
-            await LoadRules(BindingContext as ExtendedSplashViewModel);
+            await LoadRules((ExtendedSplashViewModel)BindingContext);
             base.OnAppearing();
         }
 
-        async Task LoadRules(ExtendedSplashViewModel viewModel)
+        static async Task LoadRules(ExtendedSplashViewModel viewModel)
         {
             await viewModel.AddRulesCacheService();
             App.ServiceProvider = App.ServiceCollection.BuildServiceProvider();
             MainThread.BeginInvokeOnMainThread
             (
-                () => (Application.Current as App).MainPage = new MainPageView()
+                () => ((App)Application.Current!).MainPage = App.ServiceProvider.GetRequiredService<MainPageView>()/*Application.Current not null here*/
+                                                                                        /*Can't inject MainPageView since we're rebuilding the service provider*/
             );
         }
     }

@@ -1,14 +1,14 @@
-using AutoMapper;
+﻿using AutoMapper;
 using Enrollment.AutoMapperProfiles;
 using Enrollment.XPlatform.AutoMapperProfiles;
-using System;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace Enrollment.XPlatform.Tests
 {
     public class AutoMapperProfilesTest
     {
-        public AutoMapperProfilesTest()
+        static AutoMapperProfilesTest()
         {
             SetupAutoMapper();
         }
@@ -20,6 +20,7 @@ namespace Enrollment.XPlatform.Tests
         }
 
         static MapperConfiguration config;
+        [MemberNotNull(nameof(config))]
         private static void SetupAutoMapper()
         {
             config = new MapperConfiguration(cfg =>

@@ -18,12 +18,12 @@ namespace Contoso.XPlatform.Services
             this.mapper = mapper;
         }
 
-        public TModel ToModelObject<TModel>(ObservableCollection<IValidatable> properties, List<FormItemSettingsDescriptor> fieldSettings, TModel destination = null) where TModel : class
+        public TModel ToModelObject<TModel>(ObservableCollection<IValidatable> properties, List<FormItemSettingsDescriptor> fieldSettings, TModel? destination = null) where TModel : class
         {
             return properties.ToModelObject(this.mapper, fieldSettings, destination);
         }
 
-        public object ToModelObject(Type modelType, ObservableCollection<IValidatable> properties, List<FormItemSettingsDescriptor> fieldSettings, object destination = null)
+        public object ToModelObject(Type modelType, ObservableCollection<IValidatable> properties, List<FormItemSettingsDescriptor> fieldSettings, object? destination = null)
         {
             return properties.ToModelObject(modelType, this.mapper, fieldSettings, destination);
         }

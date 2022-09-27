@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.ViewModels.Validatables;
 using LogicBuilder.Expressions.Utils;
 using LogicBuilder.RulesDirector;
@@ -19,18 +19,18 @@ namespace Contoso.XPlatform.Services
             this.mapper = mapper;
         }
 
-        public void UpdateProperties(IEnumerable<IValidatable> properties, object entity, List<FormItemSettingsDescriptor> fieldSettings, string parentField = null) 
+        public void UpdateProperties(IEnumerable<IValidatable> properties, object? entity, List<FormItemSettingsDescriptor> fieldSettings, string? parentField = null) 
             => UpdateValidatables(properties, entity, fieldSettings, parentField);
 
-        private void UpdateValidatables(IEnumerable<IValidatable> properties, object source, List<FormItemSettingsDescriptor> fieldSettings, string parentField = null)
+        private void UpdateValidatables(IEnumerable<IValidatable> properties, object? source, List<FormItemSettingsDescriptor> fieldSettings, string? parentField = null)
         {
-            IDictionary<string, object> existingValues = mapper.Map<Dictionary<string, object>>(source) ?? new Dictionary<string, object>();
+            IDictionary<string, object?> existingValues = mapper.Map<Dictionary<string, object?>>(source) ?? new Dictionary<string, object?>();
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(p => p.Name);
             foreach (var setting in fieldSettings)
             {
                 if (setting is MultiSelectFormControlSettingsDescriptor multiSelectFormControlSetting)
                 {
-                    if (existingValues.TryGetValue(multiSelectFormControlSetting.Field, out object @value) && @value != null)
+                    if (existingValues.TryGetValue(multiSelectFormControlSetting.Field, out object? @value) && @value != null)
                     {
                         IValidatable multiSelectValidatable = propertiesDictionary[GetFieldName(multiSelectFormControlSetting.Field)];
 
@@ -41,12 +41,12 @@ namespace Contoso.XPlatform.Services
                         (
                             multiSelectValidatable.Type,
                             new object[] { @value }
-                        );
+                        ) ?? throw new ArgumentException($"{multiSelectValidatable.Type}: {{C3ABA8E6-A30F-485B-9D33-AF60D72E8AD0}}");
                     }
                 }
                 else if (setting is FormControlSettingsDescriptor controlSetting)
                 {//must stay after MultiSelect because MultiSelect extends FormControl
-                    if (existingValues.TryGetValue(controlSetting.Field, out object @value) && @value != null)
+                    if (existingValues.TryGetValue(controlSetting.Field, out object? @value) && @value != null)
                     {
                         if (!propertiesDictionary[GetFieldName(controlSetting.Field)].Type.AssignableFrom(@value.GetType()))
                             throw new ArgumentException($"{nameof(controlSetting)}: F4B014E4-B04C-455D-8AE5-1F2551BEC190");
@@ -56,7 +56,7 @@ namespace Contoso.XPlatform.Services
                 }
                 else if (setting is FormGroupSettingsDescriptor formGroupSetting)
                 {
-                    if (existingValues.TryGetValue(formGroupSetting.Field, out object @value) && @value != null)
+                    if (existingValues.TryGetValue(formGroupSetting.Field, out object? @value) && @value != null)
                     {
                         if (formGroupSetting.FormGroupTemplate == null)
                             throw new ArgumentException($"{nameof(formGroupSetting.FormGroupTemplate)}: 74E0697E-B5EF-4939-B0B4-8B7E4AE5544B");
@@ -76,7 +76,7 @@ namespace Contoso.XPlatform.Services
                 }
                 else if (setting is FormGroupArraySettingsDescriptor formGroupArraySetting)
                 {
-                    if (existingValues.TryGetValue(formGroupArraySetting.Field, out object @value) && @value != null)
+                    if (existingValues.TryGetValue(formGroupArraySetting.Field, out object? @value) && @value != null)
                     {
                         IValidatable forArrayValidatable = propertiesDictionary[GetFieldName(formGroupArraySetting.Field)];
 
@@ -87,7 +87,7 @@ namespace Contoso.XPlatform.Services
                         (
                             forArrayValidatable.Type,
                             new object[] { @value }
-                        );
+                        ) ?? throw new ArgumentException($"{forArrayValidatable.Type}: {{C6549FB5-239A-429F-9B73-80959F159EF8}}");
                     }
                 }
                 else if (setting is FormGroupBoxSettingsDescriptor groupBoxSettingsDescriptor)

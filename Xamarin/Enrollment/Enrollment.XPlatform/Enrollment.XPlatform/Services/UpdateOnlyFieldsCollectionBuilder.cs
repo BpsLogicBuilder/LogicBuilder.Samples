@@ -1,20 +1,82 @@
 ﻿using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.XPlatform.Utils;
+using Enrollment.Forms.Configuration.Validation;
 using Enrollment.XPlatform.ViewModels;
+using Enrollment.XPlatform.ViewModels.Factories;
+using Enrollment.XPlatform.ViewModels.Validatables;
+using Enrollment.XPlatform.ViewModels.Validatables.Factories;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Enrollment.XPlatform.Services
 {
-    public class UpdateOnlyFieldsCollectionBuilder : IUpdateOnlyFieldsCollectionBuilder
+    public class UpdateOnlyFieldsCollectionBuilder : FieldsCollectionBuilder, IUpdateOnlyFieldsCollectionBuilder
     {
-        private readonly IContextProvider contextProvider;
-
-        public UpdateOnlyFieldsCollectionBuilder(IContextProvider contextProvider)
+        public UpdateOnlyFieldsCollectionBuilder(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IValidatableFactory validatableFactory,
+            IValidatableValueHelper validatableValueHelper,
+            List<FormItemSettingsDescriptor> fieldSettings,
+            IFormGroupBoxSettings groupBoxSettings,
+            Dictionary<string, List<ValidationRuleDescriptor>> validationMessages,
+            Type modelType,
+            EditFormLayout? formLayout = null,
+            string? parentName = null) : base(
+                collectionBuilderFactory,
+                validatableFactory,
+                validatableValueHelper,
+                fieldSettings,
+                groupBoxSettings,
+                validationMessages,
+                modelType,
+                formLayout,
+                parentName)
         {
-            this.contextProvider = contextProvider;
         }
 
-        public EditFormLayout CreateFieldsCollection(IFormGroupSettings formSettings, Type modelType)
-            => new UpdateOnlyFieldsCollectionHelper(formSettings.FieldSettings, formSettings, formSettings.ValidationMessages, this.contextProvider, modelType).CreateFields();
+        protected override void AddFormControl(FormControlSettingsDescriptor setting)
+        {
+            if (setting.UpdateOnlyTextTemplate != null)
+            {
+                AddTextControl(setting, setting.UpdateOnlyTextTemplate);
+            }
+            else if (setting.TextTemplate != null)
+                AddTextControl(setting, setting.TextTemplate);
+            else if (setting.DropDownTemplate != null)
+                AddDropdownControl(setting);
+            else
+                throw new ArgumentException($"{nameof(setting)}: 32652CB4-2574-4E5B-9B3F-7E47B37425AD");
+        }
+
+        protected override void AddGroupBoxSettings(FormGroupBoxSettingsDescriptor setting)
+        {
+            this.formLayout.AddControlGroupBox(setting);
+
+            if (setting.FieldSettings.Any(s => s is FormGroupBoxSettingsDescriptor))
+                throw new ArgumentException($"{nameof(setting.FieldSettings)}: 25BFA228-1B14-4B32-AA1C-8F8002DF4413");
+
+            collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
+            (
+                this.modelType,
+                setting.FieldSettings,
+                setting,
+                this.ValidationMessages,
+                this.formLayout,
+                 this.parentName
+            ).CreateFields();
+        }
+
+        protected override void AddFormGroupInline(FormGroupSettingsDescriptor setting)
+        {
+            collectionBuilderFactory.GetUpdateOnlyFieldsCollectionBuilder
+            (
+                this.modelType,
+                setting.FieldSettings,
+                this.groupBoxSettings,
+                setting.ValidationMessages,
+                this.formLayout,
+                GetFieldName(setting.Field)
+            ).CreateFields();
+        }
     }
 }

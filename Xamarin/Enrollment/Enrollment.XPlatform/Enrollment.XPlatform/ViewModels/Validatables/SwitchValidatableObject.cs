@@ -7,9 +7,12 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class SwitchValidatableObject : ValidatableObjectBase<bool>
     {
-        public SwitchValidatableObject(string name, string templateName, string switchLabel, IEnumerable<IValidationRule> validations, UiNotificationService uiNotificationService)
+        public SwitchValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string switchLabel, IEnumerable<IValidationRule>? validations)
             : base(name, templateName, validations, uiNotificationService)
         {
+            /*MemberNotNull unvailable in 2.1*/
+            _switchLabel = null!;
+            /*MemberNotNull unvailable in 2.1*/
             SwitchLabel = switchLabel;
         }
 
@@ -17,6 +20,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public string SwitchLabel
         {
             get => _switchLabel;
+            //[MemberNotNull(nameof(_switchLabel))]
             set
             {
                 if (_switchLabel == value)

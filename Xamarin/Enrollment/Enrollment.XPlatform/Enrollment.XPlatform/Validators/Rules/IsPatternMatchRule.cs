@@ -18,7 +18,7 @@ namespace Enrollment.XPlatform.Validators.Rules
         public override string ClassName => nameof(IsPatternMatchRule);
         public string Pattern { get; }
 
-        public override bool Check() 
+        public override bool Check()
             => string.IsNullOrEmpty(Value) ? true : Regex.IsMatch(Value, Pattern);
     }
 }

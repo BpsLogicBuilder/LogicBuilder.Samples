@@ -1,4 +1,5 @@
-﻿using Xamarin.Forms;
+﻿using Enrollment.XPlatform.Constants;
+using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.Behaviours
 {
@@ -58,10 +59,13 @@ namespace Enrollment.XPlatform.Behaviours
 
         private static void UpdatePlaceholderColor(bool isDirty, bool isValid, PickerValidationBehavior isValidBehavior)
         {
+            if (isValidBehavior.AssociatedObject == null)
+                return;
+
             if (!isDirty || isValid)
-                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, "TertiaryTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, ColorKeys.TertiaryTextColor);
             else
-                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, "ErrorTextColor");
+                isValidBehavior.AssociatedObject.SetDynamicResource(Picker.TitleColorProperty, ColorKeys.ErrorTextColor);
         }
     }
 }

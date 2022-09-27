@@ -1,5 +1,6 @@
 ﻿using Enrollment.Forms.Configuration;
 using Enrollment.XPlatform.Behaviours;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Converters;
 using Enrollment.XPlatform.ViewModels;
 using Enrollment.XPlatform.ViewModels.Validatables;
@@ -19,24 +20,20 @@ namespace Enrollment.XPlatform.Utils
                 (
                     () => new Grid
                     {
-                        Style = LayoutHelpers.GetStaticStyleResource("MultiSelectItemStyle"),
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectItemStyle),
                         Children =
                         {
                             new StackLayout
                             {
-                                Margin = new Thickness(2),
-                                Padding = new Thickness(7),
+                                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectSingleFieldLayoutStyle),
                                 Children =
                                 {
                                     new Label
                                     {
-                                        VerticalOptions = LayoutOptions.Center,
-                                        HorizontalOptions = LayoutOptions.Center,
-                                        FontAttributes = FontAttributes.Bold
+                                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectSingleFieldLabelStyle),
                                     }.AddBinding(Label.TextProperty, new Binding(multiSelectTemplateDescriptor.TextField))
                                 }
                             }
-                            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "ResultListBackgroundColor")
                         }
                     }
                 )
@@ -169,14 +166,13 @@ namespace Enrollment.XPlatform.Utils
             (
                 () => new StackLayout
                 {
-                    IsVisible = false,
-                    HeightRequest = 1
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HiddenTemplateStyle)
                 }
             )
         };
 
         public static StackLayout GetCheckboxForValidation()
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 Children =
@@ -195,7 +191,7 @@ namespace Enrollment.XPlatform.Utils
                     .AddBinding(CheckBox.IsCheckedProperty, new Binding(nameof(CheckboxValidatableObject.Value))),
                     new Label
                     {
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.CheckBoxLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(CheckboxValidatableObject.CheckboxLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -203,7 +199,7 @@ namespace Enrollment.XPlatform.Utils
             };
 
         public static StackLayout GetSwitchForValidation()
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 Children =
@@ -219,14 +215,10 @@ namespace Enrollment.XPlatform.Utils
                             .AddBinding(EventToCommandBehavior.CommandProperty, new Binding(nameof(SwitchValidatableObject.ToggledCommand)))
                         }
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value)))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchValidatableObject.Value))),
                     new Label
                     {
-                        Margin = new Thickness(2),
-                        Padding = new Thickness(7),
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(SwitchValidatableObject.SwitchLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -256,8 +248,8 @@ namespace Enrollment.XPlatform.Utils
 
             picker.ItemDisplayBinding = new Binding
             (
-                path: ".", 
-                converter: new PickerItemDisplayPathConverter(), 
+                path: ".",
+                converter: new PickerItemDisplayPathConverter(),
                 converterParameter: picker
             );
 
@@ -266,20 +258,22 @@ namespace Enrollment.XPlatform.Utils
 
         public static Grid GetMultiSelectFieldControl()
         {
-            return new Grid
+            return new()
             {
                 Children =
                 {
                     GetEntryForMultiSelectControl(),
-                    new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: "OpenCommand")
-                    )
+                    new BoxView
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
         }
@@ -291,15 +285,17 @@ namespace Enrollment.XPlatform.Utils
                 Children =
                 {
                     GetEntryForFormPopupControl(),
-                    new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: "OpenCommand")
-                    )
+                    new BoxView
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormValidatableObject<string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
         }
@@ -311,15 +307,17 @@ namespace Enrollment.XPlatform.Utils
                 Children =
                 {
                     GetEntryForFormArrayPopupControl(),
-                    new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: "OpenCommand")
-                    )
+                    new BoxView
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormArrayValidatableObject<ObservableCollection<string>, string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
         }
@@ -342,7 +340,7 @@ namespace Enrollment.XPlatform.Utils
         public static Entry GetEntryForMultiSelectControl()
             => GetEntry().AddBinding
             (
-                Entry.TextProperty, 
+                Entry.TextProperty,
                 new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.DisplayText))
             );
 
@@ -364,7 +362,7 @@ namespace Enrollment.XPlatform.Utils
         {
             return AddBindingWithStringFormat(GetEntry(isPassword));
 
-            Entry AddBindingWithStringFormat(Entry entry)
+            static Entry AddBindingWithStringFormat(Entry entry)
                 => entry.AddBinding
                 (
                     Entry.TextProperty,
@@ -380,7 +378,7 @@ namespace Enrollment.XPlatform.Utils
         public static Entry GetPasswordEntryForValidation()
             => GetEntryForValidation(isPassword: true);
 
-        public static Entry GetEntry(bool isPassword = false) 
+        public static Entry GetEntry(bool isPassword = false)
             => new Entry()
             {
                 IsPassword = isPassword,
@@ -397,13 +395,12 @@ namespace Enrollment.XPlatform.Utils
                     }
             }
             .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(EntryValidatableObject<string>.Placeholder)))
-            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "EntryBackgroundColor")
-            .AssignDynamicResource(Entry.TextColorProperty, "PrimaryTextColor")
             .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
 
-        public static Label GetLabelForValidation() 
+        public static Label GetLabelForValidation()
             => new Label
             {
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.ValidationMessageLabelStyle),
                 Behaviors =
                 {
                     new ErrorLabelValidationBehavior()
@@ -411,8 +408,7 @@ namespace Enrollment.XPlatform.Utils
                         .AddBinding(ErrorLabelValidationBehavior.IsDirtyProperty, new Binding(nameof(EntryValidatableObject<string>.IsDirty)))
                 }
             }
-            .AddBinding(Label.TextProperty, new Binding(path: nameof(ValidatableObjectBase<object>.Errors), converter: new FirstValidationErrorConverter()))
-            .AssignDynamicResource(Label.TextColorProperty, "ErrorTextColor");
+            .AddBinding(Label.TextProperty, new Binding(path: nameof(ValidatableObjectBase<object>.Errors), converter: new FirstValidationErrorConverter()));
 
         public static string GetFontAwesomeFontFamily()
             => Device.RuntimePlatform switch
@@ -433,7 +429,7 @@ namespace Enrollment.XPlatform.Utils
         private static View GetLabel(string titleBinding, string valueBinding, bool isPassword = false)
             => new Label
             {
-                Style = LayoutHelpers.GetStaticStyleResource("EditFormLabel"),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormLabel),
                 FormattedText = new FormattedString
                 {
                     Spans =

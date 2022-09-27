@@ -6,6 +6,6 @@ namespace Contoso.XPlatform.Services
 {
     public interface IReadOnlyPropertiesUpdater
     {
-        void UpdateProperties(IEnumerable<IReadOnly> properties, object entity, List<FormItemSettingsDescriptor> fieldSettings, string parentField = null);
+        void UpdateProperties(IEnumerable<IReadOnly> properties, object? entity, List<FormItemSettingsDescriptor> fieldSettings, string? parentField = null);
     }
 }

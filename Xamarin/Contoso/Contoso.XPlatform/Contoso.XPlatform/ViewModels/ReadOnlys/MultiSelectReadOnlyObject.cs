@@ -1,28 +1,43 @@
 ﻿using Contoso.Bsl.Business.Requests;
 using Contoso.Bsl.Business.Responses;
 using Contoso.Forms.Configuration;
-using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Services;
 using Contoso.XPlatform.Utils;
+using Contoso.XPlatform.Views.Factories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class MultiSelectReadOnlyObject<T, E> : ReadOnlyObjectBase<T>, IHasItemsSourceReadOnly where T : ObservableCollection<E>
     {
-        public MultiSelectReadOnlyObject(string name, List<string> keyFields, string title, string stringFormat, MultiSelectTemplateDescriptor multiSelectTemplate, IContextProvider contextProvider)
-            : base(name, multiSelectTemplate.TemplateName, contextProvider.UiNotificationService)
+        public MultiSelectReadOnlyObject(
+            IHttpService httpService,
+            IPopupFormFactory popupFormFactory,
+            UiNotificationService uiNotificationService,
+            string name,
+            List<string> keyFields,
+            string title,
+            string stringFormat,
+            MultiSelectTemplateDescriptor multiSelectTemplate)
+            : base(name, multiSelectTemplate.TemplateName, uiNotificationService)
         {
             this._multiSelectTemplate = multiSelectTemplate;
             this._keyFields = keyFields;
             this._stringFormat = stringFormat;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
+            this.popupFormFactory = popupFormFactory;
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            _placeholder = null!;
+            _selectedItems = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = title;
             this.Placeholder = this._multiSelectTemplate.LoadingIndicatorText;
             itemComparer = new MultiSelectItemComparer<E>(this._keyFields);
@@ -31,6 +46,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         }
 
         private readonly IHttpService httpService;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly List<string> _keyFields;
         private readonly string _stringFormat;
         private readonly MultiSelectTemplateDescriptor _multiSelectTemplate;
@@ -61,7 +77,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                         ", ",
                         Value.Select
                         (
-                            item => typeof(E).GetProperty(_multiSelectTemplate.TextField).GetValue(item)
+                            item => typeof(E).GetProperty(_multiSelectTemplate.TextField)?.GetValue(item) ?? string.Empty
                         )
                     );
             }
@@ -71,6 +87,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -84,7 +101,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         private string _placeholder;
         public string Placeholder
         {
-            get => _placeholder; set
+            get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
+            set
             {
                 if (_placeholder == value)
                     return;
@@ -94,7 +113,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -115,6 +134,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             {
                 return _selectedItems;
             }
+            //[MemberNotNull(nameof(_selectedItems))]
             set
             {
                 if (_selectedItems != value)
@@ -124,8 +144,8 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private List<E> _items;
-        public List<E> Items
+        private List<E>? _items;
+        public List<E>? Items
         {
             get => _items;
             set
@@ -152,10 +172,10 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                     this._multiSelectTemplate.RequestDetails.DataSourceUrl
                 );
 
-                if (response?.Success != true)
+                if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current.MainPage.DisplayAlert
+                    await App.Current!.MainPage!.DisplayAlert
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),
@@ -202,7 +222,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             this.Placeholder = this._multiSelectTemplate.PlaceholderText;
         }
 
-        private ICommand _openCommand;
+        private ICommand? _openCommand;
         public ICommand OpenCommand
         {
             get
@@ -214,11 +234,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PushModalAsync
+                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
-                                new Views.ReadOnlyMultiSelectPageCS(this)
+                                popupFormFactory.CreateReadOnlyMultiSelectPage(this)
                             )
                         );
                     });
@@ -227,7 +247,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _cancelCommand;
+        private ICommand? _cancelCommand;
         public ICommand CancelCommand
         {
             get
@@ -239,9 +259,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PopModalAsync()
+                            () => App.Current!.MainPage!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
                         );
                     });
 

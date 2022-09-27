@@ -13,7 +13,7 @@ namespace Microsoft.Extensions.DependencyInjection
                 (
                     new MapperConfiguration(cfg =>
                     {
-                        cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile), typeof(MeuItemProfile));
+                        cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile), typeof(MenuItemProfile));
                         cfg.AllowNullCollections = true;
                     })
                 ).AddTransient<IMapper>
