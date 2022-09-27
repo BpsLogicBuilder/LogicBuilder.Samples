@@ -1,6 +1,7 @@
 ﻿using Enrollment.XPlatform.ViewModels.ReadOnlys;
 using System;
 using System.Collections.ObjectModel;
+using Enrollment.XPlatform.Constants;
 using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.Utils
@@ -13,9 +14,9 @@ namespace Enrollment.XPlatform.Utils
             {
                 nameof(ReadOnlyControlTemplateSelector.CheckboxTemplate) => GetCheckboxControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.DateTemplate)
-                    or nameof(ReadOnlyControlTemplateSelector.PickerTemplate)
                     or nameof(ReadOnlyControlTemplateSelector.TextTemplate) => GetTextFieldControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.PasswordTemplate) => GetPasswordTextFieldControl(field, fontAttributes),
+                nameof(ReadOnlyControlTemplateSelector.PickerTemplate) => GetPickerFieldControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.SwitchTemplate) => GetSwitchFieldControl(field, fontAttributes),
                 nameof(ReadOnlyControlTemplateSelector.MultiSelectTemplate) => GetMultiSelectFieldControl(field, fontAttributes),
                 _ => throw new ArgumentException($"{nameof(templateName)}: 65783D5D-D80C-46BC-AD6B-0419CE37D987"),
@@ -23,7 +24,7 @@ namespace Enrollment.XPlatform.Utils
         }
 
         private static StackLayout GetCheckboxControl(string field, FontAttributes fontAttributes)
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 IsEnabled = false,
@@ -44,29 +45,27 @@ namespace Enrollment.XPlatform.Utils
             };
 
         private static StackLayout GetSwitchFieldControl(string field, FontAttributes fontAttributes)
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch
                     {
-                        IsEnabled = false
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailSwitchStyle),
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding($"[{field}].{nameof(SwitchReadOnlyObject.Value)}"))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AddBinding(Switch.IsToggledProperty, new Binding($"[{field}].{nameof(SwitchReadOnlyObject.Value)}")),
                     new Label
                     {
-                        FontAttributes = fontAttributes,
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchCollectionCellLabelStyle),
+                        FontAttributes = fontAttributes
                     }
                     .AddBinding(Label.TextProperty, new Binding($"[{field}].{nameof(SwitchReadOnlyObject.SwitchLabel)}"))
                 }
             };
 
         private static Grid GetMultiSelectFieldControl(string field, FontAttributes fontAttributes)
-            => new Grid
+            => new()
             {
                 Children =
                 {
@@ -81,6 +80,14 @@ namespace Enrollment.XPlatform.Utils
                 }
             };
 
+        private static View GetPickerFieldControl(string field, FontAttributes fontAttributes)
+            => GetTextField
+            (
+                $"[{field}].{nameof(PickerReadOnlyObject<string>.Title)}",
+                $"[{field}].{nameof(PickerReadOnlyObject<string>.DisplayText)}",
+                fontAttributes
+            );
+
         private static View GetTextFieldControl(string field, FontAttributes fontAttributes)
             => GetTextField
             (
@@ -90,7 +97,7 @@ namespace Enrollment.XPlatform.Utils
             );
 
         private static Grid GetPasswordTextFieldControl(string field, FontAttributes fontAttributes)
-            => new Grid
+            => new()
             {
                 Children =
                 {

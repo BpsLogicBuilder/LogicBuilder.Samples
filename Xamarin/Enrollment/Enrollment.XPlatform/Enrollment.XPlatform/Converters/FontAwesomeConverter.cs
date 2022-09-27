@@ -1,4 +1,4 @@
-﻿using Enrollment.XPlatform.Utils;
+﻿using Enrollment.XPlatform.Constants;
 using System;
 using System.Globalization;
 using Xamarin.Forms;
@@ -9,7 +9,7 @@ namespace Enrollment.XPlatform.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (FontAwesomeIcons.Solid.TryGetValue(value?.ToString() ?? "", out string icon))
+            if (FontAwesomeIcons.Solid.TryGetValue(value?.ToString() ?? "", out string? icon))
                 return icon;
 
 #if(DEBUG)

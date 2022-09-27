@@ -1,19 +1,22 @@
 ﻿using AutoMapper;
 using Enrollment.Domain.Entities;
 using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.XPlatform.Flow;
 using Enrollment.XPlatform.Flow.Cache;
-using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Tests.Mocks;
-using Enrollment.XPlatform.Utils;
-using Enrollment.XPlatform.ViewModels.Validatables;
+using Enrollment.XPlatform.Flow;
 using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
+using Enrollment.XPlatform.Services;
+using Enrollment.XPlatform.ViewModels.Factories;
+using Enrollment.XPlatform.Tests.Helpers;
+using Enrollment.XPlatform.ViewModels.Validatables;
+using Enrollment.XPlatform.Utils;
 
 namespace Enrollment.XPlatform.Tests
 {
@@ -21,15 +24,19 @@ namespace Enrollment.XPlatform.Tests
     {
         public EntityStateUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
+
+        #region Fields
+        private readonly IServiceProvider serviceProvider;
+        #endregion Fields
 
         [Fact]
         public void ShouldCorrectlySetEntityStatesForMultiSelects()
         {
             //arrange
             DataFormSettingsDescriptor formDescriptor = Descriptors.ResidencyForm;
-            ResidencyModel residencyModel = new ResidencyModel
+            ResidencyModel residencyModel = new()
             {
                 UserId = 3,
                 CitizenshipStatus = "US",
@@ -115,7 +122,7 @@ namespace Enrollment.XPlatform.Tests
         {
             //arrange
             DataFormSettingsDescriptor formDescriptor = Descriptors.AcademicForm;
-            AcademicModel academicModel = new AcademicModel
+            AcademicModel academicModel = new()
             {
                 UserId = 1,
                 LastHighSchoolLocation = "NC",
@@ -225,7 +232,7 @@ namespace Enrollment.XPlatform.Tests
         {
             //arrange
             DataFormSettingsDescriptor formDescriptor = Descriptors.AcademicForm;
-            AcademicModel academicModel = null;
+            AcademicModel? academicModel = null;
 
             ObservableCollection<IValidatable> modifiedProperties = CreateValidatablesFormSettings(formDescriptor, typeof(AcademicModel));
             IDictionary<string, IValidatable> propertiesDictionary = modifiedProperties.ToDictionary(property => property.Name);
@@ -288,61 +295,28 @@ namespace Enrollment.XPlatform.Tests
             Assert.Equal(3, currentAcademic.Institutions.Count);
         }
 
-        #region Fields
-        private IServiceProvider serviceProvider;
-        #endregion Fields
-
         private ObservableCollection<IValidatable> CreateValidatablesFormSettings(IFormGroupSettings formSettings, Type modelType)
         {
-            return serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            return GetFieldsCollectionBuilder
             (
                 formSettings,
                 modelType
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
         }
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(IFormGroupSettings formSettings, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                formSettings.FieldSettings,
+                formSettings,
+                formSettings.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

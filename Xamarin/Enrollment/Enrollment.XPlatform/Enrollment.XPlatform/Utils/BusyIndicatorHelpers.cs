@@ -11,51 +11,55 @@ namespace Enrollment.XPlatform.Utils
         {
             Task delay;
             Task<TResult> getResponse;
-            TResult response = null;
+            TResult? response = null;
 
-            List<Task> tasks = new List<Task>
+            List<Task> tasks = new()
             {
                 (delay = Task.Delay(400)),
                 (getResponse = action())
             };
 
             bool activityIndicatorRunning = false;
-
+            /*Tak.ConfigureAwait(true) for all tasks seems to proevent issue of
+             the Busy Indicator window not closing.*/
             while (tasks.Any())
             {
-                Task finishedTask = await Task.WhenAny(tasks);
+                Task finishedTask = await Task.WhenAny(tasks).ConfigureAwait(true);
                 if (object.ReferenceEquals(finishedTask, delay) && response == null)
-                    ShowBusyIndaicator();
+                    await ShowBusyIndaicator().ConfigureAwait(true);
                 else if (object.ReferenceEquals(finishedTask, getResponse))
                     response = getResponse.Result;
 
                 tasks.Remove(finishedTask);
             }
 
-            RemoveBusyIndaicator();
+            await RemoveBusyIndaicator().ConfigureAwait(true);
 
-            return response;
+            return response ?? throw new ArgumentException($"{nameof(response)}: {{189D9682-88D9-440C-BEEB-7B77E345FCA3}}");
 
-            void ShowBusyIndaicator()
+            Task ShowBusyIndaicator()
             {
                 activityIndicatorRunning = true;
-                Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
-                (
-                    () => App.Current.MainPage.Navigation.PushModalAsync
+
+                return Xamarin.Essentials.MainThread.InvokeOnMainThreadAsync
+                (/*App.Current.MainPage is not null at this point*/
+                    async () => await App.Current!.MainPage!.Navigation.PushModalAsync
                     (
                         new Views.BusyIndicator(), false
-                    )
+                    ).ConfigureAwait(true)
                 );
             }
 
-            void RemoveBusyIndaicator()
+            Task RemoveBusyIndaicator()
             {
                 if (!activityIndicatorRunning)
-                    return;
+                {
+                    return Task.CompletedTask;
+                }
 
-                Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
-                (
-                    () => App.Current.MainPage.Navigation.PopModalAsync(false)
+                return Xamarin.Essentials.MainThread.InvokeOnMainThreadAsync
+                (/*App.Current.MainPage is not null at this point*/
+                    async () => await App.Current!.MainPage!.Navigation.PopModalAsync(false).ConfigureAwait(true)
                 );
             }
         }

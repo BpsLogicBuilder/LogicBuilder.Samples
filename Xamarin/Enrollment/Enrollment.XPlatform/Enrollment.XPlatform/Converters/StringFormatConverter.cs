@@ -15,7 +15,7 @@ namespace Enrollment.XPlatform.Converters
             object GetFormattedString(string stringFormat)
             {
                 if (value == null)
-                    return null;
+                    return null!;/*ok to return null for converters*/
 
                 if (string.IsNullOrEmpty(stringFormat))
                     return value;

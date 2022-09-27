@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using Enrollment.AutoMapperProfiles;
 using Enrollment.Common.Configuration.ItemFilter;
 using Enrollment.Common.Utils;
 using Enrollment.Domain.Entities;
 using Enrollment.Parameters.Expressions;
+using Enrollment.XPlatform.Tests.Helpers;
 using Enrollment.XPlatform.Services;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,18 +18,18 @@ namespace Enrollment.XPlatform.Tests
     {
         public CreateItemFilterExpressionTests()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void CanCreateSerachByIdExpression()
         {
             //arrange
-            ItemFilterGroupDescriptor itemFilterGroupDescriptor = new ItemFilterGroupDescriptor
+            ItemFilterGroupDescriptor itemFilterGroupDescriptor = new()
             {
                 Filters = new List<ItemFilterDescriptorBase>
                 {
@@ -66,7 +66,7 @@ namespace Enrollment.XPlatform.Tests
         public void CanCreateSerachByFirstNameAndLastNameExpression()
         {
             //arrange
-            ItemFilterGroupDescriptor itemFilterGroupDescriptor = new ItemFilterGroupDescriptor
+            ItemFilterGroupDescriptor itemFilterGroupDescriptor = new()
             {
                 Filters = new List<ItemFilterDescriptorBase>
                 {
@@ -117,7 +117,7 @@ namespace Enrollment.XPlatform.Tests
         public void CanCreateSerachByIdAndFirstNameAndLastNameExpression()
         {
             //arrange
-            ItemFilterGroupDescriptor itemFilterGroupDescriptor = new ItemFilterGroupDescriptor
+            ItemFilterGroupDescriptor itemFilterGroupDescriptor = new()
             {
                 Filters = new List<ItemFilterDescriptorBase>
                 {
@@ -172,14 +172,14 @@ namespace Enrollment.XPlatform.Tests
             );
         }
 
-        ResidencyModel residency = new ResidencyModel
+        readonly ResidencyModel residency = new()
         {
             UserId = 3,
             CitizenshipStatus = "US",
             ResidentState = "OH"
         };
 
-        private void AssertFilterStringIsCorrect(Expression expression, string expected)
+        private static void AssertFilterStringIsCorrect(Expression expression, string expected)
         {
             AssertStringIsCorrect(ExpressionStringBuilder.ToString(expression));
 
@@ -189,29 +189,6 @@ namespace Enrollment.XPlatform.Tests
                     expected == resultExpression,
                     $"Expected expression '{expected}' but the deserializer produced '{resultExpression}'"
                 );
-        }
-
-        static MapperConfiguration MapperConfiguration;
-
-        private void Initialize()
-        {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<DescriptorToOperatorMappingProfile>();
-                    cfg.AddProfile<ParameterToDescriptorMappingProfile>();
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .BuildServiceProvider();
         }
     }
 }

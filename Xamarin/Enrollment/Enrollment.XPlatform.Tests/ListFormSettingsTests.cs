@@ -7,6 +7,7 @@ using Enrollment.Forms.Parameters.Bindings;
 using Enrollment.Forms.Parameters.ListForm;
 using Enrollment.XPlatform.AutoMapperProfiles;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace Enrollment.XPlatform.Tests
@@ -19,14 +20,13 @@ namespace Enrollment.XPlatform.Tests
         }
 
         #region Fields
-        static IMapper mapper;
+        IMapper mapper;
         #endregion Fields
 
         [Fact]
         public void Map_ConnectorParameters_To_CommandButtonDescriptor()
         {
-            ListFormSettingsParameters parameters = new ListFormSettingsParameters
-            (
+            ListFormSettingsParameters parameters = new            (
                 "About",
                 typeof(LookUpsModel),
                 "Loading ...",
@@ -49,7 +49,8 @@ namespace Enrollment.XPlatform.Tests
             Assert.Equal("TextDetailTemplate", settings.ItemTemplateName);
         }
 
-        private static void SetupAutoMapper()
+        [MemberNotNull(nameof(mapper))]
+        private void SetupAutoMapper()
         {
             var config = new MapperConfiguration(cfg =>
             {

@@ -1,11 +1,9 @@
-using AutoMapper;
-using Enrollment.Domain.Entities;
-using Enrollment.XPlatform.Flow;
-using Enrollment.XPlatform.Flow.Cache;
+﻿using Enrollment.Domain.Entities;
+using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.XPlatform.Tests.Helpers;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Tests.Mocks;
+using Enrollment.XPlatform.ViewModels.Factories;
 using Enrollment.XPlatform.ViewModels.Validatables;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,18 +17,18 @@ namespace Enrollment.XPlatform.Tests
     {
         public PropertiesUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapResidencyModelToIValidatableList()
         {
             //arrange
-            ResidencyModel residency = new ResidencyModel
+            ResidencyModel residency = new()
             {
                 UserId = 3,
                 CitizenshipStatus = "US",
@@ -59,11 +57,13 @@ namespace Enrollment.XPlatform.Tests
                 }
             };
 
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.ResidencyForm,
                 typeof(ResidencyModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -74,19 +74,19 @@ namespace Enrollment.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["UserId"]);
             Assert.Equal("US", propertiesDictionary["CitizenshipStatus"]);
             Assert.Equal("OH", propertiesDictionary["ResidentState"]);
             Assert.Equal(true, propertiesDictionary["HasValidDriversLicense"]);
-            Assert.Equal("GA", ((IEnumerable<StateLivedInModel>)propertiesDictionary["StatesLivedIn"]).First().State);
+            Assert.Equal("GA", ((IEnumerable<StateLivedInModel>)propertiesDictionary["StatesLivedIn"]!).First().State);
         }
 
         [Fact]
         public void MapAcademicModelToIValidatableList()
         {
             //arrange
-            AcademicModel academic = new AcademicModel
+            AcademicModel academic = new()
             {
                 UserId = 1,
                 LastHighSchoolLocation = "NC",
@@ -127,11 +127,13 @@ namespace Enrollment.XPlatform.Tests
                 }
             };
 
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.AcademicForm,
                 typeof(AcademicModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -142,59 +144,27 @@ namespace Enrollment.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
 
             Assert.Equal(1, propertiesDictionary["UserId"]);
             Assert.Equal("NC", propertiesDictionary["LastHighSchoolLocation"]);
             Assert.Equal("NCSCHOOL1", propertiesDictionary["NcHighSchoolName"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["FromDate"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["ToDate"]);
-            Assert.Equal("2011", ((IEnumerable<InstitutionModel>)propertiesDictionary["Institutions"]).First().StartYear);
+            Assert.Equal("2011", ((IEnumerable<InstitutionModel>)propertiesDictionary["Institutions"]!).First().StartYear);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                dataFormSettingsDescriptor.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

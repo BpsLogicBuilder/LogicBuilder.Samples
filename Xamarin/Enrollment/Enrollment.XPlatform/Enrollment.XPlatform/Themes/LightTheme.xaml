@@ -2,30 +2,31 @@
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Enrollment.XPlatform.Themes.LightTheme">
-    <Color x:Key="PageBackgroundColor">White</Color>
+    <Color x:Key="CheckBoxCheckedColor">#34C759</Color>
+    <Color x:Key="CheckBoxColor">#CCCCCC</Color>
+    <Color x:Key="CheckBoxDisabledColor">#B2F5F5F5</Color>
+    <Color x:Key="CommandBarBackgroundColor">#EEEEEE</Color>
+    <Color x:Key="CommandButtonBackgroundColor">#CCCCCC</Color>
+    <Color x:Key="CommandButtonBorderColor">#F2F2F2</Color>
+    <Color x:Key="EntryBackgroundColor">#F2F2F2</Color>
+    <Color x:Key="ErrorTextColor">#C50500</Color>
     <Color x:Key="HyperLinkColor">Blue</Color>
     <Color x:Key="NavigationBarColor">WhiteSmoke</Color>
-    <Color x:Key="PrimaryColor">WhiteSmoke</Color>
+    <Color x:Key="PageBackgroundColor">White</Color>
+    <Color x:Key="PopupViewBackgroundColor">#B2F2F2F2</Color>
     <Color x:Key="PressedPrimaryColor">#B2F5F5F5</Color>
-    <Color x:Key="SecondaryColor">Black</Color>
+    <Color x:Key="PrimaryColor">WhiteSmoke</Color>
     <Color x:Key="PrimaryTextColor">Black</Color>
-    <Color x:Key="SecondaryTextColor">White</Color>
-    <Color x:Key="TertiaryTextColor">#CCCCCC</Color>
-    <Color x:Key="ErrorTextColor">#C50500</Color>
-    <Color x:Key="TransparentColor">Transparent</Color>
     <Color x:Key="ResultListBackgroundColor">#F2F2F2</Color>
-    <Color x:Key="CommandButtonBackgroundColor">#CCCCCC</Color>
-    <Color x:Key="EntryBackgroundColor">#F2F2F2</Color>
-    <Color x:Key="CommandBarBackgroundColor">#EEEEEE</Color>
     <Color x:Key="ResultListBorderColor">White</Color>
-    <Color x:Key="CommandButtonBorderColor">#F2F2F2</Color>
+    <Color x:Key="SearchBarDisabledTextColor">#ACACAC</Color>
+    <Color x:Key="SecondaryColor">Black</Color>
+    <Color x:Key="SecondaryTextColor">White</Color>
     <OnPlatform x:Key="SelectedCommandButtonBackgroundColor" x:TypeArguments="Color">
         <On Platform="Android">#FFFFFF</On>
     </OnPlatform>
-    <Color x:Key="PopupViewBackgroundColor">#B2F2F2F2</Color>
-    <Color x:Key="SwitchThumbColor">Black</Color>
     <Color x:Key="SwitchOnColor">#34C759</Color>
-    <Color x:Key="CheckBoxColor">#CCCCCC</Color>
-    <Color x:Key="CheckBoxCheckedColor">#34C759</Color>
-    <Color x:Key="CheckBoxDisabledColor">#B2F5F5F5</Color>
+    <Color x:Key="SwitchThumbColor">Black</Color>
+    <Color x:Key="TertiaryTextColor">#CCCCCC</Color>
+    <Color x:Key="TransparentColor">Transparent</Color>
 </ResourceDictionary>

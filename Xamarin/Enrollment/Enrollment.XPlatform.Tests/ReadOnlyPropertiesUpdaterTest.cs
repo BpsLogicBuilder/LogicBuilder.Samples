@@ -1,11 +1,9 @@
-﻿using AutoMapper;
-using Enrollment.Domain.Entities;
-using Enrollment.XPlatform.Flow;
-using Enrollment.XPlatform.Flow.Cache;
+﻿using Enrollment.Domain.Entities;
+using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.XPlatform.Tests.Helpers;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Tests.Mocks;
+using Enrollment.XPlatform.ViewModels.Factories;
 using Enrollment.XPlatform.ViewModels.ReadOnlys;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,18 +17,18 @@ namespace Enrollment.XPlatform.Tests
     {
         public ReadOnlyPropertiesUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapResidencyModelToIReadOnlyList()
         {
             //arrange
-            ResidencyModel residency = new ResidencyModel
+            ResidencyModel residency = new()
             {
                 UserId = 3,
                 CitizenshipStatus = "US",
@@ -58,11 +56,13 @@ namespace Enrollment.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.ResidencyForm,
                 typeof(ResidencyModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -73,19 +73,19 @@ namespace Enrollment.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["UserId"]);
             Assert.Equal("US", propertiesDictionary["CitizenshipStatus"]);
             Assert.Equal("OH", propertiesDictionary["ResidentState"]);
             Assert.Equal(true, propertiesDictionary["HasValidDriversLicense"]);
-            Assert.Equal("GA", ((IEnumerable<StateLivedInModel>)propertiesDictionary["StatesLivedIn"]).First().State);
+            Assert.Equal("GA", ((IEnumerable<StateLivedInModel>)propertiesDictionary["StatesLivedIn"]!).First().State);
         }
 
         [Fact]
         public void MapAcademicModelToIReadOnlyList()
         {
             //arrange
-            AcademicModel academic = new AcademicModel
+            AcademicModel academic = new()
             {
                 UserId = 1,
                 LastHighSchoolLocation = "NC",
@@ -125,11 +125,13 @@ namespace Enrollment.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.AcademicForm,
                 typeof(AcademicModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -140,21 +142,21 @@ namespace Enrollment.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
 
             Assert.Equal(1, propertiesDictionary["UserId"]);
             Assert.Equal("NC", propertiesDictionary["LastHighSchoolLocation"]);
             Assert.Equal("NCSCHOOL1", propertiesDictionary["NcHighSchoolName"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["FromDate"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["ToDate"]);
-            Assert.Equal("2011", ((IEnumerable<InstitutionModel>)propertiesDictionary["Institutions"]).First().StartYear);
+            Assert.Equal("2011", ((IEnumerable<InstitutionModel>)propertiesDictionary["Institutions"]!).First().StartYear);
         }
 
         [Fact]
         public void MapUserModelPersonal_WithMultipleGroupBoxSettingsDescriptorFields_ToIReadOnlyList()
         {
             //arrange
-            UserModel user = new UserModel
+            UserModel user = new()
             {
                 UserId = 1,
                 Personal = new PersonalModel
@@ -175,11 +177,13 @@ namespace Enrollment.XPlatform.Tests
                 }
             };
 
-            ObservableCollection<IReadOnly> properties = serviceProvider.GetRequiredService<IReadOnlyFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IReadOnly> properties = GetReadOnlyFieldsCollectionBuilder
             (
                 ReadOnlyDescriptors.PersonalFrom,
                 typeof(UserModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyPropertiesUpdater>().UpdateProperties
@@ -189,7 +193,7 @@ namespace Enrollment.XPlatform.Tests
                 ReadOnlyDescriptors.PersonalFrom.FieldSettings
             );
 
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal("John", propertiesDictionary["Personal.FirstName"]);
             Assert.Equal("Michael", propertiesDictionary["Personal.MiddleName"]);
             Assert.Equal("Jackson", propertiesDictionary["Personal.LastName"]);
@@ -205,50 +209,17 @@ namespace Enrollment.XPlatform.Tests
             Assert.Equal("770-333-4444", propertiesDictionary["Personal.OtherPhone"]);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private IReadOnlyFieldsCollectionBuilder GetReadOnlyFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IReadOnlyFieldsCollectionBuilder, ReadOnlyFieldsCollectionBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetReadOnlyFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                null,
+                null
+            );
         }
+
     }
 }

@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Enrollment.AutoMapperProfiles;
 using Enrollment.Common.Configuration.ExpansionDescriptors;
 using Enrollment.Common.Configuration.ExpressionDescriptors;
 using Enrollment.Common.Utils;
 using Enrollment.Domain.Entities;
 using Enrollment.Forms.Configuration.SearchForm;
+using Enrollment.XPlatform.Tests.Helpers;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.ViewModels;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,11 +20,11 @@ namespace Enrollment.XPlatform.Tests
     {
         public CreateSearchExpressionTests()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
@@ -50,7 +49,7 @@ namespace Enrollment.XPlatform.Tests
         }
 
         [Fact]
-        public void CanOrderByDescriptorFromSortCollectionDescriptor()
+        public void CanCreateOrderByDescriptorFromSortCollectionDescriptor()
         {
             //act
             SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = serviceProvider.GetRequiredService<ISearchSelectorBuilder>().CreatePagingSelector
@@ -95,7 +94,7 @@ namespace Enrollment.XPlatform.Tests
             );
         }
 
-        private void AssertFilterStringIsCorrect(Expression expression, string expected)
+        private static void AssertFilterStringIsCorrect(Expression expression, string expected)
         {
             AssertStringIsCorrect(ExpressionStringBuilder.ToString(expression));
 
@@ -107,42 +106,7 @@ namespace Enrollment.XPlatform.Tests
                 );
         }
 
-        static MapperConfiguration MapperConfiguration;
-
-        private void Initialize()
-        {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<ParameterToDescriptorMappingProfile>();
-                    cfg.AddProfile<DescriptorToOperatorMappingProfile>();
-                    cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
-                    cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .AddTransient<EditFormViewModel, EditFormViewModel>()
-                .BuildServiceProvider();
-        }
-
-        SearchFilterGroupDescriptor searchFilterGroupDescriptor = new SearchFilterGroupDescriptor
+        readonly SearchFilterGroupDescriptor searchFilterGroupDescriptor = new()
         {
             Filters = new List<SearchFilterDescriptorBase>
                 {
@@ -157,8 +121,7 @@ namespace Enrollment.XPlatform.Tests
                     }
                 }
         };
-
-        SortCollectionDescriptor sortCollectionDescriptor = new SortCollectionDescriptor
+        readonly SortCollectionDescriptor sortCollectionDescriptor = new()
         {
             SortDescriptions = new List<SortDescriptionDescriptor>
             {

@@ -8,7 +8,7 @@ namespace Enrollment.XPlatform.Utils
 {
     public static class SerializationOptions
     {
-        private static JsonSerializerOptions _default;
+        private static JsonSerializerOptions? _default;
         public static JsonSerializerOptions Default
         {
             get

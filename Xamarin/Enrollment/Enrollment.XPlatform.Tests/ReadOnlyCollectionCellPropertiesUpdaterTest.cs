@@ -1,14 +1,11 @@
-﻿using AutoMapper;
-using Enrollment.Domain.Entities;
+﻿using Enrollment.Domain.Entities;
 using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Configuration.Bindings;
 using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.XPlatform.Flow;
-using Enrollment.XPlatform.Flow.Cache;
+using Enrollment.XPlatform.Tests.Helpers;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Tests.Mocks;
+using Enrollment.XPlatform.ViewModels.Factories;
 using Enrollment.XPlatform.ViewModels.ReadOnlys;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -21,18 +18,18 @@ namespace Enrollment.XPlatform.Tests
     {
         public ReadOnlyCollectionCellPropertiesUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapResidencyModelToIReadOnlyList()
         {
             //arrange
-            ResidencyModel residency = new ResidencyModel
+            ResidencyModel residency = new()
             {
                 UserId = 3,
                 CitizenshipStatus = "US",
@@ -61,7 +58,7 @@ namespace Enrollment.XPlatform.Tests
                 }
             };
 
-            List<ItemBindingDescriptor> itemBindings = new List<ItemBindingDescriptor>
+            List<ItemBindingDescriptor> itemBindings = new()
             {
                 new TextItemBindingDescriptor
                 {
@@ -86,11 +83,12 @@ namespace Enrollment.XPlatform.Tests
                 }
             };
 
-            ICollection<IReadOnly> properties = serviceProvider.GetRequiredService<ICollectionCellItemsBuilder>().CreateCellsCollection
+            ICollection<IReadOnly> properties = GetCollectionCellItemsBuilder
             (
                 itemBindings,
                 typeof(ResidencyModel)
-            );
+            )
+            .CreateFields();
 
             //act
             serviceProvider.GetRequiredService<IReadOnlyCollectionCellPropertiesUpdater>().UpdateProperties
@@ -102,55 +100,19 @@ namespace Enrollment.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["UserId"]);
             Assert.Equal("US", propertiesDictionary["CitizenshipStatus"]);
-            Assert.Equal("GA", ((IEnumerable<StateLivedInModel>)propertiesDictionary["StatesLivedIn"]).First().State);
+            Assert.Equal("GA", ((IEnumerable<StateLivedInModel>)propertiesDictionary["StatesLivedIn"]!).First().State);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private ICollectionCellItemsBuilder GetCollectionCellItemsBuilder(List<ItemBindingDescriptor> bindingDescriptors, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetCollectionCellItemsBuilder
+            (
+                modelType,
+                bindingDescriptors
+            );
         }
     }
 }

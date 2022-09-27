@@ -1,12 +1,9 @@
-﻿using AutoMapper;
-using Enrollment.Domain.Entities;
-using Enrollment.XPlatform.Flow;
-using Enrollment.XPlatform.Flow.Cache;
+﻿using Enrollment.Domain.Entities;
+using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.XPlatform.Tests.Helpers;
 using Enrollment.XPlatform.Services;
-using Enrollment.XPlatform.Tests.Mocks;
-using Enrollment.XPlatform.Utils;
+using Enrollment.XPlatform.ViewModels.Factories;
 using Enrollment.XPlatform.ViewModels.Validatables;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -20,22 +17,25 @@ namespace Enrollment.XPlatform.Tests
     {
         public EntityUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapIValidatableListToResidency()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
-                Descriptors.ResidencyForm, 
+                Descriptors.ResidencyForm,
                 typeof(ResidencyModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["UserId"].Value = 3;
             propertiesDictionary["CitizenshipStatus"].Value = "US";
@@ -69,8 +69,8 @@ namespace Enrollment.XPlatform.Tests
             //act
             ResidencyModel residencyModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (ResidencyModel) null,
-                new Dictionary<string, object>(),
+                (ResidencyModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.ResidencyForm.FieldSettings
             );
@@ -87,11 +87,14 @@ namespace Enrollment.XPlatform.Tests
         public void MapIValidatableListModelToAcademic()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.AcademicForm,
                 typeof(AcademicModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["UserId"].Value = 1;
             propertiesDictionary["LastHighSchoolLocation"].Value = "NC";
@@ -137,8 +140,8 @@ namespace Enrollment.XPlatform.Tests
             //act
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (AcademicModel)null,
-                new Dictionary<string, object>(),
+                (AcademicModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -158,11 +161,14 @@ namespace Enrollment.XPlatform.Tests
         public void MapIValidatableListModelToAcademic_WhenSingleValueFieldIsNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.AcademicForm,
                 typeof(AcademicModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["UserId"].Value = 1;
             propertiesDictionary["LastHighSchoolLocation"].Value = "NC";
@@ -207,8 +213,8 @@ namespace Enrollment.XPlatform.Tests
             //act
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (AcademicModel)null,
-                new Dictionary<string, object>(),
+                (AcademicModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -228,19 +234,22 @@ namespace Enrollment.XPlatform.Tests
         public void MapIValidatableListModelToAcademic_WhenSingleValueFieldIsNotDefauly()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.AcademicForm,
                 typeof(AcademicModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["NcHighSchoolName"].Value = null;
 
             //act
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (AcademicModel)null,
-                new Dictionary<string, object>(),
+                (AcademicModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -253,11 +262,14 @@ namespace Enrollment.XPlatform.Tests
         public void MapIValidatableListToResidency_WnenMultiSelectFieldNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.ResidencyForm,
                 typeof(ResidencyModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["UserId"].Value = 3;
             propertiesDictionary["CitizenshipStatus"].Value = "US";
@@ -267,8 +279,8 @@ namespace Enrollment.XPlatform.Tests
             //act
             ResidencyModel residencyModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (ResidencyModel)null,
-                new Dictionary<string, object>(),
+                (ResidencyModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.ResidencyForm.FieldSettings
             );
@@ -285,11 +297,14 @@ namespace Enrollment.XPlatform.Tests
         public void MapIValidatableListModelToAcademic_WhenFormArrayIsNotRequired()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.AcademicForm,
                 typeof(AcademicModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["UserId"].Value = 1;
             propertiesDictionary["LastHighSchoolLocation"].Value = "NC";
@@ -302,8 +317,8 @@ namespace Enrollment.XPlatform.Tests
             //act
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (AcademicModel)null,
-                new Dictionary<string, object>(),
+                (AcademicModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -323,11 +338,14 @@ namespace Enrollment.XPlatform.Tests
         public void MapIValidatableListToPersonal_withMultipleGroupBoxSettingsDescriptorFields()
         {
             //arrange
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.PersonalFrom,
                 typeof(UserModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
+
             IDictionary<string, IValidatable> propertiesDictionary = properties.ToDictionary(property => property.Name);
             propertiesDictionary["Personal.FirstName"].Value = "John";
             propertiesDictionary["Personal.MiddleName"].Value = "Michael";
@@ -346,8 +364,8 @@ namespace Enrollment.XPlatform.Tests
             //act
             UserModel userModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
-                (UserModel)null,
-                new Dictionary<string, object>(),
+                (UserModel?)null,
+                new Dictionary<string, object?>(),
                 properties,
                 Descriptors.PersonalFrom.FieldSettings
             );
@@ -368,49 +386,17 @@ namespace Enrollment.XPlatform.Tests
             Assert.Equal("770-333-4444", userModel.Personal.OtherPhone);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                dataFormSettingsDescriptor.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Enrollment.XPlatform.Validators.Rules
         protected IDictionary<string, IValidatable> PropertiesDictionary
             => AllProperties.ToDictionary(p => p.Name);
 
-        protected T Value
+        protected T? Value
             => ((ValidatableObjectBase<T>)PropertiesDictionary[FieldName]).Value;
 
         public abstract bool Check();

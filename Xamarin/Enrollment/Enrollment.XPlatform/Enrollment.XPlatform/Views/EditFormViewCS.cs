@@ -1,5 +1,6 @@
 ﻿using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Configuration.DataForm;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.ViewModels;
 using Enrollment.XPlatform.ViewModels.EditForm;
@@ -11,15 +12,19 @@ namespace Enrollment.XPlatform.Views
 {
     public class EditFormViewCS : ContentPage
     {
-        public EditFormViewCS(EditFormViewModel editFormViewModel)
+        public EditFormViewCS(EditFormViewModelBase editFormViewModel)
         {
-            this.editFormEntityViewModel = editFormViewModel.EditFormEntityViewModel;
+            this.editFormEntityViewModel = editFormViewModel;
+            /*MemberNotNull unvailable in 2.1*/
+            transitionGrid = null!;
+            page = null!;
+            /*MemberNotNull unvailable in 2.1*/
             AddContent();
             Visual = VisualMarker.Material;
             BindingContext = this.editFormEntityViewModel;
         }
 
-        private EditFormEntityViewModelBase editFormEntityViewModel;
+        private readonly EditFormViewModelBase editFormEntityViewModel;
         private Grid transitionGrid;
         private StackLayout page;
 
@@ -30,6 +35,7 @@ namespace Enrollment.XPlatform.Views
                 await page.EntranceTransition(transitionGrid, 150);
         }
 
+        //[MemberNotNull(nameof(transitionGrid), nameof(page))]
         private void AddContent()
         {
             LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.editFormEntityViewModel.Buttons);
@@ -51,6 +57,7 @@ namespace Enrollment.XPlatform.Views
                     .ToList()
                 };
             }
+
             Content = new Grid
             {
                 Children =
@@ -58,27 +65,27 @@ namespace Enrollment.XPlatform.Views
                     (
                         page = new StackLayout
                         {
-                            Padding = new Thickness(30),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormStackLayoutStyle),
                             Children =
                             {
                                 new Label
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                                 }
                                 .AddBinding
                                 (
-                                    Label.TextProperty, 
+                                    Label.TextProperty,
                                     GetHeaderBinding
                                     (
-                                        editFormEntityViewModel.FormSettings.HeaderBindings, 
-                                        $"{nameof(EditFormEntityViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
+                                        editFormEntityViewModel.FormSettings.HeaderBindings,
+                                        $"{nameof(EditFormViewModelBase.FormSettings)}.{nameof(DataFormSettingsDescriptor.Title)}"
                                     )
                                 ),
                                 new ScrollView
                                 {
                                     Content = editFormEntityViewModel.FormLayout.ControlGroupBoxList.Aggregate
                                     (
-                                        new StackLayout(), 
+                                        new StackLayout(),
                                         (stackLayout, controlBox) =>
                                         {
                                             if (controlBox.IsVisible == false)
@@ -88,7 +95,7 @@ namespace Enrollment.XPlatform.Views
                                             (
                                                 new Label
                                                 {
-                                                    Style = LayoutHelpers.GetStaticStyleResource("EditFormGroupHeaderStyle"),
+                                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.EditFormGroupHeaderStyle),
                                                     BindingContext = controlBox
                                                 }
                                                 .AddBinding
@@ -116,11 +123,10 @@ namespace Enrollment.XPlatform.Views
                         }
                     ),
                     (
-                        transitionGrid = new Grid().AssignDynamicResource
-                        (
-                            VisualElement.BackgroundColorProperty, 
-                            "PageBackgroundColor"
-                        )
+                        transitionGrid = new Grid
+                        {
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+                        }
                     )
                 }
             };

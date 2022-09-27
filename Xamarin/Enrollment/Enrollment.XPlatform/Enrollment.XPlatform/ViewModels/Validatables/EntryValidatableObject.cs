@@ -1,5 +1,4 @@
-﻿using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.XPlatform.Validators;
+﻿using Enrollment.XPlatform.Validators;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -9,9 +8,12 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class EntryValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public EntryValidatableObject(string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule> validations, UiNotificationService uiNotificationService) 
+        public EntryValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
             : base(name, templateName, validations, uiNotificationService)
         {
+            /*MemberNotNull unvailable in 2.1*/
+            _placeholder = null!;
+            /*MemberNotNull unvailable in 2.1*/
             Placeholder = placeholder;
             StringFormat = stringFormat;
         }
@@ -21,7 +23,9 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         private string _placeholder;
         public string Placeholder
         {
-            get => _placeholder; set
+            get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
+            set
             {
                 if (_placeholder == value)
                     return;
@@ -45,7 +49,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                 (
                     (task, oldText) =>
                     {
-                        if (text == (string)oldText)
+                        if (text == (string)oldText!)/*oldText is never null*/
                             IsValid = Validate();
                     },
                     text

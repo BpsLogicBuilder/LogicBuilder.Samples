@@ -20,10 +20,10 @@ namespace Enrollment.XPlatform.Validators.Rules
 
         public override bool Check()
         {
-            if (Min.CompareTo(Value) > 0)
+            if (Min.CompareTo(Value!) > 0)/*CompareTo not built for nullable reference types in 2.1*/
                 return false;
 
-            if (Max.CompareTo(Value) < 0)
+            if (Max.CompareTo(Value!) < 0)/*CompareTo not built for nullable reference types in 2.1*/
                 return false;
 
             return true;

@@ -13,7 +13,7 @@ namespace Enrollment.XPlatform.Tests
 {
     internal static class Descriptors
     {
-        internal static DataFormSettingsDescriptor ResidencyForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor ResidencyForm = new()
         {
             Title = "Residency",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -275,7 +275,7 @@ namespace Enrollment.XPlatform.Tests
             ModelType = typeof(ResidencyModel).AssemblyQualifiedName
         };
 
-        internal static DataFormSettingsDescriptor AcademicForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor AcademicForm = new()
         {
             Title = "Academic",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -904,7 +904,7 @@ namespace Enrollment.XPlatform.Tests
             }
         };
 
-        internal static DataFormSettingsDescriptor PersonalFrom = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor PersonalFrom = new()
         {
             Title = "Personal",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -1436,7 +1436,7 @@ namespace Enrollment.XPlatform.Tests
             ModelType = typeof(UserModel).AssemblyQualifiedName
         };
 
-        internal static DataFormSettingsDescriptor PersonalFromWithDefaultGroupForSomeFields = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor PersonalFromWithDefaultGroupForSomeFields = new()
         {
             Title = "PersonalRoot",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -1994,6 +1994,12 @@ namespace Enrollment.XPlatform.Tests
             },
             FormType = FormType.Update,
             ModelType = typeof(UserModel).AssemblyQualifiedName
+        };
+
+        internal static IList<CommandButtonDescriptor> ButtonDescriptors = new List<CommandButtonDescriptor>
+        {
+            new CommandButtonDescriptor { Id = 1, LongString = "Save", ShortString = "S", Command = "SubmitCommand", ButtonIcon = "Save" },
+            new CommandButtonDescriptor { Id = 2, LongString = "Home", ShortString = "H", Command = "NavigateCommand", ButtonIcon = "Home" }
         };
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace Enrollment.XPlatform.Utils
 {
-    public class DictionaryComparer : IEqualityComparer<Dictionary<string, object>>
+    public class DictionaryComparer : IEqualityComparer<Dictionary<string, object?>>
     {
-        public bool Equals(Dictionary<string, object> x, Dictionary<string, object> y)
+        public bool Equals(Dictionary<string, object?>? x, Dictionary<string, object?>? y)
         {
             if (x == null && y == null)
                 return true;
@@ -15,7 +15,7 @@ namespace Enrollment.XPlatform.Utils
             if (x == null ^ y == null)
                 return false;
 
-            if (x.Count != y.Count)
+            if (x!.Count != y!.Count)/*neither can be null at this point*/
                 return false;
 
             if (x.Keys.Except(y.Keys).Any())
@@ -38,17 +38,17 @@ namespace Enrollment.XPlatform.Utils
                     if (!pair.Value.Equals(y[pair.Key]))
                         return false;
                 }
-                else if (pair.Value.GetType() == typeof(Dictionary<string, object>))
+                else if (pair.Value.GetType() == typeof(Dictionary<string, object?>))
                 {
-                    if (!new DictionaryComparer().Equals((Dictionary<string, object>)pair.Value, (Dictionary<string, object>)y[pair.Key]))
+                    if (!new DictionaryComparer().Equals((Dictionary<string, object?>)pair.Value, (Dictionary<string, object?>?)y[pair.Key]))
                         return false;
                 }
-                else if (typeof(IEnumerable<Dictionary<string, object>>).IsAssignableFrom(pair.Value.GetType()))
+                else if (typeof(IEnumerable<Dictionary<string, object?>>).IsAssignableFrom(pair.Value.GetType()))
                 {
-                    var xToHashSet = ((IEnumerable<Dictionary<string, object>>)pair.Value)
+                    var xToHashSet = ((IEnumerable<Dictionary<string, object?>>)pair.Value)
                         .ToHashSet(new DictionaryComparer());
 
-                    if  (!xToHashSet.SetEquals((IEnumerable<Dictionary<string, object>>)y[pair.Key]))
+                    if  (!xToHashSet.SetEquals((IEnumerable<Dictionary<string, object?>>)(y[pair.Key] ?? new List<Dictionary<string, object?>>())))
                         return false;
                 }
                 else if (pair.Value.GetType().IsList())
@@ -57,7 +57,7 @@ namespace Enrollment.XPlatform.Utils
                     Type elementType = pairType.GetUnderlyingElementType();
                     if (elementType.IsLiteralType())
                     {
-                        if (!ListHelper.ListEquals(elementType, (System.Collections.IEnumerable)pair.Value, (System.Collections.IEnumerable)y[pair.Key]))
+                        if (!ListHelper.ListEquals(elementType, (System.Collections.IEnumerable)pair.Value, (System.Collections.IEnumerable)(y[pair.Key] ?? new List<object>())))
                             return false;
                     }
                 }
@@ -70,7 +70,7 @@ namespace Enrollment.XPlatform.Utils
             return true;
         }
 
-        public int GetHashCode(Dictionary<string, object> obj)
+        public int GetHashCode(Dictionary<string, object?> obj)
         {
             if (obj == null)
                 return string.Empty.GetHashCode();

@@ -7,6 +7,6 @@ namespace Enrollment.XPlatform.Services
 {
     public interface IEntityStateUpdater
     {
-        TModel GetUpdatedModel<TModel>(TModel existingEntity, Dictionary<string, object> existingAsDictionary, ObservableCollection<IValidatable> modifiedProperties, List<FormItemSettingsDescriptor> fieldSettings);
+        TModel GetUpdatedModel<TModel>(TModel? existingEntity, Dictionary<string, object?> existingAsDictionary, ObservableCollection<IValidatable> modifiedProperties, List<FormItemSettingsDescriptor> fieldSettings);
     }
 }

@@ -1,11 +1,9 @@
-﻿using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.XPlatform.ViewModels;
-using System;
+﻿using Enrollment.XPlatform.ViewModels;
 
 namespace Enrollment.XPlatform.Services
 {
     public interface IFieldsCollectionBuilder
     {
-        EditFormLayout CreateFieldsCollection(IFormGroupSettings formSettings, Type modelType);
+        EditFormLayout CreateFields();
     }
 }

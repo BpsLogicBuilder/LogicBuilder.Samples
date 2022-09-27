@@ -5,24 +5,38 @@ using Enrollment.Forms.Configuration.DataForm;
 using Enrollment.XPlatform.Services;
 using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.Validators;
+using Enrollment.XPlatform.Views.Factories;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class MultiSelectValidatableObject<T, E> : ValidatableObjectBase<T>, IHasItemsSourceValidatable where T : ObservableCollection<E>
     {
-        public MultiSelectValidatableObject(string name, MultiSelectFormControlSettingsDescriptor setting, IEnumerable<IValidationRule> validations, IContextProvider contextProvider)
-            : base(name, setting.MultiSelectTemplate.TemplateName, validations, contextProvider.UiNotificationService)
+        public MultiSelectValidatableObject(
+            IHttpService httpService,
+            IPopupFormFactory popupFormFactory,
+            UiNotificationService uiNotificationService,
+            string name,
+            MultiSelectFormControlSettingsDescriptor setting,
+            IEnumerable<IValidationRule>? validations)
+            : base(name, setting.MultiSelectTemplate.TemplateName, validations, uiNotificationService)
         {
             this._multiSelectFormControlSettingsDescriptor = setting;
             this._multiSelectTemplate = setting.MultiSelectTemplate;
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            _placeholder = null!;
+            _selectedItems = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = this._multiSelectTemplate.LoadingIndicatorText;
-            this.httpService = contextProvider.HttpService;
+            this.httpService = httpService;
+            this.popupFormFactory = popupFormFactory;
             itemComparer = new MultiSelectItemComparer<E>(_multiSelectFormControlSettingsDescriptor.KeyFields);
             SelectedItems = new ObservableCollection<object>();
             this.canExecute = false;
@@ -31,6 +45,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         }
 
         private readonly IHttpService httpService;
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly MultiSelectTemplateDescriptor _multiSelectTemplate;
         private readonly MultiSelectFormControlSettingsDescriptor _multiSelectFormControlSettingsDescriptor;
         private readonly MultiSelectItemComparer<E> itemComparer;
@@ -50,7 +65,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     ", ",
                     Value.Select
                     (
-                        item => typeof(E).GetProperty(_multiSelectTemplate.TextField).GetValue(item)
+                        item => typeof(E).GetProperty(_multiSelectTemplate.TextField)?.GetValue(item) ?? string.Empty
                     )
                 );
             }
@@ -60,6 +75,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public string Placeholder
         {
             get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
             set
             {
                 if (_placeholder == value)
@@ -74,6 +90,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -84,7 +101,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -98,6 +115,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
+        /*SelectedItems not being bound on windows https://github.com/dotnet/maui/issues/8435 */
         ObservableCollection<object> _selectedItems;
         public ObservableCollection<object> SelectedItems
         {
@@ -105,6 +123,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             {
                 return _selectedItems;
             }
+            //[MemberNotNull(nameof(_selectedItems))]
             set
             {
                 if (_selectedItems != value)
@@ -114,8 +133,8 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        private List<E> _items;
-        public List<E> Items
+        private List<E>? _items;
+        public List<E>? Items
         {
             get => _items;
             set
@@ -142,10 +161,10 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     this._multiSelectTemplate.RequestDetails.DataSourceUrl
                 );
 
-                if (response?.Success != true)
+                if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current.MainPage.DisplayAlert
+                    await App.Current!.MainPage!.DisplayAlert
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),
@@ -207,7 +226,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         );
 
-        private ICommand _submitCommand;
+        private ICommand? _submitCommand;
         public ICommand SubmitCommand
         {
             get
@@ -219,14 +238,14 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                 (
                     () =>
                     {
-                        Value = (T)new ObservableCollection<E>
+                        Value = (T?)new ObservableCollection<E>
                         (
-                            Items.Where(i => SelectedItems.Cast<E>().Contains(i, itemComparer))
+                            Items?.Where(i => SelectedItems.Cast<E>().Contains(i, itemComparer)) ?? new List<E>()
                         );
 
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PopModalAsync()
+                            () => App.Current!.MainPage!.Navigation.PopModalAsync()
                         );
                     },
                     () => canExecute
@@ -236,7 +255,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        private ICommand _openCommand;
+        private ICommand? _openCommand;
         public ICommand OpenCommand
         {
             get
@@ -246,22 +265,24 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
                 _openCommand = new Command
                 (
-                    () =>
+                    async () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        await MainThread.InvokeOnMainThreadAsync
                         (
-                            () => App.Current.MainPage.Navigation.PushModalAsync
+                            () => App.Current!.MainPage!.Navigation.PushModalAsync
                             (
-                                new Views.MultiSelectPageCS(this)
+                                popupFormFactory.CreateMultiSelectPage(this)
                             )
                         );
+
+                        OnPropertyChanged(nameof(SelectedItems));/*needed for iOS*/
                     });
 
                 return _openCommand;
             }
         }
 
-        private ICommand _cancelCommand;
+        private ICommand? _cancelCommand;
         public ICommand CancelCommand
         {
             get
@@ -273,9 +294,9 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PopModalAsync()
+                            () => App.Current!.MainPage!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
                         );
                     });
 

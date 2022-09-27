@@ -14,7 +14,7 @@ namespace Enrollment.XPlatform.Utils
         private const string WEB_REQUEST_CONTENT_TYPE = "application/json";
         #endregion Constants
 
-        public static async Task<TResult> PostAsync<TResult>(this IHttpClientFactory factory, string url, string jsonObject, string baseUrl = null) where TResult : BaseResponse
+        public static async Task<TResult> PostAsync<TResult>(this IHttpClientFactory factory, string url, string jsonObject, string baseUrl) where TResult : BaseResponse
         {
             HttpResponseMessage result;
             using (HttpClient httpClient = factory.CreateClient())
@@ -41,7 +41,7 @@ namespace Enrollment.XPlatform.Utils
             (
                 await result.Content.ReadAsStringAsync(),
                 SerializationOptions.Default
-            );
+            ) ?? throw new ArgumentException("{224F387E-5B8E-4617-9FDB-FABDA43E74B5}");
         }
 
         private static StringContent GetStringContent(string jsonObject)

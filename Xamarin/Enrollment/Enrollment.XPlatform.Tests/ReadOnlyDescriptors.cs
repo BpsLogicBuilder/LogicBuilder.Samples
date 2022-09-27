@@ -1,4 +1,5 @@
-﻿using Enrollment.Common.Configuration.ExpressionDescriptors;
+﻿using Enrollment.Common.Configuration.ExpansionDescriptors;
+using Enrollment.Common.Configuration.ExpressionDescriptors;
 using Enrollment.Data.Entities;
 using Enrollment.Domain.Entities;
 using Enrollment.Forms.Configuration;
@@ -9,14 +10,41 @@ using System.Linq;
 
 namespace Enrollment.XPlatform.Tests
 {
-    public static class ReadOnlyDescriptors
+    internal static class ReadOnlyDescriptors
     {
-        internal static DataFormSettingsDescriptor ResidencyForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor ResidencyForm = new()
         {
             Title = "Residency",
             RequestDetails = new FormRequestDetailsDescriptor
             {
-                GetUrl = "/Residency/GetSingle"
+                GetUrl = "/Residency/GetSingle",
+                ModelType = typeof(UserModel).AssemblyQualifiedName,
+                DataType = typeof(User).AssemblyQualifiedName,
+                Filter = new FilterLambdaOperatorDescriptor
+                {
+                    FilterBody = new EqualsBinaryOperatorDescriptor
+                    {
+                        Left = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "f" },
+                            MemberFullName = "UserId"
+                        },
+                        Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 1 }
+                    },
+                    SourceElementType = typeof(UserModel).AssemblyQualifiedName,
+                    ParameterName = "f"
+                },
+                SelectExpandDefinition = new SelectExpandDefinitionDescriptor
+                {
+                    Selects = new List<string>(),
+                    ExpandedItems = new List<SelectExpandItemDescriptor>
+                    {
+                        new SelectExpandItemDescriptor
+                        {
+                            MemberName = "Residency"
+                        }
+                    }
+                }
             },
             FieldSettings = new List<FormItemSettingsDescriptor>
             {
@@ -252,12 +280,39 @@ namespace Enrollment.XPlatform.Tests
             ModelType = typeof(ResidencyModel).AssemblyQualifiedName
         };
 
-        internal static DataFormSettingsDescriptor AcademicForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor AcademicForm = new()
         {
             Title = "Academic",
             RequestDetails = new FormRequestDetailsDescriptor
             {
-                GetUrl = "/Academic/GetSingle"
+                GetUrl = "/Academic/GetSingle",
+                ModelType = typeof(UserModel).AssemblyQualifiedName,
+                DataType = typeof(User).AssemblyQualifiedName,
+                Filter = new FilterLambdaOperatorDescriptor
+                {
+                    FilterBody = new EqualsBinaryOperatorDescriptor
+                    {
+                        Left = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "f" },
+                            MemberFullName = "UserId"
+                        },
+                        Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 1 }
+                    },
+                    SourceElementType = typeof(UserModel).AssemblyQualifiedName,
+                    ParameterName = "f"
+                },
+                SelectExpandDefinition = new SelectExpandDefinitionDescriptor
+                {
+                    Selects = new List<string>(),
+                    ExpandedItems = new List<SelectExpandItemDescriptor>
+                    {
+                        new SelectExpandItemDescriptor
+                        {
+                            MemberName = "Academic"
+                        }
+                    }
+                }
             },
             FieldSettings = new List<FormItemSettingsDescriptor>
             {
@@ -822,12 +877,39 @@ namespace Enrollment.XPlatform.Tests
             }
         };
 
-        internal static DataFormSettingsDescriptor PersonalFrom = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor PersonalFrom = new()
         {
             Title = "Personal",
             RequestDetails = new FormRequestDetailsDescriptor
             {
-                GetUrl = "/Personal/GetSingle"
+                GetUrl = "/Personal/GetSingle",
+                ModelType = typeof(UserModel).AssemblyQualifiedName,
+                DataType = typeof(User).AssemblyQualifiedName,
+                Filter = new FilterLambdaOperatorDescriptor
+                {
+                    FilterBody = new EqualsBinaryOperatorDescriptor
+                    {
+                        Left = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "f" },
+                            MemberFullName = "UserId"
+                        },
+                        Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 1 }
+                    },
+                    SourceElementType = typeof(UserModel).AssemblyQualifiedName,
+                    ParameterName = "f"
+                },
+                SelectExpandDefinition = new SelectExpandDefinitionDescriptor
+                {
+                    Selects = new List<string>(),
+                    ExpandedItems = new List<SelectExpandItemDescriptor>
+                    {
+                        new SelectExpandItemDescriptor
+                        {
+                            MemberName = "Personal"
+                        }
+                    }
+                }
             },
             FieldSettings = new List<FormItemSettingsDescriptor>
             {
@@ -1114,12 +1196,39 @@ namespace Enrollment.XPlatform.Tests
             ModelType = typeof(UserModel).AssemblyQualifiedName
         };
 
-        internal static DataFormSettingsDescriptor PersonalFromWithDefaultGroupForSomeFields = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor PersonalFromWithDefaultGroupForSomeFields = new()
         {
             Title = "PersonalRoot",
             RequestDetails = new FormRequestDetailsDescriptor
             {
-                GetUrl = "/Personal/GetSingle"
+                GetUrl = "/Personal/GetSingle",
+                ModelType = typeof(UserModel).AssemblyQualifiedName,
+                DataType = typeof(User).AssemblyQualifiedName,
+                Filter = new FilterLambdaOperatorDescriptor
+                {
+                    FilterBody = new EqualsBinaryOperatorDescriptor
+                    {
+                        Left = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "f" },
+                            MemberFullName = "UserId"
+                        },
+                        Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 1 }
+                    },
+                    SourceElementType = typeof(UserModel).AssemblyQualifiedName,
+                    ParameterName = "f"
+                },
+                SelectExpandDefinition = new SelectExpandDefinitionDescriptor
+                {
+                    Selects = new List<string>(),
+                    ExpandedItems = new List<SelectExpandItemDescriptor>
+                    {
+                        new SelectExpandItemDescriptor
+                        {
+                            MemberName = "Personal"
+                        }
+                    }
+                }
             },
             FieldSettings = new List<FormItemSettingsDescriptor>
             {

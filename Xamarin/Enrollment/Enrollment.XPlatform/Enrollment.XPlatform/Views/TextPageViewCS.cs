@@ -1,9 +1,8 @@
 ﻿using Enrollment.Forms.Configuration.TextForm;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Utils;
-using Enrollment.XPlatform.ViewModels;
 using Enrollment.XPlatform.ViewModels.TextPage;
 using System;
-
 using Xamarin.Forms;
 
 namespace Enrollment.XPlatform.Views
@@ -12,13 +11,17 @@ namespace Enrollment.XPlatform.Views
     {
         public TextPageViewCS(TextPageViewModel textPageViewModel)
         {
-            this.textPageScreenViewModel = textPageViewModel.TextPageScreenViewModel;
+            this.TextPageScreenViewModel = textPageViewModel;
+            /*MemberNotNull unvailable in 2.1*/
+            transitionGrid = null!;
+            page = null!;
+            /*MemberNotNull unvailable in 2.1*/
             AddContent();
             Visual = VisualMarker.Material;
-            BindingContext = this.textPageScreenViewModel;
+            BindingContext = this.TextPageScreenViewModel;
         }
 
-        public TextPageScreenViewModel textPageScreenViewModel { get; set; }
+        public TextPageViewModel TextPageScreenViewModel { get; set; }
         private Grid transitionGrid;
         private StackLayout page;
 
@@ -29,10 +32,11 @@ namespace Enrollment.XPlatform.Views
                 await page.EntranceTransition(transitionGrid, 150);
         }
 
+        //[MemberNotNull(nameof(transitionGrid), nameof(page))]
         private void AddContent()
         {
-            LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.textPageScreenViewModel.Buttons);
-            Title = this.textPageScreenViewModel.Title;
+            LayoutHelpers.AddToolBarItems(this.ToolbarItems, this.TextPageScreenViewModel.Buttons);
+            Title = this.TextPageScreenViewModel.Title;
             Content = new Grid
             {
                 Children =
@@ -43,33 +47,34 @@ namespace Enrollment.XPlatform.Views
             };
         }
 
+        //[MemberNotNull(nameof(transitionGrid))]
         private Grid GetTransitionGrid()
         {
-            transitionGrid = new Grid().AssignDynamicResource
-            (
-                VisualElement.BackgroundColorProperty,
-                "PageBackgroundColor"
-            );
+            transitionGrid = new Grid
+            {
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TransitionGridStyle)
+            };
 
             return transitionGrid;
         }
 
+        //[MemberNotNull(nameof(page))]
         private View GetScrollViewContent()
         {
             page = new StackLayout
             {
-                Padding = new Thickness(30),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextPageStackLayoutStyle),
                 Children =
                 {
                     new Label
                     {
-                        Text = this.textPageScreenViewModel.Title,
-                        Style = LayoutHelpers.GetStaticStyleResource("HeaderStyle")
+                        Text = this.TextPageScreenViewModel.Title,
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.HeaderStyle)
                     }
                 }
             };
 
-            foreach (var group in textPageScreenViewModel.FormSettings.TextGroups)
+            foreach (var group in TextPageScreenViewModel.FormSettings.TextGroups)
             {
                 page.Children.Add(GetGroupHeader(group));
                 foreach (LabelItemDescriptorBase item in group.Labels)
@@ -95,7 +100,7 @@ namespace Enrollment.XPlatform.Views
 
             Label GetFornattedLabelItem(FormattedLabelItemDescriptor formattedItemDescriptor)
             {
-                Label formattedLabel = new Label
+                Label formattedLabel = new()
                 {
                     FormattedText = new FormattedString
                     {
@@ -122,55 +127,55 @@ namespace Enrollment.XPlatform.Views
             }
 
             Span GetHyperLinkSpanItem(HyperLinkSpanItemDescriptor spanItemDescriptor)
-                => new Span
+                => new()
                 {
                     Text = spanItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormHyperLinkSpanStyle"),
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormHyperLinkSpanStyle),
                     GestureRecognizers =
                     {
                         new TapGestureRecognizer
                         {
                             CommandParameter = spanItemDescriptor.Url
                         }
-                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: "TapCommand"))
+                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: nameof(TextPageViewModel.TapCommand)))
                     }
                 };
 
             Span GetSpanItem(SpanItemDescriptor spanItemDescriptor)
-                => new Span
+                => new()
                 {
                     Text = spanItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormItemSpanStyle")
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormItemSpanStyle)
                 };
 
 
             Label GetHyperLinkLabelItem(HyperLinkLabelItemDescriptor labelItemDescriptor)
-                => new Label
+                => new()
                 {
                     Text = labelItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormHyperLinkLabelStyle"),
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormHyperLinkLabelStyle),
                     GestureRecognizers =
                     {
                         new TapGestureRecognizer
                         {
                             CommandParameter = labelItemDescriptor.Url
                         }
-                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: "TapCommand"))
+                        .AddBinding(TapGestureRecognizer.CommandProperty, new Binding(path: nameof(TextPageViewModel.TapCommand)))
                     }
                 };
 
             Label GetLabelItem(LabelItemDescriptor labelItemDescriptor)
-                => new Label
+                => new()
                 {
                     Text = labelItemDescriptor.Text,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormItemLabelStyle")
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormItemLabelStyle)
                 };
 
             Label GetGroupHeader(TextGroupDescriptor textGroupDescriptor)
-                => new Label
+                => new()
                 {
                     Text = textGroupDescriptor.Title,
-                    Style = LayoutHelpers.GetStaticStyleResource("TextFormGroupHeaderStyle")
+                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.TextFormGroupHeaderStyle)
                 };
         }
     }

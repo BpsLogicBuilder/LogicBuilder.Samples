@@ -3,13 +3,14 @@ using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Parameters;
 using Enrollment.XPlatform.AutoMapperProfiles;
 using LogicBuilder.Forms.Parameters;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace Enrollment.XPlatform.Tests
 {
     public class CommandButtonTests
     {
-        public CommandButtonTests()
+        static CommandButtonTests()
         {
             SetupAutoMapper();
         }
@@ -20,7 +21,7 @@ namespace Enrollment.XPlatform.Tests
         [Fact]
         public void Map_ConnectorParameters_To_CommandButtonDescriptor()
         {
-            ConnectorParameters parameters = new ConnectorParameters
+            ConnectorParameters parameters = new()
             {
                 Id = 1,
                 ShortString = "EDT",
@@ -36,6 +37,7 @@ namespace Enrollment.XPlatform.Tests
             Assert.Equal("SubmitCommand", button.Command);
         }
 
+        [MemberNotNull(nameof(mapper))]
         private static void SetupAutoMapper()
         {
             var config = new MapperConfiguration(cfg =>

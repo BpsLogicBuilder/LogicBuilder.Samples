@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -9,26 +10,30 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class ValidatableObjectBase<T> : IValidatable
     {
-        public ValidatableObjectBase(string name, string templateName, IEnumerable<IValidationRule> validations, UiNotificationService uiNotificationService)
+        public ValidatableObjectBase(string name, string templateName, IEnumerable<IValidationRule>? validations, UiNotificationService uiNotificationService)
         {
+            /*MemberNotNull unvailable in 2.1*/
+            _name = null!;
+            _templateName = null!;
+            /*MemberNotNull unavailable in 2.1*/
             Name = name;
             TemplateName = templateName;
-            Validations = validations?.ToList();
+            Validations = validations?.ToList() ?? new List<IValidationRule>();
             this.uiNotificationService = uiNotificationService;
         }
 
         #region Fields
-        private T _value;
+        private T? _value;
         private bool _isValid = true;
         private string _name;
         private bool _isDirty;
         private bool _isVisible = true;
         private bool _isEnabled = true;
-        private Dictionary<string, string> _errors = new Dictionary<string, string>();
+        private Dictionary<string, string> _errors = new();
         private string _templateName;
         protected UiNotificationService uiNotificationService;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
         #endregion Fields
 
         #region Properties
@@ -48,6 +53,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public string Name
         {
             get => _name;
+            //[MemberNotNull(nameof(_name))]
             set
             {
                 if (_name == value)
@@ -61,6 +67,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public string TemplateName
         {
             get => _templateName;
+            //[MemberNotNull(nameof(_templateName))]
             set
             {
                 if (_templateName == value)
@@ -110,14 +117,14 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        public virtual T Value
+        public virtual T? Value
         {
             get => _value;
             set
             {
-                if (EqualityComparer<T>.Default.Equals(_value, value))
+                if (EqualityComparer<T>.Default.Equals(_value!, value!))/*EqualityComparer not built for nullable reference types in 2.1*/
                 {
-                    if (EqualityComparer<T>.Default.Equals(_value, default(T)))
+                    if (EqualityComparer<T>.Default.Equals(_value!, default(T)!))/*EqualityComparer not built for nullable reference types in 2.1*/
                     {
                         this.uiNotificationService.NotifyPropertyChanged(this.Name);
                     }
@@ -146,7 +153,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
         public List<IValidationRule> Validations { get; }
 
-        object IFormField.Value { get => Value; set => Value = (T)value; }
+        object? IFormField.Value { get => Value; set => Value = (T?)value; }
 
         public Type Type => typeof(T);
         #endregion Properties
@@ -154,7 +161,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public virtual bool Validate()
         {
             Errors = Validations
-                        ?.Where(v => !v.Check())
+                        .Where(v => !v.Check())
                         .ToDictionary(v => v.ClassName, v => v.ValidationMessage);
 
             IsValid = Errors?.Any() != true;
@@ -168,7 +175,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             IsValid = Validate();
         }
 
-        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)
             => this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }
