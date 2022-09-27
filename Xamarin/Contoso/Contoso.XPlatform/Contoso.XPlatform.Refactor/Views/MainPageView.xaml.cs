@@ -1,16 +1,12 @@
 ﻿using AutoMapper;
-using Contoso.Forms.Configuration.Navigation;
-using Contoso.XPlatform.Flow;
 using Contoso.XPlatform.Flow.Settings;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.Views.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -142,7 +138,7 @@ namespace Contoso.XPlatform.Views
                 );
             }
 
-            void DisposeCurrentPageBindingContext(Page detail)
+            static void DisposeCurrentPageBindingContext(Page detail)
             {
                 if (detail is not NavigationPage navigationPage)
                     return;

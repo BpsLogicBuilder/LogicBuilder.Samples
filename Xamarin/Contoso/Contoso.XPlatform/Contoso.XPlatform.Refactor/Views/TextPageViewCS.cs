@@ -1,10 +1,8 @@
 ﻿using Contoso.Forms.Configuration.TextForm;
 using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
-using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.TextPage;
 using System;
-
 using Xamarin.Forms;
 
 namespace Contoso.XPlatform.Views

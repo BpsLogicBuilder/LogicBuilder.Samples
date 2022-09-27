@@ -89,7 +89,7 @@ namespace Contoso.XPlatform.Utils
                 && resource is Style style)
                 return style;
 
-            throw new ArgumentException($"{nameof(styleName)}: DF65BD5C-E8A5-409C-A736-F6DF1B29D5E7");
+            throw new ArgumentException($"{styleName}: DF65BD5C-E8A5-409C-A736-F6DF1B29D5E7");
         }
 
         internal static DataTemplate GetCollectionViewItemTemplate(string templateName,
