@@ -56,7 +56,12 @@ namespace Contoso.XPlatform.Behaviours
             }
         }
 
-        private static void UpdatePlaceholderColor(bool isDirty, bool isValid, ErrorLabelValidationBehavior isValidBehavior) 
-            => isValidBehavior.AssociatedObject.IsVisible = isDirty && !isValid;
+        private static void UpdatePlaceholderColor(bool isDirty, bool isValid, ErrorLabelValidationBehavior isValidBehavior)
+        {
+            if (isValidBehavior.AssociatedObject == null)
+                return;
+
+            isValidBehavior.AssociatedObject.IsVisible = isDirty && !isValid;
+        }
     }
 }

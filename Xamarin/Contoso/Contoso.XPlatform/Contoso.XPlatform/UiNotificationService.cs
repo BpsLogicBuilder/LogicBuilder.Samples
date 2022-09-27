@@ -13,9 +13,9 @@ namespace Contoso.XPlatform
         #endregion Fields
 
         #region Properties
-        public Subject<FlowSettings> FlowSettingsSubject { get; set; } = new Subject<FlowSettings>();
-        public Subject<string> ValueChanged { get; set; } = new Subject<string>();
-        public FlowSettings FlowSettings { get; private set; }
+        public Subject<FlowSettings> FlowSettingsSubject { get; private set; } = new Subject<FlowSettings>();
+        public Subject<string> ValueChanged { get; private set; } = new Subject<string>();
+        public FlowSettings? FlowSettings { get; private set; }
         #endregion Properties
 
         public void NotifyPropertyChanged(string fieldName)

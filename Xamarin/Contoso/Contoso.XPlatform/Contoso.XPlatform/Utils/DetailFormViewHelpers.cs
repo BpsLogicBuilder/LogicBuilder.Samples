@@ -1,4 +1,5 @@
-﻿using Contoso.XPlatform.ViewModels;
+﻿using Contoso.XPlatform.Constants;
+using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
@@ -7,7 +8,7 @@ namespace Contoso.XPlatform.Utils
 {
     public static class DetailFormViewHelpers
     {
-        public static ReadOnlyControlTemplateSelector ReadOnlyControlTemplateSelector => new ReadOnlyControlTemplateSelector
+        public static ReadOnlyControlTemplateSelector ReadOnlyControlTemplateSelector => new()
         {
             CheckboxTemplate = new DataTemplate
             (
@@ -126,7 +127,7 @@ namespace Contoso.XPlatform.Utils
             );
 
         private static StackLayout GetCheckboxControl()
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 IsEnabled = false,
@@ -147,23 +148,19 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static StackLayout GetSwitchFieldControl()
-            => new StackLayout()
+            => new()
             {
                 Orientation = StackOrientation.Horizontal,
                 Children =
                 {
                     new Switch
                     {
-                        IsEnabled = false
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailSwitchStyle)
                     }
-                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchReadOnlyObject.Value)))
-                    .AssignDynamicResource(Switch.OnColorProperty, "SwitchOnColor")
-                    .AssignDynamicResource(Switch.ThumbColorProperty, "SwitchThumbColor"),
+                    .AddBinding(Switch.IsToggledProperty, new Binding(nameof(SwitchReadOnlyObject.Value))),
                     new Label
                     {
-                        Margin = new Thickness(2),
-                        Padding = new Thickness(7),
-                        VerticalOptions = LayoutOptions.Center
+                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.SwitchLabelStyle)
                     }
                     .AddBinding(Label.TextProperty, new Binding(nameof(SwitchReadOnlyObject.SwitchLabel)))
                     .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)))
@@ -171,7 +168,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetPasswordTextFieldControl()
-            => new Grid
+            => new()
             {
                 Children =
                 {
@@ -185,7 +182,7 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetMultiSelectFieldControl()
-            => new Grid
+            => new()
             {
                 Children =
                 {
@@ -208,40 +205,44 @@ namespace Contoso.XPlatform.Utils
             };
 
         private static Grid GetPopupFormFieldControl() 
-            => new Grid
+            => new()
             {
                 Children =
                 {
                     GetEntry()
                     .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(FormReadOnlyObject<string>.Placeholder))),
                     new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: nameof(FormReadOnlyObject<string>.OpenCommand))
-                    )
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormReadOnlyObject<string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
 
-        private static Grid GetPopupFormArrayFieldControl()
-            => new Grid
+        private static Grid GetPopupFormArrayFieldControl() 
+            => new()
             {
                 Children =
                 {
                     GetEntry()
-                    .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.Placeholder))),
+                        .AddBinding(Entry.PlaceholderProperty, new Binding(nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.Placeholder))),
                     new BoxView()
-                },
-                GestureRecognizers =
-                {
-                    new TapGestureRecognizer().AddBinding
-                    (
-                        TapGestureRecognizer.CommandProperty,
-                        new Binding(path: nameof(FormReadOnlyObject<string>.OpenCommand))
-                    )
+                    {
+                        GestureRecognizers =
+                        {
+                            new TapGestureRecognizer().AddBinding
+                            (
+                                TapGestureRecognizer.CommandProperty,
+                                new Binding(path: nameof(FormArrayReadOnlyObject<ObservableCollection<string>, string>.OpenCommand))
+                            )
+                        }
+                    }
                 }
             };
 
@@ -251,7 +252,7 @@ namespace Contoso.XPlatform.Utils
         private static View GetTextField(string titleBinding, string valueBinding, bool isPassword = false)
             => new Label
             {
-                Style = LayoutHelpers.GetStaticStyleResource("DetailFormLabel"),
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormLabel),
                 FormattedText = new FormattedString
                 {
                     Spans =
@@ -266,9 +267,7 @@ namespace Contoso.XPlatform.Utils
             }.AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
 
         static Entry GetEntry()
-            => new Entry() { Style = LayoutHelpers.GetStaticStyleResource("DetailFormEntryStyle") }
-            .AssignDynamicResource(VisualElement.BackgroundColorProperty, "EntryBackgroundColor")
-            .AssignDynamicResource(Entry.TextColorProperty, "PrimaryTextColor")
+            => new Entry() { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.DetailFormEntryStyle) }
             .AddBinding(VisualElement.IsVisibleProperty, new Binding(nameof(IFormField.IsVisible)));
     }
 }

@@ -1,14 +1,21 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.Services;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class TextFieldReadOnlyObject<T> : ReadOnlyObjectBase<T>
     {
-        public TextFieldReadOnlyObject(string name, string templateName, string title, string stringFormat, IContextProvider contextProvider) : base(name, templateName, contextProvider.UiNotificationService)
+        public TextFieldReadOnlyObject(
+            UiNotificationService uiNotificationService,
+            string name,
+            string templateName,
+            string title,
+            string stringFormat) : base(name, templateName, uiNotificationService)
         {
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            /*MemberNotNull unvailable in 2.1*/
             this.Title = title;
             this._stringFormat = stringFormat;
         }
@@ -19,11 +26,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         {
             get
             {
-                if (EqualityComparer<T>.Default.Equals(Value, default(T)))
+                if (EqualityComparer<T>.Default.Equals(Value!, default!))/*EqualityComparer not built for nullable reference types in 2.1*/
                     return string.Empty;
 
                 if (string.IsNullOrEmpty(this._stringFormat))
-                    return Value.ToString();
+                    return Value?.ToString() ?? string.Empty;
 
                 return string.Format(CultureInfo.CurrentCulture, this._stringFormat, Value);
             }
@@ -33,6 +40,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -43,20 +51,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private string _placeholder;
-        public string Placeholder
-        {
-            get => _placeholder; set
-            {
-                if (_placeholder == value)
-                    return;
-
-                _placeholder = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set

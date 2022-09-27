@@ -15,6 +15,6 @@ namespace Contoso.XPlatform.Services
         void CopyFlowItems();
         void CopyPersistentFlowItems();
         void SetFlowDataCacheItem(string key, object value);
-        object GetFlowDataCacheItem(string key);
+        object? GetFlowDataCacheItem(string key);
     }
 }

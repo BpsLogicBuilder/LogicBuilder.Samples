@@ -6,6 +6,6 @@ namespace Contoso.XPlatform.Services
 {
     public interface IPropertiesUpdater
     {
-        void UpdateProperties(IEnumerable<IValidatable> properties, object entity, List<FormItemSettingsDescriptor> FieldSettings, string parentField = null);
+        void UpdateProperties(IEnumerable<IValidatable> properties, object? entity, List<FormItemSettingsDescriptor> FieldSettings, string? parentField = null);
     }
 }

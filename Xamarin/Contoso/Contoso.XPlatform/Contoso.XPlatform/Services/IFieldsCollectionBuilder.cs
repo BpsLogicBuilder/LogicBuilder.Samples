@@ -1,11 +1,9 @@
-﻿using Contoso.Forms.Configuration.DataForm;
-using Contoso.XPlatform.ViewModels;
-using System;
+﻿using Contoso.XPlatform.ViewModels;
 
 namespace Contoso.XPlatform.Services
 {
     public interface IFieldsCollectionBuilder
     {
-        EditFormLayout CreateFieldsCollection(IFormGroupSettings formSettings, Type modelType);
+        EditFormLayout CreateFields();
     }
 }

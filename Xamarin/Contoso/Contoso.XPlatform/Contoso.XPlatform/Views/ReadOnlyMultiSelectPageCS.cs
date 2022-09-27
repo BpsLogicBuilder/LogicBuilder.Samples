@@ -1,6 +1,8 @@
 ﻿using Contoso.Forms.Configuration;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
+using System;
 using System.Collections.ObjectModel;
 using Xamarin.Forms;
 
@@ -11,32 +13,36 @@ namespace Contoso.XPlatform.Views
         public ReadOnlyMultiSelectPageCS(IReadOnly multiSelectReadOnly)
         {
             this.multiSelectReadOnly = multiSelectReadOnly;
-            this.multiSelectTemplateDescriptor = (MultiSelectTemplateDescriptor)this.multiSelectReadOnly.GetType()
-                .GetProperty(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.MultiSelectTemplate))
-                .GetValue(this.multiSelectReadOnly);
+            this.multiSelectTemplateDescriptor = (MultiSelectTemplateDescriptor)
+            (
+                (
+                    this.multiSelectReadOnly.GetType()
+                    .GetProperty(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.MultiSelectTemplate)) ?? throw new ArgumentException($"{nameof(multiSelectReadOnly)}: {{154F3929-11BC-44D2-BD40-2DCE48B91B00}}")
+                )
+                .GetValue(this.multiSelectReadOnly) ?? throw new ArgumentException($"{nameof(multiSelectReadOnly)}: {{65BCA524-1AD6-4FF9-8056-3FC5C8C5126C}}")
+            );
 
             Content = new AbsoluteLayout
             {
-                HorizontalOptions = LayoutOptions.Fill,
-                VerticalOptions = LayoutOptions.Fill,
+                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupDialogAbsoluteLayoutStyle),
                 Children =
                 {
                     new ContentView
                     {
                         Content = new StackLayout
                         {
-                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupViewStyle"),
+                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupViewStyle),
                             Children =
                             {
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderStyle),
                                     Children =
                                     {
                                         new Label
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupHeaderLabelStyle"),
-                                        }.AddBinding(Label.TextProperty, new Binding("Title"))
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupHeaderLabelStyle),
+                                        }.AddBinding(Label.TextProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Title)))
                                     }
                                 },
                                 new Grid
@@ -45,18 +51,18 @@ namespace Contoso.XPlatform.Views
                                     {
                                         new CollectionView
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("MultiSelectPopupCollectionViewStyle"),
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
                                             ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
                                         }
-                                        .AddBinding(ItemsView.ItemsSourceProperty, new Binding("Items"))
-                                        .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding("SelectedItems")),
+                                        .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
+                                        .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems))),
                                         new BoxView()
                                     }
                                 },
-                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource("PopupFooterSeparatorStyle") },
+                                new BoxView { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) },
                                 new Grid
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource("PopupFooterStyle"),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterStyle),
                                     ColumnDefinitions =
                                     {
                                         new ColumnDefinition{ Width = new GridLength(1, GridUnitType.Star) },
@@ -67,18 +73,15 @@ namespace Contoso.XPlatform.Views
                                     {
                                         new Button
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource("PopupCancelButtonStyle")
+                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupCancelButtonStyle)
                                         }
-                                        .AddBinding(Button.CommandProperty, new Binding("CancelCommand"))
+                                        .AddBinding(Button.CommandProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.CancelCommand)))
                                         .SetGridColumn(2)
                                     }
                                 }
                             }
                         }
                     }
-                    .AssignDynamicResource(VisualElement.BackgroundColorProperty, "PopupViewBackgroundColor")
-                    .SetAbsoluteLayoutBounds(new Rectangle(0, 0, 1, 1))
-                    .SetAbsoluteLayoutFlags(AbsoluteLayoutFlags.All)
                 }
             };
 
@@ -87,7 +90,7 @@ namespace Contoso.XPlatform.Views
             this.BindingContext = this.multiSelectReadOnly;
         }
 
-        private IReadOnly multiSelectReadOnly;
-        private MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
+        private readonly IReadOnly multiSelectReadOnly;
+        private readonly MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
     }
 }

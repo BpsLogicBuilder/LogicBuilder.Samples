@@ -13,10 +13,12 @@ namespace Contoso.XPlatform.Converters
 			return GetFirstError((IDictionary<string, string>)value);
 
             static string GetFirstError(IDictionary<string, string> errors) 
-				=> errors?.FirstOrDefault().Value;
+				=> errors.FirstOrDefault().Value!;/*ok to return null for converters*/
 		}
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) 
-			=> null;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

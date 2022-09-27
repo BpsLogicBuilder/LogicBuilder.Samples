@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
-using Contoso.AutoMapperProfiles;
 using Contoso.Common.Configuration.ExpansionDescriptors;
 using Contoso.Common.Configuration.ExpressionDescriptors;
 using Contoso.Common.Utils;
 using Contoso.Domain.Entities;
 using Contoso.Forms.Configuration.SearchForm;
+using Contoso.XPlatform.Tests.Helpers;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.ViewModels;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -21,11 +20,11 @@ namespace Contoso.XPlatform.Tests
     {
         public CreateSearchExpressionTests()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
@@ -44,13 +43,13 @@ namespace Contoso.XPlatform.Tests
             //assert
             AssertFilterStringIsCorrect
             (
-                filter, 
+                filter,
                 "f => (f.EnrollmentDateString.Contains(\"xxx\") OrElse (f.FirstName.Contains(\"xxx\") OrElse f.LastName.Contains(\"xxx\")))"
             );
         }
 
         [Fact]
-        public void CanOrderByDescriptorFromSortCollectionDescriptor()
+        public void CanCreateOrderByDescriptorFromSortCollectionDescriptor()
         {
             //act
             SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = serviceProvider.GetRequiredService<ISearchSelectorBuilder>().CreatePagingSelector
@@ -107,42 +106,7 @@ namespace Contoso.XPlatform.Tests
                 );
         }
 
-        static MapperConfiguration MapperConfiguration;
-
-        private void Initialize()
-        {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                    cfg.AddProfile<ParameterToDescriptorMappingProfile>();
-                    cfg.AddProfile<DescriptorToOperatorMappingProfile>();
-                    cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
-                    cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .AddTransient<EditFormViewModel, EditFormViewModel>()
-                .BuildServiceProvider();
-        }
-
-        SearchFilterGroupDescriptor searchFilterGroupDescriptor = new SearchFilterGroupDescriptor
+        SearchFilterGroupDescriptor searchFilterGroupDescriptor = new()
         {
             Filters = new List<SearchFilterDescriptorBase>
                 {
@@ -158,7 +122,7 @@ namespace Contoso.XPlatform.Tests
                 }
         };
 
-        SortCollectionDescriptor sortCollectionDescriptor = new SortCollectionDescriptor
+        SortCollectionDescriptor sortCollectionDescriptor = new()
         {
             SortDescriptions = new List<SortDescriptionDescriptor>
             {

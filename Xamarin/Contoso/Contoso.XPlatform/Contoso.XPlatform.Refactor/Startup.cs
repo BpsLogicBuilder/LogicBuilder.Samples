@@ -1,12 +1,4 @@
-﻿using AutoMapper;
-using Contoso.AutoMapperProfiles;
-using Contoso.XPlatform.AutoMapperProfiles;
-using Contoso.XPlatform.Directives;
-using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Cache;
-using Contoso.XPlatform.Flow.Rules;
-using Contoso.XPlatform.Services;
-using Contoso.XPlatform.ViewModels;
+﻿using Contoso.XPlatform.Directives;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 

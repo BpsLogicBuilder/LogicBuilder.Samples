@@ -1,11 +1,9 @@
-using AutoMapper;
-using Contoso.Domain.Entities;
-using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Cache;
+﻿using Contoso.Domain.Entities;
+using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Tests.Helpers;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Tests.Mocks;
+using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.Validatables;
-using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -19,18 +17,18 @@ namespace Contoso.XPlatform.Tests
     {
         public PropertiesUpdaterTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
         public void MapInstructorModelToIValidatableListWithInlineOfficeAssignment()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -62,11 +60,13 @@ namespace Contoso.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithInlineOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -77,20 +77,20 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["ID"]);
             Assert.Equal("John", propertiesDictionary["FirstName"]);
             Assert.Equal("Smith", propertiesDictionary["LastName"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["HireDate"]);
             Assert.Equal("Location1", propertiesDictionary["OfficeAssignment.Location"]);
-            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]).First().CourseTitle);
+            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]!).First().CourseTitle);
         }
 
         [Fact]
         public void MapInstructorModelToIValidatableListWithPopupOfficeAssignment()
         {
             //arrange
-            InstructorModel instructor = new InstructorModel
+            InstructorModel instructor = new()
             {
                 ID = 3,
                 FirstName = "John",
@@ -122,11 +122,13 @@ namespace Contoso.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.InstructorFormWithPopupOfficeAssignment,
                 typeof(InstructorModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -137,20 +139,20 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
             Assert.Equal(3, propertiesDictionary["ID"]);
             Assert.Equal("John", propertiesDictionary["FirstName"]);
             Assert.Equal("Smith", propertiesDictionary["LastName"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["HireDate"]);
-            Assert.Equal("Location1", ((OfficeAssignmentModel)propertiesDictionary["OfficeAssignment"]).Location);
-            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]).First().CourseTitle);
+            Assert.Equal("Location1", ((OfficeAssignmentModel)propertiesDictionary["OfficeAssignment"]!).Location);
+            Assert.Equal("Chemistry", ((IEnumerable<CourseAssignmentModel>)propertiesDictionary["Courses"]!).First().CourseTitle);
         }
 
         [Fact]
         public void MapDepartmentModelToIValidatableList()
         {
             //arrange
-            DepartmentModel department = new DepartmentModel
+            DepartmentModel department = new()
             {
                 DepartmentID = 1,
                 Name = "Mathematics",
@@ -179,11 +181,13 @@ namespace Contoso.XPlatform.Tests
                     }
                 }
             };
-            ObservableCollection<IValidatable> properties = serviceProvider.GetRequiredService<IFieldsCollectionBuilder>().CreateFieldsCollection
+            ObservableCollection<IValidatable> properties = GetFieldsCollectionBuilder
             (
                 Descriptors.DepartmentForm,
                 typeof(DepartmentModel)
-            ).Properties;
+            )
+            .CreateFields()
+            .Properties;
 
             //act
             serviceProvider.GetRequiredService<IPropertiesUpdater>().UpdateProperties
@@ -194,59 +198,27 @@ namespace Contoso.XPlatform.Tests
             );
 
             //assert
-            IDictionary<string, object> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
+            IDictionary<string, object?> propertiesDictionary = properties.ToDictionary(property => property.Name, property => property.Value);
 
             Assert.Equal(1, propertiesDictionary["DepartmentID"]);
             Assert.Equal("Mathematics", propertiesDictionary["Name"]);
             Assert.Equal(100000m, propertiesDictionary["Budget"]);
             Assert.Equal(new DateTime(2021, 5, 20), propertiesDictionary["StartDate"]);
             Assert.Equal(1, propertiesDictionary["InstructorID"]);
-            Assert.Equal("Trigonometry", ((IEnumerable<CourseModel>)propertiesDictionary["Courses"]).First().Title);
+            Assert.Equal("Trigonometry", ((IEnumerable<CourseModel>)propertiesDictionary["Courses"]!).First().Title);
         }
 
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
+        private IFieldsCollectionBuilder GetFieldsCollectionBuilder(DataFormSettingsDescriptor dataFormSettingsDescriptor, Type modelType)
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddSingleton<UiNotificationService, UiNotificationService>()
-                .AddSingleton<IFlowManager, FlowManager>()
-                .AddSingleton<FlowActivityFactory, FlowActivityFactory>()
-                .AddSingleton<DirectorFactory, DirectorFactory>()
-                .AddSingleton<FlowDataCache, FlowDataCache>()
-                .AddSingleton<ScreenData, ScreenData>()
-                .AddSingleton<IAppLogger, AppLoggerMock>()
-                .AddSingleton<IRulesCache, RulesCacheMock>()
-                .AddSingleton<IDialogFunctions, DialogFunctions>()
-                .AddSingleton<IActions, Actions>()
-                .AddSingleton<IFieldsCollectionBuilder, FieldsCollectionBuilder>()
-                .AddSingleton<ICollectionCellItemsBuilder, CollectionCellItemsBuilder>()
-                .AddSingleton<IConditionalValidationConditionsBuilder, ConditionalValidationConditionsBuilder>()
-                .AddSingleton<IHideIfConditionalDirectiveBuilder, HideIfConditionalDirectiveBuilder>()
-                .AddSingleton<IClearIfConditionalDirectiveBuilder, ClearIfConditionalDirectiveBuilder>()
-                .AddSingleton<IReloadIfConditionalDirectiveBuilder, ReloadIfConditionalDirectiveBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
-                .AddSingleton<IEntityUpdater, EntityUpdater>()
-                .AddSingleton<IPropertiesUpdater, PropertiesUpdater>()
-                .AddSingleton<IReadOnlyPropertiesUpdater, ReadOnlyPropertiesUpdater>()
-                .AddSingleton<IReadOnlyCollectionCellPropertiesUpdater, ReadOnlyCollectionCellPropertiesUpdater>()
-                .AddSingleton<IContextProvider, ContextProvider>()
-                .AddHttpClient()
-                .AddSingleton<IHttpService, HttpServiceMock>()
-                .BuildServiceProvider();
+            return serviceProvider.GetRequiredService<ICollectionBuilderFactory>().GetFieldsCollectionBuilder
+            (
+                modelType,
+                dataFormSettingsDescriptor.FieldSettings,
+                dataFormSettingsDescriptor,
+                dataFormSettingsDescriptor.ValidationMessages,
+                null,
+                null
+            );
         }
     }
 }

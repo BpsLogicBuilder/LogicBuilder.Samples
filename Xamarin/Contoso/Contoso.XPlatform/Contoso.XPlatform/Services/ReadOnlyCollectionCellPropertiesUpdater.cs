@@ -11,11 +11,8 @@ namespace Contoso.XPlatform.Services
 {
     public class ReadOnlyCollectionCellPropertiesUpdater : IReadOnlyCollectionCellPropertiesUpdater
     {
-        private readonly IMapper mapper;
-
-        public ReadOnlyCollectionCellPropertiesUpdater(IMapper mapper)
+        public ReadOnlyCollectionCellPropertiesUpdater()
         {
-            this.mapper = mapper;
         }
 
         public void UpdateProperties(IEnumerable<IReadOnly> properties, Type modelType, object entity, List<ItemBindingDescriptor> itemBindings)
@@ -23,7 +20,7 @@ namespace Contoso.XPlatform.Services
 
         private void UpdateReadOnlys(IEnumerable<IReadOnly> properties, Type modelType, object entity, List<ItemBindingDescriptor> itemBindings)
         {
-            IDictionary<string, object> existingValues = mapper.Map<Dictionary<string, object>>(entity) ?? new Dictionary<string, object>();
+            IDictionary<string, object?> existingValues = GetExistingValues(entity, itemBindings);/*can't use IMapper.Map here because thekey includes multipart names.*/
             IDictionary<string, IReadOnly> propertiesDictionary = properties.ToDictionary(p => p.Name);
 
             foreach (var binding in itemBindings)
@@ -32,7 +29,7 @@ namespace Contoso.XPlatform.Services
 
                 if (binding is MultiSelectItemBindingDescriptor multiSelectItemBindingDescriptor)
                 {
-                    if (existingValues.TryGetValue(binding.Property, out object @value) && @value != null)
+                    if (existingValues.TryGetValue(binding.Property, out object? @value) && @value != null)
                     {
                         propertiesDictionary[binding.Property].Value = Activator.CreateInstance
                         (
@@ -41,12 +38,12 @@ namespace Contoso.XPlatform.Services
                                 fieldType.GetUnderlyingElementType()
                             ),
                             new object[] { @value }
-                        );
+                        ) ?? throw new ArgumentException($"{fieldType}: {{C5A07697-029C-418F-B6B0-D1E96A72D2BC}}");
                     }
                 }
                 else if (binding is TextItemBindingDescriptor || binding is DropDownItemBindingDescriptor)
                 {
-                    if (existingValues.TryGetValue(binding.Property, out object @value) && @value != null)
+                    if (existingValues.TryGetValue(binding.Property, out object? @value) && @value != null)
                         propertiesDictionary[binding.Property].Value = @value;
                 }
                 else
@@ -56,7 +53,27 @@ namespace Contoso.XPlatform.Services
             }
         }
 
-        Type GetModelFieldType(Type modelType, string fullPropertyName)
+        private static IDictionary<string, object?> GetExistingValues(object entity, List<ItemBindingDescriptor> itemBindings) 
+            => itemBindings.Select
+            (
+                binding => new KeyValuePair<string, object?>(binding.Property, GetValue(entity, binding.Property))
+            )
+            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+        private static Type GetModelFieldType(Type modelType, string fullPropertyName)
                 => modelType.GetMemberInfoFromFullName(fullPropertyName).GetMemberType();
+
+        private static object GetValue(object entity, string fullName)
+        {
+            string[] parts = fullName.Split('.');
+            if (parts.Length == 1)
+                return Contoso.Utils.TypeHelpers.GetPropertyValue(entity, fullName);
+            else
+                return GetValue
+                (
+                    Contoso.Utils.TypeHelpers.GetPropertyValue(entity, parts[0]),
+                    string.Join(",", parts.Skip(1))
+                );
+        }
     }
 }

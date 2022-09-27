@@ -1,5 +1,4 @@
-﻿//Adapted from Microsoft.AspNet.OData.Test.Query.Expressions.ExpressionStringBuilder
-using LogicBuilder.Expressions.Utils.ExpressionBuilder.Operand;
+﻿using LogicBuilder.Expressions.Utils.ExpressionBuilder.Operand;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Contoso.XPlatform.Tests
 {
@@ -47,7 +47,7 @@ namespace Contoso.XPlatform.Tests
 
         protected override Expression VisitParameter(ParameterExpression node)
         {
-            Out(node.Name);
+            Out(node.Name ?? "");
             return node;
         }
 
@@ -57,9 +57,9 @@ namespace Contoso.XPlatform.Tests
             if (node.Expression == null && node.NodeType == ExpressionType.MemberAccess)
             {
                 Visit(node.Expression);
-                Out(node.Member.DeclaringType.Name + "." + node.Member.Name);
+                Out(node.Member.DeclaringType?.Name + "." + node.Member.Name);
             }
-            else if (node.Expression.NodeType == ExpressionType.Constant)
+            else if (node.Expression?.NodeType == ExpressionType.Constant)
             {
                 Visit(node.Expression);
                 if (!typeof(ConstantContainer).IsAssignableFrom(node.Expression?.Type))

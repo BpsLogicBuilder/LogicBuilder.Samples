@@ -1,11 +1,11 @@
-﻿using AutoMapper;
-using Contoso.XPlatform.Flow;
-using Contoso.XPlatform.Flow.Cache;
-using Contoso.XPlatform.Tests.Mocks;
-using LogicBuilder.RulesDirector;
+﻿using Contoso.XPlatform.Flow;
+using Contoso.XPlatform.Tests.Helpers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Contoso.XPlatform.Tests
@@ -14,11 +14,11 @@ namespace Contoso.XPlatform.Tests
     {
         public FlowManagerTest()
         {
-            Initialize();
+            serviceProvider = ServiceProviderHelper.GetServiceProvider();
         }
 
         #region Fields
-        private IServiceProvider serviceProvider;
+        private readonly IServiceProvider serviceProvider;
         #endregion Fields
 
         [Fact]
@@ -31,7 +31,7 @@ namespace Contoso.XPlatform.Tests
         [Fact]
         public void DataFromTheSameScopeMustMatch()
         {
-            IFlowManager flowManager2 = null;
+            IFlowManager? flowManager2 = null;
             IServiceScopeFactory serviceScopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
             using (IServiceScope scope = serviceScopeFactory.CreateScope())
             {
@@ -47,7 +47,7 @@ namespace Contoso.XPlatform.Tests
         [Fact]
         public void DataFromDifferentScopesCanBeDifferent()
         {
-            IFlowManager flowManager2 = null;
+            IFlowManager? flowManager2 = null;
             IServiceScopeFactory serviceScopeFactory = serviceProvider.GetRequiredService<IServiceScopeFactory>();
             using (IServiceScope scope = serviceScopeFactory.CreateScope())
             {
@@ -72,34 +72,6 @@ namespace Contoso.XPlatform.Tests
             flowManager1.FlowDataCache.Items["A"] = new List<string> { "First", "Second" };
 
             Assert.NotEmpty(flowManager2.FlowDataCache.Items);
-        }
-
-        static MapperConfiguration MapperConfiguration;
-        private void Initialize()
-        {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
-                {
-                });
-            }
-            MapperConfiguration.AssertConfigurationIsValid();
-            serviceProvider = new ServiceCollection()
-                .AddSingleton<AutoMapper.IConfigurationProvider>
-                (
-                    MapperConfiguration
-                )
-                .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
-                .AddScoped<IFlowManager, FlowManager>()
-                .AddScoped<FlowActivityFactory, FlowActivityFactory>()
-                .AddScoped<DirectorFactory, DirectorFactory>()
-                .AddScoped<FlowDataCache, FlowDataCache>()
-                .AddScoped<ScreenData, ScreenData>()
-                .AddScoped<IAppLogger, AppLoggerMock>()
-                .AddScoped<IRulesCache, RulesCacheMock>()
-                .AddScoped<IDialogFunctions, DialogFunctions>()
-                .AddScoped<IActions, Actions>()
-                .BuildServiceProvider();
         }
     }
 }

@@ -7,6 +7,7 @@ using Contoso.Forms.Parameters.Bindings;
 using Contoso.Forms.Parameters.ListForm;
 using Contoso.XPlatform.AutoMapperProfiles;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
 namespace Contoso.XPlatform.Tests
@@ -19,7 +20,7 @@ namespace Contoso.XPlatform.Tests
         }
 
         #region Fields
-        static IMapper mapper;
+        IMapper mapper;
         #endregion Fields
 
         [Fact]
@@ -49,7 +50,8 @@ namespace Contoso.XPlatform.Tests
             Assert.Equal("TextDetailTemplate", settings.ItemTemplateName);
         }
 
-        private static void SetupAutoMapper()
+        [MemberNotNull(nameof(mapper))]
+        private void SetupAutoMapper()
         {
             var config = new MapperConfiguration(cfg =>
             {

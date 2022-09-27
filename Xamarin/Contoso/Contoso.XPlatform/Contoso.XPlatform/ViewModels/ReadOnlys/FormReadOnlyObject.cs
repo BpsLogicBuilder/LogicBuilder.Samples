@@ -1,32 +1,57 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
+using Contoso.XPlatform.Directives;
+using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Services;
-using Contoso.XPlatform.Validators;
+using Contoso.XPlatform.ViewModels.Factories;
+using Contoso.XPlatform.Views.Factories;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public class FormReadOnlyObject<T> : ReadOnlyObjectBase<T>, IDisposable where T : class
     {
-        public FormReadOnlyObject(string name, IChildFormGroupSettings setting, IContextProvider contextProvider) 
-            : base(name, setting.FormGroupTemplate.TemplateName, contextProvider.UiNotificationService)
+        public FormReadOnlyObject(
+            ICollectionBuilderFactory collectionBuilderFactory,
+            IDirectiveManagersFactory directiveManagersFactory,
+            IPopupFormFactory popupFormFactory,
+            IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
+            UiNotificationService uiNotificationService,
+            string name,
+            IChildFormGroupSettings setting) 
+            : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)
         {
             this.FormSettings = setting;
+            /*MemberNotNull unvailable in 2.1*/
+            _title = null!;
+            _placeholder = null!;
+            /*MemberNotNull unavailable in 2.1*/
             this.Title = this.FormSettings.Title;
-            this.propertiesUpdater = contextProvider.ReadOnlyPropertiesUpdater;
+            this.popupFormFactory = popupFormFactory;
+            this.propertiesUpdater = readOnlyPropertiesUpdater;
             this.Placeholder = this.FormSettings.Placeholder;
-            FormLayout = contextProvider.ReadOnlyFieldsCollectionBuilder.CreateFieldsCollection(this.FormSettings, typeof(T));
-
-            this.directiveManagers = new ReadOnlyDirectiveManagers<T>
+            FormLayout = collectionBuilderFactory.GetReadOnlyFieldsCollectionBuilder
             (
+                typeof(T),
+                this.FormSettings.FieldSettings,
+                this.FormSettings,
+                null,
+                null
+            ).CreateFields();
+
+            this.directiveManagers = (ReadOnlyDirectiveManagers<T>)directiveManagersFactory.GetReadOnlyDirectiveManagers
+            (
+                typeof(T),
                 FormLayout.Properties,
-                FormSettings,
-                contextProvider
+                FormSettings
             );
         }
 
         public IChildFormGroupSettings FormSettings { get; set; }
+        private readonly IPopupFormFactory popupFormFactory;
         private readonly IReadOnlyPropertiesUpdater propertiesUpdater;
         private readonly ReadOnlyDirectiveManagers<T> directiveManagers;
 
@@ -38,6 +63,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         public string Title
         {
             get => _title;
+            //[MemberNotNull(nameof(_title))]
             set
             {
                 if (_title == value)
@@ -51,7 +77,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         private string _placeholder;
         public string Placeholder
         {
-            get => _placeholder; set
+            get => _placeholder;
+            //[MemberNotNull(nameof(_placeholder))]
+            set
             {
                 if (_placeholder == value)
                     return;
@@ -61,7 +89,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        public override T Value
+        public override T? Value
         {
             get { return base.Value; }
             set
@@ -76,7 +104,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _openCommand;
+        private ICommand? _openCommand;
         public ICommand OpenCommand
         {
             get
@@ -88,11 +116,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 (
                     () =>
                     {
-                        Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+                        MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current.MainPage.Navigation.PushModalAsync
+                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
-                                new Views.ReadOnlyChildFormPageCS(this)
+                                popupFormFactory.CreateReadOnlyChildFormPage(this)
                             )
                         );
                     }
@@ -102,7 +130,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             }
         }
 
-        private ICommand _cancelCommand;
+        private ICommand? _cancelCommand;
         public ICommand CancelCommand
         {
             get
@@ -121,9 +149,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 
         protected virtual void Cancel()
         {
-            Xamarin.Essentials.MainThread.BeginInvokeOnMainThread
+            MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current.MainPage.Navigation.PopModalAsync()
+                () => App.Current!.MainPage!.Navigation.PopModalAsync()
             );
         }
 
@@ -135,6 +163,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 if (property is IDisposable disposable)
                     Dispose(disposable);
             }
+            GC.SuppressFinalize(this);
         }
 
         protected void Dispose(IDisposable disposable)

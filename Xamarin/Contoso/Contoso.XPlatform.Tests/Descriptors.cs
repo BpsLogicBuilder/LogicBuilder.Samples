@@ -14,7 +14,7 @@ namespace Contoso.XPlatform.Tests
 {
     internal static class Descriptors
     {
-        internal static DataFormSettingsDescriptor InstructorFormWithInlineOfficeAssignment = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor InstructorFormWithInlineOfficeAssignment = new()
         {
             Title = "Instructor",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -209,7 +209,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.InstructorModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor InstructorFormWithPopupOfficeAssignment = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor InstructorFormWithPopupOfficeAssignment = new()
         {
             Title = "Instructor",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -404,7 +404,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.InstructorModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor DepartmentForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor DepartmentForm = new()
         {
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -904,7 +904,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.DepartmentModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor DepartmentFormWithAllItemsGrouped = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor DepartmentFormWithAllItemsGrouped = new()
         {
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -1418,7 +1418,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.DepartmentModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor DepartmentFormWithSomesItemsGrouped = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor DepartmentFormWithSomesItemsGrouped = new()
         {
             Title = "Department",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -1925,7 +1925,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.DepartmentModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor CourseForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor CourseForm = new()
         {
             Title = "Course",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -2194,7 +2194,7 @@ namespace Contoso.XPlatform.Tests
             ModelType = "Contoso.Domain.Entities.CourseModel, Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         };
 
-        internal static DataFormSettingsDescriptor StudentForm = new DataFormSettingsDescriptor
+        internal static DataFormSettingsDescriptor StudentForm = new()
         {
             Title = "Student",
             RequestDetails = new FormRequestDetailsDescriptor
@@ -2336,8 +2336,7 @@ namespace Contoso.XPlatform.Tests
             new CommandButtonDescriptor { Id = 2, LongString = "Home", ShortString = "H", Command = "NavigateCommand", ButtonIcon = "Home" }
         };
 
-
-        internal static NavigationBarDescriptor GetNavigationBar(string currentModule) => new NavigationBarDescriptor
+        internal static NavigationBarDescriptor GetNavigationBar(string currentModule) => new()
         {
             BrandText = "Contoso",
             CurrentModule = currentModule,
