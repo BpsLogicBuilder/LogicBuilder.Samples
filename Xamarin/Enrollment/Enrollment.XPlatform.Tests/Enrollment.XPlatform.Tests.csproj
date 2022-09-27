@@ -24,7 +24,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\Enrollment.XPlatform\Enrollment.XPlatform.Refactor\Enrollment.XPlatform.Refactor.csproj" />
+	  <ProjectReference Include="..\Enrollment.XPlatform\Enrollment.XPlatform\Enrollment.XPlatform.csproj" />
 	</ItemGroup>
 
 </Project>
