@@ -148,7 +148,12 @@
 
             <Style TargetType="CollectionView" x:Key="MultiSelectPopupCollectionViewStyle">
                 <Setter Property="SelectionMode" Value="Multiple"/>
-                <Setter Property="HeightRequest" Value="340"/>
+                <Setter Property="Margin">
+                    <OnPlatform x:TypeArguments="Thickness">
+                        <On Platform="Android">0,0,10,0</On>
+                        <On Platform="iOS">0,0,10,0</On>
+                    </OnPlatform>
+                </Setter>
             </Style>
 
             <Style TargetType="CollectionView" x:Key="ListFormCollectionViewStyle">
@@ -233,6 +238,12 @@
                             </VisualState>
                         </VisualStateGroup>
                     </VisualStateGroupList>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <OnPlatform x:TypeArguments="x:Double">
+                        <On Platform="Android">40</On>
+                        <On Platform="iOS">45</On>
+                    </OnPlatform>
                 </Setter>
             </Style>
 
@@ -434,6 +445,10 @@
             </Style>
 
             <Style TargetType="ScrollView" x:Key="ChildFormPopupScrollViewStyle">
+                <Setter Property="HeightRequest" Value="340"/>
+            </Style>
+
+            <Style TargetType="ScrollView" x:Key="MultiSelectParentStyle">
                 <Setter Property="HeightRequest" Value="340"/>
             </Style>
 

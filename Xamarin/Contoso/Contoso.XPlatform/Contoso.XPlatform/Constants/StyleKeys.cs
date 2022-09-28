@@ -34,6 +34,7 @@
         public const string ListPageViewLayoutStyle = nameof(ListPageViewLayoutStyle);
 
         public const string MultiSelectItemStyle = nameof(MultiSelectItemStyle);
+        public const string MultiSelectParentStyle = nameof(MultiSelectParentStyle);
         public const string MultiSelectPopupCollectionViewStyle = nameof(MultiSelectPopupCollectionViewStyle);
         public const string MultiSelectPopupViewStyle = nameof(MultiSelectPopupViewStyle);
         public const string MultiSelectSingleFieldLabelStyle = nameof(MultiSelectSingleFieldLabelStyle);

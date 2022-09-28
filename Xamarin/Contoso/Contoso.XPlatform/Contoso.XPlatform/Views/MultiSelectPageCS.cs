@@ -3,8 +3,9 @@ using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.Validatables;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
-
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Contoso.XPlatform.Views
@@ -14,15 +15,18 @@ namespace Contoso.XPlatform.Views
         public MultiSelectPageCS(IValidatable multiSelectValidatable)
         {
             this.multiSelectValidatable = multiSelectValidatable;
-            this.multiSelectTemplateDescriptor = (MultiSelectTemplateDescriptor)
-            (
-                (
+            this.multiSelectTemplateDescriptor = (MultiSelectTemplateDescriptor)GetPropertyValue(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.MultiSelectTemplate));
+            IEnumerable? items = (IEnumerable)GetPropertyValue(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Items));
+
+            object GetPropertyValue(string propertyName)
+            {
+                return (
                     this.multiSelectValidatable.GetType()
-                    .GetProperty(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.MultiSelectTemplate))
-                        ?? throw new ArgumentException($"{nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.MultiSelectTemplate)}: {{6841CE95-75AE-4F3D-A541-3D807E5039AB}}")
+                    .GetProperty(propertyName)
+                        ?? throw new ArgumentException($"{propertyName}: {{DF217DCB-FBA7-4416-A5FA-4DAAC030F170}}")
                 )
-                .GetValue(this.multiSelectValidatable) ?? throw new ArgumentException($"{nameof(multiSelectValidatable)}: {{39C66580-AC69-4030-BCC6-9C81BAC2F1F3}}")
-            );
+                .GetValue(this.multiSelectValidatable) ?? throw new ArgumentException($"{propertyName}: {{607747BE-7E2C-41A4-B851-9EF6767284ED}}");
+            }
 
             Content = new AbsoluteLayout
             {
@@ -48,13 +52,18 @@ namespace Contoso.XPlatform.Views
                                         }.AddBinding(Label.TextProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Title)))
                                     }
                                 },
-                                new CollectionView
+                                new ScrollView
                                 {
-                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
-                                    ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
-                                }
-                                .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Items)))
-                                .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SelectedItems))),
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectParentStyle),
+                                    Content = new CollectionView
+                                    {
+                                        HeightRequest = GetCollectionViewHeight(items),
+                                        Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
+                                        ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                    }
+                                    .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.Items)))
+                                    .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectValidatableObject<ObservableCollection<string>, string>.SelectedItems)))
+                                },
                                 new BoxView { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) },
                                 new Grid
                                 {
@@ -91,6 +100,25 @@ namespace Contoso.XPlatform.Views
             Visual = VisualMarker.Material;
             this.BindingContext = this.multiSelectValidatable;
         }
+
+        private double GetCollectionViewHeight(IEnumerable? list)
+        {
+            const double defaultHeight = 340;
+            if (list == null)
+                return defaultHeight;
+
+            double height = GetItemHeight() * list.Cast<object>().Count();
+
+            return height < defaultHeight ? defaultHeight : height;
+        }
+
+        public static double GetItemHeight()
+            => Device.RuntimePlatform switch
+            {
+                Platforms.Android => 40,
+                Platforms.iOS => 45,
+                _ => throw new ArgumentOutOfRangeException(nameof(Device.RuntimePlatform)),
+            };
 
         private readonly IValidatable multiSelectValidatable;
         private readonly MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;

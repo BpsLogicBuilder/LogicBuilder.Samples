@@ -39,7 +39,6 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             this.popupFormFactory = popupFormFactory;
             itemComparer = new MultiSelectItemComparer<E>(_multiSelectFormControlSettingsDescriptor.KeyFields);
             SelectedItems = new ObservableCollection<object>();
-            this.canExecute = false;
             this.Placeholder = this._multiSelectTemplate.LoadingIndicatorText;
             GetItemSource();
         }
@@ -49,7 +48,6 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         private readonly MultiSelectTemplateDescriptor _multiSelectTemplate;
         private readonly MultiSelectFormControlSettingsDescriptor _multiSelectFormControlSettingsDescriptor;
         private readonly MultiSelectItemComparer<E> itemComparer;
-        private bool canExecute;
 
         public MultiSelectTemplateDescriptor MultiSelectTemplate => _multiSelectTemplate;
 
@@ -141,6 +139,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             {
                 _items = value;
                 OnPropertyChanged();
+                CheckCanExecute((Command)OpenCommand);
             }
         }
 
@@ -197,7 +196,8 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             foreach (var item in selected)
                 SelectedItems.Add(item);
 
-            canExecute = true;
+            CheckCanExecute((Command)SubmitCommand);
+
             this.Title = this._multiSelectFormControlSettingsDescriptor.Title;
             this.Placeholder = this._multiSelectTemplate.PlaceholderText;
         }
@@ -248,7 +248,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                             () => App.Current!.MainPage!.Navigation.PopModalAsync()
                         );
                     },
-                    () => canExecute
+                    () => Items?.Any() == true
                 );
 
                 return _submitCommand;
@@ -276,7 +276,9 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                         );
 
                         OnPropertyChanged(nameof(SelectedItems));/*needed for iOS*/
-                    });
+                    },
+                    () => Items?.Any() == true
+                );
 
                 return _openCommand;
             }
@@ -302,6 +304,11 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 
                 return _cancelCommand;
             }
+        }
+
+        private void CheckCanExecute(Command command)
+        {
+            command.ChangeCanExecute();
         }
     }
 }

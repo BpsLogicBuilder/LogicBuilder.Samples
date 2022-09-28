@@ -152,6 +152,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             {
                 _items = value;
                 OnPropertyChanged();
+                CheckCanExecute((Command)OpenCommand);
             }
         }
 
@@ -241,7 +242,9 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                                 popupFormFactory.CreateReadOnlyMultiSelectPage(this)
                             )
                         );
-                    });
+                    },
+                    () => Items?.Any() == true
+                );
 
                 return _openCommand;
             }
@@ -267,6 +270,11 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 
                 return _cancelCommand;
             }
+        }
+
+        private void CheckCanExecute(Command command)
+        {
+            command.ChangeCanExecute();
         }
     }
 }

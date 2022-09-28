@@ -3,7 +3,9 @@ using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using System;
+using System.Collections;
 using System.Collections.ObjectModel;
+using System.Linq;
 using Xamarin.Forms;
 
 namespace Contoso.XPlatform.Views
@@ -13,14 +15,18 @@ namespace Contoso.XPlatform.Views
         public ReadOnlyMultiSelectPageCS(IReadOnly multiSelectReadOnly)
         {
             this.multiSelectReadOnly = multiSelectReadOnly;
-            this.multiSelectTemplateDescriptor = (MultiSelectTemplateDescriptor)
-            (
-                (
+            this.multiSelectTemplateDescriptor = (MultiSelectTemplateDescriptor)GetPropertyValue(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.MultiSelectTemplate));
+            IEnumerable? items = (IEnumerable)GetPropertyValue(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items));
+
+            object GetPropertyValue(string propertyName)
+            {
+                return (
                     this.multiSelectReadOnly.GetType()
-                    .GetProperty(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.MultiSelectTemplate)) ?? throw new ArgumentException($"{nameof(multiSelectReadOnly)}: {{154F3929-11BC-44D2-BD40-2DCE48B91B00}}")
+                    .GetProperty(propertyName)
+                        ?? throw new ArgumentException($"{propertyName}: {{47CA9471-BCBA-451A-B52D-153E44E5A00C}}")
                 )
-                .GetValue(this.multiSelectReadOnly) ?? throw new ArgumentException($"{nameof(multiSelectReadOnly)}: {{65BCA524-1AD6-4FF9-8056-3FC5C8C5126C}}")
-            );
+                .GetValue(this.multiSelectReadOnly) ?? throw new ArgumentException($"{propertyName}: {{91783C34-9FC9-4CA1-8D34-29121A9BDD57}}");
+            }
 
             Content = new AbsoluteLayout
             {
@@ -45,18 +51,23 @@ namespace Contoso.XPlatform.Views
                                         }.AddBinding(Label.TextProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Title)))
                                     }
                                 },
-                                new Grid
+                                new ScrollView
                                 {
-                                    Children =
+                                    Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectParentStyle),
+                                    Content = new Grid
                                     {
-                                        new CollectionView
+                                        Children =
                                         {
-                                            Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
-                                            ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                            new CollectionView
+                                            {
+                                                HeightRequest = GetCollectionViewHeight(items),
+                                                Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.MultiSelectPopupCollectionViewStyle),
+                                                ItemTemplate = EditFormViewHelpers.GetMultiSelectItemTemplateSelector(this.multiSelectTemplateDescriptor)
+                                            }
+                                            .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
+                                            .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems))),
+                                            new BoxView()
                                         }
-                                        .AddBinding(ItemsView.ItemsSourceProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.Items)))
-                                        .AddBinding(SelectableItemsView.SelectedItemsProperty, new Binding(nameof(MultiSelectReadOnlyObject<ObservableCollection<string>, string>.SelectedItems))),
-                                        new BoxView()
                                     }
                                 },
                                 new BoxView { Style = LayoutHelpers.GetStaticStyleResource(StyleKeys.PopupFooterSeparatorStyle) },
@@ -89,6 +100,25 @@ namespace Contoso.XPlatform.Views
             Visual = VisualMarker.Material;
             this.BindingContext = this.multiSelectReadOnly;
         }
+
+        private double GetCollectionViewHeight(IEnumerable? list)
+        {
+            const double defaultHeight = 340;
+            if (list == null)
+                return defaultHeight;
+
+            double height = GetItemHeight() * list.Cast<object>().Count();
+
+            return height < defaultHeight ? defaultHeight : height;
+        }
+
+        public static double GetItemHeight()
+            => Device.RuntimePlatform switch
+            {
+                Platforms.Android => 40,
+                Platforms.iOS => 45,
+                _ => throw new ArgumentOutOfRangeException(nameof(Device.RuntimePlatform)),
+            };
 
         private readonly IReadOnly multiSelectReadOnly;
         private readonly MultiSelectTemplateDescriptor multiSelectTemplateDescriptor;
