@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.Metadata;
 using System.Text.Json;
 using Xunit;
 
@@ -253,6 +254,21 @@ namespace Contoso.Bsl.Web.Tests
                 Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
             };
 
+        private EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBodyFromObjectConstant(DepartmentModel department)
+            => new EqualsBinaryOperatorDescriptor
+            {
+                Left = new MemberSelectorOperatorDescriptor
+                {
+                    SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                    MemberFullName = "DepartmentID"
+                },
+                Right = new MemberSelectorOperatorDescriptor 
+                {
+                    SourceOperand = new ConstantOperatorDescriptor { Type = typeof(DepartmentModel).FullName, ConstantValue = department },
+                    MemberFullName = "DepartmentID"
+                }
+            };
+
         private SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
             => new SelectorLambdaOperatorDescriptor
             {
@@ -435,6 +451,42 @@ namespace Contoso.Bsl.Web.Tests
                         Filter = GetFilterExpressionDescriptor<DepartmentModel>
                         (
                             GetDepartmentByIdFilterBody(2),
+                            "q"
+                        ),
+                        SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
+                        {
+                            ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
+                            {
+                                new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
+                                {
+                                    MemberName = "Courses"
+                                }
+                            }
+                        },
+                        ModelType = typeof(DepartmentModel).AssemblyQualifiedName,
+                        DataType = typeof(Department).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Entity);
+        }
+
+        [Fact]
+        public async void GetEntityRequest_As_DeopartmentModel_FromObjectConstant()
+        {
+            var result = await this.clientFactory.PostAsync<GetEntityResponse>
+            (
+                "api/Entity/GetEntity",
+                JsonSerializer.Serialize
+                (
+                    new Business.Requests.GetEntityRequest
+                    {
+                        Filter = GetFilterExpressionDescriptor<DepartmentModel>
+                        (
+                            GetDepartmentByIdFilterBodyFromObjectConstant(new DepartmentModel { DepartmentID = 2 }),
                             "q"
                         ),
                         SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
