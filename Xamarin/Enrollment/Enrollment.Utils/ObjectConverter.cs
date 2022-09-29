@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -7,6 +8,8 @@ namespace Enrollment.Utils
 {
     public class ObjectConverter : JsonConverter<object>
     {
+        private static readonly HashSet<string> KnownTypeStrings = new HashSet<string> { "typefullname", "typestring" };
+
         public override bool CanConvert(Type typeToConvert) 
             => typeToConvert == typeof(object);
 
@@ -19,6 +22,17 @@ namespace Enrollment.Utils
                 case JsonTokenType.StartObject:                    
                     using (var jsonDocument = JsonDocument.ParseValue(ref reader))
                     {
+                        JsonProperty jsonProperty = GetJsonProperty();
+                        if (!jsonProperty.Equals(default(JsonProperty)))
+                        {
+                            return JsonSerializer.Deserialize
+                            (
+                                jsonDocument.RootElement.GetRawText(),
+                                Type.GetType(jsonProperty.Value.GetString()),
+                                options
+                            );
+                        }
+
                         JsonElement.ObjectEnumerator objectEnumerator = jsonDocument.RootElement.EnumerateObject();
                         IDictionary<string, Type> types = new Dictionary<string, Type>();
                         foreach (var obj in objectEnumerator)
@@ -31,6 +45,12 @@ namespace Enrollment.Utils
                             jsonDocument.RootElement.GetRawText(),
                             AnonymousTypeFactory.CreateAnonymousType(types)
                         );
+
+                        JsonProperty GetJsonProperty()
+                            => jsonDocument.RootElement.EnumerateObject().FirstOrDefault
+                            (
+                                e => KnownTypeStrings.Contains(e.Name.ToLowerInvariant())
+                            );
 
                         Type MapValueKind(JsonElement jsonElement)
                         {

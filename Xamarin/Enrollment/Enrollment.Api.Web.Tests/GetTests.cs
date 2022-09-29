@@ -98,6 +98,21 @@ namespace Enrollment.Api.Web.Tests
                 Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
             };
 
+        private EqualsBinaryOperatorDescriptor GetResidencyByIdFilterBodyFromObjectConstant(ResidencyModel residency)
+            => new EqualsBinaryOperatorDescriptor
+            {
+                Left = new MemberSelectorOperatorDescriptor
+                {
+                    SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                    MemberFullName = "UserId"
+                },
+                Right = new MemberSelectorOperatorDescriptor
+                {
+                    SourceOperand = new ConstantOperatorDescriptor { Type = typeof(ResidencyModel).FullName, ConstantValue = residency },
+                    MemberFullName = "UserId"
+                }
+            };
+
         private SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
             => new SelectorLambdaOperatorDescriptor
             {
@@ -159,6 +174,43 @@ namespace Enrollment.Api.Web.Tests
                         Filter = GetFilterExpressionDescriptor<ResidencyModel>
                         (
                             GetResidencyByIdFilterBody(1),
+                            "q"
+                        ),
+                        SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
+                        {
+                            ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
+                            {
+                                new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
+                                {
+                                    MemberName = "StatesLivedIn"
+                                }
+                            }
+                        },
+                        ModelType = typeof(ResidencyModel).AssemblyQualifiedName,
+                        DataType = typeof(Residency).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Entity);
+            Assert.NotEmpty(((ResidencyModel)result.Entity).StatesLivedIn);
+        }
+
+        [Fact]
+        public async void GetEntityRequest_As_ResidencyModel_FromObjectConstant()
+        {
+            var result = await this.clientFactory.PostAsync<GetEntityResponse>
+            (
+                "api/Entity/GetEntity",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetEntityRequest
+                    {
+                        Filter = GetFilterExpressionDescriptor<ResidencyModel>
+                        (
+                            GetResidencyByIdFilterBodyFromObjectConstant(new ResidencyModel { UserId = 1 }),
                             "q"
                         ),
                         SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
