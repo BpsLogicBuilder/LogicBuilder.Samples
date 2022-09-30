@@ -7,7 +7,6 @@ namespace Contoso.XPlatform.Maui.Tests.Mocks
     {
         public void LogMessage(string group, string message)
         {
-            throw new NotImplementedException();
         }
     }
 }

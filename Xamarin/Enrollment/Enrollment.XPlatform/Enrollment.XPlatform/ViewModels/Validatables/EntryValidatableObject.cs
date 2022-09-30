@@ -35,26 +35,39 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             }
         }
 
-        public ICommand TextChangedCommand => new Command
-        (
-            async (parameter) =>
+        private ICommand? _textChangedCommand;
+        public ICommand TextChangedCommand
+        {
+            get
             {
-                IsDirty = true;
-                const int debounceDelay = 1000;
-                string text = ((TextChangedEventArgs)parameter).NewTextValue;
-                if (text == null)
-                    return;
+                if (_textChangedCommand != null)
+                    return _textChangedCommand;
 
-                await Task.Delay(debounceDelay).ContinueWith
+                string? text = null;
+                _textChangedCommand = new Command
                 (
-                    (task, oldText) =>
+                    async (parameter) =>
                     {
-                        if (text == (string)oldText!)/*oldText is never null*/
-                            IsValid = Validate();
-                    },
-                    text
+                        IsDirty = true;
+                        const int debounceDelay = 1000;
+                        text = ((TextChangedEventArgs)parameter).NewTextValue;
+                        if (text == null)
+                            return;
+
+                        await Task.Delay(debounceDelay).ContinueWith
+                        (
+                            (task, oldText) =>
+                            {
+                                if (text == (string)oldText!)/*oldText is never null*/
+                                    IsValid = Validate();
+                            },
+                            text
+                        );
+                    }
                 );
+
+                return _textChangedCommand;
             }
-        );
+        }
     }
 }

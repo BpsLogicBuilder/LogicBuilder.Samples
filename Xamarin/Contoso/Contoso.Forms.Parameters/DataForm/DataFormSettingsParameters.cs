@@ -38,10 +38,7 @@ namespace Contoso.Forms.Parameters.DataForm
 			List<VariableDirectivesParameters> conditionalDirectives = null,
 
 			[Comments("Multibindings list for the form header field.")]
-			MultiBindingParameters subtitleBindings = null,
-
-			[Comments("Defines a filter to find a selected item on a subsequent form e.g. to edit the selected item.")]
-			ItemFilterGroupParameters itemFilterGroup = null
+			MultiBindingParameters subtitleBindings = null
 
 		)
 		{
@@ -62,7 +59,6 @@ namespace Contoso.Forms.Parameters.DataForm
 			);
 			HeaderBindings = headerBindings;
 			SubtitleBindings = subtitleBindings;
-			ItemFilterGroup = itemFilterGroup;
 		}
 
 		public string Title { get; set; }
@@ -74,6 +70,5 @@ namespace Contoso.Forms.Parameters.DataForm
 		public Dictionary<string, List<DirectiveParameters>> ConditionalDirectives { get; set; }
 		public MultiBindingParameters HeaderBindings { get; set; }
 		public MultiBindingParameters SubtitleBindings { get; set; }
-		public ItemFilterGroupParameters ItemFilterGroup { get; set; }
 	}
 }

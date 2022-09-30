@@ -33,36 +33,6 @@ namespace Enrollment.XPlatform.Maui.Tests
                     }
                 }
             }.ToDictionary(i => i.Name),
-            ItemFilterGroup = new ItemFilterGroupDescriptor
-            {
-                Logic = "and",
-                Filters = new List<ItemFilterDescriptorBase>
-                {
-                    new MemberSourceFilterDescriptor
-                    {
-                        Field = "UserId",
-                        Operator = "eq",
-                        MemberSource = "UserId"
-                    }
-                }
-            },
-            SearchFilterGroup = new SearchFilterGroupDescriptor
-            {
-                Filters = new List<SearchFilterDescriptorBase>
-                {
-                    new SearchFilterDescriptor
-                    {
-                        Field = "FirstName"
-                    }
-                }
-            },
-            SortCollection = new SortCollectionDescriptor
-            {
-                SortDescriptions = new List<SortDescriptionDescriptor>
-                {
-                    new SortDescriptionDescriptor { PropertyName = "FullName", SortDirection = ListSortDirection.Descending },
-                }
-            },
             RequestDetails = new RequestDetailsDescriptor
             {
                 DataSourceUrl = "api/List/GetList",

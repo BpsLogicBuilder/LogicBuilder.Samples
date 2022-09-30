@@ -47,6 +47,7 @@ namespace Enrollment.XPlatform.Tests.Helpers
                 services.Add(new ServiceDescriptor(typeof(IUpdateOnlyFieldsCollectionBuilder), typeof(UpdateOnlyFieldsCollectionBuilder), ServiceLifetime.Singleton));
 
             serviceProvider = services.BuildServiceProvider();
+            App.ServiceProvider = serviceProvider;
         }
 
         internal static IServiceProvider GetServiceProvider()

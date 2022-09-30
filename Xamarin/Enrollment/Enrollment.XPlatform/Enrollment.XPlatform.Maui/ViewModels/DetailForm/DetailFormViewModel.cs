@@ -2,7 +2,6 @@
 using Enrollment.Bsl.Business.Responses;
 using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Configuration.DataForm;
-using Enrollment.Parameters.Expressions;
 using Enrollment.XPlatform.Directives;
 using Enrollment.XPlatform.Directives.Factories;
 using Enrollment.XPlatform.Flow.Requests;
@@ -22,7 +21,6 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
         public DetailFormViewModel(
             ICollectionBuilderFactory collectionBuilderFactory,
             IDirectiveManagersFactory directiveManagersFactory,
-            IGetItemFilterBuilder getItemFilterBuilder,
             IHttpService httpService,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
             UiNotificationService uiNotificationService,
@@ -40,7 +38,6 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
 
             this.httpService = httpService;
             this.propertiesUpdater = readOnlyPropertiesUpdater;
-            this.getItemFilterBuilder = getItemFilterBuilder;
 
             this.directiveManagers = (ReadOnlyDirectiveManagers<TModel>)directiveManagersFactory.GetReadOnlyDirectiveManagers
             (
@@ -54,7 +51,6 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
 
         private readonly IHttpService httpService;
         private readonly IReadOnlyPropertiesUpdater propertiesUpdater;
-        private readonly IGetItemFilterBuilder getItemFilterBuilder;
         private readonly ReadOnlyDirectiveManagers<TModel> directiveManagers;
         private TModel? entity;
 
@@ -139,7 +135,7 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
 
         private void Edit(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private async void GetEntity()
@@ -184,7 +180,7 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
             );
         }
 
-        private void SetItemFilterAndNavigateNext(CommandButtonDescriptor button)
+        private void SetEntityAndNavigateNext(CommandButtonDescriptor button)
         {
             if (entity == null)
                 throw new ArgumentException($"{nameof(entity)}: {{97F661A5-1AE3-4A85-8083-438B665A58B7}}");
@@ -194,13 +190,8 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
 
             flowManagerService.SetFlowDataCacheItem
             (
-                typeof(FilterLambdaOperatorParameters).FullName!, /*cannot be null*/
-                this.getItemFilterBuilder.CreateFilter
-                (
-                    this.FormSettings.ItemFilterGroup,
-                    typeof(TModel),
-                    this.entity
-                )
+                typeof(TModel).FullName!,
+                this.entity
             );
 
             flowManagerService.Next

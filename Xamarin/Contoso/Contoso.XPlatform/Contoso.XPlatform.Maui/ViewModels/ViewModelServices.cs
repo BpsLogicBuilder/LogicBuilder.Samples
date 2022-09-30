@@ -39,7 +39,6 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(DetailFormViewModel<>).MakeGenericType(GetEntityType(dataFormSettings.Settings.ModelType)),
                                 provider.GetRequiredService<ICollectionBuilderFactory>(),
                                 provider.GetRequiredService<IDirectiveManagersFactory>(),
-                                provider.GetRequiredService<IGetItemFilterBuilder>(),
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IReadOnlyPropertiesUpdater>(),
                                 provider.GetRequiredService<UiNotificationService>(),
@@ -105,9 +104,8 @@ namespace Microsoft.Extensions.DependencyInjection
                             (
                                 typeof(SearchPageViewModel<>).MakeGenericType(GetEntityType(searchFormSettings.Settings.ModelType)),
                                 provider.GetRequiredService<ICollectionCellManager>(),
-                                provider.GetRequiredService<IGetItemFilterBuilder>(),
                                 provider.GetRequiredService<IHttpService>(),
-                                provider.GetRequiredService<ISearchSelectorBuilder>(),
+                                provider.GetRequiredService<IMapper>(),
                                 searchFormSettings
                             ) ?? throw new ArgumentException($"{searchFormSettings.Settings.ModelType}: {{DBBCF268-565B-4F23-BEB0-418626AB5475}}")
                         );

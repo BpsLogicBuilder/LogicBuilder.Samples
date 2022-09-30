@@ -1,9 +1,12 @@
-﻿using Contoso.Bsl.Business.Requests;
+﻿using AutoMapper;
+using Contoso.Bsl.Business.Requests;
 using Contoso.Bsl.Business.Responses;
+using Contoso.Common.Configuration.ExpressionDescriptors;
 using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.SearchForm;
 using Contoso.Parameters.Expressions;
+using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Flow.Requests;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
@@ -24,28 +27,27 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
     {
         public SearchPageViewModel(
             ICollectionCellManager collectionCellManager,
-            IGetItemFilterBuilder getItemFilterBuilder,
             IHttpService httpService,
-            ISearchSelectorBuilder searchSelectorBuilder,
+            IMapper mapper,
             ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.collectionCellManager = collectionCellManager;
-            this.getItemFilterBuilder = getItemFilterBuilder;
             this.httpService = httpService;
-            this.searchSelectorBuilder = searchSelectorBuilder;
-            defaultSkip = FormSettings.SortCollection.Skip;
+            this.mapper = mapper;
             GetItems();
         }
 
+        private const int defaultSkip = 0;
+
         private readonly ICollectionCellManager collectionCellManager;
-        private readonly IGetItemFilterBuilder getItemFilterBuilder;
         private readonly IHttpService httpService;
-        private readonly ISearchSelectorBuilder searchSelectorBuilder;
-        private readonly int? defaultSkip;
+        private readonly IMapper mapper;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, TModel>? _entitiesDictionary;
+
+        private int Skip { get; set; }
 
         private bool _isRefreshing;
         public bool IsRefreshing
@@ -234,12 +236,13 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
                 if (_textChangedCommand != null)
                     return _textChangedCommand;
 
+                string? text = null;
                 _textChangedCommand = new Command
                 (
                     async (parameter) =>
                     {
                         const int debounceDelay = 1000;
-                        string text = ((TextChangedEventArgs)parameter).NewTextValue;
+                        text = ((TextChangedEventArgs)parameter).NewTextValue;
                         if (text == null)
                             return;
 
@@ -279,7 +282,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private void Filter()
         {
-            this.FormSettings.SortCollection.Skip = defaultSkip;
+            Skip = defaultSkip;
             GetItems();
         }
 
@@ -291,20 +294,17 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             ((Command)SelectAndNavigateCommand).ChangeCanExecute();
         }
 
-        private Task<BaseResponse> GetList()
-            => BusyIndicatorHelpers.ExecuteRequestWithBusyIndicator
+        private async Task<BaseResponse> GetList()
+        {
+            var selector = await GetSelector();
+
+            return await BusyIndicatorHelpers.ExecuteRequestWithBusyIndicator
             (
                 () => this.httpService.GetList
                 (
                     new GetTypedListRequest
                     {
-                        Selector = this.searchSelectorBuilder.CreatePagingSelector
-                        (
-                            this.FormSettings.SortCollection,
-                            typeof(TModel),
-                            this.FormSettings.SearchFilterGroup,
-                            SearchText
-                        ),
+                        Selector = selector,
                         ModelType = this.FormSettings.RequestDetails.ModelType,
                         DataType = this.FormSettings.RequestDetails.DataType,
                         ModelReturnType = this.FormSettings.RequestDetails.ModelReturnType,
@@ -312,6 +312,36 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
                     }
                 )
             );
+        }
+
+        private async Task<SelectorLambdaOperatorDescriptor> GetSelector()
+        {
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.SetFlowDataCacheItem
+            (
+                FlowDataCacheItemKeys.SkipCount,
+                Skip
+            );
+
+            flowManagerService.SetFlowDataCacheItem
+            (
+                FlowDataCacheItemKeys.SearchText,
+                this.SearchText ?? ""
+            );
+
+            await flowManagerService.RunFlow
+            (
+                new NewFlowRequest
+                {
+                    InitialModuleName = FormSettings.CreatePagingSelectorFlowName
+                }
+            );
+
+            return this.mapper.Map<SelectorLambdaOperatorDescriptor>
+            (
+                flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
+            );
+        }
 
         private async void GetItems()
         {
@@ -342,7 +372,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
             if (this._entitiesDictionary == null)
                 throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{59B53FDE-2E96-4316-AF1B-E8C8D7FB00AB}}");
 
-            this.FormSettings.SortCollection.Skip = (defaultSkip ?? 0) + this._entitiesDictionary.Count;
+            Skip = defaultSkip + this._entitiesDictionary.Count;
 
             BaseResponse baseResponse = await GetList();
             IsRefreshing = false;
@@ -376,7 +406,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private void SelectAndNavigate(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private void Add(CommandButtonDescriptor button)
@@ -386,20 +416,20 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private void Edit(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private void Delete(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private void Detail(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
-        private void SetItemFilterAndNavigateNext(CommandButtonDescriptor button)
+        private void SetEntityAndNavigateNext(CommandButtonDescriptor button)
         {
             using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
             flowManagerService.CopyFlowItems();
@@ -408,17 +438,6 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
                 throw new ArgumentException($"{nameof(this.SelectedItem)}: {{E28E220D-FBA4-405C-A803-61C5BE385943}}");
             if (this._entitiesDictionary == null)
                 throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{30F5CBC2-1FC0-431E-B326-0642380001E6}}");
-
-            flowManagerService.SetFlowDataCacheItem
-            (
-                typeof(FilterLambdaOperatorParameters).FullName!,
-                this.getItemFilterBuilder.CreateFilter
-                (
-                    this.FormSettings.ItemFilterGroup,
-                    typeof(TModel),
-                    this._entitiesDictionary[SelectedItem]
-                )
-            );
 
             flowManagerService.SetFlowDataCacheItem
             (
