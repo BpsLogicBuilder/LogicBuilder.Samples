@@ -194,7 +194,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                     }
                 );
 
-                if ((flowManagerService.GetFlowDataCacheItem(FlowVariableNames.Get_Selector_Success) ?? false).Equals(false))
+                if ((flowManagerService.GetFlowDataCacheItem(FlowDataCacheItemKeys.Get_Selector_Success) ?? false).Equals(false))
                     return;
 
                 SelectorLambdaOperatorDescriptor selector = this.mapper.Map<SelectorLambdaOperatorDescriptor>

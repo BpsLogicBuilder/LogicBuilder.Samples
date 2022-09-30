@@ -1,9 +1,12 @@
-﻿using Enrollment.Bsl.Business.Requests;
+﻿using AutoMapper;
+using Enrollment.Bsl.Business.Requests;
 using Enrollment.Bsl.Business.Responses;
+using Enrollment.Common.Configuration.ExpressionDescriptors;
 using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Configuration.Bindings;
 using Enrollment.Forms.Configuration.SearchForm;
 using Enrollment.Parameters.Expressions;
+using Enrollment.XPlatform.Constants;
 using Enrollment.XPlatform.Flow.Requests;
 using Enrollment.XPlatform.Flow.Settings.Screen;
 using Enrollment.XPlatform.Services;
@@ -24,25 +27,22 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
     {
         public SearchPageViewModel(
             ICollectionCellManager collectionCellManager,
-            IGetItemFilterBuilder getItemFilterBuilder,
             IHttpService httpService,
-            ISearchSelectorBuilder searchSelectorBuilder,
+            IMapper mapper,
             ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.collectionCellManager = collectionCellManager;
-            this.getItemFilterBuilder = getItemFilterBuilder;
             this.httpService = httpService;
-            this.searchSelectorBuilder = searchSelectorBuilder;
+            this.mapper = mapper;
             defaultSkip = FormSettings.SortCollection.Skip;
             GetItems();
         }
 
         private readonly ICollectionCellManager collectionCellManager;
-        private readonly IGetItemFilterBuilder getItemFilterBuilder;
         private readonly IHttpService httpService;
-        private readonly ISearchSelectorBuilder searchSelectorBuilder;
+        private readonly IMapper mapper;
         private readonly int? defaultSkip;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, TModel>? _entitiesDictionary;
@@ -234,12 +234,13 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
                 if (_textChangedCommand != null)
                     return _textChangedCommand;
 
+                string? text = null;
                 _textChangedCommand = new Command
                 (
                     async (parameter) =>
                     {
                         const int debounceDelay = 1000;
-                        string text = ((TextChangedEventArgs)parameter).NewTextValue;
+                        text = ((TextChangedEventArgs)parameter).NewTextValue;
                         if (text == null)
                             return;
 
@@ -291,20 +292,17 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
             ((Command)SelectAndNavigateCommand).ChangeCanExecute();
         }
 
-        private Task<BaseResponse> GetList()
-            => BusyIndicatorHelpers.ExecuteRequestWithBusyIndicator
+        private async Task<BaseResponse> GetList()
+        {
+            var selector = await GetSelector();
+
+            return await BusyIndicatorHelpers.ExecuteRequestWithBusyIndicator
             (
                 () => this.httpService.GetList
                 (
                     new GetTypedListRequest
                     {
-                        Selector = this.searchSelectorBuilder.CreatePagingSelector
-                        (
-                            this.FormSettings.SortCollection,
-                            typeof(TModel),
-                            this.FormSettings.SearchFilterGroup,
-                            SearchText
-                        ),
+                        Selector = selector,
                         ModelType = this.FormSettings.RequestDetails.ModelType,
                         DataType = this.FormSettings.RequestDetails.DataType,
                         ModelReturnType = this.FormSettings.RequestDetails.ModelReturnType,
@@ -312,6 +310,36 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
                     }
                 )
             );
+        }
+
+        private async Task<SelectorLambdaOperatorDescriptor> GetSelector()
+        {
+            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
+            flowManagerService.SetFlowDataCacheItem
+            (
+                FlowDataCacheItemKeys.SkipCount,
+                this.FormSettings.SortCollection.Skip.GetValueOrDefault()
+            );
+
+            flowManagerService.SetFlowDataCacheItem
+            (
+                FlowDataCacheItemKeys.SearchText,
+                this.SearchText ?? ""
+            );
+
+            await flowManagerService.RunFlow
+            (
+                new NewFlowRequest
+                {
+                    InitialModuleName = FormSettings.CreatePagingSelectorFlowName
+                }
+            );
+
+            return this.mapper.Map<SelectorLambdaOperatorDescriptor>
+            (
+                flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
+            );
+        }
 
         private async void GetItems()
         {
@@ -376,7 +404,7 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
 
         private void SelectAndNavigate(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private void Add(CommandButtonDescriptor button)
@@ -386,20 +414,20 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
 
         private void Edit(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private void Delete(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
         private void Detail(CommandButtonDescriptor button)
         {
-            SetItemFilterAndNavigateNext(button);
+            SetEntityAndNavigateNext(button);
         }
 
-        private void SetItemFilterAndNavigateNext(CommandButtonDescriptor button)
+        private void SetEntityAndNavigateNext(CommandButtonDescriptor button)
         {
             using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
             flowManagerService.CopyFlowItems();
@@ -408,17 +436,6 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
                 throw new ArgumentException($"{nameof(this.SelectedItem)}: {{E28E220D-FBA4-405C-A803-61C5BE385943}}");
             if (this._entitiesDictionary == null)
                 throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{30F5CBC2-1FC0-431E-B326-0642380001E6}}");
-
-            flowManagerService.SetFlowDataCacheItem
-            (
-                typeof(FilterLambdaOperatorParameters).FullName!,
-                this.getItemFilterBuilder.CreateFilter
-                (
-                    this.FormSettings.ItemFilterGroup,
-                    typeof(TModel),
-                    this._entitiesDictionary[SelectedItem]
-                )
-            );
 
             flowManagerService.SetFlowDataCacheItem
             (

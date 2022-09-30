@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Enrollment.Forms.Parameters.SearchForm
 {
-    public class SearchFormSettingsParameters
+	public class SearchFormSettingsParameters
     {
 		public SearchFormSettingsParameters
 		(
@@ -32,7 +32,11 @@ namespace Enrollment.Forms.Parameters.SearchForm
 			[NameValue(AttributeNames.DEFAULTVALUE, "Filter")]
 			string filterPlaceholder,
 
-			[Comments("Defines which fields of the model type which bind to the named template fields (e.g. Header, Text, Detail).")]
+            [Comments("Flow for dynamically creating the paging (where/orderby/skip/take) selector e.g. paging_selector_admin.")]
+            [NameValue(AttributeNames.DEFAULTVALUE, "paging_selector_models")]
+            string createPagingSelectorFlowName,
+
+            [Comments("Defines which fields of the model type which bind to the named template fields (e.g. Header, Text, Detail).")]
 			List<ItemBindingParameters> bindings,
 
 			[Comments("Define the sort order and number additional items to return on 'Pull to Refresh'.")]
@@ -53,7 +57,8 @@ namespace Enrollment.Forms.Parameters.SearchForm
 			LoadingIndicatorText = loadingIndicatorText;
 			ItemTemplateName = itemTemplateName;
 			FilterPlaceholder = filterPlaceholder;
-			Bindings = bindings.ToDictionary(cvib => cvib.Name);
+            CreatePagingSelectorFlowName = createPagingSelectorFlowName;
+            Bindings = bindings.ToDictionary(cvib => cvib.Name);
 			SortCollection = sortCollection;
 			SearchFilterGroup = searchFilterGroup;
 			ItemFilterGroup = itemFilterGroup;
@@ -65,7 +70,8 @@ namespace Enrollment.Forms.Parameters.SearchForm
 		public string LoadingIndicatorText { get; set; }
 		public string ItemTemplateName { get; set; }
 		public string FilterPlaceholder { get; set; }
-		public Dictionary<string, ItemBindingParameters> Bindings { get; set; }
+        public string CreatePagingSelectorFlowName { get; set; }
+        public Dictionary<string, ItemBindingParameters> Bindings { get; set; }
 		public SortCollectionParameters SortCollection { get; set; }
 		public SearchFilterGroupParameters SearchFilterGroup { get; set; }
 		public ItemFilterGroupParameters ItemFilterGroup { get; set; }

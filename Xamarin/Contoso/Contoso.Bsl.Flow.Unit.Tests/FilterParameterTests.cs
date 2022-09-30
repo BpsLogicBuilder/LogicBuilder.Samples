@@ -32,6 +32,34 @@ namespace Contoso.Bsl.Flow.Unit.Tests
 
         #region Inequalities
         [Theory]
+        [InlineData(null, false)]
+        [InlineData("", false)]
+        [InlineData("Doritos", true)]
+        public void CreateFilterFromLocalConstant(string productName, bool expected)
+        {
+            //act
+            Product localConstant = new Product { ProductName = "Doritos" };
+            var filter = CreateFilter<Product>();
+            bool result = RunFilter(filter, new Product { ProductName = productName });
+
+            //assert
+            AssertFilterStringIsCorrect(filter, "$it => ($it.ProductName == Contoso.Bsl.Flow.Unit.Tests.Data.Product.ProductName)");
+            Assert.Equal(expected, result);
+
+            Expression<Func<T, bool>> CreateFilter<T>()
+            {
+                return GetFilter<T>
+                (
+                    new EqualsBinaryOperatorParameters
+                    (
+                        new MemberSelectorOperatorParameters("ProductName", new ParameterOperatorParameters(parameterName)),
+                        new MemberSelectorOperatorParameters("ProductName", new ConstantOperatorParameters(localConstant, typeof(T)))
+                    )
+                );
+            }
+        }
+
+        [Theory]
         [InlineData(null, true)]
         [InlineData("", false)]
         [InlineData("Doritos", false)]

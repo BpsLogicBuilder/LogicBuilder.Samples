@@ -12,6 +12,7 @@ namespace Contoso.Forms.Configuration.SearchForm
         public string LoadingIndicatorText { get; set; }
         public string ItemTemplateName { get; set; }
         public string FilterPlaceholder { get; set; }
+        public string CreatePagingSelectorFlowName { get; set; }
         public Dictionary<string, ItemBindingDescriptor> Bindings { get; set; }
         public SortCollectionDescriptor SortCollection { get; set; }
         public SearchFilterGroupDescriptor SearchFilterGroup { get; set; }

@@ -85,6 +85,8 @@
 	  <None Remove="Rulesets\init_summary.resources" />
 	  <None Remove="Rulesets\institutionnameselector.module" />
 	  <None Remove="Rulesets\institutionnameselector.resources" />
+	  <None Remove="Rulesets\item_filter_admin.module" />
+	  <None Remove="Rulesets\item_filter_admin.resources" />
 	  <None Remove="Rulesets\moreinfo.module" />
 	  <None Remove="Rulesets\moreinfo.resources" />
 	  <None Remove="Rulesets\nav_academic.module" />
@@ -107,6 +109,8 @@
 	  <None Remove="Rulesets\nav_residency.resources" />
 	  <None Remove="Rulesets\nav_summary.module" />
 	  <None Remove="Rulesets\nav_summary.resources" />
+	  <None Remove="Rulesets\paging_selector_admin.module" />
+	  <None Remove="Rulesets\paging_selector_admin.resources" />
 	  <None Remove="Rulesets\personal.module" />
 	  <None Remove="Rulesets\personal.resources" />
 	  <None Remove="Rulesets\personalcountyselector.module" />
@@ -153,6 +157,8 @@
 	  <EmbeddedResource Include="Rulesets\init_summary.resources" />
 	  <EmbeddedResource Include="Rulesets\institutionnameselector.module" />
 	  <EmbeddedResource Include="Rulesets\institutionnameselector.resources" />
+	  <EmbeddedResource Include="Rulesets\item_filter_admin.module" />
+	  <EmbeddedResource Include="Rulesets\item_filter_admin.resources" />
 	  <EmbeddedResource Include="Rulesets\moreinfo.module" />
 	  <EmbeddedResource Include="Rulesets\moreinfo.resources" />
 	  <EmbeddedResource Include="Rulesets\nav_academic.module" />
@@ -175,6 +181,8 @@
 	  <EmbeddedResource Include="Rulesets\nav_residency.resources" />
 	  <EmbeddedResource Include="Rulesets\nav_summary.module" />
 	  <EmbeddedResource Include="Rulesets\nav_summary.resources" />
+	  <EmbeddedResource Include="Rulesets\paging_selector_admin.module" />
+	  <EmbeddedResource Include="Rulesets\paging_selector_admin.resources" />
 	  <EmbeddedResource Include="Rulesets\personal.module" />
 	  <EmbeddedResource Include="Rulesets\personal.resources" />
 	  <EmbeddedResource Include="Rulesets\personalcountyselector.module" />
