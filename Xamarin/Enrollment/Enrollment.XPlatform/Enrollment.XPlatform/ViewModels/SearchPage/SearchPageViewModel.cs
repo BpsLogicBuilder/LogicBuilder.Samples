@@ -36,16 +36,18 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
             this.collectionCellManager = collectionCellManager;
             this.httpService = httpService;
             this.mapper = mapper;
-            defaultSkip = FormSettings.SortCollection.Skip;
             GetItems();
         }
+
+        private const int defaultSkip = 0;
 
         private readonly ICollectionCellManager collectionCellManager;
         private readonly IHttpService httpService;
         private readonly IMapper mapper;
-        private readonly int? defaultSkip;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, TModel>? _entitiesDictionary;
+
+        private int Skip { get; set; }
 
         private bool _isRefreshing;
         public bool IsRefreshing
@@ -280,7 +282,7 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
 
         private void Filter()
         {
-            this.FormSettings.SortCollection.Skip = defaultSkip;
+            Skip = defaultSkip;
             GetItems();
         }
 
@@ -318,7 +320,7 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
             flowManagerService.SetFlowDataCacheItem
             (
                 FlowDataCacheItemKeys.SkipCount,
-                this.FormSettings.SortCollection.Skip.GetValueOrDefault()
+                Skip
             );
 
             flowManagerService.SetFlowDataCacheItem
@@ -370,7 +372,7 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
             if (this._entitiesDictionary == null)
                 throw new ArgumentException($"{nameof(this._entitiesDictionary)}: {{59B53FDE-2E96-4316-AF1B-E8C8D7FB00AB}}");
 
-            this.FormSettings.SortCollection.Skip = (defaultSkip ?? 0) + this._entitiesDictionary.Count;
+            Skip = defaultSkip + this._entitiesDictionary.Count;
 
             BaseResponse baseResponse = await GetList();
             IsRefreshing = false;

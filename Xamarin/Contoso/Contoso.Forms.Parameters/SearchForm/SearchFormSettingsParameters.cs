@@ -1,6 +1,4 @@
 ﻿using Contoso.Forms.Parameters.Bindings;
-using Contoso.Parameters.Expansions;
-using Contoso.Parameters.ItemFilter;
 using LogicBuilder.Attributes;
 using System;
 using System.Collections.Generic;
@@ -39,15 +37,6 @@ namespace Contoso.Forms.Parameters.SearchForm
             [Comments("Defines which fields of the model type which bind to the named template fields (e.g. Header, Text, Detail).")]
 			List<ItemBindingParameters> bindings,
 
-			[Comments("Define the sort order and number additional items to return on 'Pull to Refresh'.")]
-			SortCollectionParameters sortCollection,
-
-			[Comments("Defines the fields to search against - may be different from the displayed template fields.")]
-			SearchFilterGroupParameters searchFilterGroup,
-
-			[Comments("Defines a filter to find a selected item on a subsequent form e.g. to edit the selected item.")]
-			ItemFilterGroupParameters itemFilterGroup,
-
 			[Comments("Defines API URL for the list data. May specify model and data types if we use the URL for multiple types.")]
 			RequestDetailsParameters requestDetails
 		)
@@ -59,9 +48,6 @@ namespace Contoso.Forms.Parameters.SearchForm
 			FilterPlaceholder = filterPlaceholder;
 			CreatePagingSelectorFlowName = createPagingSelectorFlowName;
 			Bindings = bindings.ToDictionary(cvib => cvib.Name);
-			SortCollection = sortCollection;
-			SearchFilterGroup = searchFilterGroup;
-			ItemFilterGroup = itemFilterGroup;
 			RequestDetails = requestDetails;
 		}
 
@@ -72,9 +58,6 @@ namespace Contoso.Forms.Parameters.SearchForm
 		public string FilterPlaceholder { get; set; }
         public string CreatePagingSelectorFlowName { get; set; }
         public Dictionary<string, ItemBindingParameters> Bindings { get; set; }
-		public SortCollectionParameters SortCollection { get; set; }
-		public SearchFilterGroupParameters SearchFilterGroup { get; set; }
-		public ItemFilterGroupParameters ItemFilterGroup { get; set; }
 		public RequestDetailsParameters RequestDetails { get; set; }
     }
 }
