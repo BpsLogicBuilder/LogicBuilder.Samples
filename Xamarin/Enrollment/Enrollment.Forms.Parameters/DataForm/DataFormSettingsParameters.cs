@@ -1,6 +1,5 @@
 ﻿using Enrollment.Forms.Parameters.Directives;
 using Enrollment.Forms.Parameters.Validation;
-using Enrollment.Parameters.ItemFilter;
 using LogicBuilder.Attributes;
 using System;
 using System.Collections.Generic;
@@ -8,7 +7,7 @@ using System.Linq;
 
 namespace Enrollment.Forms.Parameters.DataForm
 {
-    public class DataFormSettingsParameters
+	public class DataFormSettingsParameters
     {
 		public DataFormSettingsParameters
 		(

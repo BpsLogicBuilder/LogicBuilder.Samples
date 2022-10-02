@@ -7,7 +7,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
 {
     public abstract class ReadOnlyObjectBase<T> : IReadOnly
     {
-        protected ReadOnlyObjectBase(string name, string templateName, UiNotificationService uiNotificationService)
+        protected ReadOnlyObjectBase(string name, string templateName, IUiNotificationService uiNotificationService)
         {
             Name = name;
             TemplateName = templateName;
@@ -19,7 +19,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
         private string _name;
         private string _templateName;
         private bool _isVisible = true;
-        protected UiNotificationService uiNotificationService;
+        protected IUiNotificationService uiNotificationService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         #endregion Fields

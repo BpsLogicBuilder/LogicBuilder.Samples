@@ -21,7 +21,7 @@ public partial class MainPageView : FlyoutPage
         IFlyoutDetailPageFactory detailPageFactory,
         IMapper mapper,
         MainPageViewModel mainPageViewModel, 
-        UiNotificationService uiNotificationService)
+        IUiNotificationService uiNotificationService)
     {
         _detailPageFactory = detailPageFactory;
         _mapper = mapper;
@@ -47,7 +47,7 @@ public partial class MainPageView : FlyoutPage
     #region Fields
     private readonly IFlyoutDetailPageFactory _detailPageFactory;
     private readonly IMapper _mapper;
-    private readonly UiNotificationService _uiNotificationService;
+    private readonly IUiNotificationService _uiNotificationService;
     #endregion Fields
 
     #region Properties

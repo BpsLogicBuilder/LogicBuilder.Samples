@@ -24,7 +24,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
             ICollectionBuilderFactory collectionBuilderFactory,
             IPopupFormFactory popupFormFactory,
             IValidatableFactory validatableFactory,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             FormGroupArraySettingsDescriptor setting,
             IEnumerable<IValidationRule>? validations)

@@ -19,7 +19,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             IDirectiveManagersFactory directiveManagersFactory,
             IPopupFormFactory popupFormFactory,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)

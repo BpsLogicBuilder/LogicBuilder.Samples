@@ -3,7 +3,7 @@ using System.Reactive.Subjects;
 
 namespace Enrollment.XPlatform
 {
-    public class UiNotificationService
+    public class UiNotificationService : IUiNotificationService
     {
         #region Fields
         #endregion Fields

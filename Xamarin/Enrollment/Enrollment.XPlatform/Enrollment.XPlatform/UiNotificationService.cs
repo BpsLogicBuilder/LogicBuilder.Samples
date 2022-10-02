@@ -1,13 +1,9 @@
-﻿using Enrollment.XPlatform.Flow;
-using Enrollment.XPlatform.Flow.Requests;
-using Enrollment.XPlatform.Flow.Settings;
-using System;
+﻿using Enrollment.XPlatform.Flow.Settings;
 using System.Reactive.Subjects;
-using System.Threading.Tasks;
 
 namespace Enrollment.XPlatform
 {
-    public class UiNotificationService
+    public class UiNotificationService : IUiNotificationService
     {
         #region Fields
         #endregion Fields

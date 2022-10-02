@@ -21,7 +21,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public MultiSelectValidatableObject(
             IHttpService httpService,
             IPopupFormFactory popupFormFactory,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             MultiSelectFormControlSettingsDescriptor setting,
             IEnumerable<IValidationRule>? validations)

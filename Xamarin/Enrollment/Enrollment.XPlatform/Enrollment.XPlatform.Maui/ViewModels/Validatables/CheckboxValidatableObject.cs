@@ -8,7 +8,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class CheckboxValidatableObject : ValidatableObjectBase<bool>
     {
-        public CheckboxValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string checkboxLabel, IEnumerable<IValidationRule>? validations)
+        public CheckboxValidatableObject(IUiNotificationService uiNotificationService, string name, string templateName, string checkboxLabel, IEnumerable<IValidationRule>? validations)
             : base(name, templateName, validations, uiNotificationService)
         {
             CheckboxLabel = checkboxLabel;

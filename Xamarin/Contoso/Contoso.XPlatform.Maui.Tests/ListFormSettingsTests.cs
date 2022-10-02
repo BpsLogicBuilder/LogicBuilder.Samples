@@ -60,7 +60,6 @@ namespace Contoso.XPlatform.Maui.Tests
                 cfg.AddProfile<DescriptorToOperatorMappingProfile>();
                 cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                 cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
-                cfg.AddProfile<ItemFilterParameterToDescriptorMappingProfile>();
             });
             config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();

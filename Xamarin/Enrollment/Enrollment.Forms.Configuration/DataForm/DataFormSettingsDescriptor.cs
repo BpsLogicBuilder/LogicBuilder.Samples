@@ -1,5 +1,4 @@
-﻿using Enrollment.Common.Configuration.ItemFilter;
-using Enrollment.Forms.Configuration.Directives;
+﻿using Enrollment.Forms.Configuration.Directives;
 using Enrollment.Forms.Configuration.Validation;
 using System.Collections.Generic;
 

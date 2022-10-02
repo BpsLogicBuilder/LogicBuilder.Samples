@@ -7,7 +7,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class SwitchValidatableObject : ValidatableObjectBase<bool>
     {
-        public SwitchValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string switchLabel, IEnumerable<IValidationRule>? validations)
+        public SwitchValidatableObject(IUiNotificationService uiNotificationService, string name, string templateName, string switchLabel, IEnumerable<IValidationRule>? validations)
             : base(name, templateName, validations, uiNotificationService)
         {
             /*MemberNotNull unvailable in 2.1*/

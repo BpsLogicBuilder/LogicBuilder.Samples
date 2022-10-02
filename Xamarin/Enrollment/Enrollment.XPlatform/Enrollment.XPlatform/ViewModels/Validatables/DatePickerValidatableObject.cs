@@ -7,7 +7,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class DatePickerValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public DatePickerValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, IEnumerable<IValidationRule>? validations) 
+        public DatePickerValidatableObject(IUiNotificationService uiNotificationService, string name, string templateName, IEnumerable<IValidationRule>? validations) 
             : base(name, templateName, validations, uiNotificationService)
         {
         }

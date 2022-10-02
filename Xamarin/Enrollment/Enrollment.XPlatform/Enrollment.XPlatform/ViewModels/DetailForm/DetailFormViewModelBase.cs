@@ -19,7 +19,7 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
     {
         protected DetailFormViewModelBase(
             ScreenSettings<DataFormSettingsDescriptor> screenSettings,
-            UiNotificationService uiNotificationService)
+            IUiNotificationService uiNotificationService)
         {
             this.UiNotificationService = uiNotificationService;
             FormSettings = screenSettings.Settings;
@@ -31,7 +31,7 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
 
         public DataFormSettingsDescriptor FormSettings { get; set; }
         abstract public DetailFormLayout FormLayout { get; set; }
-        public UiNotificationService UiNotificationService { get; set; }
+        public IUiNotificationService UiNotificationService { get; set; }
         public ObservableCollection<CommandButtonDescriptor> Buttons { get; set; }
 
         private ICommand? _nextCommand;

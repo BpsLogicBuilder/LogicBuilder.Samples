@@ -28,14 +28,14 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
         public SearchPageViewModel(
             ICollectionCellManager collectionCellManager,
             IHttpService httpService,
-            IMapper mapper,
+            IPagingSelectorBuilder pagingSelectorBuilder,
             ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.collectionCellManager = collectionCellManager;
             this.httpService = httpService;
-            this.mapper = mapper;
+            this.pagingSelectorBuilder = pagingSelectorBuilder;
             GetItems();
         }
 
@@ -43,7 +43,7 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
 
         private readonly ICollectionCellManager collectionCellManager;
         private readonly IHttpService httpService;
-        private readonly IMapper mapper;
+        private readonly IPagingSelectorBuilder pagingSelectorBuilder;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, TModel>? _entitiesDictionary;
 
@@ -296,7 +296,7 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
 
         private async Task<BaseResponse> GetList()
         {
-            var selector = await GetSelector();
+            var selector = await this.pagingSelectorBuilder.CreateSelector(Skip, this.SearchText, FormSettings.CreatePagingSelectorFlowName);
 
             return await BusyIndicatorHelpers.ExecuteRequestWithBusyIndicator
             (
@@ -311,35 +311,6 @@ namespace Enrollment.XPlatform.ViewModels.SearchPage
                         DataReturnType = this.FormSettings.RequestDetails.DataReturnType
                     }
                 )
-            );
-        }
-
-        private async Task<SelectorLambdaOperatorDescriptor> GetSelector()
-        {
-            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
-            flowManagerService.SetFlowDataCacheItem
-            (
-                FlowDataCacheItemKeys.SkipCount,
-                Skip
-            );
-
-            flowManagerService.SetFlowDataCacheItem
-            (
-                FlowDataCacheItemKeys.SearchText,
-                this.SearchText ?? ""
-            );
-
-            await flowManagerService.RunFlow
-            (
-                new NewFlowRequest
-                {
-                    InitialModuleName = FormSettings.CreatePagingSelectorFlowName
-                }
-            );
-
-            return this.mapper.Map<SelectorLambdaOperatorDescriptor>
-            (
-                flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
             );
         }
 

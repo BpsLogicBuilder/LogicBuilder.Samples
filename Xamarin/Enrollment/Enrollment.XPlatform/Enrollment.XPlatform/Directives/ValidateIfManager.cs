@@ -11,7 +11,7 @@ namespace Enrollment.XPlatform.Directives
 {
     internal class ValidateIfManager<TModel> : IValidateIfManager
     {
-        public ValidateIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IValidatable> currentProperties, List<ValidateIf<TModel>> conditions)
+        public ValidateIfManager(IMapper mapper, IUiNotificationService uiNotificationService, IEnumerable<IValidatable> currentProperties, List<ValidateIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -22,7 +22,7 @@ namespace Enrollment.XPlatform.Directives
 
         private readonly IMapper mapper;
         private readonly List<ValidateIf<TModel>> conditions;
-        private readonly UiNotificationService uiNotificationService;
+        private readonly IUiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
         public IEnumerable<IValidatable> CurrentProperties { get; }

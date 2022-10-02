@@ -44,7 +44,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             return new CheckboxReadOnlyObject
                             (
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName,
                                 label
@@ -54,7 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             return new SwitchReadOnlyObject
                             (
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName,
                                 label
@@ -83,7 +83,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 provider.GetRequiredService<ICollectionCellManager>(),
                                 provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<IReadOnlyFactory>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 setting
                             ) ?? throw new ArgumentException($"{elementType}: {{F0633351-B095-4AEE-BF7B-A9E6D74201E9}}")
@@ -109,7 +109,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 provider.GetRequiredService<IDirectiveManagersFactory>(),
                                 provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<IReadOnlyPropertiesUpdater>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 setting
                             ) ?? throw new ArgumentException($"{fieldType}: {{C61BFCD8-C88D-4E00-AD96-18587A603F57}}")
@@ -128,7 +128,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(HiddenReadOnlyObject<>).MakeGenericType(fieldType),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName
                             ) ?? throw new ArgumentException($"{fieldType}: {{7A00C8A1-0BB5-41AA-8857-082D81B0A7C3}}")
@@ -153,7 +153,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 ),
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IPopupFormFactory>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name, 
                                 keyFields, 
                                 title, 
@@ -177,7 +177,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(PickerReadOnlyObject<>).MakeGenericType(fieldType),
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IMapper>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 title,
                                 stringFormat,
@@ -200,7 +200,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(TextFieldReadOnlyObject<>).MakeGenericType(fieldType),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName, 
                                 title, 

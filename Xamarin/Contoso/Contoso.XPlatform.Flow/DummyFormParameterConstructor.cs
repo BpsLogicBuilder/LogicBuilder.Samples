@@ -3,7 +3,6 @@ using Contoso.Forms.Parameters.Bindings;
 using Contoso.Forms.Parameters.DataForm;
 using Contoso.Forms.Parameters.SearchForm;
 using Contoso.Forms.Parameters.TextForm;
-using Contoso.Parameters.ItemFilter;
 
 namespace Contoso.XPlatform.Flow
 {
@@ -19,9 +18,6 @@ namespace Contoso.XPlatform.Flow
             MultiSelectFormControlSettingsParameters multiSelectFormControlSettingsParameters,
             SearchFilterGroupParameters searchFilterGroupParameters,
             SearchFilterParameters searchFilterParameters,
-            ItemFilterGroupParameters itemFilterGroupParameters,
-            MemberSourceFilterParameters memberSourceFilterParameters,
-            ValueSourceFilterParameters valueSourceFilterParameters,
             FormattedLabelItemParameters formattedLabelItemParameters,
             HyperLinkLabelItemParameters hyperLinkLabelItemParameters,
             LabelItemParameters labelItemParameters,

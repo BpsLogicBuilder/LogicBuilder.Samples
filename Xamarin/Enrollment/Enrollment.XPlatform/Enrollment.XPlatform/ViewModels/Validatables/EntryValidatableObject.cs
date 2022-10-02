@@ -8,7 +8,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class EntryValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public EntryValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
+        public EntryValidatableObject(IUiNotificationService uiNotificationService, string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
             : base(name, templateName, validations, uiNotificationService)
         {
             /*MemberNotNull unvailable in 2.1*/

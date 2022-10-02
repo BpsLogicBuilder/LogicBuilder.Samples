@@ -7,7 +7,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class LabelValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public LabelValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string title, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations)
+        public LabelValidatableObject(IUiNotificationService uiNotificationService, string name, string templateName, string title, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations)
             : base(name, templateName, validations, uiNotificationService)
         {
             /*MemberNotNull unvailable in 2.1*/

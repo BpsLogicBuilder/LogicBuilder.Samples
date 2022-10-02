@@ -3,7 +3,7 @@ using System.Reactive.Subjects;
 
 namespace Contoso.XPlatform
 {
-    public class UiNotificationService
+    public class UiNotificationService : IUiNotificationService
     {
         #region Fields
         #endregion Fields

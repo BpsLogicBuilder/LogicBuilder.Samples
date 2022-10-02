@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
             IEntityUpdater entityUpdater,
             IPopupFormFactory popupFormFactory,
             IPropertiesUpdater propertiesUpdater,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting,
             IEnumerable<IValidationRule>? validations) : base(name, setting.FormGroupTemplate.TemplateName, validations, uiNotificationService)
