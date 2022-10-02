@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Contoso.Bsl.Business.Responses;
 using Contoso.Bsl.Flow.Cache;
-using Contoso.Bsl.Flow.Services;
 using Contoso.Repositories;
 using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.Logging;
@@ -15,7 +14,7 @@ namespace Contoso.Bsl.Flow
     {
         public FlowManager(IMapper mapper,
             ICustomActions customActions,
-            IGetItemFilterBuilder getItemFilterBuilder,
+            //IGetItemFilterBuilder getItemFilterBuilder,
             DirectorFactory directorFactory,
             FlowActivityFactory flowActivityFactory,
             ISchoolRepository SchoolRepository,
@@ -24,7 +23,6 @@ namespace Contoso.Bsl.Flow
             FlowDataCache flowDataCache)
         {
             this.CustomActions = customActions;
-            this.GetItemFilterBuilder = getItemFilterBuilder;
             this.logger = logger;
             this.SchoolRepository = SchoolRepository;
             this.Mapper = mapper;
@@ -38,7 +36,6 @@ namespace Contoso.Bsl.Flow
         public FlowDataCache FlowDataCache { get; }
         public Progress Progress { get; }
         public ICustomActions CustomActions { get; }
-        public IGetItemFilterBuilder GetItemFilterBuilder { get; }
 
         private ILogger<FlowManager> logger;
 

@@ -4,7 +4,6 @@ using Contoso.AutoMapperProfiles;
 using Contoso.Bsl.Business.Requests;
 using Contoso.Bsl.Business.Responses;
 using Contoso.Bsl.Flow.Cache;
-using Contoso.Bsl.Flow.Services;
 using Contoso.BSL.AutoMapperProfiles;
 using Contoso.Contexts;
 using Contoso.Data.Entities;
@@ -175,7 +174,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                 .AddTransient<FlowActivityFactory, FlowActivityFactory>()
                 .AddTransient<DirectorFactory, DirectorFactory>()
                 .AddTransient<ICustomActions, CustomActions>()
-                .AddTransient<IGetItemFilterBuilder, GetItemFilterBuilder>()
                 .AddSingleton<FlowDataCache, FlowDataCache>()
                 .AddSingleton<Progress, Progress>()
                 .AddSingleton<IRulesCache>(sp =>

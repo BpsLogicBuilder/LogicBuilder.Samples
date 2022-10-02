@@ -3,7 +3,6 @@ using AutoMapper.Extensions.ExpressionMapping;
 using Contoso.AutoMapperProfiles;
 using Contoso.Bsl.Flow;
 using Contoso.Bsl.Flow.Cache;
-using Contoso.Bsl.Flow.Services;
 using Contoso.BSL.AutoMapperProfiles;
 using Contoso.Common.Configuration.Json;
 using Contoso.Contexts;
@@ -117,7 +116,6 @@ namespace Contoso.Bsl
             //.AddMemoryCache()
             .AddScoped<FlowDataCache, FlowDataCache>()
             .AddScoped<Progress, Progress>()
-            .AddScoped<IGetItemFilterBuilder, GetItemFilterBuilder>()
             .AddSingleton<IRulesCache>(sp =>
             {
                 //const string rulesKey = "rules";
