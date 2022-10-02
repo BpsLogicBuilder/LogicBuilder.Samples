@@ -1,11 +1,8 @@
-﻿using Enrollment.Common.Configuration.ExpansionDescriptors;
-using Enrollment.Common.Configuration.ItemFilter;
-using Enrollment.Data.Entities;
+﻿using Enrollment.Data.Entities;
 using Enrollment.Domain.Entities;
 using Enrollment.Forms.Configuration;
 using Enrollment.Forms.Configuration.Bindings;
 using Enrollment.Forms.Configuration.SearchForm;
-using LogicBuilder.Expressions.Utils.Strutures;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +16,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             ModelType = typeof(LookUpsModel).AssemblyQualifiedName,
             LoadingIndicatorText = "Loading ...",
             ItemTemplateName = "TextDetailTemplate",
+            CreatePagingSelectorFlowName = "paging_selector_admin",
             Bindings = new List<ItemBindingDescriptor>
             {
                 new TextItemBindingDescriptor

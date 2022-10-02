@@ -1,6 +1,5 @@
 ﻿using Contoso.Forms.Parameters.Directives;
 using Contoso.Forms.Parameters.Validation;
-using Contoso.Parameters.ItemFilter;
 using LogicBuilder.Attributes;
 using System;
 using System.Collections.Generic;

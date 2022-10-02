@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using Contoso.Bsl.Business.Requests;
+﻿using Contoso.Bsl.Business.Requests;
 using Contoso.Bsl.Business.Responses;
-using Contoso.Common.Configuration.ExpressionDescriptors;
 using Contoso.Forms.Configuration;
 using Contoso.Forms.Configuration.Bindings;
 using Contoso.Forms.Configuration.SearchForm;
-using Contoso.Parameters.Expressions;
-using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Flow.Requests;
 using Contoso.XPlatform.Flow.Settings.Screen;
 using Contoso.XPlatform.Services;
@@ -28,14 +24,14 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
         public SearchPageViewModel(
             ICollectionCellManager collectionCellManager,
             IHttpService httpService,
-            IMapper mapper,
+            IPagingSelectorBuilder pagingSelectorBuilder,
             ScreenSettings<SearchFormSettingsDescriptor> screenSettings)
             : base(screenSettings)
         {
             itemBindings = FormSettings.Bindings.Values.ToList();
             this.collectionCellManager = collectionCellManager;
             this.httpService = httpService;
-            this.mapper = mapper;
+            this.pagingSelectorBuilder = pagingSelectorBuilder;
             GetItems();
         }
 
@@ -43,7 +39,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private readonly ICollectionCellManager collectionCellManager;
         private readonly IHttpService httpService;
-        private readonly IMapper mapper;
+        private readonly IPagingSelectorBuilder pagingSelectorBuilder;
         private readonly List<ItemBindingDescriptor> itemBindings;
         private Dictionary<Dictionary<string, IReadOnly>, TModel>? _entitiesDictionary;
 
@@ -296,7 +292,7 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
 
         private async Task<BaseResponse> GetList()
         {
-            var selector = await GetSelector();
+            var selector = await this.pagingSelectorBuilder.CreateSelector(Skip, this.SearchText, FormSettings.CreatePagingSelectorFlowName);
 
             return await BusyIndicatorHelpers.ExecuteRequestWithBusyIndicator
             (
@@ -311,35 +307,6 @@ namespace Contoso.XPlatform.ViewModels.SearchPage
                         DataReturnType = this.FormSettings.RequestDetails.DataReturnType
                     }
                 )
-            );
-        }
-
-        private async Task<SelectorLambdaOperatorDescriptor> GetSelector()
-        {
-            using IScopedFlowManagerService flowManagerService = App.ServiceProvider.GetRequiredService<IScopedFlowManagerService>();
-            flowManagerService.SetFlowDataCacheItem
-            (
-                FlowDataCacheItemKeys.SkipCount,
-                Skip
-            );
-
-            flowManagerService.SetFlowDataCacheItem
-            (
-                FlowDataCacheItemKeys.SearchText,
-                this.SearchText ?? ""
-            );
-
-            await flowManagerService.RunFlow
-            (
-                new NewFlowRequest
-                {
-                    InitialModuleName = FormSettings.CreatePagingSelectorFlowName
-                }
-            );
-
-            return this.mapper.Map<SelectorLambdaOperatorDescriptor>
-            (
-                flowManagerService.GetFlowDataCacheItem(typeof(SelectorLambdaOperatorParameters).FullName!)/*FullName of known type*/
             );
         }
 

@@ -1,5 +1,4 @@
-﻿using Contoso.Common.Configuration.ItemFilter;
-using Contoso.Forms.Configuration.Directives;
+﻿using Contoso.Forms.Configuration.Directives;
 using Contoso.Forms.Configuration.Validation;
 using System.Collections.Generic;
 

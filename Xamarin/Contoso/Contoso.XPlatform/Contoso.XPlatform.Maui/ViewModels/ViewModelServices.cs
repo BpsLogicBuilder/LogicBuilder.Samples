@@ -105,7 +105,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(SearchPageViewModel<>).MakeGenericType(GetEntityType(searchFormSettings.Settings.ModelType)),
                                 provider.GetRequiredService<ICollectionCellManager>(),
                                 provider.GetRequiredService<IHttpService>(),
-                                provider.GetRequiredService<IMapper>(),
+                                provider.GetRequiredService<IPagingSelectorBuilder>(),
                                 searchFormSettings
                             ) ?? throw new ArgumentException($"{searchFormSettings.Settings.ModelType}: {{DBBCF268-565B-4F23-BEB0-418626AB5475}}")
                         );

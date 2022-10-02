@@ -3,7 +3,6 @@ using Enrollment.Forms.Parameters.Bindings;
 using Enrollment.Forms.Parameters.DataForm;
 using Enrollment.Forms.Parameters.SearchForm;
 using Enrollment.Forms.Parameters.TextForm;
-using Enrollment.Parameters.ItemFilter;
 
 namespace Enrollment.XPlatform.Flow
 {
@@ -19,9 +18,6 @@ namespace Enrollment.XPlatform.Flow
             MultiSelectFormControlSettingsParameters multiSelectFormControlSettingsParameters,
             SearchFilterGroupParameters searchFilterGroupParameters,
             SearchFilterParameters searchFilterParameters,
-            ItemFilterGroupParameters itemFilterGroupParameters,
-            MemberSourceFilterParameters memberSourceFilterParameters,
-            ValueSourceFilterParameters valueSourceFilterParameters,
             FormattedLabelItemParameters formattedLabelItemParameters,
             HyperLinkLabelItemParameters hyperLinkLabelItemParameters,
             LabelItemParameters labelItemParameters,

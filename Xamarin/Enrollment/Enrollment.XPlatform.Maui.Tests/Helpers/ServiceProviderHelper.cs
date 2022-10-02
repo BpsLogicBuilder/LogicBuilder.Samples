@@ -29,8 +29,6 @@ namespace Enrollment.XPlatform.Maui.Tests.Helpers
                     services.Add(new ServiceDescriptor(service.ServiceType, typeof(HttpServiceMock), service.Lifetime));
                 else if (service.ServiceType == typeof(IAppLogger))
                     services.Add(new ServiceDescriptor(service.ServiceType, typeof(AppLoggerMock), service.Lifetime));
-                else if (service.ServiceType == typeof(IRulesCache))
-                    services.Add(new ServiceDescriptor(service.ServiceType, typeof(RulesCacheMock), service.Lifetime));
                 else
                     services.Add(service);
 
@@ -39,9 +37,6 @@ namespace Enrollment.XPlatform.Maui.Tests.Helpers
 
             if (!types.Contains(typeof(IAppLogger)))
                 services.Add(new ServiceDescriptor(typeof(IAppLogger), typeof(AppLoggerMock), ServiceLifetime.Singleton));
-
-            if (!types.Contains(typeof(IRulesCache)))
-                services.Add(new ServiceDescriptor(typeof(IRulesCache), typeof(RulesCacheMock), ServiceLifetime.Singleton));
 
             if (!types.Contains(typeof(IUpdateOnlyFieldsCollectionBuilder)))
                 services.Add(new ServiceDescriptor(typeof(IUpdateOnlyFieldsCollectionBuilder), typeof(UpdateOnlyFieldsCollectionBuilder), ServiceLifetime.Singleton));

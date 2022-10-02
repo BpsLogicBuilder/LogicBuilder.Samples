@@ -18,9 +18,8 @@ namespace Microsoft.Extensions.DependencyInjection
                 .AddAutoMapperServices()
                 .AddHttpClient()
                 .AddSingleton<IHttpService, HttpService>()
-                .AddSingleton<ISearchSelectorBuilder, SearchSelectorBuilder>()
-                .AddSingleton<IGetItemFilterBuilder, GetItemFilterBuilder>()
                 .AddSingleton<IRulesLoader, RulesLoader>()
+                .AddTransient<IPagingSelectorBuilder, PagingSelectorBuilder>()/*must be transient - should not create scoped service from a singleton context*/
                 .AddTransient<IScopedFlowManagerService, ScopedFlowManagerService>();
     }
 }
