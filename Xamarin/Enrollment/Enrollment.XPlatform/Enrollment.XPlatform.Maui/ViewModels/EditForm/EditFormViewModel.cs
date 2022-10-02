@@ -25,7 +25,7 @@ namespace Enrollment.XPlatform.ViewModels.EditForm
             IHttpService httpService,
             IMapper mapper,
             IPropertiesUpdater propertiesUpdater,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings)
             : base(screenSettings, uiNotificationService)
         {

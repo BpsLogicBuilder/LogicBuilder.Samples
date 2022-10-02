@@ -23,7 +23,7 @@ namespace Enrollment.XPlatform.ViewModels.DetailForm
             IDirectiveManagersFactory directiveManagersFactory,
             IHttpService httpService,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             ScreenSettings<DataFormSettingsDescriptor> screenSettings) 
             : base(screenSettings, uiNotificationService)
         {

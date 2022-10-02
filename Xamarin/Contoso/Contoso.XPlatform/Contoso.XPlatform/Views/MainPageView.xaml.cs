@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.Views
             IFlyoutDetailPageFactory detailPageFactory,
             IMapper mapper,
             MainPageViewModel mainPageViewModel,
-            UiNotificationService uiNotificationService)
+            IUiNotificationService uiNotificationService)
         {
             _detailPageFactory = detailPageFactory;
             _mapper = mapper;
@@ -43,7 +43,7 @@ namespace Contoso.XPlatform.Views
         #region Fields
         private readonly IFlyoutDetailPageFactory _detailPageFactory;
         private readonly IMapper _mapper;
-        private readonly UiNotificationService _uiNotificationService;
+        private readonly IUiNotificationService _uiNotificationService;
         #endregion Fields
 
         #region Properties

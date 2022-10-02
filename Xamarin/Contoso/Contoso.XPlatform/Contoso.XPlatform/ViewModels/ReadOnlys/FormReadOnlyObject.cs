@@ -5,7 +5,6 @@ using Contoso.XPlatform.Services;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.Views.Factories;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -19,7 +18,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
             IDirectiveManagersFactory directiveManagersFactory,
             IPopupFormFactory popupFormFactory,
             IReadOnlyPropertiesUpdater readOnlyPropertiesUpdater,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             IChildFormGroupSettings setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)

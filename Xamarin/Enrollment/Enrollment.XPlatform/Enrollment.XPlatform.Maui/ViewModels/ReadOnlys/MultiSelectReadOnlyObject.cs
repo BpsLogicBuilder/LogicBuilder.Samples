@@ -21,7 +21,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         public MultiSelectReadOnlyObject(
             IHttpService httpService,
             IPopupFormFactory popupFormFactory,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             List<string> keyFields,
             string title,

@@ -25,7 +25,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         public PickerValidatableObject(
             IHttpService httpService,
             IMapper mapper,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             T defaultValue,
             DropDownTemplateDescriptor dropDownTemplate,

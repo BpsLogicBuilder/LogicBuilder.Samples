@@ -9,7 +9,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
 {
     public class EntryValidatableObject<T> : ValidatableObjectBase<T>
     {
-        public EntryValidatableObject(UiNotificationService uiNotificationService, string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
+        public EntryValidatableObject(IUiNotificationService uiNotificationService, string name, string templateName, string placeholder, string stringFormat, IEnumerable<IValidationRule>? validations) 
             : base(name, templateName, validations, uiNotificationService)
         {
             Placeholder = placeholder;

@@ -20,7 +20,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
     {
         protected EditFormViewModelBase(
             ScreenSettings<DataFormSettingsDescriptor> screenSettings,
-            UiNotificationService uiNotificationService)
+            IUiNotificationService uiNotificationService)
         {
             this.UiNotificationService = uiNotificationService;
             FormSettings = screenSettings.Settings;
@@ -33,7 +33,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
             => FormLayout.Properties.ToDictionary(p => p.Name.ToBindingDictionaryKey());
 
         public DataFormSettingsDescriptor FormSettings { get; set; }
-        public UiNotificationService UiNotificationService { get; set; }
+        public IUiNotificationService UiNotificationService { get; set; }
         public ObservableCollection<CommandButtonDescriptor> Buttons { get; set; }
 
         private ICommand? _nextCommand;

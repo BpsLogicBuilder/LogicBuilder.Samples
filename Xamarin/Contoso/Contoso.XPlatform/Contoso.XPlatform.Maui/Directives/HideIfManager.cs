@@ -10,7 +10,7 @@ namespace Contoso.XPlatform.Directives
 {
     internal class HideIfManager<TModel> : IHideIfManager
     {
-        public HideIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<HideIf<TModel>> conditions)
+        public HideIfManager(IMapper mapper, IUiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<HideIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -21,7 +21,7 @@ namespace Contoso.XPlatform.Directives
 
         private readonly IMapper mapper;
         private readonly List<HideIf<TModel>> conditions;
-        private readonly UiNotificationService uiNotificationService;
+        private readonly IUiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
         public IEnumerable<IFormField> CurrentProperties { get; }

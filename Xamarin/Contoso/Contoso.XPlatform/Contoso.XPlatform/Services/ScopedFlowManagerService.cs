@@ -14,7 +14,7 @@ namespace Contoso.XPlatform.Services
     {
         private readonly IServiceScope scope;
 
-        public ScopedFlowManagerService(IServiceScopeFactory serviceScopeFactory, IAppLogger appLogger, UiNotificationService uiNotificationService)
+        public ScopedFlowManagerService(IServiceScopeFactory serviceScopeFactory, IAppLogger appLogger, IUiNotificationService uiNotificationService)
         {
             this.appLogger = appLogger;
             this.uiNotificationService = uiNotificationService;
@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Services
         }
 
         private readonly IAppLogger appLogger;
-        private readonly UiNotificationService uiNotificationService;
+        private readonly IUiNotificationService uiNotificationService;
 
         public IFlowManager FlowManager { get; }
 

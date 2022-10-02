@@ -41,7 +41,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 provider.GetRequiredService<IDirectiveManagersFactory>(),
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IReadOnlyPropertiesUpdater>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 dataFormSettings
                             ) ?? throw new ArgumentException($"{dataFormSettings.Settings.ModelType}: {{BBCA800D-5A92-40F2-9BCA-6FCBE9D71B28}}")
                         );
@@ -65,7 +65,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IMapper>(),
                                 provider.GetRequiredService<IPropertiesUpdater>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 dataFormSettings
                             ) ?? throw new ArgumentException($"{dataFormSettings.Settings.ModelType}: {{0960F651-92CD-4D84-A76D-D5CADA2220B7}}")
                         );

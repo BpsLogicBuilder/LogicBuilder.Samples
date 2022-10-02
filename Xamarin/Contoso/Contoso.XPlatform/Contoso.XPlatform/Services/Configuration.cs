@@ -8,7 +8,7 @@ namespace Microsoft.Extensions.DependencyInjection
     {
         internal static IServiceCollection AddServices(this IServiceCollection services)
             => services
-                .AddSingleton<UiNotificationService, UiNotificationService>()
+                .AddSingleton<IUiNotificationService, UiNotificationService>()
                 .AddSingleton<ICollectionCellManager, CollectionCellManager>()
                 .AddSingleton<IEntityStateUpdater, EntityStateUpdater>()
                 .AddSingleton<IEntityUpdater, EntityUpdater>()

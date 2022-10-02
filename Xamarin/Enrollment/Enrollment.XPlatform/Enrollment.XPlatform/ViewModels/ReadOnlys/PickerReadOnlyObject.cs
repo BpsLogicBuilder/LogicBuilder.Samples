@@ -23,7 +23,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         public PickerReadOnlyObject(
             IHttpService httpService,
             IMapper mapper,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             string title,
             string stringFormat,

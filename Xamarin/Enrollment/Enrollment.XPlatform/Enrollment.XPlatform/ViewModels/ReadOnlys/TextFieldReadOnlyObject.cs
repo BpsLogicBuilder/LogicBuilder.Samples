@@ -7,7 +7,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
     public class TextFieldReadOnlyObject<T> : ReadOnlyObjectBase<T>
     {
         public TextFieldReadOnlyObject(
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             string templateName,
             string title,

@@ -5,7 +5,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
     public class SwitchReadOnlyObject : ReadOnlyObjectBase<bool>
     {
         public SwitchReadOnlyObject(
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             string templateName,
             string switchLabel) : base(name, templateName, uiNotificationService)

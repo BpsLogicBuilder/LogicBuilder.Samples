@@ -26,7 +26,7 @@ namespace Contoso.XPlatform.Directives
                             (
                                 typeof(ClearIfManager<>).MakeGenericType(modelType),
                                 provider.GetRequiredService<IMapper>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 currentProperties,
                                 conditions
                             ) ?? throw new ArgumentException($"{modelType}: {{5290B2FB-5FE0-4A1C-BE83-62FDD75B6457}}")
@@ -60,7 +60,7 @@ namespace Contoso.XPlatform.Directives
                             (
                                 typeof(HideIfManager<>).MakeGenericType(modelType),
                                 provider.GetRequiredService<IMapper>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 currentProperties,
                                 conditions
                             ) ?? throw new ArgumentException($"{modelType}: {{A0C36BDC-17D9-4860-870E-C57CD3B0E476}}")
@@ -93,7 +93,7 @@ namespace Contoso.XPlatform.Directives
                             (
                                 typeof(ReloadIfManager<>).MakeGenericType(modelType),
                                 provider.GetRequiredService<IMapper>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 currentProperties,
                                 conditions
                             ) ?? throw new ArgumentException($"{modelType}: {{5A5873D7-EDC7-464B-953A-F8BBF068C569}}")
@@ -143,7 +143,7 @@ namespace Contoso.XPlatform.Directives
                             (
                                 typeof(ValidateIfManager<>).MakeGenericType(modelType),
                                 provider.GetRequiredService<IMapper>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 currentProperties,
                                 conditions
                             ) ?? throw new ArgumentException($"{modelType}: {{EC839E00-CB19-4BDF-B9A9-E68CEC9B300E}}")

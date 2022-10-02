@@ -10,7 +10,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 {
     public class ValidatableObjectBase<T> : IValidatable
     {
-        public ValidatableObjectBase(string name, string templateName, IEnumerable<IValidationRule>? validations, UiNotificationService uiNotificationService)
+        public ValidatableObjectBase(string name, string templateName, IEnumerable<IValidationRule>? validations, IUiNotificationService uiNotificationService)
         {
             Name = name;
             TemplateName = templateName;
@@ -27,7 +27,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         private bool _isEnabled = true;
         private Dictionary<string, string> _errors = new();
         private string _templateName;
-        protected UiNotificationService uiNotificationService;
+        protected IUiNotificationService uiNotificationService;
 
         public event PropertyChangedEventHandler? PropertyChanged;
         #endregion Fields

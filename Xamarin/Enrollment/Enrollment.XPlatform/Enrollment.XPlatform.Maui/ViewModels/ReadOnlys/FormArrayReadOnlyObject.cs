@@ -21,7 +21,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
             ICollectionCellManager collectionCellManager,
             IPopupFormFactory popupFormFactory,
             IReadOnlyFactory readOnlyFactory,
-            UiNotificationService uiNotificationService,
+            IUiNotificationService uiNotificationService,
             string name,
             FormGroupArraySettingsDescriptor setting) 
             : base(name, setting.FormGroupTemplate.TemplateName, uiNotificationService)

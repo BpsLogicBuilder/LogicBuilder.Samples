@@ -10,7 +10,7 @@ namespace Contoso.XPlatform.Directives
 {
     internal class ClearIfManager<TModel> : IClearIfManager
     {
-        public ClearIfManager(IMapper mapper, UiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions)
+        public ClearIfManager(IMapper mapper, IUiNotificationService uiNotificationService, IEnumerable<IFormField> currentProperties, List<ClearIf<TModel>> conditions)
         {
             CurrentProperties = currentProperties;
             this.conditions = conditions;
@@ -21,7 +21,7 @@ namespace Contoso.XPlatform.Directives
 
         private readonly IMapper mapper;
         private readonly List<ClearIf<TModel>> conditions;
-        private readonly UiNotificationService uiNotificationService;
+        private readonly IUiNotificationService uiNotificationService;
         private readonly IDisposable propertyChangedSubscription;
 
         public IEnumerable<IFormField> CurrentProperties { get; }

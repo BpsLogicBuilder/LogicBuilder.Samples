@@ -69,7 +69,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             return new CheckboxValidatableObject
                             (
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName,
                                 label,
@@ -80,7 +80,7 @@ namespace Microsoft.Extensions.DependencyInjection
                         {
                             return new SwitchValidatableObject
                             (
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName,
                                 label,
@@ -104,7 +104,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                     typeof(DatePickerValidatableObject<>).MakeGenericType(fieldType),
                                     new object[]
                                     {
-                                        provider.GetRequiredService<UiNotificationService>(),
+                                        provider.GetRequiredService<IUiNotificationService>(),
                                         name,
                                         templateName,
                                         validations ?? Array.Empty<IValidationRule>()
@@ -120,7 +120,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                     typeof(HiddenValidatableObject<>).MakeGenericType(fieldType),
                                     new object[]
                                     {
-                                        provider.GetRequiredService<UiNotificationService>(),
+                                        provider.GetRequiredService<IUiNotificationService>(),
                                         name,
                                         templateName,
                                         validations ?? Array.Empty<IValidationRule>()
@@ -146,7 +146,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(EntryValidatableObject<>).MakeGenericType(fieldType),
                                 new object[]
                                 {
-                                        provider.GetRequiredService<UiNotificationService>(),
+                                        provider.GetRequiredService<IUiNotificationService>(),
                                         name,
                                         templateName,
                                         placeholder,
@@ -177,7 +177,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 provider.GetRequiredService<ICollectionBuilderFactory>(),
                                 provider.GetRequiredService<IPopupFormFactory>(),
                                 provider.GetRequiredService<IValidatableFactory>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 setting,
                                 validations ?? Array.Empty<IValidationRule>()
@@ -204,7 +204,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                         provider.GetRequiredService<IEntityUpdater>(),
                                         provider.GetRequiredService<IPopupFormFactory>(),
                                         provider.GetRequiredService<IPropertiesUpdater>(),
-                                        provider.GetRequiredService<UiNotificationService>(),
+                                        provider.GetRequiredService<IUiNotificationService>(),
                                         name,
                                         setting,
                                         Array.Empty<IValidationRule>()
@@ -222,7 +222,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                         provider.GetRequiredService<IEntityUpdater>(),
                                         provider.GetRequiredService<IPopupFormFactory>(),
                                         provider.GetRequiredService<IPropertiesUpdater>(),
-                                        provider.GetRequiredService<UiNotificationService>(),
+                                        provider.GetRequiredService<IUiNotificationService>(),
                                         name,
                                         setting,
                                         Array.Empty<IValidationRule>()
@@ -250,7 +250,7 @@ namespace Microsoft.Extensions.DependencyInjection
                             Activator.CreateInstance
                             (
                                 typeof(LabelValidatableObject<>).MakeGenericType(fieldType),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 templateName,
                                 title,
@@ -279,7 +279,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 ),
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IPopupFormFactory>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 setting,
                                 validations ?? Array.Empty<IValidationRule>()
@@ -301,7 +301,7 @@ namespace Microsoft.Extensions.DependencyInjection
                                 typeof(PickerValidatableObject<>).MakeGenericType(fieldType),
                                 provider.GetRequiredService<IHttpService>(),
                                 provider.GetRequiredService<IMapper>(),
-                                provider.GetRequiredService<UiNotificationService>(),
+                                provider.GetRequiredService<IUiNotificationService>(),
                                 name,
                                 defaultValue,
                                 dropDownTemplate,
