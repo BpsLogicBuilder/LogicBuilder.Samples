@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Enrollment.Bsl.Business.Responses;
 using Enrollment.Bsl.Flow.Cache;
-using Enrollment.Bsl.Flow.Services;
+//using Enrollment.Bsl.Flow.Services;
 using Enrollment.Repositories;
 using LogicBuilder.RulesDirector;
 using Microsoft.Extensions.Logging;
@@ -15,7 +15,6 @@ namespace Enrollment.Bsl.Flow
     {
         public FlowManager(IMapper mapper,
             ICustomActions customActions,
-            IGetItemFilterBuilder getItemFilterBuilder,
             DirectorFactory directorFactory,
             FlowActivityFactory flowActivityFactory,
             IEnrollmentRepository enrollmentRepository,
@@ -24,7 +23,6 @@ namespace Enrollment.Bsl.Flow
             FlowDataCache flowDataCache)
         {
             this.CustomActions = customActions;
-            this.GetItemFilterBuilder = getItemFilterBuilder;
             this.logger = logger;
             this.EnrollmentRepository = enrollmentRepository;
             this.Mapper = mapper;
@@ -38,7 +36,6 @@ namespace Enrollment.Bsl.Flow
         public FlowDataCache FlowDataCache { get; }
         public Progress Progress { get; }
         public ICustomActions CustomActions { get; }
-        public IGetItemFilterBuilder GetItemFilterBuilder { get; }
 
         private ILogger<FlowManager> logger;
 

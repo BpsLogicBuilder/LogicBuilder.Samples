@@ -3,7 +3,6 @@ using AutoMapper.Extensions.ExpressionMapping;
 using Enrollment.AutoMapperProfiles;
 using Enrollment.Bsl.Business.Requests;
 using Enrollment.Bsl.Flow.Cache;
-using Enrollment.Bsl.Flow.Services;
 using Enrollment.BSL.AutoMapperProfiles;
 using Enrollment.Contexts;
 using Enrollment.Data.Entities;
@@ -137,7 +136,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                 .AddTransient<FlowActivityFactory, FlowActivityFactory>()
                 .AddTransient<DirectorFactory, DirectorFactory>()
                 .AddTransient<ICustomActions, CustomActions>()
-                .AddTransient<IGetItemFilterBuilder, GetItemFilterBuilder>()
                 .AddSingleton<FlowDataCache, FlowDataCache>()
                 .AddSingleton<Progress, Progress>()
                 .AddSingleton<IRulesCache>(sp =>

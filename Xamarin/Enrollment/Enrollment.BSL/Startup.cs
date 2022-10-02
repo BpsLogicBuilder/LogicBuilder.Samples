@@ -3,7 +3,6 @@ using AutoMapper.Extensions.ExpressionMapping;
 using Enrollment.AutoMapperProfiles;
 using Enrollment.Bsl.Flow;
 using Enrollment.Bsl.Flow.Cache;
-using Enrollment.Bsl.Flow.Services;
 using Enrollment.BSL.AutoMapperProfiles;
 using Enrollment.Common.Configuration.Json;
 using Enrollment.Contexts;
@@ -91,7 +90,6 @@ namespace Enrollment.BSL
             .AddScoped<ICustomActions, CustomActions>()
             .AddScoped<FlowDataCache, FlowDataCache>()
             .AddScoped<Progress, Progress>()
-            .AddScoped<IGetItemFilterBuilder, GetItemFilterBuilder>()
             .AddSingleton<IRulesCache>(sp => rulesCache);
         }
 
