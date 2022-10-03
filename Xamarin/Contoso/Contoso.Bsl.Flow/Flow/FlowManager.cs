@@ -14,7 +14,6 @@ namespace Contoso.Bsl.Flow
     {
         public FlowManager(IMapper mapper,
             ICustomActions customActions,
-            //IGetItemFilterBuilder getItemFilterBuilder,
             DirectorFactory directorFactory,
             FlowActivityFactory flowActivityFactory,
             ISchoolRepository SchoolRepository,
