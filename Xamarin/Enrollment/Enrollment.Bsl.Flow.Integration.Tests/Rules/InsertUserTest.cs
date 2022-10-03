@@ -134,7 +134,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                 .AddTransient<FlowActivityFactory, FlowActivityFactory>()
                 .AddTransient<DirectorFactory, DirectorFactory>()
                 .AddTransient<ICustomActions, CustomActions>()
-                //.AddTransient<IGetItemFilterBuilder, GetItemFilterBuilder>()
                 .AddSingleton<FlowDataCache, FlowDataCache>()
                 .AddSingleton<Progress, Progress>()
                 .AddSingleton<IRulesCache>(sp =>
