@@ -8,13 +8,13 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: Xamarin/Contoso/Contoso.Bsl/publish
   AZURE_WEBAPP_PUBLISH_PROFILE: ${{ secrets.ContosoBslBps_ea5b }}
   CONFIGURATION: Release
-  DOTNET_CORE_VERSION: 6.0.x
+  DOTNET_CORE_VERSION: 7.0.x
   WORKING_DIRECTORY: Xamarin/Contoso/Contoso.Bsl
 jobs:
   build-and-deploy:
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
