@@ -1,6 +1,6 @@
 name: Build and deploy .NET Core app to Windows WebApp EnrollmentApiBps
 on:
-  push:
+  pull_request:
     branches:
     - master
 env:
