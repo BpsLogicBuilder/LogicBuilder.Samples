@@ -45,7 +45,7 @@ namespace Contoso.XPlatform.WinUI
             await ShowDialog(e.Exception.ToString());
         }
 
-        private async Task ShowDialog(string message)
+        private static async Task ShowDialog(string message)
         {
             ContentDialog dialog = new()
             {

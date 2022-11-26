@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="LogicBuilder.Attributes" Version="2.0.3" />
-    <PackageReference Include="System.CodeDom" Version="6.0.0" />
+    <PackageReference Include="System.CodeDom" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>
