@@ -8,7 +8,7 @@
     <PackageReference Include="LogicBuilder.Attributes" Version="2.0.3" />
     <PackageReference Include="LogicBuilder.Expressions.Utils" Version="5.0.7" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
-    <PackageReference Include="System.Text.Json" Version="6.0.6" />
+    <PackageReference Include="System.Text.Json" Version="7.0.0" />
   </ItemGroup>
 
 </Project>
