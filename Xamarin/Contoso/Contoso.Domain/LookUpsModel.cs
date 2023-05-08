@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
 
 
 namespace Contoso.Domain.Entities
@@ -24,7 +22,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private string _text;
-		[Required(AllowEmptyStrings = true)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("LookUps_Text")]
 		public string Text
@@ -41,7 +38,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private string _listName;
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("LookUps_ListName")]
 		public string ListName

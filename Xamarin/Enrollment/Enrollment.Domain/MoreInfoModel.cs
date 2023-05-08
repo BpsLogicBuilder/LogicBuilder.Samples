@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Enrollment.Domain.Entities
@@ -38,9 +37,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _reasonForAttending;
-		[Display(Name = "What is your most important reason for attending?")]
-		[Required]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_ReasonForAttending")]
 		public string ReasonForAttending
@@ -57,9 +53,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _overallEducationalGoal;
-		[Display(Name = "What is your overall educational goal?")]
-		[Required]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_OverallEducationalGoal")]
 		public string OverallEducationalGoal
@@ -76,8 +69,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private bool _isVeteran;
-		[Display(Name = "Military Information:")]
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_IsVeteran")]
 		public bool IsVeteran
@@ -94,8 +85,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _militaryStatus;
-		[Display(Name = "Military Status:")]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_MilitaryStatus")]
 		public string MilitaryStatus
@@ -112,8 +101,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _militaryBranch;
-		[Display(Name = "Veteran Type:")]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_MilitaryBranch")]
 		public string MilitaryBranch
@@ -130,8 +117,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _veteranType;
-		[Display(Name = "Branch Served:")]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_VeteranType")]
 		public string VeteranType
@@ -148,8 +133,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _governmentBenefits;
-		[Display(Name = "Applicable Government Benefits:")]
-		[StringLength(10)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("MoreInfo_GovernmentBenefits")]
 		public string GovernmentBenefits

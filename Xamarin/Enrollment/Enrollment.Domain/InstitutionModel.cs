@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Enrollment.Domain.Entities
@@ -38,8 +37,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _institutionState;
-		[Required]
-		[StringLength(256)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Institution_InstitutionState")]
 		public string InstitutionState
@@ -56,7 +53,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _institutionName;
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Institution_InstitutionName")]
 		public string InstitutionName
@@ -73,8 +69,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _startYear;
-		[Required]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Institution_StartYear")]
 		public string StartYear
@@ -91,8 +85,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _endYear;
-		[Required]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Institution_EndYear")]
 		public string EndYear
@@ -109,8 +101,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _highestDegreeEarned;
-		[Required]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Institution_HighestDegreeEarned")]
 		public string HighestDegreeEarned

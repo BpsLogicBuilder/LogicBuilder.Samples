@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
+using System.Collections.Generic;
 
 
 namespace Contoso.Domain.Entities
@@ -8,7 +7,6 @@ namespace Contoso.Domain.Entities
     public class CourseModel : EntityModelBase
     {
 		private int _courseID;
-		[Display(Name = "Number")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Course_CourseID")]
 		public int CourseID
@@ -27,7 +25,6 @@ namespace Contoso.Domain.Entities
 		public string CourseIDString { get; set; }
 
 		private string _title;
-		[StringLength(50, MinimumLength = 3)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Course_Title")]
 		public string Title
@@ -44,7 +41,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private int _credits;
-		[Range(0, 5)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Course_Credits")]
 		public int Credits

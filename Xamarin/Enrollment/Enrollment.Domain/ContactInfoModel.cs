@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Enrollment.Domain.Entities
@@ -38,8 +37,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private bool _hasFormerName;
-        [Display(Name = "Could your records be under another name?")]
-        [Required]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_HasFormerName")]
         public bool HasFormerName
@@ -56,8 +53,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _formerFirstName;
-        [Display(Name = "Former First Name:")]
-        [StringLength(30)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_FormerFirstName")]
         public string FormerFirstName
@@ -74,8 +69,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _formerMiddleName;
-        [Display(Name = "Former Middle Name:")]
-        [StringLength(30)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_FormerMiddleName")]
         public string FormerMiddleName
@@ -92,8 +85,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _formerLastName;
-        [Display(Name = "Former Last Name:")]
-        [StringLength(30)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_FormerLastName")]
         public string FormerLastName
@@ -110,8 +101,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private System.DateTime _dateOfBirth;
-        [Display(Name = "Date Of Birth:")]
-        [Required]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_DateOfBirth")]
         public System.DateTime DateOfBirth
@@ -128,10 +117,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _socialSecurityNumber;
-        [Display(Name = "Social Security #:")]
-        [Required]
-        [RegularExpression(@"^\d{3}-\d{2}-\d{4}$", MatchTimeoutInMilliseconds = 2000)]
-        [StringLength(11)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_SocialSecurityNumber")]
         public string SocialSecurityNumber
@@ -163,9 +148,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _gender;
-        [Display(Name = "Gender:")]
-        [Required]
-        [StringLength(1)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_Gender")]
         public string Gender
@@ -182,9 +164,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _race;
-        [Display(Name = "Race:")]
-        [Required]
-        [StringLength(3)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_Race")]
         public string Race
@@ -201,9 +180,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _ethnicity;
-        [Display(Name = "Ethnicity:")]
-        [Required]
-        [StringLength(3)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_Ethnicity")]
         public string Ethnicity
@@ -220,9 +196,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _energencyContactFirstName;
-        [Display(Name = "Energency Contact First Name:")]
-        [Required]
-        [StringLength(30)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_EnergencyContactFirstName")]
         public string EnergencyContactFirstName
@@ -239,9 +212,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _energencyContactLastName;
-        [Display(Name = "Energency Contact Last Name:")]
-        [Required]
-        [StringLength(30)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_EnergencyContactLastName")]
         public string EnergencyContactLastName
@@ -258,9 +228,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _energencyContactRelationship;
-        [Display(Name = "Energency Contact Relationship:")]
-        [Required]
-        [StringLength(30)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_EnergencyContactRelationship")]
         public string EnergencyContactRelationship
@@ -277,10 +244,6 @@ namespace Enrollment.Domain.Entities
         }
 
         private string _energencyContactPhoneNumber;
-        [Display(Name = "Energency Contact Phone #:")]
-        [RegularExpression(@"^\d{3}-\d{3}-\d{4}$", MatchTimeoutInMilliseconds = 2000)]
-        [Required]
-        [StringLength(12)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("ContactInfo_EnergencyContactPhoneNumber")]
         public string EnergencyContactPhoneNumber

@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
+using System.Collections.Generic;
 
 
 namespace Enrollment.Domain.Entities
@@ -39,9 +38,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _lastHighSchoolLocation;
-		[Display(Name = "Last High School Location:")]
-		[Required]
-		[StringLength(256)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_LastHighSchoolLocation")]
 		public string LastHighSchoolLocation
@@ -58,8 +54,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _ncHighSchoolName;
-		[Display(Name = "NC High School Name:")]
-		[StringLength(256)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_NcHighSchoolName")]
 		public string NcHighSchoolName
@@ -76,8 +70,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _homeSchoolType;
-		[Display(Name = "Home School Type:")]
-		[StringLength(256)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_HomeSchoolType")]
 		public string HomeSchoolType
@@ -94,8 +86,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _homeSchoolAssociation;
-		[Display(Name = "Home School Association:")]
-		[StringLength(256)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_HomeSchoolAssociation")]
 		public string HomeSchoolAssociation
@@ -112,7 +102,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private System.DateTime _fromDate;
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_FromDate")]
 		public System.DateTime FromDate
@@ -129,8 +118,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private System.DateTime _toDate;
-		[Display(Name = "To Date:")]
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_ToDate")]
 		public System.DateTime ToDate
@@ -147,9 +134,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _graduationStatus;
-		[Display(Name = "Graduation Status:")]
-		[Required]
-		[StringLength(256)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_GraduationStatus")]
 		public string GraduationStatus
@@ -166,7 +150,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private bool? _receivedGed;
-		[Display(Name = "Did you receive a GED?")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_ReceivedGed")]
 		public bool? ReceivedGed
@@ -183,7 +166,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _gedLocation;
-		[Display(Name = "Where did you receive your GED?")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_GedLocation")]
 		public string GedLocation
@@ -200,7 +182,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private System.DateTime? _gedDate;
-		[Display(Name = "Date GED Received:")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_GedDate")]
 		public System.DateTime? GedDate
@@ -217,8 +198,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private bool _earnedCreditAtCmc;
-		[Display(Name = "Have you ever earned college credit hours at Charlotte School of Science")]
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_EarnedCreditAtCmc")]
 		public bool EarnedCreditAtCmc
@@ -235,8 +214,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private bool _attendedPriorColleges;
-		[Display(Name = "Have you attended other colleges or universities?")]
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Academic_AttendedPriorColleges")]
 		public bool AttendedPriorColleges

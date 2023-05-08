@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
+using System.Collections.Generic;
 
 
 namespace Contoso.Domain.Entities
@@ -24,7 +23,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private string _name;
-		[StringLength(50, MinimumLength = 3)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Department_Name")]
 		public string Name
@@ -41,7 +39,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private decimal _budget;
-		[DataType(DataType.Currency)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Department_Budget")]
 		public decimal Budget
@@ -60,9 +57,6 @@ namespace Contoso.Domain.Entities
 		public string BudgetString { get; set; }
 
 		private System.DateTime _startDate;
-		[DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString  = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-		[Display(Name = "Start Date")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Department_StartDate")]
 		public System.DateTime StartDate

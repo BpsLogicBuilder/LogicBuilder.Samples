@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Enrollment.Domain.Entities
@@ -23,7 +22,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _text;
-		[Required(AllowEmptyStrings = true)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("LookUps_Text")]
 		public string Text
@@ -40,8 +38,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _listName;
-		[StringLength(100)]
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("LookUps_ListName")]
 		public string ListName

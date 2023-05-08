@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
 
 
 namespace Enrollment.Domain.Entities
@@ -39,9 +37,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _enteringStatus;
-		[Display(Name = "What is your entering status?")]
-		[Required]
-		[StringLength(1)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Admissions_EnteringStatus")]
 		public string EnteringStatus
@@ -58,9 +53,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _enrollmentTerm;
-		[Display(Name = "Select Enrollment Term you wish to attend:")]
-		[Required]
-		[StringLength(6)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Admissions_EnrollmentTerm")]
 		public string EnrollmentTerm
@@ -77,9 +69,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _enrollmentYear;
-		[Display(Name = "Select Enrollment Year you wish to attend:")]
-		[Required]
-		[StringLength(4)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Admissions_EnrollmentYear")]
 		public string EnrollmentYear
@@ -96,9 +85,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _programType;
-		[Display(Name = "Choose a program type:")]
-		[Required]
-		[StringLength(55)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Admissions_ProgramType")]
 		public string ProgramType
@@ -115,9 +101,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _program;
-		[Display(Name = "Choose a program:")]
-		[Required]
-		[StringLength(55)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Admissions_Program")]
 		public string Program
