@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Enrollment.Domain.Entities
@@ -23,9 +22,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _state;
-		[Required]
-		[StringLength(25)]
-		[Display(Name = "State:")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("StateLivedIn_State")]
 		public string State

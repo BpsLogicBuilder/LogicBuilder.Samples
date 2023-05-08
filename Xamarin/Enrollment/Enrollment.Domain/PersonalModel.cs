@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 
 namespace Enrollment.Domain.Entities
@@ -52,9 +51,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _firstName;
-		[Display(Name = "First Name:")]
-		[Required]
-		[StringLength(30)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_FirstName")]
 		public string FirstName
@@ -71,8 +67,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _middleName;
-		[Display(Name = "Middle Name:")]
-		[StringLength(20)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_MiddleName")]
 		public string MiddleName
@@ -103,9 +97,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _lastName;
-		[Display(Name = "Last Name:")]
-		[Required]
-		[StringLength(30)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_LastName")]
 		public string LastName
@@ -122,8 +113,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _suffix;
-		[Display(Name = "Suffix:")]
-		[StringLength(6)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_Suffix")]
 		public string Suffix
@@ -140,9 +129,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _address1;
-		[Display(Name = "Mailing Address1:")]
-		[Required]
-		[StringLength(30)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_Address1")]
 		public string Address1
@@ -159,8 +145,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _address2;
-		[Display(Name = "Mailing Address2:")]
-		[StringLength(30)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_Address2")]
 		public string Address2
@@ -177,9 +161,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _city;
-		[Display(Name = "City:")]
-		[Required]
-		[StringLength(30)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_City")]
 		public string City
@@ -196,9 +177,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _state;
-		[Required]
-		[StringLength(25)]
-		[Display(Name = "State:")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_State")]
 		public string State
@@ -215,8 +193,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _county;
-		[Display(Name = "County:")]
-		[StringLength(25)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_County")]
 		public string County
@@ -233,9 +209,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _zipCode;
-		[Display(Name = "Zip Code (00000):")]
-		[Required]
-		[StringLength(5)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_ZipCode")]
 		public string ZipCode
@@ -252,8 +225,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _cellPhone;
-		[Display(Name = "Cell Phone:")]
-		[StringLength(15)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_CellPhone")]
 		public string CellPhone
@@ -270,8 +241,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _otherPhone;
-		[Display(Name = "Other Phone:")]
-		[StringLength(15)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_OtherPhone")]
 		public string OtherPhone
@@ -288,8 +257,6 @@ namespace Enrollment.Domain.Entities
 		}
 
 		private string _primaryEmail;
-		[Display(Name = "Primary Email):")]
-		[StringLength(40)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Personal_PrimaryEmail")]
 		public string PrimaryEmail

@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 namespace Contoso.Domain.Entities
 {
@@ -9,12 +8,10 @@ namespace Contoso.Domain.Entities
         [AlsoKnownAs("LookUps_LookUpsID")]
         public int LookUpsID { get; set; }
 
-        [Required(AllowEmptyStrings = true)]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("LookUps_Text")]
         public string Text { get; set; }
 
-        [Required]
         [VariableEditorControl(VariableControlType.SingleLineTextBox)]
         [AlsoKnownAs("LookUps_ListName")]
         public string ListName { get; set; }

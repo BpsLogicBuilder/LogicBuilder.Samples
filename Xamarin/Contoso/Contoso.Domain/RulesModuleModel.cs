@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
 
 
 namespace Contoso.Domain.Entities
@@ -24,7 +22,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private string _name;
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("RulesModule_Name")]
 		public string Name
@@ -41,7 +38,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private string _application;
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("RulesModule_Application")]
 		public string Application
@@ -58,7 +54,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private byte[] _ruleSetFile;
-		[Required]
 		[ListEditorControl(ListControlType.HashSetForm)]
 		[AlsoKnownAs("RulesModule_RuleSetFile")]
 		public byte[] RuleSetFile
@@ -75,7 +70,6 @@ namespace Contoso.Domain.Entities
 		}
 
 		private byte[] _resourceSetFile;
-		[Required]
 		[ListEditorControl(ListControlType.HashSetForm)]
 		[AlsoKnownAs("RulesModule_ResourceSetFile")]
 		public byte[] ResourceSetFile

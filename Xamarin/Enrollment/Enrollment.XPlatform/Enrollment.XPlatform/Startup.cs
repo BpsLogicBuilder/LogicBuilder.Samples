@@ -1,4 +1,5 @@
-﻿using Enrollment.XPlatform.Directives;
+﻿using Akavache;
+using Enrollment.XPlatform.Directives;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -14,6 +15,7 @@ namespace Enrollment.XPlatform
             ConfigureServices(services);
             App.ServiceCollection = services;
             App.ServiceProvider = App.ServiceCollection.BuildServiceProvider();
+            BlobCache.ApplicationName = Constants.AppConstants.ApplicationName;
         }
 
         private static void ConfigureServices(ServiceCollection services)

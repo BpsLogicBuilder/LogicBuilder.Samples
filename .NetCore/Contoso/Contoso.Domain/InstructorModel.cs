@@ -1,6 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
+using System.Collections.Generic;
 
 
 namespace Contoso.Domain.Entities
@@ -11,25 +10,16 @@ namespace Contoso.Domain.Entities
 		[AlsoKnownAs("Instructor_ID")]
 		public int ID { get; set; }
 
-		[Required]
-		[StringLength(50)]
-		[Display(Name = "Last Name")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Instructor_LastName")]
 		public string LastName { get; set; }
 
-		[Required]
-		[StringLength(50, ErrorMessage = "First name cannot be longer than 50 characters.")]
-		[Display(Name = "First Name")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Instructor_FirstName")]
 		public string FirstName { get; set; }
 
         public string FullName { get; set; }
 
-        [DataType(DataType.Date)]
-		[DisplayFormat(DataFormatString  = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-		[Display(Name = "Hire Date")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Instructor_HireDate")]
 		public System.DateTime HireDate { get; set; }

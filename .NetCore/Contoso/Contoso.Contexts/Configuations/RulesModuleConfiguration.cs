@@ -13,7 +13,7 @@ namespace Contoso.Contexts.Configuations
             modelBuilder.Entity<RulesModule>(entity =>
             {
                 entity.HasIndex(e => new { e.Name, e.Application })
-                    .HasName("uc_RulesModule")
+                    .HasDatabaseName("uc_RulesModule")
                     .IsUnique();
             });
         }

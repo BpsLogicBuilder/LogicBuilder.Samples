@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
 
 namespace Enrollment.Domain.Entities
 {
@@ -10,13 +8,10 @@ namespace Enrollment.Domain.Entities
 		[AlsoKnownAs("LookUps_LookUpsID")]
 		public int LookUpsID { get; set; }
 
-		[Required(AllowEmptyStrings = true)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("LookUps_Text")]
 		public string Text { get; set; }
 
-		[StringLength(100)]
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("LookUps_ListName")]
 		public string ListName { get; set; }

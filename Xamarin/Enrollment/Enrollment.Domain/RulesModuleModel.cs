@@ -1,5 +1,4 @@
 ﻿using LogicBuilder.Attributes;
-using System.ComponentModel.DataAnnotations;
 
 namespace Enrollment.Domain.Entities
 {
@@ -9,22 +8,18 @@ namespace Enrollment.Domain.Entities
 		[AlsoKnownAs("RulesModule_RulesModuleId")]
 		public int RulesModuleId { get; set; }
 
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("RulesModule_Name")]
 		public string Name { get; set; }
 
-		[Required]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("RulesModule_Application")]
 		public string Application { get; set; }
 
-		[Required]
 		[ListEditorControl(ListControlType.HashSetForm)]
 		[AlsoKnownAs("RulesModule_RuleSetFile")]
 		public byte[] RuleSetFile { get; set; }
 
-		[Required]
 		[ListEditorControl(ListControlType.HashSetForm)]
 		[AlsoKnownAs("RulesModule_ResourceSetFile")]
 		public byte[] ResourceSetFile { get; set; }

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Contoso.Domain.Entities
+﻿namespace Contoso.Domain.Entities
 {
     public class RulesModuleModel : BaseModelClass
     {
