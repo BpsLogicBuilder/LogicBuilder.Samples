@@ -1,4 +1,6 @@
-﻿using Contoso.XPlatform.Directives;
+﻿using Akavache;
+using Contoso.XPlatform.Constants;
+using Contoso.XPlatform.Directives;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -14,6 +16,7 @@ namespace Contoso.XPlatform
             ConfigureServices(services);
             App.ServiceCollection = services;
             App.ServiceProvider = App.ServiceCollection.BuildServiceProvider();
+            BlobCache.ApplicationName = AppConstants.ApplicationName;
         }
 
         private static void ConfigureServices(ServiceCollection services)
