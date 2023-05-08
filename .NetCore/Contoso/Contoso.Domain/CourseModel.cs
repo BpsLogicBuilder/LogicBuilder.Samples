@@ -1,23 +1,19 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
+using System.Collections.Generic;
 
 
 namespace Contoso.Domain.Entities
 {
     public class CourseModel : BaseModelClass
     {
-		[Display(Name = "Number")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Course_CourseID")]
 		public int CourseID { get; set; }
 
-		[StringLength(50, MinimumLength = 3)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Course_Title")]
 		public string Title { get; set; }
 
-		[Range(0, 5)]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("Course_Credits")]
 		public int Credits { get; set; }

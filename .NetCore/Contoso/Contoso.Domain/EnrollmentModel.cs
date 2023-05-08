@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
 
 
 namespace Contoso.Domain.Entities
@@ -19,7 +17,6 @@ namespace Contoso.Domain.Entities
 		[AlsoKnownAs("Enrollment_StudentID")]
 		public int StudentID { get; set; }
 
-		[DisplayFormat(NullDisplayText = "No grade")]
 		[AlsoKnownAs("Enrollment_Grade")]
 		public Grade? Grade { get; set; }
 

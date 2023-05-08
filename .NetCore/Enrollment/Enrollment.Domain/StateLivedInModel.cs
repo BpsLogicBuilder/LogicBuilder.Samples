@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using LogicBuilder.Attributes;
+﻿using LogicBuilder.Attributes;
 
 namespace Enrollment.Domain.Entities
 {
@@ -10,9 +8,6 @@ namespace Enrollment.Domain.Entities
 		[AlsoKnownAs("StateLivedIn_StateLivedInId")]
 		public int StateLivedInId { get; set; }
 
-		[Required]
-		[StringLength(25)]
-		[Display(Name = "State:")]
 		[VariableEditorControl(VariableControlType.SingleLineTextBox)]
 		[AlsoKnownAs("StateLivedIn_State")]
 		public string State { get; set; }
