@@ -1,11 +1,6 @@
 ﻿using Contoso.Contexts;
-using Contoso.Data.Automatic;
 using Contoso.Data.Entities;
-using Contoso.Data.Rules;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace MigrationTool
 {
@@ -23,8 +18,6 @@ namespace MigrationTool
         public DbSet<Instructor> Instructors { get; set; }
         public DbSet<OfficeAssignment> OfficeAssignments { get; set; }
         public DbSet<CourseAssignment> CourseAssignments { get; set; }
-        public DbSet<RulesModule> RulesModule { get; set; }
-        public DbSet<VariableMetaData> VariableMetaData { get; set; }
         public DbSet<LookUps> LookUps { get; set; }
 
         protected virtual EntityConfigurationHandler EntityConfigurationHandler { get; set; }

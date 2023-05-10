@@ -10,8 +10,7 @@ namespace Contoso.Contexts.Configuations
             var entity = modelBuilder.Entity<Department>();
             entity.ToTable(nameof(Department));
             entity.HasKey(d => d.DepartmentID);
-            //modelBuilder.Entity<Department>().HasOne(d => d.Administrator).WithMany(i => i.Departments).HasForeignKey(d => d.InstructorID);
-            //Departments property does not exist
+            modelBuilder.Entity<Department>().HasOne(d => d.Administrator).WithMany(/*Departments property does not exist*/).HasForeignKey(d => d.InstructorID);
             entity.HasMany(d => d.Courses).WithOne(c => c.Department).HasForeignKey(c => c.DepartmentID);
             entity.Property(d => d.Name).HasMaxLength(50);
             entity.Property(d => d.Budget).HasColumnType("money");
