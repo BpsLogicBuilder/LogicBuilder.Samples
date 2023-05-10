@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.3" />
-    <PackageReference Include="LogicBuilder.Structures" Version="5.0.7" />
+    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.4-alpha.0.1" />
+    <PackageReference Include="LogicBuilder.Structures" Version="5.0.8-alpha.0.2" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Enrollment.Data.Automatic
 {
-    [Table("VariableMetaData", Schema = "Automatic")]
     public class VariableMetaData : BaseDataClass
     {
         public int VariableMetaDataId { get; set; }

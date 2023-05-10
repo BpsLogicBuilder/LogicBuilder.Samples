@@ -193,7 +193,8 @@
   #labelTemplate>
   <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
   <div class="col-md-8">
-    <div class="form-control" readonly>{{formGroup.controls[fieldSetting.field] ? formGroup.controls[fieldSetting.field].value : ''}}</div>
+    <input class="form-control" readonly name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" [type]="fieldSetting.type"
+      [placeholder]="fieldSetting.placeholder" [formControl]="formGroup.controls[fieldSetting.field]" />
   </div>
 </ng-template>
 
@@ -232,7 +233,7 @@
 
 <ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex"
   #dateTemplate>
-  <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
+  <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
   <div class="col-md-8">
     <kendo-datepicker class="form-control" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
       [formControl]="formGroup.controls[fieldSetting.field]"></kendo-datepicker>
@@ -243,7 +244,7 @@
 </ng-template>
 
 <ng-template #dropDownTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex">
-  <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
+  <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
   <div class="col-md-8">
     <app-form-field-dropdown class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [dropDownTemplate]="fieldSetting.dropDownTemplate"
       [textField]="fieldSetting.dropDownTemplate.textField" [valueField]="fieldSetting.dropDownTemplate.valueField"
@@ -257,7 +258,7 @@
 </ng-template>
 
 <ng-template #multiSelectTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex">
-  <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
+  <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
   <div class="col-md-8">
     <app-form-field-multiselect class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [multiSelectTemplate]="fieldSetting.multiSelectTemplate"
       [textField]="fieldSetting.multiSelectTemplate.textField" [valueField]="fieldSetting.multiSelectTemplate.valueField"

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LogicBuilder.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,18 @@ namespace Contoso.Contexts
         #region Methods
         public virtual void Configure(ModelBuilder modelBuilder)
         {
+            foreach (PropertyInfo property in this.Context.GetType().GetProperties())
+            {
+                if (property.PropertyType.Name != "DbSet`1")
+                    continue;
+
+                Type modelType = property.PropertyType.GetGenericArguments()[0];
+                if (!typeof(BaseData).IsAssignableFrom(modelType))
+                    continue;
+
+                modelBuilder.Entity(modelType).Ignore(nameof(BaseData.EntityState));
+            }
+
             HashSet<string> mapNames = this.Context.GetType().GetProperties()
                 .Where(p => p.PropertyType.Name == "DbSet`1")
                 .Select(p => string.Concat(p.PropertyType.GetGenericArguments()[0].Name, "Configuration"))
