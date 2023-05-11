@@ -9,8 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.7" />
-    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.3" />
+    <PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.8" />
+    <PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.0.4" />
+    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.4" />
   </ItemGroup>
 
   <ItemGroup>

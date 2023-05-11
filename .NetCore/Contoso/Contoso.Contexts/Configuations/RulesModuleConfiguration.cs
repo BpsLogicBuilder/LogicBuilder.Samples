@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Contoso.Data.Rules;
 using Microsoft.EntityFrameworkCore;
-using Contoso.Data.Rules;
 
 namespace Contoso.Contexts.Configuations
 {
@@ -10,12 +7,17 @@ namespace Contoso.Contexts.Configuations
     {
         public void Configure(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RulesModule>(entity =>
-            {
-                entity.HasIndex(e => new { e.Name, e.Application })
-                    .HasDatabaseName("uc_RulesModule")
-                    .IsUnique();
-            });
+            var entity = modelBuilder.Entity<RulesModule>();
+            entity.ToTable(nameof(RulesModule), "Rules");
+            entity.HasIndex(e => new { e.Name, e.Application }).HasDatabaseName("uc_RulesModule").IsUnique();
+            entity.HasKey(r => r.RulesModuleId);
+            entity.Property(r => r.Name).IsRequired();
+            entity.Property(r => r.Name).HasColumnType("varchar(100)");
+            entity.Property(r => r.Application).IsRequired();
+            entity.Property(r => r.Application).HasColumnType("varchar(100)");
+            entity.Property(r => r.RuleSetFile).IsRequired();
+            entity.Property(r => r.ResourceSetFile).IsRequired();
+            entity.Property(r => r.LoggedInUserId).HasColumnType("varchar(256)");
         }
     }
 }

@@ -7,8 +7,11 @@ namespace Contoso.Contexts.Configuations
     {
         public void Configure(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CourseAssignment>()
-                .HasKey(c => new { c.CourseID, c.InstructorID });
+            var entity = modelBuilder.Entity<CourseAssignment>();
+            entity.ToTable(nameof(CourseAssignment));
+            entity.HasKey(c => new { c.CourseID, c.InstructorID });
+            entity.HasOne(ca => ca.Instructor).WithMany(i => i.Courses).HasForeignKey(ca => ca.InstructorID);
+            entity.HasOne(ca => ca.Course).WithMany(c => c.Assignments).HasForeignKey(ca => ca.CourseID);
         }
     }
 }

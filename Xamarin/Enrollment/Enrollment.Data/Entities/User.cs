@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Enrollment.Data.Entities
+﻿namespace Enrollment.Data.Entities
 {
     public class User : BaseDataClass
     {
-        [Key]
         public int UserId { get; set; }
 
         public string UserName { get; set; }
