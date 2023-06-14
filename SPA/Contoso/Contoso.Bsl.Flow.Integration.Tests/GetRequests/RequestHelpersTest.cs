@@ -489,8 +489,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         #region Helpers
-        private SelectOperatorDescriptor GetAboutBody() 
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetAboutBody() 
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -553,8 +553,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "sel"
             };
 
-        private SelectOperatorDescriptor GetInstructorsBody()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetInstructorsBody()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -597,8 +597,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBody(int id)
-            => new EqualsBinaryOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBody(int id)
+            => new()
             {
                 Left = new MemberSelectorOperatorDescriptor
                 {
@@ -608,8 +608,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
             };
 
-        private EqualsBinaryOperatorDescriptor GetDepartmentByNameFilterBody(string name)
-            => new EqualsBinaryOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetDepartmentByNameFilterBody(string name)
+            => new()
             {
                 Left = new MemberSelectorOperatorDescriptor
                 {
@@ -619,8 +619,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 Right = new ConstantOperatorDescriptor { Type = typeof(string).FullName, ConstantValue = name }
             };
 
-        private OrderByOperatorDescriptor GetCoursesBodyForCourseModelType()
-            => new OrderByOperatorDescriptor
+        private static OrderByOperatorDescriptor GetCoursesBodyForCourseModelType()
+            => new()
             {
                 SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
                 SelectorBody = new MemberSelectorOperatorDescriptor
@@ -632,8 +632,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private TakeOperatorDescriptor GetStudentsBodyForStudentModelType()
-            => new TakeOperatorDescriptor
+        private static TakeOperatorDescriptor GetStudentsBodyForStudentModelType()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -649,8 +649,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 Count = 2
             };
 
-        private OrderByOperatorDescriptor GetDepartmentsBodyOrderByName()
-            => new OrderByOperatorDescriptor
+        private static OrderByOperatorDescriptor GetDepartmentsBodyOrderByName()
+            => new()
             {
                 SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
                 SelectorBody = new MemberSelectorOperatorDescriptor
@@ -662,8 +662,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private SelectOperatorDescriptor GetDepartmentsBodyForDepartmentModelType()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetDepartmentsBodyForDepartmentModelType()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -696,8 +696,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private SelectOperatorDescriptor GetDepartmentsBodyForLookupModelType()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetDepartmentsBodyForLookupModelType()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -735,8 +735,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
             };
 
 
-        private SelectOperatorDescriptor GetBodyForLookupsModel()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetBodyForLookupsModel()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -786,8 +786,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "l"
             };
 
-        private SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
-            => new SelectorLambdaOperatorDescriptor
+        private static SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
+            => new()
             {
                 Selector = selectorBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
@@ -795,15 +795,15 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 BodyType = typeof(TResult).AssemblyQualifiedName
             };
 
-        private FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
-            => new FilterLambdaOperatorDescriptor
+        private static FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
+            => new()
             {
                 FilterBody = filterBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
                 ParameterName = parameterName
             };
 
-        private void AssertFilterStringIsCorrect(Expression expression, string expected)
+        private static void AssertFilterStringIsCorrect(Expression expression, string expected)
         {
             AssertStringIsCorrect(ExpressionStringBuilder.ToString(expression));
 

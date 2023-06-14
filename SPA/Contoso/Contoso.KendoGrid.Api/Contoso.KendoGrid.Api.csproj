@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.7" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.KendoGrid.Bsl.Utils\Contoso.KendoGrid.Bsl.Utils.csproj" />
+    <ProjectReference Include="..\Contoso.Web.Utils\Contoso.Web.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

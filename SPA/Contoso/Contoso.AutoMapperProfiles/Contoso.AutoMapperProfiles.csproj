@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
-    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="5.0.8" />
+    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="5.0.9-alpha.0.2" />
   </ItemGroup>
 
   <ItemGroup>
