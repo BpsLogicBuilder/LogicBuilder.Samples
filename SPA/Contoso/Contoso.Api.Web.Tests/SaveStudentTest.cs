@@ -28,7 +28,7 @@ namespace Contoso.Api.Web.Tests
         [Fact]
         public async void SaveStudent()
         {
-            List<Task<BaseResponse>> tasks = new List<Task<BaseResponse>>();
+            List<Task<BaseResponse>> tasks = new();
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -92,7 +92,7 @@ namespace Contoso.Api.Web.Tests
         [Fact]
         public async void SaveStudentWithoutRules()
         {
-            List<Task<SaveEntityResponse>> tasks = new List<Task<SaveEntityResponse>>();
+            List<Task<SaveEntityResponse>> tasks = new();
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add

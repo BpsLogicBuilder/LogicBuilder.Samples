@@ -8,7 +8,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection.Metadata;
 using System.Text.Json;
 using Xunit;
 
@@ -37,8 +36,8 @@ namespace Contoso.Api.Web.Tests
             this.clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         }
 
-        private OrderByOperatorDescriptor GetCoursesBodyForCourseModelType()
-            => new OrderByOperatorDescriptor
+        private static OrderByOperatorDescriptor GetCoursesBodyForCourseModelType()
+            => new()
             {
                 SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
                 SelectorBody = new MemberSelectorOperatorDescriptor
@@ -50,8 +49,8 @@ namespace Contoso.Api.Web.Tests
                 SelectorParameterName = "d"
             };
 
-        private SelectOperatorDescriptor GetDepartmentsBodyForDepartmentModelType()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetDepartmentsBodyForDepartmentModelType()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -84,8 +83,8 @@ namespace Contoso.Api.Web.Tests
                 SelectorParameterName = "d"
             };
 
-        private SelectOperatorDescriptor GetBodyForLookupsModel()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetBodyForLookupsModel()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -135,8 +134,8 @@ namespace Contoso.Api.Web.Tests
                 SelectorParameterName = "l"
             };
 
-        private SelectOperatorDescriptor GetAboutBody_StudentEnrollmentCountByEnrollmentDate()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetAboutBody_StudentEnrollmentCountByEnrollmentDate()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -199,8 +198,8 @@ namespace Contoso.Api.Web.Tests
                 SelectorParameterName = "sel"
             };
 
-        private SelectOperatorDescriptor GetBodyForAdministratorLookup()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetBodyForAdministratorLookup()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -243,8 +242,8 @@ namespace Contoso.Api.Web.Tests
                 SelectorParameterName = "s"
             };
 
-        private EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBody(int id)
-            => new EqualsBinaryOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBody(int id)
+            => new()
             {
                 Left = new MemberSelectorOperatorDescriptor
                 {
@@ -254,8 +253,8 @@ namespace Contoso.Api.Web.Tests
                 Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
             };
 
-        private EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBodyFromObjectConstant(DepartmentModel department)
-            => new EqualsBinaryOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBodyFromObjectConstant(DepartmentModel department)
+            => new()
             {
                 Left = new MemberSelectorOperatorDescriptor
                 {
@@ -269,8 +268,8 @@ namespace Contoso.Api.Web.Tests
                 }
             };
 
-        private SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
-            => new SelectorLambdaOperatorDescriptor
+        private static SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
+            => new()
             {
                 Selector = selectorBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
@@ -278,8 +277,8 @@ namespace Contoso.Api.Web.Tests
                 BodyType = typeof(TResult).AssemblyQualifiedName
             };
 
-        private FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
-            => new FilterLambdaOperatorDescriptor
+        private static FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
+            => new()
             {
                 FilterBody = filterBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
