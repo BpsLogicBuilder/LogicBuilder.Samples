@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="5.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Bsl.Business\Contoso.Bsl.Business.csproj" />
+    <ProjectReference Include="..\Contoso.Common.Utils\Contoso.Common.Utils.csproj" />
+    <ProjectReference Include="..\Contoso.Parameters\Contoso.Parameters.csproj" />
+  </ItemGroup>
+
+</Project>
