@@ -1,5 +1,4 @@
 ﻿using Contoso.Common.Configuration.ExpressionDescriptors;
-using System.Collections.Generic;
 
 namespace Contoso.Forms.View.Common
 {
@@ -9,7 +8,6 @@ namespace Contoso.Forms.View.Common
 		public string PlaceHolderText { get; set; }
 		public string TextField { get; set; }
 		public string ValueField { get; set; }
-		public DataRequestStateView State { get; set; }
         public SelectorLambdaOperatorDescriptor TextAndValueSelector { get; set; }
         public RequestDetailsView RequestDetails { get; set; }
 		public string ModelType { get; set; }

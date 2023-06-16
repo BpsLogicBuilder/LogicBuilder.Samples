@@ -28,8 +28,6 @@ namespace Contoso.Forms.Parameters.Common
             [NameValue(AttributeNames.PROPERTYSOURCEPARAMETER, "modelType")]
             string valueField,
 
-            DataRequestStateParameters state,
-
             [Comments("Single object used for defining the selector lambda expression e.g. q => q.OrderBy(s => s.FullName).Select(a => new InstructorModel() {ID = a.ID, FullName = a.FullName})")]
             SelectorLambdaOperatorParameters textAndValueSelector,
 
@@ -45,7 +43,6 @@ namespace Contoso.Forms.Parameters.Common
             IsPrimitive = isPrimitive;
             TextField = textField;
             ValueField = valueField;
-            State = state;
             TextAndValueSelector = textAndValueSelector;
             RequestDetails = requestDetails;
         }
@@ -54,7 +51,6 @@ namespace Contoso.Forms.Parameters.Common
         public bool IsPrimitive { get; set; }
         public string TextField { get; set; }
         public string ValueField { get; set; }
-        public DataRequestStateParameters State { get; set; }
         public SelectorLambdaOperatorParameters TextAndValueSelector { get; set; }
         public RequestDetailsParameters RequestDetails { get; set; }
     }

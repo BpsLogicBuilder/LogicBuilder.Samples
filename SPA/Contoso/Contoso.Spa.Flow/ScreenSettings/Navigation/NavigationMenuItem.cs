@@ -12,10 +12,6 @@ namespace Contoso.Spa.Flow.ScreenSettings.Navigation
             this.SubItems = SubItems;
         }
 
-        public NavigationMenuItem()
-        {
-        }
-
         public int TargetModule { get; set; }
         public string InitialModule { get; set; }
         public string Text { get; set; }

@@ -16,7 +16,6 @@ namespace Contoso.Forms.View.Common
                                         : FilterableType;
         public List<ColumnSettingsView> Columns { get; set; }
 		public int? GridId { get; set; }
-		public FilterGroupView ItemFilter { get; set; }
 		public int? Height { get; set; }
 		public CommandColumnView CommandColumn { get; set; }
 		public DataRequestStateView State { get; set; }

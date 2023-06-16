@@ -53,9 +53,6 @@ namespace Contoso.Forms.Parameters.Common
             [Comments("The grid ID helps determine if a command button should be assigned to the grid's command column.")]
             int? gridId = null,
 
-            [Comments("Filter descriptors.")]
-            FilterGroupParameters itemFilter = null,
-
             [Comments("Gives the grid a fixed height when set.")]
             int? height = null,
 
@@ -81,7 +78,6 @@ namespace Contoso.Forms.Parameters.Common
             FilterableType = filterableType;
             Columns = columns;
             GridId = gridId;
-            ItemFilter = itemFilter;
             Height = height;
             CommandColumn = commandColumn;
             State = state;
@@ -102,7 +98,6 @@ namespace Contoso.Forms.Parameters.Common
                                         : FilterableType;
         public List<ColumnSettingsParameters> Columns { get; set; }
         public int? GridId { get; set; }
-        public FilterGroupParameters ItemFilter { get; set; }
         public int? Height { get; set; }
         public CommandColumnParameters CommandColumn { get; set; }
         public DataRequestStateParameters State { get; set; }

@@ -33,20 +33,7 @@ namespace Contoso.Forms.Parameters.Common
             [Comments("The data collection type being returned e.g. IEnumerable<Student>. Click the function button and use the configured GetType function.  Auto complete to System.Collections.Generic.IEnumerable`1.  Finally right-click and select 'Add/Update Generic Arguments'")]
             string dataReturnType,
 
-            string dataSourceUrl = "/api/Generic/GetData",
-            string getUrl = "/api/Generic/GetSingle",
-            string addUrl = "/api/Generic/Add",
-            string updateUrl = "/api/Generic/Update",
-            string deleteUrl = "/api/Generic/Delete",
-
-            [ListEditorControl(ListControlType.HashSetForm)]
-            [ParameterEditorControl(ParameterControlType.ParameterSourcedPropertyInput)]
-            [NameValue(AttributeNames.PROPERTYSOURCEPARAMETER, "modelType")]
-            string[] includes = null,
-
-            [ListEditorControl(ListControlType.HashSetForm)]
-            List<SelectParameters> selects = null,
-            bool? distinct = null,
+            string dataSourceUrl = "/api/List/GetList",
 
             [Comments("Defines and navigation properties to include in the edit model")]
             SelectExpandDefinitionParameters selectExpandDefinition = null
@@ -57,13 +44,6 @@ namespace Contoso.Forms.Parameters.Common
             ModelReturnType = modelReturnType;
             DataReturnType = dataReturnType;
             DataSourceUrl = dataSourceUrl;
-            GetUrl = getUrl;
-            AddUrl = addUrl;
-            UpdateUrl = updateUrl;
-            DeleteUrl = deleteUrl;
-            Includes = includes;
-            Selects = selects?.ToDictionary(s => s.FieldName, s => s.SourceMember);
-            Distinct = distinct;
             SelectExpandDefinition = selectExpandDefinition;
         }
 
@@ -72,13 +52,6 @@ namespace Contoso.Forms.Parameters.Common
         public string ModelReturnType { get; set; }
         public string DataReturnType { get; set; }
         public string DataSourceUrl { get; set; }
-        public string GetUrl { get; set; }
-        public string AddUrl { get; set; }
-        public string UpdateUrl { get; set; }
-        public string DeleteUrl { get; set; }
-        public string[] Includes { get; set; }
-        public Dictionary<string, string> Selects { get; set; }
-        public bool? Distinct { get; set; }
         public SelectExpandDefinitionParameters SelectExpandDefinition { get; set; }
     }
 }

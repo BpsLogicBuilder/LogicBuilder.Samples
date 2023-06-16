@@ -22,9 +22,6 @@ namespace Contoso.Forms.Parameters.Common
             [Comments("Includes the URL to retrieve the data.")]
             RequestDetailsParameters requestDetails,
 
-            [Comments("Defines the state of the request including the sort, filter, page and page size.")]
-            DataRequestStateParameters state,
-
             [Comments("List of fields and form groups for display.")]
             List<DetailItemParameters> fieldSettings
         )
@@ -32,14 +29,12 @@ namespace Contoso.Forms.Parameters.Common
             Title = title;
             FieldsSelector = fieldsSelector;
             RequestDetails = requestDetails;
-            State = state;
             FieldSettings = fieldSettings;
         }
 
         public string Title { get; set; }
         public RequestDetailsParameters RequestDetails { get; set; }
         public SelectorLambdaOperatorParameters FieldsSelector { get; set; }
-        public DataRequestStateParameters State { get; set; }
         public List<DetailItemParameters> FieldSettings { get; set; }
     }
 }

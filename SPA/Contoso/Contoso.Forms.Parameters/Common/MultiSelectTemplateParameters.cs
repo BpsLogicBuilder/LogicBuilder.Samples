@@ -40,9 +40,6 @@ namespace Contoso.Forms.Parameters.Common
             [Comments("Details about the drop-down data source including joins and partial field set (selects).")]
             RequestDetailsParameters requestDetails,
 
-            [Comments("The request state defines sorting, filtering, grouping and aggregates if necessary.")]
-            DataRequestStateParameters state = null,
-
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
             [Comments("Fully qualified class name for the model type.")]
             string modelType = "Contoso.Domain.Entities"
@@ -52,7 +49,6 @@ namespace Contoso.Forms.Parameters.Common
             PlaceHolderText = placeHolderText;
             TextField = textField;
             ValueField = valueField;
-            State = state;
             TextAndValueSelector = textAndValueSelector;
             RequestDetails = requestDetails;
             ModelType = modelType;
@@ -62,7 +58,6 @@ namespace Contoso.Forms.Parameters.Common
         public string PlaceHolderText { get; set; }
         public string TextField { get; set; }
         public string ValueField { get; set; }
-        public DataRequestStateParameters State { get; set; }
         public SelectorLambdaOperatorParameters TextAndValueSelector { get; set; }
         public RequestDetailsParameters RequestDetails { get; set; }
         public string ModelType { get; set; }

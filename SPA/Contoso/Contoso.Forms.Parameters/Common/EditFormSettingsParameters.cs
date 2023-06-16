@@ -32,9 +32,6 @@ namespace Contoso.Forms.Parameters.Common
             [Comments("List of fields and form groups for this form.")]
             List<FormItemSettingParameters> fieldSettings,
 
-            [Comments("Defines the filter for the single object being edited - does not apply on Create.")]
-            FilterGroupParameters filterGroup = null,
-
             [Comments("Conditional directtives for each field.")]
             List<VariableDirectivesParameters> conditionalDirectives = null,
 
@@ -48,7 +45,6 @@ namespace Contoso.Forms.Parameters.Common
             RequestDetails = requestDetails;
             ValidationMessages = validationMessages.ToDictionary(kvp => kvp.Field, kvp => kvp.Methods);
             FieldSettings = fieldSettings;
-            FilterGroup = filterGroup;
             ConditionalDirectives = conditionalDirectives == null
                                             ? new Dictionary<string, List<DirectiveParameters>>()
                                             : conditionalDirectives
@@ -66,7 +62,6 @@ namespace Contoso.Forms.Parameters.Common
         public FormRequestDetailsParameters RequestDetails { get; set; }
         public Dictionary<string, Dictionary<string, string>> ValidationMessages { get; set; }
         public List<FormItemSettingParameters> FieldSettings { get; set; }
-        public FilterGroupParameters FilterGroup { get; set; }
         public Dictionary<string, List<DirectiveParameters>> ConditionalDirectives { get; set; }
         public string ModelType { get; set; }//Helps Json.Net on create
     }
