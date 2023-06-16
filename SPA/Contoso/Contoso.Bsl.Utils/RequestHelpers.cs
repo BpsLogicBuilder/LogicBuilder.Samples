@@ -23,7 +23,7 @@ namespace Contoso.Bsl.Utils
     public static class RequestHelpers
     {
         public static async Task<GetObjectListResponse> GetAnonymousList(GetObjectListRequest request, IContextRepository contextRepository, IMapper mapper)
-            => await (Task<GetObjectListResponse>)"GetAnonymousList".GetSelectMethod()
+            => await (Task<GetObjectListResponse>)nameof(GetAnonymousList).GetSelectMethod()
             .MakeGenericMethod
             (
                 request.ModelType.Contains(',') ? Type.GetType(request.ModelType) : typeof(BaseModelClass).Assembly.GetType(request.ModelType),
@@ -44,7 +44,7 @@ namespace Contoso.Bsl.Utils
             };
 
         public static async Task<GetEntityResponse> GetEntity(GetEntityRequest request, IContextRepository contextRepository, IMapper mapper)
-            => await (Task<GetEntityResponse>)"GetEntity".GetSelectMethod()
+            => await (Task<GetEntityResponse>)nameof(GetEntity).GetSelectMethod()
             .MakeGenericMethod
             (
                 request.ModelType.Contains(',') ? Type.GetType(request.ModelType) : typeof(BaseModelClass).Assembly.GetType(request.ModelType),
@@ -66,7 +66,7 @@ namespace Contoso.Bsl.Utils
             };
 
         public static async Task<GetListResponse> GetList(GetTypedListRequest request, IContextRepository contextRepository, IMapper mapper)
-            => await (Task<GetListResponse>)"GetList".GetSelectMethod()
+            => await (Task<GetListResponse>)nameof(GetList).GetSelectMethod()
             .MakeGenericMethod
             (
                 request.ModelType.Contains(',') ? Type.GetType(request.ModelType) : typeof(BaseModelClass).Assembly.GetType(request.ModelType),

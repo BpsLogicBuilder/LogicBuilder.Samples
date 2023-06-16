@@ -24,7 +24,7 @@ namespace Contoso.KendoGrid.Bsl.Utils
     public static class RequestHelpers
     {
         public static Task<DataSourceResult> GetData(this KendoGridDataRequest request, IContextRepository contextRepository, IMapper mapper)
-            => (Task<DataSourceResult>)"GetData".GetSelectMethod()
+            => (Task<DataSourceResult>)nameof(GetData).GetSelectMethod()
                 .MakeGenericMethod
                 (
                     request.ModelType.Contains(',') ? Type.GetType(request.ModelType) : typeof(BaseModelClass).Assembly.GetType(request.ModelType),
