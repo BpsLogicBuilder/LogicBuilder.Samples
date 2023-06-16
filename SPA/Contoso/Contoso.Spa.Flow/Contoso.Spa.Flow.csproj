@@ -1,0 +1,115 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Rulesets\about.module" />
+	  <None Remove="Rulesets\about.resources" />
+	  <None Remove="Rulesets\courses.module" />
+	  <None Remove="Rulesets\courses.resources" />
+	  <None Remove="Rulesets\departments.module" />
+	  <None Remove="Rulesets\departments.resources" />
+	  <None Remove="Rulesets\home.module" />
+	  <None Remove="Rulesets\home.resources" />
+	  <None Remove="Rulesets\initial.module" />
+	  <None Remove="Rulesets\initial.resources" />
+	  <None Remove="Rulesets\instructors.module" />
+	  <None Remove="Rulesets\instructors.resources" />
+	  <None Remove="Rulesets\item_filter_courses.module" />
+	  <None Remove="Rulesets\item_filter_courses.resources" />
+	  <None Remove="Rulesets\item_filter_departments.module" />
+	  <None Remove="Rulesets\item_filter_departments.resources" />
+	  <None Remove="Rulesets\item_filter_instructors.module" />
+	  <None Remove="Rulesets\item_filter_instructors.resources" />
+	  <None Remove="Rulesets\item_filter_students.module" />
+	  <None Remove="Rulesets\item_filter_students.resources" />
+	  <None Remove="Rulesets\nav_about.module" />
+	  <None Remove="Rulesets\nav_about.resources" />
+	  <None Remove="Rulesets\nav_courses.module" />
+	  <None Remove="Rulesets\nav_courses.resources" />
+	  <None Remove="Rulesets\nav_departments.module" />
+	  <None Remove="Rulesets\nav_departments.resources" />
+	  <None Remove="Rulesets\nav_home.module" />
+	  <None Remove="Rulesets\nav_home.resources" />
+	  <None Remove="Rulesets\nav_instructors.module" />
+	  <None Remove="Rulesets\nav_instructors.resources" />
+	  <None Remove="Rulesets\nav_students.module" />
+	  <None Remove="Rulesets\nav_students.resources" />
+	  <None Remove="Rulesets\students.module" />
+	  <None Remove="Rulesets\students.resources" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Rulesets\about.module" />
+	  <EmbeddedResource Include="Rulesets\about.resources" />
+	  <EmbeddedResource Include="Rulesets\courses.module" />
+	  <EmbeddedResource Include="Rulesets\courses.resources" />
+	  <EmbeddedResource Include="Rulesets\departments.module" />
+	  <EmbeddedResource Include="Rulesets\departments.resources" />
+	  <EmbeddedResource Include="Rulesets\home.module" />
+	  <EmbeddedResource Include="Rulesets\home.resources" />
+	  <EmbeddedResource Include="Rulesets\initial.module" />
+	  <EmbeddedResource Include="Rulesets\initial.resources" />
+	  <EmbeddedResource Include="Rulesets\instructors.module" />
+	  <EmbeddedResource Include="Rulesets\instructors.resources" />
+	  <EmbeddedResource Include="Rulesets\item_filter_courses.module" />
+	  <EmbeddedResource Include="Rulesets\item_filter_courses.resources" />
+	  <EmbeddedResource Include="Rulesets\item_filter_departments.module" />
+	  <EmbeddedResource Include="Rulesets\item_filter_departments.resources" />
+	  <EmbeddedResource Include="Rulesets\item_filter_instructors.module" />
+	  <EmbeddedResource Include="Rulesets\item_filter_instructors.resources" />
+	  <EmbeddedResource Include="Rulesets\item_filter_students.module" />
+	  <EmbeddedResource Include="Rulesets\item_filter_students.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_about.module" />
+	  <EmbeddedResource Include="Rulesets\nav_about.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_courses.module" />
+	  <EmbeddedResource Include="Rulesets\nav_courses.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_departments.module" />
+	  <EmbeddedResource Include="Rulesets\nav_departments.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_home.module" />
+	  <EmbeddedResource Include="Rulesets\nav_home.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_instructors.module" />
+	  <EmbeddedResource Include="Rulesets\nav_instructors.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_students.module" />
+	  <EmbeddedResource Include="Rulesets\nav_students.resources" />
+	  <EmbeddedResource Include="Rulesets\students.module" />
+	  <EmbeddedResource Include="Rulesets\students.resources" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.9-alpha.0.2" />
+		<PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.0.4" />
+		<PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.4" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
+    <ProjectReference Include="..\Contoso.Forms.Parameters\Contoso.Forms.Parameters.csproj" />
+    <ProjectReference Include="..\Contoso.Forms.View\Contoso.Forms.View.csproj" />
+    <ProjectReference Include="..\Contoso.Utils\Contoso.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

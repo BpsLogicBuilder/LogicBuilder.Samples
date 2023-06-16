@@ -93,7 +93,7 @@ namespace Contoso.KendoGrid.Bsl
                 {
                     app.UseDeveloperExceptionPage();
                     app.UseSwagger();
-                    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contoso.Bsl v1"));
+                    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Contoso.KendoGrid.Bsl v1"));
                     app.UseExceptionHandler("/error-local-development");
                 }
                 else

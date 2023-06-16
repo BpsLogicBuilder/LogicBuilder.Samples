@@ -2,12 +2,14 @@
 using AutoMapper.Extensions.ExpressionMapping;
 using Contoso.AutoMapperProfiles;
 using Contoso.BSL.AutoMapperProfiles;
+using Contoso.Common.Configuration.ExpansionDescriptors;
 using Contoso.Contexts;
 using Contoso.Data.Entities;
 using Contoso.Domain.Entities;
 using Contoso.KendoGrid.Bsl.Business.Requests;
 using Contoso.Repositories;
 using Contoso.Stores;
+using Kendo.Mvc.Infrastructure;
 using Kendo.Mvc.UI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,6 +66,197 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
             Assert.Equal(2, result.AggregateResults.Count());
             Assert.Equal("Count", result.AggregateResults.First().AggregateMethodName);
             Assert.Equal(11, (int)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_students_grouped_with_aggregates()
+        {
+            KendoGridDataRequest request = new()
+            {
+                Options = new KendoGridDataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~enrollmentDate-min",
+                    Filter = null,
+                    Group = "enrollmentDate-asc",
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = typeof(StudentModel).FullName,
+                DataType = typeof(Student).FullName,
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
+            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+
+            Assert.Equal(11, result.Total);
+            Assert.Equal(3, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Count", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal(11, (int)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_departments_ungrouped_with_aggregates_and_includes()
+        {
+            KendoGridDataRequest request = new()
+            {
+                Options = new KendoGridDataSourceRequestOptions
+                {
+                    Aggregate = "administratorName-min~name-count~budget-sum~budget-min~startDate-min",
+                    Filter = null,
+                    Group = null,
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = typeof(DepartmentModel).FullName,
+                DataType = typeof(Department).FullName,
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
+            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+
+            Assert.Equal(4, result.Total);
+            Assert.Equal(4, ((IEnumerable<DepartmentModel>)result.Data).Count());
+            Assert.Equal(5, result.AggregateResults.Count());
+            Assert.Equal("Kim Abercrombie", ((IEnumerable<DepartmentModel>)result.Data).First().AdministratorName);
+            Assert.Equal("Min", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal("Candace Kapoor", (string)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_departments_grouped_with_aggregates()
+        {
+            KendoGridDataRequest request = new()
+            {
+                Options = new KendoGridDataSourceRequestOptions
+                {
+                    Aggregate = "administratorName-min~name-count~budget-sum~budget-min~startDate-min",
+                    Filter = null,
+                    Group = "budget-asc",
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = typeof(DepartmentModel).FullName,
+                DataType = typeof(Department).FullName,
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
+            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+
+            Assert.Equal(4, result.Total);
+            Assert.Equal(2, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
+            Assert.Equal(5, result.AggregateResults.Count());
+            Assert.Equal("Min", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal("Candace Kapoor", (string)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_instructors_ungrouped_with_aggregates()
+        {
+            KendoGridDataRequest request = new()
+            {
+                Options = new KendoGridDataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~hireDate-min",
+                    Filter = null,
+                    Group = null,
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = typeof(InstructorModel).FullName,
+                DataType = typeof(Instructor).FullName,
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
+            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+
+            Assert.Equal(5, result.Total);
+            Assert.Equal(5, ((IEnumerable<InstructorModel>)result.Data).Count());
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Roger Zheng", ((IEnumerable<InstructorModel>)result.Data).First().FullName);
+        }
+
+        [Fact]
+        public void Get_instructors_grouped_with_aggregates_and_expansions()
+        {
+            KendoGridDataRequest request = new()
+            {
+                Options = new KendoGridDataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~hireDate-min",
+                    Filter = null,
+                    Group = "hireDate-asc",
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = typeof(InstructorModel).FullName,
+                DataType = typeof(Instructor).FullName,
+                SelectExpandDefinition = new SelectExpandDefinitionDescriptor
+                {
+                    ExpandedItems = new List<SelectExpandItemDescriptor>
+                    {
+                        new SelectExpandItemDescriptor
+                        {
+                            MemberName = "courses"
+                        },
+                        new SelectExpandItemDescriptor
+                        {
+                            MemberName = "officeAssignment"
+                        }
+                    }
+                }
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
+            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+
+            Assert.Equal(5, result.Total);
+            Assert.Equal(5, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
+            Assert.NotEmpty(((IEnumerable<AggregateFunctionsGroup>)result.Data).First().Items.Cast<InstructorModel>().First().Courses);
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Count", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal(5, (int)result.AggregateResults.First().Value);
+        }
+
+        [Fact]
+        public void Get_instructors_grouped_with_aggregates_without_expansions()
+        {
+            KendoGridDataRequest request = new()
+            {
+                Options = new KendoGridDataSourceRequestOptions
+                {
+                    Aggregate = "lastName-count~hireDate-min",
+                    Filter = null,
+                    Group = "hireDate-asc",
+                    Page = 1,
+                    Sort = null,
+                    PageSize = 5
+                },
+                ModelType = typeof(InstructorModel).FullName,
+                DataType = typeof(Instructor).FullName
+            };
+
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
+            IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
+            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+
+            Assert.Equal(5, result.Total);
+            Assert.Equal(5, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
+            Assert.Null(((IEnumerable<AggregateFunctionsGroup>)result.Data).First().Items.Cast<InstructorModel>().First().Courses);
+            Assert.Null(((IEnumerable<AggregateFunctionsGroup>)result.Data).First().Items.Cast<InstructorModel>().First().OfficeAssignment);
+            Assert.Equal(2, result.AggregateResults.Count());
+            Assert.Equal("Count", result.AggregateResults.First().AggregateMethodName);
+            Assert.Equal(5, (int)result.AggregateResults.First().Value);
         }
 
         #region Helpers

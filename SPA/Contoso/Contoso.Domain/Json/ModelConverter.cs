@@ -4,6 +4,6 @@ namespace Contoso.Domain.Json
 {
     public class ModelConverter : JsonTypeConverter<EntityModelBase>
     {
-        public override string TypePropertyName => "TypeFullName";
+        public override string TypePropertyName => nameof(BaseModelClass.TypeFullName);
     }
 }

@@ -19,16 +19,12 @@ namespace Contoso.Bsl.Flow.Rules
         /// <returns></returns>
         public static RuleSet DeserializeRuleSet(string ruleSetXmlDefinition)
         {
-            WorkflowMarkupSerializer serializer = new WorkflowMarkupSerializer();
+            WorkflowMarkupSerializer serializer = new();
             if (!string.IsNullOrEmpty(ruleSetXmlDefinition))
             {
-                using (StringReader stringReader = new StringReader(ruleSetXmlDefinition))
-                {
-                    using (XmlTextReader reader = new XmlTextReader(stringReader))
-                    {
-                        return serializer.Deserialize(reader) as RuleSet;
-                    }
-                }
+                using StringReader stringReader = new(ruleSetXmlDefinition);
+                using XmlTextReader reader = new(stringReader);
+                return serializer.Deserialize(reader) as RuleSet;
             }
             else
             {
@@ -46,17 +42,14 @@ namespace Contoso.Bsl.Flow.Rules
             if (ruleSet == null)
                 throw new InvalidOperationException(Properties.Resources.ruleSetCannotBeNull);
 
-            List<System.Reflection.Assembly> assemblies = new List<System.Reflection.Assembly>
+            List<System.Reflection.Assembly> assemblies = new()
             {
                 typeof(Contoso.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
-                //typeof(Forms.View.ViewBase).Assembly,
-                //typeof(LogicBuilder.Forms.Parameters.InputFormParameters).Assembly,
                 typeof(Domain.BaseModelClass).Assembly,
-                typeof(LogicBuilder.RulesDirector.DirectorBase).Assembly,
-                typeof(string).Assembly
+                typeof(LogicBuilder.RulesDirector.DirectorBase).Assembly
             };
 
-            RuleValidation ruleValidation = new RuleValidation(typeof(FlowActivity), assemblies);
+            RuleValidation ruleValidation = new(typeof(FlowActivity), assemblies);
             if (!ruleSet.Validate(ruleValidation))
             {
                 List<string> errors = ruleValidation.Errors.Aggregate
@@ -90,8 +83,8 @@ namespace Contoso.Bsl.Flow.Rules
         /// <returns></returns>
         internal static RuleSet DeserializeRuleSetFile(this RulesModuleModel module)
         {
-            using (StreamReader inStream = new StreamReader(new MemoryStream(module.RuleSetFile)))
-                return DeserializeRuleSet(inStream.ReadToEnd());
+            using StreamReader inStream = new(new MemoryStream(module.RuleSetFile));
+            return DeserializeRuleSet(inStream.ReadToEnd());
         }
     }
 }
