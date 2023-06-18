@@ -2,7 +2,7 @@
 
 namespace Enrollment.Stores
 {
-    public interface ISchoolStore : IStore
+    public interface IEnrollmentStore : IStore
     {
     }
 }

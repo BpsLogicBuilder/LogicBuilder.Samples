@@ -13,9 +13,9 @@ namespace Enrollment.Bsl.Controllers
     public class EntityController : Controller
     {
         private readonly IMapper mapper;
-        private readonly ISchoolRepository repository;
+        private readonly IEnrollmentRepository repository;
 
-        public EntityController(IMapper mapper, ISchoolRepository repository)
+        public EntityController(IMapper mapper, IEnrollmentRepository repository)
         {
             this.mapper = mapper;
             this.repository = repository;

@@ -2,7 +2,7 @@
 
 namespace Enrollment.Repositories
 {
-    public interface ISchoolRepository : IContextRepository
+    public interface IEnrollmentRepository : IContextRepository
     {
     }
 }

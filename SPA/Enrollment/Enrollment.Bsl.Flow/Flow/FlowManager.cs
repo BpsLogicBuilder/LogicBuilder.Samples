@@ -16,14 +16,14 @@ namespace Enrollment.Bsl.Flow
             ICustomActions customActions,
             DirectorFactory directorFactory,
             FlowActivityFactory flowActivityFactory,
-            ISchoolRepository repository,
+            IEnrollmentRepository repository,
             ILogger<FlowManager> logger,
             Progress progress,
             FlowDataCache flowDataCache)
         {
             this.CustomActions = customActions;
             this.logger = logger;
-            this.SchoolRepository = repository;
+            this.EnrollmentRepository = repository;
             this.Mapper = mapper;
             this.Progress = progress;
             this.FlowDataCache = flowDataCache;
@@ -38,7 +38,7 @@ namespace Enrollment.Bsl.Flow
 
         private ILogger<FlowManager> logger;
 
-        public ISchoolRepository SchoolRepository { get; }
+        public IEnrollmentRepository EnrollmentRepository { get; }
         public IMapper Mapper { get; }
         public DirectorBase Director { get; }
 

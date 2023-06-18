@@ -13,9 +13,9 @@ namespace Enrollment.Bsl.Controllers
     public class AnonymousTypeListController : ControllerBase
     {
         private readonly IMapper mapper;
-        private readonly ISchoolRepository repository;
+        private readonly IEnrollmentRepository repository;
 
-        public AnonymousTypeListController(IMapper mapper, ISchoolRepository repository)
+        public AnonymousTypeListController(IMapper mapper, IEnrollmentRepository repository)
         {
             this.mapper = mapper;
             this.repository = repository;

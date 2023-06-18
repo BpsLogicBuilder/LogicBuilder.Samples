@@ -25,21 +25,21 @@ namespace Enrollment.SeedTheDatabase
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
-            IServiceProvider serviceProvider = new ServiceCollection().AddDbContext<SchoolContext>(options =>
+            IServiceProvider serviceProvider = new ServiceCollection().AddDbContext<EnrollmentContext>(options =>
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient)
-                .AddTransient<ISchoolStore, SchoolStore>()
-                .AddTransient<ISchoolRepository, SchoolRepository>()
+                .AddTransient<IEnrollmentStore, EnrollmentStore>()
+                .AddTransient<IEnrollmentRepository, EnrollmentRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddMaps(typeof(MyProfile).GetTypeInfo().Assembly)))
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .BuildServiceProvider();
 
-            SchoolContext context = serviceProvider.GetRequiredService<SchoolContext>();
+            EnrollmentContext context = serviceProvider.GetRequiredService<EnrollmentContext>();
             context.Database.EnsureCreated();
 
-            Task.Run(async () => await Seed_Database(serviceProvider.GetRequiredService<ISchoolRepository>())).Wait();
+            Task.Run(async () => await Seed_Database(serviceProvider.GetRequiredService<IEnrollmentRepository>())).Wait();
         }
 
-        private static async Task Seed_Database(ISchoolRepository repository)
+        private static async Task Seed_Database(IEnrollmentRepository repository)
         {
             if ((await repository.CountAsync<PersonModel, Person>()) > 0)
                 return;//database has been seeded

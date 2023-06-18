@@ -62,15 +62,15 @@ namespace Enrollment.KendoGrid.Bsl
                 {
                     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Enrollment.KendoGrid.Bsl", Version = "v1" });
                 })
-                .AddDbContext<SchoolContext>
+                .AddDbContext<EnrollmentContext>
                 (
                     options => options.UseSqlServer
                     (
                         configuration.GetConnectionString("DefaultConnection")
                     )
                 )
-                .AddScoped<ISchoolStore, SchoolStore>()
-                .AddScoped<ISchoolRepository, SchoolRepository>()
+                .AddScoped<IEnrollmentStore, EnrollmentStore>()
+                .AddScoped<IEnrollmentRepository, EnrollmentRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>
                 (
                     new MapperConfiguration(cfg =>
