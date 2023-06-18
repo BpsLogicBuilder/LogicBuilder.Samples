@@ -285,9 +285,138 @@ namespace Contoso.Bsl.Web.Tests
                 SourceElementType = typeof(T).AssemblyQualifiedName,
                 ParameterName = parameterName
             };
+
+        private static SelectOperatorDescriptor GetCrenitsBodyASCreditsLookupsModel()
+            => new()
+            {
+                SourceOperand = new OrderByOperatorDescriptor
+                {
+                    SourceOperand = new WhereOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "$it" },
+                        FilterBody = new EqualsBinaryOperatorDescriptor
+                        {
+                            Left = new MemberSelectorOperatorDescriptor
+                            {
+                                SourceOperand = new ParameterOperatorDescriptor { ParameterName = "w" },
+                                MemberFullName = "ListName"
+                            },
+                            Right = new ConstantOperatorDescriptor
+                            {
+                                ConstantValue = "Credits",
+                                Type = typeof(string).AssemblyQualifiedName
+                            }
+                        },
+                        FilterParameterName = "w"
+                    },
+                    SelectorBody = new MemberSelectorOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "o" },
+                        MemberFullName = "NumericValue"
+                    },
+                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Descending,
+                    SelectorParameterName = "o"
+                },
+                SelectorBody = new MemberInitOperatorDescriptor
+                {
+                    MemberBindings = new Dictionary<string, OperatorDescriptorBase>
+                    {
+                        ["credits"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "s" },
+                            MemberFullName = "NumericValue"
+                        }
+                    }
+                },
+                SelectorParameterName = "s"
+            };
+
+        private static SelectOperatorDescriptor GetCourseBodyASCourseIDFromCourseModel()
+            => new()
+            {
+                SourceOperand = new OrderByOperatorDescriptor
+                {
+                    SourceOperand = new ParameterOperatorDescriptor { ParameterName = "$it" },
+                    SelectorBody = new MemberSelectorOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "o" },
+                        MemberFullName = "CourseID"
+                    },
+                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Ascending,
+                    SelectorParameterName = "o"
+                },
+                SelectorBody = new MemberInitOperatorDescriptor
+                {
+                    MemberBindings = new Dictionary<string, OperatorDescriptorBase>
+                    {
+                        ["courseID"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "s" },
+                            MemberFullName = "CourseID"
+                        }
+                    }
+                },
+                SelectorParameterName = "s"
+            };
         #endregion Helpers
 
         #region Tests
+        [Fact]
+        public async void Select_Credits_AsCredits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
+        {
+            //arrange
+            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<object>>
+            (
+                GetCrenitsBodyASCreditsLookupsModel(),
+                "$it"
+            );
+
+            var result = await this.clientFactory.PostAsync<GetObjectListResponse>
+            (
+                "api/AnonymousTypeList/GetList",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetObjectListRequest
+                    {
+                        Selector = selectorLambdaOperatorDescriptor,
+                        ModelType = typeof(LookUpsModel).AssemblyQualifiedName,
+                        DataType = typeof(LookUps).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.True(result.List.Any());
+        }
+
+        [Fact]
+        public async void Select_CourseIds_AsCourseIds_From_Course_Table_In_Ascending_Order()
+        {
+            //arrange
+            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<CourseModel>, IEnumerable<object>>
+            (
+                GetCourseBodyASCourseIDFromCourseModel(),
+                "$it"
+            );
+
+            var result = await this.clientFactory.PostAsync<GetObjectListResponse>
+            (
+                "api/AnonymousTypeList/GetList",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetObjectListRequest
+                    {
+                        Selector = selectorLambdaOperatorDescriptor,
+                        ModelType = typeof(CourseModel).AssemblyQualifiedName,
+                        DataType = typeof(Course).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.True(result.List.Any());
+        }
+
         [Fact]
         public async void GetDropDownListRequest_AdministratorLookup()
         {

@@ -2,7 +2,7 @@
 
 namespace Enrollment.Contexts.Configuations
 {
-    internal interface ITableConfiguration
+    interface ITableConfiguration
     {
         void Configure(ModelBuilder modelBuilder);
     }

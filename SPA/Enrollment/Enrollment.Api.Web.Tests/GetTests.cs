@@ -36,87 +36,186 @@ namespace Enrollment.Api.Web.Tests
             this.clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         }
 
-        private SelectOperatorDescriptor GetAboutBody_PersonCountByDateOfBirth()
+        private SelectOperatorDescriptor GetBodyForLookupsModelAsAnonymousTypes()
             => new SelectOperatorDescriptor
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
-                    SourceOperand = new GroupByOperatorDescriptor
+                    SourceOperand = new WhereOperatorDescriptor
                     {
-                        SourceOperand = new ParameterOperatorDescriptor
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                        FilterBody = new EqualsBinaryOperatorDescriptor
                         {
-                            ParameterName = "q"
-                        },
-                        SelectorBody = new MemberSelectorOperatorDescriptor
-                        {
-                            MemberFullName = "DateOfBirth",
-                            SourceOperand = new ParameterOperatorDescriptor
+                            Left = new MemberSelectorOperatorDescriptor
                             {
-                                ParameterName = "item"
+                                SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                                MemberFullName = "ListName"
+                            },
+                            Right = new ConstantOperatorDescriptor
+                            {
+                                ConstantValue = "militaryBranch",
+                                Type = typeof(string).AssemblyQualifiedName
                             }
                         },
-                        SelectorParameterName = "item"
+                        FilterParameterName = "l"
                     },
-                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Descending,
                     SelectorBody = new MemberSelectorOperatorDescriptor
                     {
-                        MemberFullName = "Key",
-                        SourceOperand = new ParameterOperatorDescriptor
-                        {
-                            ParameterName = "group"
-                        }
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                        MemberFullName = "Text"
                     },
-                    SelectorParameterName = "group"
+                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Descending,
+                    SelectorParameterName = "l"
                 },
                 SelectorBody = new MemberInitOperatorDescriptor
                 {
                     MemberBindings = new Dictionary<string, OperatorDescriptorBase>
                     {
-                        ["DateTimeValue"] = new MemberSelectorOperatorDescriptor
+                        ["Value"] = new MemberSelectorOperatorDescriptor
                         {
-                            MemberFullName = "Key",
-                            SourceOperand = new ParameterOperatorDescriptor
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Value"
+                        },
+                        ["Text"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Text"
+                        }
+                    }
+                },
+                SelectorParameterName = "l"
+            };
+
+        private static SelectOperatorDescriptor GetBodyForLookupsModel()
+            => new()
+            {
+                SourceOperand = new OrderByOperatorDescriptor
+                {
+                    SourceOperand = new WhereOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                        FilterBody = new EqualsBinaryOperatorDescriptor
+                        {
+                            Left = new MemberSelectorOperatorDescriptor
                             {
-                                ParameterName = "sel"
+                                SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                                MemberFullName = "ListName"
+                            },
+                            Right = new ConstantOperatorDescriptor
+                            {
+                                ConstantValue = "militaryBranch",
+                                Type = typeof(string).AssemblyQualifiedName
                             }
                         },
-                        ["NumericValue"] = new ConvertOperatorDescriptor
+                        FilterParameterName = "l"
+                    },
+                    SelectorBody = new MemberSelectorOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                        MemberFullName = "Text"
+                    },
+                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Descending,
+                    SelectorParameterName = "l"
+                },
+                SelectorBody = new MemberInitOperatorDescriptor
+                {
+                    MemberBindings = new Dictionary<string, OperatorDescriptorBase>
+                    {
+                        ["Value"] = new MemberSelectorOperatorDescriptor
                         {
-                            SourceOperand = new CountOperatorDescriptor
-                            {
-                                SourceOperand = new AsQueryableOperatorDescriptor()
-                                {
-                                    SourceOperand = new ParameterOperatorDescriptor
-                                    {
-                                        ParameterName = "sel"
-                                    }
-                                }
-                            },
-                            Type = typeof(double?).FullName
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Value"
+                        },
+                        ["Text"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Text"
                         }
                     },
                     NewType = typeof(LookUpsModel).AssemblyQualifiedName
                 },
-                SelectorParameterName = "sel"
+                SelectorParameterName = "l"
             };
 
-        private SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
-            => new SelectorLambdaOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetResidencyByIdFilterBody(int id)
+            => new()
+            {
+                Left = new MemberSelectorOperatorDescriptor
+                {
+                    SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                    MemberFullName = "UserId"
+                },
+                Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
+            };
+
+        private static EqualsBinaryOperatorDescriptor GetResidencyByIdFilterBodyFromObjectConstant(ResidencyModel residency)
+            => new()
+            {
+                Left = new MemberSelectorOperatorDescriptor
+                {
+                    SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                    MemberFullName = "UserId"
+                },
+                Right = new MemberSelectorOperatorDescriptor
+                {
+                    SourceOperand = new ConstantOperatorDescriptor { Type = typeof(ResidencyModel).FullName, ConstantValue = residency },
+                    MemberFullName = "UserId"
+                }
+            };
+
+        private static SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
+            => new()
             {
                 Selector = selectorBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
                 ParameterName = parameterName,
                 BodyType = typeof(TResult).AssemblyQualifiedName
             };
+
+        private static FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
+            => new()
+            {
+                FilterBody = filterBody,
+                SourceElementType = typeof(T).AssemblyQualifiedName,
+                ParameterName = parameterName
+            };
         #endregion Helpers
 
         [Fact]
-        public async void GetAboutListRequest_PersonCountByDateOfDirth_As_LookUpsModel()
+        public async void GetDropDownListRequest_As_AnonymousTypes()
         {
             //arrange
-            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<PersonModel>, IEnumerable<LookUpsModel>>
+            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<object>>
             (
-                GetAboutBody_PersonCountByDateOfBirth(),
+                GetBodyForLookupsModelAsAnonymousTypes(),
+                "q"
+            );
+
+            var result = await this.clientFactory.PostAsync<System.Text.Json.Nodes.JsonObject>
+            (
+                "api/AnonymousTypeList/GetList",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetObjectListRequest
+                    {
+                        Selector = selectorLambdaOperatorDescriptor,
+                        ModelType = typeof(LookUpsModel).AssemblyQualifiedName,
+                        DataType = typeof(LookUps).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.True(result.Any());
+        }
+
+        [Fact]
+        public async void GetDropDownListRequest_As_LookUpsModel()
+        {
+            //arrange
+            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
+            (
+                GetBodyForLookupsModel(),
                 "q"
             );
 
@@ -128,8 +227,8 @@ namespace Enrollment.Api.Web.Tests
                     new Bsl.Business.Requests.GetTypedListRequest
                     {
                         Selector = selectorLambdaOperatorDescriptor,
-                        ModelType = typeof(PersonModel).AssemblyQualifiedName,
-                        DataType = typeof(Person).AssemblyQualifiedName,
+                        ModelType = typeof(LookUpsModel).AssemblyQualifiedName,
+                        DataType = typeof(LookUps).AssemblyQualifiedName,
                         ModelReturnType = typeof(IEnumerable<LookUpsModel>).AssemblyQualifiedName,
                         DataReturnType = typeof(IEnumerable<LookUps>).AssemblyQualifiedName
                     }
@@ -138,6 +237,80 @@ namespace Enrollment.Api.Web.Tests
             );
 
             Assert.True(result.List.Any());
+        }
+
+        [Fact]
+        public async void GetEntityRequest_As_ResidencyModel()
+        {
+            var result = await this.clientFactory.PostAsync<GetEntityResponse>
+            (
+                "api/Entity/GetEntity",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetEntityRequest
+                    {
+                        Filter = GetFilterExpressionDescriptor<ResidencyModel>
+                        (
+                            GetResidencyByIdFilterBody(1),
+                            "q"
+                        ),
+                        SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
+                        {
+                            ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
+                            {
+                                new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
+                                {
+                                    MemberName = "StatesLivedIn"
+                                }
+                            }
+                        },
+                        ModelType = typeof(ResidencyModel).AssemblyQualifiedName,
+                        DataType = typeof(Residency).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Entity);
+            Assert.NotEmpty(((ResidencyModel)result.Entity).StatesLivedIn);
+        }
+
+        [Fact]
+        public async void GetEntityRequest_As_ResidencyModel_FromObjectConstant()
+        {
+            var result = await this.clientFactory.PostAsync<GetEntityResponse>
+            (
+                "api/Entity/GetEntity",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetEntityRequest
+                    {
+                        Filter = GetFilterExpressionDescriptor<ResidencyModel>
+                        (
+                            GetResidencyByIdFilterBodyFromObjectConstant(new ResidencyModel { UserId = 1 }),
+                            "q"
+                        ),
+                        SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
+                        {
+                            ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
+                            {
+                                new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
+                                {
+                                    MemberName = "StatesLivedIn"
+                                }
+                            }
+                        },
+                        ModelType = typeof(ResidencyModel).AssemblyQualifiedName,
+                        DataType = typeof(Residency).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.NotNull(result);
+            Assert.NotNull(result.Entity);
+            Assert.NotEmpty(((ResidencyModel)result.Entity).StatesLivedIn);
         }
     }
 }

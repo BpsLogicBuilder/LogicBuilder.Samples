@@ -45,15 +45,15 @@ namespace Enrollment.KendoGrid.Api.Tests
             {
                 Options = new KendoGridDataSourceRequestOptions
                 {
-                    Aggregate = "lastName-count~dateOfBirth-min",
+                    Aggregate = "lastName-count~zipCode-min",
                     Filter = null,
                     Group = null,
                     Page = 1,
-                    Sort = "dateOfBirth-asc",
+                    Sort = "zipCode-asc",
                     PageSize = 5
                 },
-                ModelType = typeof(PersonModel).AssemblyQualifiedName,
-                DataType = typeof(Person).AssemblyQualifiedName
+                ModelType = typeof(PersonalModel).AssemblyQualifiedName,
+                DataType = typeof(Personal).AssemblyQualifiedName
             };
             var result = await this.clientFactory.PostAsync<System.Text.Json.Nodes.JsonObject>
             (

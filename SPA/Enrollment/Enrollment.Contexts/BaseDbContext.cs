@@ -2,7 +2,7 @@
 
 namespace Enrollment.Contexts
 {
-    public class BaseDbContext : DbContext
+    public abstract class BaseDbContext : DbContext
     {
         public BaseDbContext(DbContextOptions options) : base(options)
         {
@@ -14,6 +14,7 @@ namespace Enrollment.Contexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            BaseDbContextSqlFunctions.Register(modelBuilder);
             this.EntityConfigurationHandler.Configure(modelBuilder);
         }
     }

@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Enrollment.Bsl.Business\Enrollment.Bsl.Business.csproj" />
     <ProjectReference Include="..\Enrollment.Common.Utils\Enrollment.Common.Utils.csproj" />
+    <ProjectReference Include="..\Enrollment.Data\Enrollment.Data.csproj" />
     <ProjectReference Include="..\Enrollment.Parameters\Enrollment.Parameters.csproj" />
   </ItemGroup>
 

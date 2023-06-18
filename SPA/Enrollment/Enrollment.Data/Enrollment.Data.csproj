@@ -1,12 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-	
-	<ItemGroup>
-    <PackageReference Include="LogicBuilder.Data" Version="5.0.8" />
+
+  <ItemGroup>
+    <PackageReference Include="LogicBuilder.Data" Version="5.0.9-alpha.0.2" />
   </ItemGroup>
-	
 
 </Project>

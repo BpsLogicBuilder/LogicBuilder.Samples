@@ -29,4 +29,10 @@
     <ProjectReference Include="..\Enrollment.Repositories\Enrollment.Repositories.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="DropDowns.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

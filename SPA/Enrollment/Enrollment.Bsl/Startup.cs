@@ -80,7 +80,7 @@ namespace Enrollment.Bsl
 
                     cfg.AddProfile<ParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<DescriptorToOperatorMappingProfile>();
-                    cfg.AddProfile<MyProfile>();
+                    cfg.AddProfile<EnrollmentProfile>();
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 })

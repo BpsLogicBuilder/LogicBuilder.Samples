@@ -19,7 +19,17 @@ namespace Enrollment.MigrationTool
             //Instead of "dotnet ef database update -v" at the command line.
         }
 
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Personal> Personal { get; set; }
+        public DbSet<Academic> Academic { get; set; }
+        public DbSet<Admissions> Admissions { get; set; }
+        public DbSet<Certification> Certification { get; set; }
+        public DbSet<ContactInfo> ContactInfo { get; set; }
+        public DbSet<Institution> Institutions { get; set; }
+        public DbSet<MoreInfo> MoreInfo { get; set; }
+        public DbSet<Residency> Residency { get; set; }
+        public DbSet<StateLivedIn> StatesLivedIn { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<LookUps> LookUps { get; set; }
 
         protected virtual EntityConfigurationHandler EntityConfigurationHandler { get; set; }
 
