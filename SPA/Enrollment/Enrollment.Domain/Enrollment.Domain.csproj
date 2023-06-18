@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>netstandard2.0</TargetFramework>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="LogicBuilder.Attributes" Version="2.0.4" />
+		<PackageReference Include="LogicBuilder.Domain" Version="5.0.8" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\Enrollment.Utils\Enrollment.Utils.csproj" />
+	</ItemGroup>
+
+</Project>

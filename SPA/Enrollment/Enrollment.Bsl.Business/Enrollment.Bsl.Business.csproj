@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.Common.Configuration\Enrollment.Common.Configuration.csproj" />
+    <ProjectReference Include="..\Enrollment.Domain\Enrollment.Domain.csproj" />
+    <ProjectReference Include="..\Enrollment.Utils\Enrollment.Utils.csproj" />
+  </ItemGroup>
+
+</Project>

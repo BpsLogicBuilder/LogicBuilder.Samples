@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="5.0.9-alpha.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.Common.Configuration\Enrollment.Common.Configuration.csproj" />
+    <ProjectReference Include="..\Enrollment.Parameters\Enrollment.Parameters.csproj" />
+  </ItemGroup>
+
+</Project>

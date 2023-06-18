@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.9-alpha.0.2" />
+		<PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.0.4" />
+		<PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.4" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.Domain\Enrollment.Domain.csproj" />
+    <ProjectReference Include="..\Enrollment.Forms.Parameters\Enrollment.Forms.Parameters.csproj" />
+    <ProjectReference Include="..\Enrollment.Forms.View\Enrollment.Forms.View.csproj" />
+    <ProjectReference Include="..\Enrollment.Utils\Enrollment.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+	<ItemGroup>
+		<Folder Include="Rulesets\" />
+	</ItemGroup>
+
+</Project>
