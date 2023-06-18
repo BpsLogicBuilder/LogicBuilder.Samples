@@ -4,9 +4,9 @@ using LogicBuilder.EntityFrameworkCore.SqlServer.Repositories;
 
 namespace Enrollment.Repositories
 {
-    public class MyRepository : ContextRepositoryBase, IMyRepository
+    public class SchoolRepository : ContextRepositoryBase, ISchoolRepository
     {
-        public MyRepository(IMyStore store, IMapper mapper) : base(store, mapper)
+        public SchoolRepository(ISchoolStore store, IMapper mapper) : base(store, mapper)
         {
         }
     }

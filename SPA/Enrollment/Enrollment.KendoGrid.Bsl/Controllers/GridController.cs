@@ -13,9 +13,9 @@ namespace Enrollment.KendoGrid.Bsl.Controllers
     public class GridController : Controller
     {
         private readonly IMapper mapper;
-        private readonly IMyRepository repository;
+        private readonly ISchoolRepository repository;
 
-        public GridController(IMapper mapper, IMyRepository repository)
+        public GridController(IMapper mapper, ISchoolRepository repository)
         {
             this.mapper = mapper;
             this.repository = repository;

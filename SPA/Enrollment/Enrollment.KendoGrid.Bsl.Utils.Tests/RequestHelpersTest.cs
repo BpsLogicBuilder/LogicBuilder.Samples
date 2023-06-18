@@ -56,7 +56,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                 DataType = typeof(Person).FullName,
             };
 
-            IMyRepository repository = serviceProvider.GetRequiredService<IMyRepository>();
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
             DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
 
@@ -86,7 +86,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                 DataType = typeof(Person).FullName,
             };
 
-            IMyRepository repository = serviceProvider.GetRequiredService<IMyRepository>();
+            ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
             DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
 
@@ -118,7 +118,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
         {
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
-                .AddDbContext<MyContext>
+                .AddDbContext<SchoolContext>
                 (
                     options => options.UseSqlServer
                     (
@@ -126,8 +126,8 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                     ),
                     ServiceLifetime.Transient
                 )
-                .AddTransient<IMyStore, MyStore>()
-                .AddTransient<IMyRepository, MyRepository>()
+                .AddTransient<ISchoolStore, SchoolStore>()
+                .AddTransient<ISchoolRepository, SchoolRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>
                 (
                     MapperConfiguration
@@ -135,16 +135,16 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .BuildServiceProvider();
 
-            MyContext context = serviceProvider.GetRequiredService<MyContext>();
+            SchoolContext context = serviceProvider.GetRequiredService<SchoolContext>();
             context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
-            Seed_Database(serviceProvider.GetRequiredService<IMyRepository>()).Wait();
+            Seed_Database(serviceProvider.GetRequiredService<ISchoolRepository>()).Wait();
         }
         #endregion Helpers
 
         #region Seed DB
-        private static async Task Seed_Database(IMyRepository repository)
+        private static async Task Seed_Database(ISchoolRepository repository)
         {
             if ((await repository.CountAsync<PersonModel, Person>()) > 0)
                 return;//database has been seeded

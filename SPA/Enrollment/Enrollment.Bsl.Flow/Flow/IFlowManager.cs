@@ -13,7 +13,7 @@ namespace Enrollment.Bsl.Flow
         FlowDataCache FlowDataCache { get; }
         IMapper Mapper { get; }
         Progress Progress { get; }
-        IMyRepository MyRepository { get; }
+        ISchoolRepository SchoolRepository { get; }
 
         void Start(string module);
         void SetCurrentBusinessBackupData();

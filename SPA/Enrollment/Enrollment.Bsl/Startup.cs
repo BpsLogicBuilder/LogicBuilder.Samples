@@ -63,15 +63,15 @@ namespace Enrollment.Bsl
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Enrollment.Bsl", Version = "v1" });
             })
-            .AddDbContext<MyContext>
+            .AddDbContext<SchoolContext>
             (
                 options => options.UseSqlServer
                 (
                     Configuration.GetConnectionString("DefaultConnection")
                 )
             )
-            .AddScoped<IMyStore, MyStore>()
-            .AddScoped<IMyRepository, MyRepository>()
+            .AddScoped<ISchoolStore, SchoolStore>()
+            .AddScoped<ISchoolRepository, SchoolRepository>()
             .AddSingleton<AutoMapper.IConfigurationProvider>
             (
                 new MapperConfiguration(cfg =>

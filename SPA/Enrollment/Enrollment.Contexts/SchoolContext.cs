@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Enrollment.Contexts
 {
-    public class MyContext : BaseDbContext
+    public class SchoolContext : BaseDbContext
     {
-        public MyContext(DbContextOptions<MyContext> options) : base(options)
+        public SchoolContext(DbContextOptions<SchoolContext> options) : base(options)
         {
         }
 

@@ -13,9 +13,9 @@ namespace Enrollment.Bsl.Controllers
     public class ListController : Controller
     {
         private readonly IMapper mapper;
-        private readonly IMyRepository repository;
+        private readonly ISchoolRepository repository;
 
-        public ListController(IMapper mapper, IMyRepository repository)
+        public ListController(IMapper mapper, ISchoolRepository repository)
         {
             this.mapper = mapper;
             this.repository = repository;

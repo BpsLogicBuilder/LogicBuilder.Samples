@@ -3,9 +3,9 @@ using LogicBuilder.EntityFrameworkCore.SqlServer.Crud.DataStores;
 
 namespace Enrollment.Stores
 {
-    public class MyStore : StoreBase, IMyStore
+    public class SchoolStore : StoreBase, ISchoolStore
     {
-        public MyStore(MyContext context) : base(context)
+        public SchoolStore(SchoolContext context) : base(context)
         {
         }
     }
