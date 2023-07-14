@@ -8,6 +8,7 @@ import { IRequestsBase } from '../stuctures/screens/requests/i-requests-base';
 import { INavBarRequest } from '../stuctures/screens/requests/i-nav-bar-request';
 import { ISelectorFlowRequest } from '../stuctures/screens/requests/i-selector-flow-request';
 import { ISelectorFlowResponse } from '../stuctures/i-selector-flow-response'
+import { UrlsService } from '../http/urls.service'
 
 
 @Injectable({
@@ -15,7 +16,11 @@ import { ISelectorFlowResponse } from '../stuctures/i-selector-flow-response'
 })
 export class SettingsService {
 
-  constructor(private _http: HttpClient, @Inject('workflowUrl') private baseUrl) { }
+  constructor(private _http: HttpClient, _urls: UrlsService) { 
+    this.baseUrl = _urls.workflowUrl
+  }
+
+  private baseUrl: string;
 
   start(): Observable<IFlowSettings> {
     return this._http.post<IFlowSettings>(`${this.baseUrl}/api/flow/Start`, JSON.stringify({}), this.getPostOptions()).pipe

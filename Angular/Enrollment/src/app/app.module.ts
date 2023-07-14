@@ -58,11 +58,7 @@ import { GenericListComponent } from './generic/generic-list/generic-list.compon
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [
-    { provide: 'workflowUrl', useValue: 'http://localhost:12479' },
-    { provide: 'gridUrl', useValue: 'http://localhost:12055' },
-    { provide: 'crudUrl', useValue: 'http://localhost:7878' }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -10,13 +10,18 @@ import { IGetListServiceRequest } from '../stuctures/requests/i-get-list-service
 import { IInsertItemServiceRequest } from '../stuctures/requests/i-insert-item-service-request';
 import { IUpdateItemServiceRequest } from '../stuctures/requests/i-update-item-service-request';
 import { IBaseModel } from '../stuctures/screens/i-base-model'
+import { UrlsService } from '../http/urls.service'
 
 @Injectable({
   providedIn: 'root'
 })
 export class GenericService {
 
-  constructor(private _http: HttpClient, @Inject('crudUrl') private baseUrl) { }
+  constructor(private _http: HttpClient, _urls: UrlsService) { 
+    this.baseUrl = _urls.crudUrl;
+  }
+
+  private baseUrl: string;
 
   getItem(requestDetails: IFormRequestDetails): Observable<any> {
     let request: IGetItemServiceRequest = this.getGetItemRequest(requestDetails);
