@@ -115,6 +115,9 @@
     <value>Command bar selection {0} not found.</value>
     <comment>0=shortString</comment>
   </data>
+	<data name="selectorIsNotSet" xml:space="preserve">
+    <value>Selector is null.</value>
+  </data>
 	<data name="commandButtonNotSelected" xml:space="preserve">
     <value>Click a button on the command bar.</value>
   </data>

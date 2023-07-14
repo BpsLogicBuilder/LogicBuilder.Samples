@@ -36,8 +36,8 @@ namespace Contoso.Forms.Parameters.Common
             List<VariableDirectivesParameters> conditionalDirectives = null,
 
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
-            [Comments("Fully qualified class name for the model type.")]
-            string modelType = "Contoso.Domain.Entities"
+            [Comments("Assembly qualified class name for the model type.")]
+            string modelType = "Contoso.Domain.Entities.XXXX , Contoso.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         )
         {
             Title = title;

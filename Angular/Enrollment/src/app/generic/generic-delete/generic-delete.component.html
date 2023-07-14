@@ -112,7 +112,7 @@
   </ng-template>
 <ng-template let-entity let-fieldSetting="fieldSetting" #valueTextTemplate>
   <div app-display-dropdown-value [selectedValue]="entity[fieldSetting.field]" [valueTextTemplate]="fieldSetting.valueTextTemplate"
-    [filterValueSourceItem]="entity">
+    [filterValueSourceItem]="entity" [modelType]="fieldSetting.modelType">
 </div>
 </ng-template>
 <ng-template let-list let-fieldSetting="fieldSetting" #listTemplate>

@@ -14,5 +14,6 @@ namespace Contoso.Forms.View.Common
         public FormValidationSettingView UnchangedValidationSetting => ValidationSetting;
         public TextFieldTemplateView TextTemplate { get; set; }
 		public DropDownTemplateView DropDownTemplate { get; set; }
+        public string ModelType { get; set; }
     }
 }

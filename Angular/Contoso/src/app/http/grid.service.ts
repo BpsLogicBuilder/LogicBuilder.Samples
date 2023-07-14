@@ -4,9 +4,9 @@ import { Injectable, Inject } from '@angular/core';
 import { ProgressService } from '../common/progress.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataSourceRequestState, toDataSourceRequest, translateDataSourceResultGroups } from '@progress/kendo-data-query';
-import { IRequestDetails } from '../stuctures/screens/i-request-details';
+import { IGridRequestDetails } from '../stuctures/screens/i-request-details';
 import { IGridResult } from '../stuctures/screens/grid/i-grid-result';
-import { DataRequest } from '../stuctures/screens/data-request';
+import { KendoGridDataRequest } from '../stuctures/screens/kendo-grid-data-request';
 import { tap, map, catchError } from 'rxjs/operators';
 
 @Injectable({
@@ -14,16 +14,14 @@ import { tap, map, catchError } from 'rxjs/operators';
 })
 export class GridService {
 
-  constructor(private _http: HttpClient, private progressService: ProgressService, @Inject('baseUrl') private baseUrl) { }
+  constructor(private _http: HttpClient, private progressService: ProgressService, @Inject('gridUrl') private baseUrl) { }
 
-  public fetch(state: DataSourceRequestState, requestDetails: IRequestDetails): Observable<IGridResult> {
+  public fetch(state: DataSourceRequestState, requestDetails: IGridRequestDetails): Observable<IGridResult> {
     const hasGroups = state.group && state.group.length;
-    let request: DataRequest = {
+    let request: KendoGridDataRequest = {
       options: toDataSourceRequest(state),
       modelType: requestDetails.modelType,
       dataType: requestDetails.dataType,
-      includes: requestDetails.includes,
-      selects: requestDetails.selects,
       selectExpandDefinition: requestDetails.selectExpandDefinition
     };
 
@@ -43,26 +41,6 @@ export class GridService {
           total: total,
           aggregateResult: this.progressService.translateAggregateResults(aggregateResults)
         })),
-      catchError(this.handleError)
-      );
-  }
-
-  public getFilterData(state: DataSourceRequestState, requestDetails: IRequestDetails): Observable<IGridResult> {
-    let request: DataRequest = {
-      options: toDataSourceRequest(state),
-      modelType: requestDetails.modelType,
-      dataType: requestDetails.dataType,
-      includes: requestDetails.includes,
-      selects: requestDetails.selects,
-      distinct: requestDetails.distinct,
-      selectExpandDefinition: requestDetails.selectExpandDefinition
-    };
-
-    return this._http
-      .post<any>(`${this.baseUrl}${requestDetails.dataSourceUrl}`, JSON.stringify(request), this.getPostOptions())
-      .pipe
-      (
-      //tap(data => console.log(JSON.stringify(data))),
       catchError(this.handleError)
       );
   }

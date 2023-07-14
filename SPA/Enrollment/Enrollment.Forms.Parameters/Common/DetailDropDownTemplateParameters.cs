@@ -35,6 +35,9 @@ namespace Enrollment.Forms.Parameters.Common
             [Comments("Details about the drop-down data source including joins and partial field set (selects).")]
             RequestDetailsParameters requestDetails,
 
+            [Comments("Used when the dropdown or multiselect items nust change conditionally at runtime.  Add a flow module to define a new selector (SelectorLambdaOperatorParameters) at run time.  Set reloadItemsFlowName to the flow name.")]
+            string reloadItemsFlowName = null,
+
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
             [Comments("Fully qualified class name for the model type.")]
             string modelType = "Enrollment.Domain.Entities"
@@ -46,6 +49,7 @@ namespace Enrollment.Forms.Parameters.Common
             ValueField = valueField;
             TextAndValueSelector = textAndValueSelector;
             RequestDetails = requestDetails;
+            ReloadItemsFlowName = reloadItemsFlowName;
         }
 
         public string TemplateName { get; set; }
@@ -54,5 +58,6 @@ namespace Enrollment.Forms.Parameters.Common
         public string ValueField { get; set; }
         public SelectorLambdaOperatorParameters TextAndValueSelector { get; set; }
         public RequestDetailsParameters RequestDetails { get; set; }
+        public string ReloadItemsFlowName { get; set; }
     }
 }

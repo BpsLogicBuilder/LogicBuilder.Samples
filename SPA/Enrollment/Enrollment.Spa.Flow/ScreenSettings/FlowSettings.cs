@@ -10,13 +10,15 @@ namespace Enrollment.Spa.Flow.ScreenSettings
             ScreenSettings = screenSettings;
         }
 
-        public FlowSettings(FlowState flowState, NavigationBar navigationBar, ScreenSettingsBase screenSettings)
+        public FlowSettings(int userId, FlowState flowState, NavigationBar navigationBar, ScreenSettingsBase screenSettings)
         {
+            UserId = userId;
             FlowState = flowState;
             NavigationBar = navigationBar;
             ScreenSettings = screenSettings;
         }
 
+        public int UserId { get; set; }
         public FlowState? FlowState { get; set; }
         public NavigationBar? NavigationBar { get; set; }
         public ScreenSettingsBase ScreenSettings { get; set; }

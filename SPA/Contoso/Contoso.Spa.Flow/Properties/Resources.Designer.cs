@@ -122,5 +122,14 @@ namespace Contoso.Spa.Flow.Properties {
                 return ResourceManager.GetString("selectionNotFoundFormat", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Selector is null..
+        /// </summary>
+        internal static string selectorIsNotSet {
+            get {
+                return ResourceManager.GetString("selectorIsNotSet", resourceCulture);
+            }
+        }
     }
 }

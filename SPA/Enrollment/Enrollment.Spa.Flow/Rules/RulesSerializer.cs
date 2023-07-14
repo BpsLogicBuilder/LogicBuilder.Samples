@@ -1,4 +1,5 @@
 ﻿using Enrollment.Domain.Entities;
+using LogicBuilder.RulesDirector;
 using LogicBuilder.Workflow.Activities.Rules;
 using LogicBuilder.Workflow.ComponentModel.Serialization;
 using System;
@@ -43,7 +44,21 @@ namespace Enrollment.Spa.Flow.Rules
             if (ruleSet == null)
                 throw new InvalidOperationException(Properties.Resources.ruleSetCannotBeNull);
 
-            RuleValidation ruleValidation = new(typeof(FlowActivity));
+            System.Collections.Generic.List<System.Reflection.Assembly> assemblies = new System.Collections.Generic.List<System.Reflection.Assembly>
+            {
+                typeof(Forms.Parameters.CommandButtonParameters).Assembly,
+                typeof(Forms.View.CommandButtonView).Assembly,
+                typeof(Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
+                typeof(Common.Configuration.ExpansionDescriptors.SortCollectionDescriptor).Assembly,
+                typeof(Common.Utils.MappingOperations).Assembly,
+                typeof(Utils.TypeHelpers).Assembly,
+                typeof(Domain.BaseModelClass).Assembly,
+                typeof(Data.BaseDataClass).Assembly,
+                typeof(DirectorBase).Assembly,
+                typeof(LogicBuilder.Forms.Parameters.ConnectorParameters).Assembly
+            };
+
+            RuleValidation ruleValidation = new(typeof(FlowActivity), assemblies);
             if (!ruleSet.Validate(ruleValidation))
             {
                 List<string> errors = ruleValidation.Errors.Aggregate(new List<string> { string.Format(CultureInfo.CurrentCulture, Properties.Resources.invalidRulesetFormat, ruleSet.Name) }, (list, next) =>

@@ -10,5 +10,6 @@ namespace Enrollment.Forms.View.Common
         public string ValueField { get; set; }
         public SelectorLambdaOperatorDescriptor TextAndValueSelector { get; set; }
         public RequestDetailsView RequestDetails { get; set; }
+        public string ReloadItemsFlowName { get; set; }
     }
 }

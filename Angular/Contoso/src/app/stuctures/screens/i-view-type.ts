@@ -5,7 +5,7 @@ export enum ViewTypeEnum {
     Detail,
     Delete,
     Html,
-    About,
+    List,
     FlowComplete,
     Exception
 }

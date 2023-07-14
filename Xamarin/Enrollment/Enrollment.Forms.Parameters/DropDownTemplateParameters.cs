@@ -35,7 +35,7 @@ namespace Enrollment.Forms.Parameters
 			[Comments("Includes the source URL. May specify model and data types if we use the URL for multiple types.")]
 			RequestDetailsParameters requestDetails,
 
-			[Comments("Used the dropdown or multiselect items change conditionally at runtime.  Add a flow module to define a new selector (SelectorLambdaOperatorParameters) at run time.  Set reloadItemsFlowName to the flow name.")]
+			[Comments("Used when the dropdown or multiselect items nust change conditionally at runtime.  Add a flow module to define a new selector (SelectorLambdaOperatorParameters) at run time.  Set reloadItemsFlowName to the flow name.")]
 			string reloadItemsFlowName = null,
 
 			[ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]

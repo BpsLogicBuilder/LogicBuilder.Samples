@@ -1,9 +1,8 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, FormControl } from '@angular/forms';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
-import { ObjectHelper } from '../../common/object-helper';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IDropDownTemplate } from '../../stuctures/screens/edit/i-edit-form-settings';
-import { GridService } from '../../http/grid.service';
+import { GenericService } from '../../http/generic.service';
+import { SettingsService } from '../../http/settings.service';
 
 @Component({
   selector: 'app-form-field-dropdown',
@@ -23,6 +22,7 @@ export class FormFieldDropdownComponent implements OnInit, ControlValueAccessor
   @Input() public textField: string;
   @Input() public valueField: string;
   @Input() public filterValueSourceItem?: any;
+  @Input() public modelType?: any;
 
   _reload: string;
   get reload()
@@ -56,7 +56,7 @@ export class FormFieldDropdownComponent implements OnInit, ControlValueAccessor
     return this._clear;
   }
 
-  constructor(private _gridService: GridService)
+  constructor(private _genericService: GenericService, private _settingsService: SettingsService)
   {
     this.onTouched = () => { };
     this.onChange = (_: any) => {};
@@ -130,28 +130,28 @@ export class FormFieldDropdownComponent implements OnInit, ControlValueAccessor
 
   getDropDownData(): any
   {
-    if (this.dropDownTemplate.state 
-      && this.dropDownTemplate.state.filterGroup 
-      && ObjectHelper.FilterRequiresValueSource(this.dropDownTemplate.state.filterGroup)
-      && !this.filterValueSourceItem)
-      return;
-      
-    let state: DataSourceRequestState = {
-      skip: this.dropDownTemplate.state ? this.dropDownTemplate.state.skip : null,
-      take: this.dropDownTemplate.state ? this.dropDownTemplate.state.take : null,
-      sort: this.dropDownTemplate.state && this.dropDownTemplate.state.sort ? ObjectHelper.getSortDescriptors(this.dropDownTemplate.state.sort) : null,
-      filter: this.dropDownTemplate.state && this.dropDownTemplate.state.filterGroup
-        ? ObjectHelper.getCompositeFilter(this.dropDownTemplate.state.filterGroup, this.filterValueSourceItem)
-        : null
-    };
-
-    this._gridService.getFilterData(state, this.dropDownTemplate.requestDetails).subscribe(r =>
+    if (!(this.filterValueSourceItem && this.dropDownTemplate.reloadItemsFlowName))
     {
-      this.data = r;
-      
-      console.log("this.filterCellTemplate Returned:   " + JSON.stringify(this.data));
-      console.log("this.textField:   " + JSON.stringify(this.textField));
-      console.log("this.valueField:   " + JSON.stringify(this.valueField));
+      this.getList(this.dropDownTemplate.textAndValueSelector);
+      return;
+    }
+
+    this._settingsService.getSelector({ entity: Object.assign({typeFullName: this.modelType}, this.filterValueSourceItem), reloadItemsFlowName: this.dropDownTemplate.reloadItemsFlowName}).subscribe(selectorResponse => {
+      if (selectorResponse.success)
+      {
+        this.getList(selectorResponse.selector);
+      }
     });
+  }
+
+  getList(selector: any) : void{
+    this._genericService.getList(this.dropDownTemplate.requestDetails, selector).subscribe(r =>
+      {
+        this.data = r;
+        
+        console.log("this.filterCellTemplate Returned:   " + JSON.stringify(this.data));
+        console.log("this.textField:   " + JSON.stringify(this.textField));
+        console.log("this.valueField:   " + JSON.stringify(this.valueField));
+      });
   }
 }

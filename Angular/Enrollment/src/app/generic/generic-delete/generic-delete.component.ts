@@ -4,10 +4,7 @@ import { ICommandButton } from '../../stuctures/i-command-button';
 import { GenericService } from '../../http/generic.service';
 import { UiNotificationService } from '../../common/ui-notification.service';
 import { EntityType } from '../../stuctures/screens/i-base-model';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
-import { ObjectHelper } from '../../common/object-helper';
 import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
-import { IDeleteRequest } from '../../stuctures/screens/requests/i-requests-base';
 
 @Component({
   selector: 'app-generic-delete',
@@ -55,21 +52,15 @@ export class GenericDeleteComponent implements OnInit {
   }
 
   getItem() {
-    this._genericService.getItem(this.getState(), this.formSettings.requestDetails).subscribe(
+    this._genericService.getItem(this.formSettings.requestDetails).subscribe(
       itm => {
         this.entity = itm;
       },
       error => this.errorMessage = <any>error);
   }
 
-  private getState(): DataSourceRequestState {
-    return {
-      filter: ObjectHelper.getCompositeFilter(this.formSettings.filterGroup)
-    }
-  }
-
   submitClick(button: ICommandButton) {
-    this._genericService.deleteItem(this.getState(), this.formSettings.requestDetails)
+    this._genericService.deleteItem(this.entity, this.formSettings.requestDetails)
       .subscribe(response => {
         this._uiNotificationService.navigateNext({
           viewType: ViewTypeEnum.Delete,

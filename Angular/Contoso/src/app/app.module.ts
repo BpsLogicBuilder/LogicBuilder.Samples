@@ -24,7 +24,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ScreenHostComponent } from './screen-host/screen-host.component';
 import { HtmlPageComponent } from './html-page/html-page.component';
 import { DisplayDropdownValueComponent } from './generic/display-dropdown-value/display-dropdown-value.component';
-import { AboutComponent } from './about/about.component';
+import { GenericListComponent } from './generic/generic-list/generic-list.component';
 
 
 
@@ -44,7 +44,7 @@ import { AboutComponent } from './about/about.component';
     ScreenHostComponent,
     HtmlPageComponent,
     DisplayDropdownValueComponent,
-    AboutComponent
+    GenericListComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +59,9 @@ import { AboutComponent } from './about/about.component';
     ReactiveFormsModule
   ],
   providers: [
-    { provide: 'baseUrl', useValue: 'http://localhost:57303' }
+    { provide: 'workflowUrl', useValue: 'http://localhost:12479' },
+    { provide: 'gridUrl', useValue: 'http://localhost:12055' },
+    { provide: 'crudUrl', useValue: 'http://localhost:7878' }
   ],
   bootstrap: [AppComponent]
 })

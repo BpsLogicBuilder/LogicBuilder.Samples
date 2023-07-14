@@ -45,10 +45,11 @@ export interface IDropDownTemplate {
     placeHolderText: string;
     textField: string;
     valueField: string;
-    state: IDataRequestState,
-    requestDetails: IRequestDetails,
-    reload?: string,
-    clear?: string
+    textAndValueSelector: any;
+    requestDetails: IRequestDetails;
+    reloadItemsFlowName?: string;
+    reload?: string;
+    clear?: string;
 }
 
 export interface IMultiSelectTemplate {
@@ -56,8 +57,8 @@ export interface IMultiSelectTemplate {
     placeHolderText: string;
     textField: string;
     valueField: string;
-    state: IDataRequestState,
-    requestDetails: IRequestDetails
+    textAndValueSelector: any;
+    requestDetails: IRequestDetails;
     modelType?: string;
 }
 

@@ -44,6 +44,7 @@ namespace Enrollment.Forms.Parameters.Common
             Type = type;
             FieldTemplate = fieldTemplate;
             ValueTextTemplate = valueTextTemplate;
+            ModelType = modelType;
         }
 
         public override DetailItemEnum DetailType => DetailItemEnum.Field;
@@ -52,5 +53,6 @@ namespace Enrollment.Forms.Parameters.Common
         public string Type { get; set; }
         public DetailFieldTemplateParameters FieldTemplate { get; set; }
         public DetailDropDownTemplateParameters ValueTextTemplate { get; set; }
+        public string ModelType { get; set; }
     }
 }

@@ -137,6 +137,52 @@ namespace Enrollment.Api.Web.Tests
                 SelectorParameterName = "l"
             };
 
+        private static SelectOperatorDescriptor GetBodyConvertLookupsModelToStatesLivedInModel()
+            => new()
+            {
+                SourceOperand = new OrderByOperatorDescriptor
+                {
+                    SourceOperand = new WhereOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                        FilterBody = new EqualsBinaryOperatorDescriptor
+                        {
+                            Left = new MemberSelectorOperatorDescriptor
+                            {
+                                SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                                MemberFullName = "ListName"
+                            },
+                            Right = new ConstantOperatorDescriptor
+                            {
+                                ConstantValue = "states",
+                                Type = typeof(string).AssemblyQualifiedName
+                            }
+                        },
+                        FilterParameterName = "l"
+                    },
+                    SelectorBody = new MemberSelectorOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                        MemberFullName = "Text"
+                    },
+                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Descending,
+                    SelectorParameterName = "l"
+                },
+                SelectorBody = new MemberInitOperatorDescriptor
+                {
+                    MemberBindings = new Dictionary<string, OperatorDescriptorBase>
+                    {
+                        ["State"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Value"
+                        }
+                    },
+                    NewType = typeof(StateLivedInModel).AssemblyQualifiedName
+                },
+                SelectorParameterName = "l"
+            };
+
         private static EqualsBinaryOperatorDescriptor GetResidencyByIdFilterBody(int id)
             => new()
             {
@@ -231,6 +277,36 @@ namespace Enrollment.Api.Web.Tests
                         DataType = typeof(LookUps).AssemblyQualifiedName,
                         ModelReturnType = typeof(IEnumerable<LookUpsModel>).AssemblyQualifiedName,
                         DataReturnType = typeof(IEnumerable<LookUps>).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.True(result.List.Any());
+        }
+
+        [Fact]
+        public async void GetDropDownListRequest_As_SatesLiveInModel()
+        {
+            //arrange
+            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<StateLivedInModel>>
+            (
+                GetBodyConvertLookupsModelToStatesLivedInModel(),
+                "q"
+            );
+
+            var result = await this.clientFactory.PostAsync<GetListResponse>
+            (
+                "api/List/GetList",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetTypedListRequest
+                    {
+                        Selector = selectorLambdaOperatorDescriptor,
+                        ModelType = typeof(LookUpsModel).AssemblyQualifiedName,
+                        DataType = typeof(LookUps).AssemblyQualifiedName,
+                        ModelReturnType = typeof(IEnumerable<StateLivedInModel>).AssemblyQualifiedName,
+                        DataReturnType = typeof(IEnumerable<StateLivedIn>).AssemblyQualifiedName
                     }
                 ),
                 BASE_URL

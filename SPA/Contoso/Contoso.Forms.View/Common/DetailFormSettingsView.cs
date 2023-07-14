@@ -8,6 +8,5 @@ namespace Contoso.Forms.View.Common
 		public string DisplayField { get; set; }
 		public FormRequestDetailsView RequestDetails { get; set; }
 		public List<DetailItemView> FieldSettings { get; set; }
-		public FilterGroupView FilterGroup { get; set; }
     }
 }

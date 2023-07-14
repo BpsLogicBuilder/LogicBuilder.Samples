@@ -36,8 +36,8 @@ namespace Enrollment.Forms.Parameters.Common
             List<VariableDirectivesParameters> conditionalDirectives = null,
 
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
-            [Comments("Fully qualified class name for the model type.")]
-            string modelType = "Enrollment.Domain.Entities"
+            [Comments("Assembly qualified class name for the model type.")]
+            string modelType = "Enrollment.Domain.Entities.XXXX , Enrollment.Domain, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
         )
         {
             Title = title;

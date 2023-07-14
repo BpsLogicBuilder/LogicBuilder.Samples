@@ -72,7 +72,7 @@ namespace Contoso.Spa.Flow
            (
                mapper.Map<ListFormSettingsView>(setting),
                mapper.Map<IEnumerable<ConnectorParameters>, IEnumerable<CommandButtonView>>(buttons),
-               ViewType.About
+               ViewType.List
            );
     }
 }

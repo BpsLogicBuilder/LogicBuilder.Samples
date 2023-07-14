@@ -1,4 +1,5 @@
-﻿using Contoso.Forms.View;
+﻿using AutoMapper;
+using Contoso.Forms.View;
 using Contoso.Spa.Flow.Cache;
 using Contoso.Spa.Flow.Dialogs;
 using Contoso.Spa.Flow.Requests;
@@ -18,7 +19,8 @@ namespace Contoso.Spa.Flow
             IDirectorFactory directorFactory,
             IFlowActivityFactory flowActivityFactory,
             ILogger<FlowManager> logger,
-            FlowDataCache flowDataCache)
+            FlowDataCache flowDataCache,
+            IMapper mapper)
         {
             this.CustomDialogs = customDialogs;
             this.CustomActions = customActions;
@@ -26,6 +28,7 @@ namespace Contoso.Spa.Flow
             this.Director = directorFactory.Create(this);
             this.FlowActivity = flowActivityFactory.Create(this);
             this.FlowDataCache = flowDataCache;
+            this.Mapper = mapper;
         }
 
         private readonly ILogger<FlowManager> _logger;
@@ -37,6 +40,7 @@ namespace Contoso.Spa.Flow
         public ICustomActions CustomActions { get; }
         public ICustomDialogs CustomDialogs { get; }
         public IFlowActivity FlowActivity { get; }
+        public IMapper Mapper { get; }
 
         private FlowSettings FlowSettings
             => new
@@ -90,6 +94,19 @@ namespace Contoso.Spa.Flow
                 _logger.LogWarning(0, "Progress Next {Progress}", JsonSerializer.Serialize(this.Progress));
                 _logger.LogError(ex, "Exception: {Message}", ex.Message);
                 return this.GetFlowSettings(ex);
+            }
+        }
+
+        public void RunFlow(string flowName)
+        {
+            try
+            {
+                this.Director.StartInitialFlow(flowName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: {Message}", ex.Message);
+                throw;
             }
         }
 

@@ -58,6 +58,7 @@ namespace Contoso.Forms.Parameters.Common
             ValidationSetting = validationSetting;
             TextTemplate = textTemplate;
             DropDownTemplate = dropDownTemplate;
+            ModelType = modelType;
         }
 
         public override AbstractControlEnum AbstractControlType { get => AbstractControlEnum.FormControl; }
@@ -68,6 +69,7 @@ namespace Contoso.Forms.Parameters.Common
         public string Type { get; set; }
         public FormValidationSettingParameters ValidationSetting { get; set; }
         public TextFieldTemplateParameters TextTemplate { get; set; }
-        public DropDownTemplateParameters DropDownTemplate { get; set; }   
+        public DropDownTemplateParameters DropDownTemplate { get; set; }
+        public string ModelType { get; set; }
     }
 }

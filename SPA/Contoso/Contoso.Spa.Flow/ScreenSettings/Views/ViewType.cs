@@ -8,7 +8,7 @@
         Detail,
         Delete,
         Html,
-        About,
+        List,
         FlowComplete,
         Exception
     }

@@ -9,9 +9,6 @@ import { UntypedFormBuilder, UntypedFormGroup, UntypedFormControl, UntypedFormAr
 import { ValidatorsManager } from "./validators-manager";
 import { ListManagerService } from "./list-manager.service";
 import { ISort } from "../stuctures/screens/i-sort";
-import { EditFormHelpers } from "./edit-form-helpers";
-import { debounceTime } from "rxjs/operators";
-import { Directives } from "./directives";
 
 export class ObjectHelper {
     static getProperty(obj: any, fullName: string): any {
@@ -40,17 +37,6 @@ export class ObjectHelper {
 
     static getSortDescriptors(sorts: ISort[]): SortDescriptor[] {
         return sorts.map(s => ObjectHelper.getSortDescriptor(s));
-    }
-
-    static getAboutData(aggregateData: any[], dateService: DateService): any[] {
-        let list: any[] = [];
-        let field: string = "enrollmentDate";
-        aggregateData.forEach(item => {
-            if (item.hasOwnProperty("field") && item.field === field) {
-                list.push({ "enrollmentDate": dateService.convertToDate(item.value), "count": item.aggregates.enrollmentDate.count });
-            }
-        });
-        return list;
     }
 
     static getAggregateData(aggregateData: any[], dateService: DateService, fieldName: string, aggregate: string): any[] {
@@ -296,7 +282,7 @@ export class ObjectHelper {
 
     static getValidatorFunction(validator: IValidatorDescription): any {
         let validatorClass = ValidatorsManager.GetValidatorClass(validator.className);
-        return validator.arguments
+        return validator.arguments && validator.arguments.length
             ? validatorClass[validator.functionName].apply(validatorClass, ObjectHelper.getArgumentsArray(validator.arguments))
             : validatorClass[validator.functionName];
     }

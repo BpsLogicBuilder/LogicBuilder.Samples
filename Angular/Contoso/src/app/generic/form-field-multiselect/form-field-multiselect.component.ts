@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
-import { ObjectHelper } from '../../common/object-helper';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
 import { IMultiSelectTemplate } from '../../stuctures/screens/edit/i-edit-form-settings';
-import { GridService } from '../../http/grid.service';
+import { GenericService } from '../../http/generic.service';
 
 @Component({
   selector: 'app-form-field-multiselect',
@@ -24,7 +22,7 @@ export class FormFieldMultiselectComponent implements OnInit, ControlValueAccess
   @Input() public valueField: string;
   @Input() public filterValueSourceItem?: any;
 
-  constructor(private _gridService: GridService) {
+  constructor(private _genericService: GenericService) {
     this.onTouched = () => { };
     this.onChange = (_: any) => {};
     this.disabled = false;
@@ -68,22 +66,7 @@ export class FormFieldMultiselectComponent implements OnInit, ControlValueAccess
   }
 
   getDropDownData(): any {
-    if (this.multiSelectTemplate.state 
-      && this.multiSelectTemplate.state.filterGroup 
-      && ObjectHelper.FilterRequiresValueSource(this.multiSelectTemplate.state.filterGroup)
-      && !this.filterValueSourceItem)
-      return;
-      
-    let state: DataSourceRequestState = {
-      skip: this.multiSelectTemplate.state ? this.multiSelectTemplate.state.skip : null,
-      take: this.multiSelectTemplate.state ? this.multiSelectTemplate.state.take : null,
-      sort: this.multiSelectTemplate.state && this.multiSelectTemplate.state.sort ? ObjectHelper.getSortDescriptors(this.multiSelectTemplate.state.sort) : null,
-      filter: this.multiSelectTemplate.state && this.multiSelectTemplate.state.filterGroup
-        ? ObjectHelper.getCompositeFilter(this.multiSelectTemplate.state.filterGroup, this.filterValueSourceItem)
-        : null
-    }
-
-    this._gridService.getFilterData(state, this.multiSelectTemplate.requestDetails).subscribe(r => {
+    this._genericService.getList(this.multiSelectTemplate.requestDetails, this.multiSelectTemplate.textAndValueSelector).subscribe(r => {
       this.data = r;
       console.log("this.multiSelectTemplate Returned:   " + JSON.stringify(this.data));
       console.log("this.textField:   " + JSON.stringify(this.textField));

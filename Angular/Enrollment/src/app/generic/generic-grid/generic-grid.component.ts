@@ -159,7 +159,7 @@ export class GenericGridComponent implements OnInit {
 
   gridCommandClick(item: EntityType, button: ICommandButton) {
     this.doPost({
-      filterGroup: ObjectHelper.updateFilterValueFields(this.gridSettings.itemFilter, item),
+      entity: item,
       viewType: ViewTypeEnum.Grid,
       commandButtonRequest: { newSelection: button.shortString, cancel: button.cancel }
     });

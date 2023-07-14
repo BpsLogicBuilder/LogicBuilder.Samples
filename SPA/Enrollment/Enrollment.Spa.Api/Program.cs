@@ -74,6 +74,7 @@ namespace Enrollment.Spa.Api
                 .AddScoped<FlowDataCache, FlowDataCache>()
                 .AddScoped<ICustomActions, CustomActions>()
                 .AddScoped<ICustomDialogs, CustomDialogs>()
+                .AddScoped<ITransientFlowHelper, TransientFlowHelper>()
                 .AddSingleton(sp => rulesCache);
 
                 services.Configure<InitialOptions>(configuration);

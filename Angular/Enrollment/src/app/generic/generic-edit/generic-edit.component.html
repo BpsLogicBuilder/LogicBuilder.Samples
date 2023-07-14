@@ -249,7 +249,7 @@
     <app-form-field-dropdown class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [dropDownTemplate]="fieldSetting.dropDownTemplate"
       [textField]="fieldSetting.dropDownTemplate.textField" [valueField]="fieldSetting.dropDownTemplate.valueField"
       [formControl]="formGroup.controls[fieldSetting.field]" [reload]="fieldSetting.dropDownTemplate.reload"
-      [clear]="fieldSetting.dropDownTemplate.clear" [filterValueSourceItem]="formGroup.value">
+      [clear]="fieldSetting.dropDownTemplate.clear" [filterValueSourceItem]="formGroup.value" [modelType]="fieldSetting.modelType">
     </app-form-field-dropdown>
     <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
       {{groupData.displayMessages[fieldSetting.field]}}

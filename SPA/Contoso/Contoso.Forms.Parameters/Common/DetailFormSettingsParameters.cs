@@ -28,9 +28,6 @@ namespace Contoso.Forms.Parameters.Common
             [Comments("List of fields and form groups for display.")]
             List<DetailItemParameters> fieldSettings,
 
-            [Comments("Defines the filter for the single object being displayed.")]
-            FilterGroupParameters filterGroup = null,
-
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
             [Comments("Fully qualified class name for the model type.")]
             string modelType = "Contoso.Domain.Entities"
@@ -40,13 +37,11 @@ namespace Contoso.Forms.Parameters.Common
             DisplayField = displayField;
             RequestDetails = requestDetails;
             FieldSettings = fieldSettings;
-            FilterGroup = filterGroup;
         }
 
         public string Title { get; set; }
         public string DisplayField { get; set; }
         public FormRequestDetailsParameters RequestDetails { get; set; }
         public List<DetailItemParameters> FieldSettings { get; set; }
-        public FilterGroupParameters FilterGroup { get; set; }
     }
 }

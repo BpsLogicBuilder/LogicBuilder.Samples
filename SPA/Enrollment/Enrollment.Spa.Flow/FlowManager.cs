@@ -1,4 +1,5 @@
-﻿using Enrollment.Forms.View;
+﻿using AutoMapper;
+using Enrollment.Forms.View;
 using Enrollment.Spa.Flow.Cache;
 using Enrollment.Spa.Flow.Dialogs;
 using Enrollment.Spa.Flow.Requests;
@@ -18,7 +19,8 @@ namespace Enrollment.Spa.Flow
             IDirectorFactory directorFactory,
             IFlowActivityFactory flowActivityFactory,
             ILogger<FlowManager> logger,
-            FlowDataCache flowDataCache)
+            FlowDataCache flowDataCache,
+            IMapper mapper)
         {
             this.CustomDialogs = customDialogs;
             this.CustomActions = customActions;
@@ -26,6 +28,7 @@ namespace Enrollment.Spa.Flow
             this.Director = directorFactory.Create(this);
             this.FlowActivity = flowActivityFactory.Create(this);
             this.FlowDataCache = flowDataCache;
+            this.Mapper = mapper;
         }
 
         private readonly ILogger<FlowManager> _logger;
@@ -37,10 +40,12 @@ namespace Enrollment.Spa.Flow
         public ICustomActions CustomActions { get; }
         public ICustomDialogs CustomDialogs { get; }
         public IFlowActivity FlowActivity { get; }
+        public IMapper Mapper { get; }
 
         private FlowSettings FlowSettings
             => new
             (
+                GetUserId(),
                 ((Director)this.Director).FlowState,
                 FlowDataCache.NavigationBar,
                 FlowDataCache.ScreenSettings ?? throw new ArgumentException($"{nameof(FlowDataCache.ScreenSettings)}: {{60B6AFD1-2247-4775-BE99-F3F650A15B0F}}")
@@ -56,6 +61,7 @@ namespace Enrollment.Spa.Flow
         {
             try
             {
+                this.FlowDataCache.ParametersItems[nameof(Domain.Entities.UserModel.UserId)] = navBarRequest.UserId;
                 FlowDataCache.RequestedFlowStage = new RequestedFlowStage
                 {
                     InitialModule = navBarRequest.InitialModuleName ?? throw new ArgumentException($"{nameof(navBarRequest.InitialModuleName)}: {{91027670-3D9A-444C-A1C9-03B19BC53C19}}"),
@@ -93,6 +99,19 @@ namespace Enrollment.Spa.Flow
             }
         }
 
+        public void RunFlow(string flowName)
+        {
+            try
+            {
+                this.Director.StartInitialFlow(flowName);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Exception: {Message}", ex.Message);
+                throw;
+            }
+        }
+
         public void SetCurrentBusinessBackupData()
         {
         }
@@ -118,8 +137,10 @@ namespace Enrollment.Spa.Flow
         }
 
         private FlowSettings GetFlowSettings(Exception ex)
-            => new
+        {
+            return new
             (
+                GetUserId(),
                 ((Director)this.Director).FlowState,
                 FlowDataCache.NavigationBar,
                 new ScreenSettings<ExceptionView>
@@ -129,5 +150,10 @@ namespace Enrollment.Spa.Flow
                     ViewType.Exception
                 )
             );
+        }
+
+        private int GetUserId() 
+            => FlowDataCache.ParametersItems.TryGetValue(nameof(Domain.Entities.UserModel.UserId), out object? userId)
+                ? (int)userId : 0;
     }
 }

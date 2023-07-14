@@ -29,11 +29,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Domain", "Contoso.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Spa.Flow", "Contoso.Spa.Flow\Contoso.Spa.Flow.csproj", "{3748B3D2-3634-4D9C-A545-973167933334}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Spa.Api", "Contoso.Spa.Api\Contoso.Spa.Api.csproj", "{7290DBE9-BE12-44D4-B2C1-DB3704AE98BE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Spa.Api", "Contoso.Spa.Api\Contoso.Spa.Api.csproj", "{7290DBE9-BE12-44D4-B2C1-DB3704AE98BE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Spa.AutoMapperProfiles", "Contoso.Spa.AutoMapperProfiles\Contoso.Spa.AutoMapperProfiles.csproj", "{68B77B69-79C6-4DE4-AAAC-2A3692F28FDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Spa.AutoMapperProfiles", "Contoso.Spa.AutoMapperProfiles\Contoso.Spa.AutoMapperProfiles.csproj", "{68B77B69-79C6-4DE4-AAAC-2A3692F28FDB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapperTests", "MapperTests\MapperTests.csproj", "{F1AAC57C-9131-4762-A218-15036307090C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapperTests", "MapperTests\MapperTests.csproj", "{F1AAC57C-9131-4762-A218-15036307090C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EF", "EF", "{554B059D-979F-4D86-9F3F-5AE28009C8BD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contoso.Data", "Contoso.Data\Contoso.Data.csproj", "{CEB88696-34A9-48A2-AA81-9E8851766514}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -89,6 +93,10 @@ Global
 		{F1AAC57C-9131-4762-A218-15036307090C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1AAC57C-9131-4762-A218-15036307090C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1AAC57C-9131-4762-A218-15036307090C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEB88696-34A9-48A2-AA81-9E8851766514}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEB88696-34A9-48A2-AA81-9E8851766514}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEB88696-34A9-48A2-AA81-9E8851766514}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEB88696-34A9-48A2-AA81-9E8851766514}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +114,7 @@ Global
 		{7290DBE9-BE12-44D4-B2C1-DB3704AE98BE} = {FD88AFCF-EB8F-4547-9E64-2C4C043C011F}
 		{68B77B69-79C6-4DE4-AAAC-2A3692F28FDB} = {FD88AFCF-EB8F-4547-9E64-2C4C043C011F}
 		{F1AAC57C-9131-4762-A218-15036307090C} = {6AAAB153-4C6A-4145-8903-3A6D98DA531E}
+		{CEB88696-34A9-48A2-AA81-9E8851766514} = {554B059D-979F-4D86-9F3F-5AE28009C8BD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3D612E73-A9EC-4BDD-85E9-63BF387109F5}

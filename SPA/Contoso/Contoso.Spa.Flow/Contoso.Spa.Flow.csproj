@@ -91,6 +91,7 @@
 	</ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Contoso.Data\Contoso.Data.csproj" />
     <ProjectReference Include="..\Contoso.Domain\Contoso.Domain.csproj" />
     <ProjectReference Include="..\Contoso.Forms.Parameters\Contoso.Forms.Parameters.csproj" />
     <ProjectReference Include="..\Contoso.Forms.View\Contoso.Forms.View.csproj" />

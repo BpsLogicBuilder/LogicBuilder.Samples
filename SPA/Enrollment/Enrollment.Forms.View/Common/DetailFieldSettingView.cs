@@ -10,5 +10,6 @@ namespace Enrollment.Forms.View.Common
         public string Type { get; set; }
         public DetailFieldTemplateView FieldTemplate { get; set; }
         public DetailDropDownTemplateView ValueTextTemplate { get; set; }
+        public string ModelType { get; set; }
     }
 }
