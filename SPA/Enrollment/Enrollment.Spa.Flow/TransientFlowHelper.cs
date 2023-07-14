@@ -22,13 +22,13 @@ namespace Enrollment.Spa.Flow
 
         public BaseFlowResponse RunSelectorFlow(SelectorFlowRequest selectorFlowRequest)
         {
-            EntityModelBase entity = selectorFlowRequest.Entity ?? throw new ArgumentNullException($"{nameof(selectorFlowRequest)}: {{EF1F21C1-15A8-4AF2-B80D-466EA531ECEE}}");
-            string flowName = selectorFlowRequest.ReloadItemsFlowName ?? throw new ArgumentNullException($"{nameof(selectorFlowRequest)}: {{86E8D24C-2E1E-4DE3-A73D-15C022520251}}");
-            this._flowManager.FlowDataCache.ModelItems[entity.GetType().FullName] = entity;
+            EntityModelBase entity = selectorFlowRequest.Entity ?? throw new ArgumentException($"{nameof(selectorFlowRequest)}: {{EF1F21C1-15A8-4AF2-B80D-466EA531ECEE}}");
+            string flowName = selectorFlowRequest.ReloadItemsFlowName ?? throw new ArgumentException($"{nameof(selectorFlowRequest)}: {{86E8D24C-2E1E-4DE3-A73D-15C022520251}}");
+            this._flowManager.FlowDataCache.Items[entity.GetType().FullName ?? throw new ArgumentException($"{nameof(selectorFlowRequest)}: {{AAF2C79F-A47B-405B-8BC7-2A6C206E9CE0}}")] = entity;
 
             this._flowManager.RunFlow(flowName);
 
-            if (!_flowManager.FlowDataCache.ParametersItems.TryGetValue(typeof(SelectorLambdaOperatorParameters).FullName, out object? selector))
+            if (!_flowManager.FlowDataCache.Items.TryGetValue(typeof(SelectorLambdaOperatorParameters).FullName!, out object? selector))
                 throw new InvalidOperationException(Resources.selectorIsNotSet);
 
             return new SelectorFlowResponse

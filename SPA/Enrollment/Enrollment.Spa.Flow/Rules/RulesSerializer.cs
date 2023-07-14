@@ -44,7 +44,7 @@ namespace Enrollment.Spa.Flow.Rules
             if (ruleSet == null)
                 throw new InvalidOperationException(Properties.Resources.ruleSetCannotBeNull);
 
-            System.Collections.Generic.List<System.Reflection.Assembly> assemblies = new System.Collections.Generic.List<System.Reflection.Assembly>
+            System.Collections.Generic.List<System.Reflection.Assembly> assemblies = new()
             {
                 typeof(Forms.Parameters.CommandButtonParameters).Assembly,
                 typeof(Forms.View.CommandButtonView).Assembly,

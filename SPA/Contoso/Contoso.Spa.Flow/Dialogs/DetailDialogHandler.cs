@@ -16,7 +16,7 @@ namespace Contoso.Spa.Flow.Dialogs
             if (!request.CommandButtonRequest.Cancel
                 && detailRequest.Entity != null)
             {
-                flowManager.FlowDataCache.ModelItems[detailRequest.Entity.GetType().FullName] = detailRequest.Entity;
+                flowManager.FlowDataCache.Items[detailRequest.Entity.GetType().FullName ?? throw new ArgumentException($"{nameof(request)}: {{07006628-25D9-46D2-8A6D-91BD3BD276E7}}")] = detailRequest.Entity;
             }
 
             base.Complete(flowManager, request);

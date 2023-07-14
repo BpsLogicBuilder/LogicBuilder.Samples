@@ -16,7 +16,7 @@ namespace Contoso.Spa.Flow.Dialogs
             if (!request.CommandButtonRequest.Cancel
                 && gridRequest.Entity != null)
             {
-                flowManager.FlowDataCache.ModelItems[gridRequest.Entity.GetType().FullName] = gridRequest.Entity;
+                flowManager.FlowDataCache.Items[gridRequest.Entity.GetType().FullName ?? throw new ArgumentException($"{nameof(request)}: {{ACA81682-CF9E-42AA-BB52-858E49C27B14}}")] = gridRequest.Entity;
             }
 
             base.Complete(flowManager, request);

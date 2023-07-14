@@ -61,7 +61,7 @@ namespace Enrollment.Spa.Flow
         {
             try
             {
-                this.FlowDataCache.ParametersItems[nameof(Domain.Entities.UserModel.UserId)] = navBarRequest.UserId;
+                this.FlowDataCache.Items[nameof(Domain.Entities.UserModel.UserId)] = navBarRequest.UserId;
                 FlowDataCache.RequestedFlowStage = new RequestedFlowStage
                 {
                     InitialModule = navBarRequest.InitialModuleName ?? throw new ArgumentException($"{nameof(navBarRequest.InitialModuleName)}: {{91027670-3D9A-444C-A1C9-03B19BC53C19}}"),
@@ -153,7 +153,7 @@ namespace Enrollment.Spa.Flow
         }
 
         private int GetUserId() 
-            => FlowDataCache.ParametersItems.TryGetValue(nameof(Domain.Entities.UserModel.UserId), out object? userId)
+            => FlowDataCache.Items.TryGetValue(nameof(Domain.Entities.UserModel.UserId), out object? userId)
                 ? (int)userId : 0;
     }
 }

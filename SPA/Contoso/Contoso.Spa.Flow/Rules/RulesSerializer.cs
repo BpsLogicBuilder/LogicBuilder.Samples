@@ -44,8 +44,10 @@ namespace Contoso.Spa.Flow.Rules
             if (ruleSet == null)
                 throw new InvalidOperationException(Properties.Resources.ruleSetCannotBeNull);
 
-            System.Collections.Generic.List<System.Reflection.Assembly> assemblies = new System.Collections.Generic.List<System.Reflection.Assembly>
+            System.Collections.Generic.List<System.Reflection.Assembly> assemblies = new()
             {
+                typeof(Forms.Parameters.CommandButtonParameters).Assembly,
+                typeof(Forms.View.CommandButtonView).Assembly,
                 typeof(Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
                 typeof(Utils.TypeHelpers).Assembly,
                 typeof(Domain.BaseModelClass).Assembly,

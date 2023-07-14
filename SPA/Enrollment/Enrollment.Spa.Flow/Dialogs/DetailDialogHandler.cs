@@ -16,7 +16,7 @@ namespace Enrollment.Spa.Flow.Dialogs
             if (!request.CommandButtonRequest.Cancel
                 && detailRequest.Entity != null)
             {
-                flowManager.FlowDataCache.ModelItems[detailRequest.Entity.GetType().FullName] = detailRequest.Entity;
+                flowManager.FlowDataCache.Items[detailRequest.Entity.GetType().FullName ?? throw new ArgumentException($"{nameof(request)}: {{EDE33EBF-6A57-4147-82B4-25413B0A2861}}")] = detailRequest.Entity;
             }
 
             base.Complete(flowManager, request);
