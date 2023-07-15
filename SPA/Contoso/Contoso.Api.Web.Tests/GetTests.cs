@@ -23,7 +23,6 @@ namespace Contoso.Api.Web.Tests
         #region Fields
         private IServiceProvider serviceProvider;
         private IHttpClientFactory clientFactory;
-        private const string BASE_URL = "http://localhost:7878/";
         #endregion Fields
 
         #region Helpers
@@ -382,7 +381,7 @@ namespace Contoso.Api.Web.Tests
                         DataType = typeof(LookUps).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -410,7 +409,7 @@ namespace Contoso.Api.Web.Tests
                         DataType = typeof(Course).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -440,7 +439,7 @@ namespace Contoso.Api.Web.Tests
                         DataReturnType = typeof(IQueryable<Instructor>).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -470,7 +469,7 @@ namespace Contoso.Api.Web.Tests
                         DataReturnType = typeof(IEnumerable<LookUps>).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -500,7 +499,7 @@ namespace Contoso.Api.Web.Tests
                         DataReturnType = typeof(IEnumerable<LookUps>).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -530,7 +529,7 @@ namespace Contoso.Api.Web.Tests
                         DataReturnType = typeof(IEnumerable<Department>).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -560,7 +559,7 @@ namespace Contoso.Api.Web.Tests
                         DataReturnType = typeof(IEnumerable<Course>).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());
@@ -595,7 +594,7 @@ namespace Contoso.Api.Web.Tests
                         DataType = typeof(Department).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.NotNull(result);
@@ -631,7 +630,7 @@ namespace Contoso.Api.Web.Tests
                         DataType = typeof(Department).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.NotNull(result);
@@ -662,7 +661,7 @@ namespace Contoso.Api.Web.Tests
                         DataReturnType = typeof(IEnumerable<LookUps>).AssemblyQualifiedName
                     }
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.List.Any());

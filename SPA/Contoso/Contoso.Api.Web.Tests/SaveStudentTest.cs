@@ -138,7 +138,7 @@ namespace Contoso.Api.Web.Tests
                                 }
                             }
                         ),
-                        "http://localhost:7878/"
+                        Constants.BASE_URL
                     )
                 );
 

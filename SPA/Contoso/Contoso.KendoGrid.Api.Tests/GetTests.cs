@@ -22,7 +22,6 @@ namespace Contoso.KendoGrid.Api.Tests
         #region Fields
         private IServiceProvider serviceProvider;
         private IHttpClientFactory clientFactory;
-        private const string BASE_URL = "http://localhost:12055/";
         #endregion Fields
 
         #region Helpers
@@ -62,7 +61,7 @@ namespace Contoso.KendoGrid.Api.Tests
                 (
                     request
                 ),
-                BASE_URL
+                Constants.BASE_URL
             );
 
             Assert.True(result.Any());

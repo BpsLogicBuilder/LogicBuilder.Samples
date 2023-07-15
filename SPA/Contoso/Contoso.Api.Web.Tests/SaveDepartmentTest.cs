@@ -50,7 +50,7 @@ namespace Contoso.Api.Web.Tests
             DepartmentModel model = (DepartmentModel)departmentResponse.Entity;
             model.Budget = 100001.00m;
             model.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
-            List<Task<SaveEntityResponse>> tasks = new List<Task<SaveEntityResponse>>();
+            List<Task<SaveEntityResponse>> tasks = new();
             for (int i = 0; i < 1; i++)//department returns a rowversion so can only save one.
             {
                 tasks.Add
@@ -65,7 +65,7 @@ namespace Contoso.Api.Web.Tests
                                 Entity = model
                             }
                         ),
-                        "http://localhost:7878/"
+                        Constants.BASE_URL
                     )
                 );
 
@@ -75,19 +75,19 @@ namespace Contoso.Api.Web.Tests
             }
         }
 
-        private EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBody(int id)
-            => new EqualsBinaryOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetDepartmentByIdFilterBody(int id)
+            => new()
             {
                 Left = new MemberSelectorOperatorDescriptor
                 {
                     SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
                     MemberFullName = "DepartmentID"
                 },
-                Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = 2 }
+                Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
             };
 
-        private FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
-            => new FilterLambdaOperatorDescriptor
+        private static FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
+            => new()
             {
                 FilterBody = filterBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,

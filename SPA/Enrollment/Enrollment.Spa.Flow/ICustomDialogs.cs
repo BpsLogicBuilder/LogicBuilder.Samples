@@ -57,7 +57,7 @@ namespace Enrollment.Spa.Flow
             ICollection<ConnectorParameters> buttons
         );
 
-        [AlsoKnownAs("DisplayAbout")]
+        [AlsoKnownAs("DisplayListForm")]
         [FunctionGroup(FunctionGroup.DialogForm)]
         void DisplayListForm
         (

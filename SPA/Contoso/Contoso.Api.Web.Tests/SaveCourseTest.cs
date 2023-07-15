@@ -27,7 +27,7 @@ namespace Contoso.Api.Web.Tests
         [Fact]
         public async void SaveCourse()
         {
-            List<Task<SaveEntityResponse>> tasks = new List<Task<SaveEntityResponse>>();
+            List<Task<SaveEntityResponse>> tasks = new();
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -49,7 +49,7 @@ namespace Contoso.Api.Web.Tests
                                 }
                             }
                         ),
-                        "http://localhost:7878/"
+                        Constants.BASE_URL
                     )
                 );
 
