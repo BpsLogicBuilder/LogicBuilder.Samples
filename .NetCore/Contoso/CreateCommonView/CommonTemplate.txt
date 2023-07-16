@@ -1,9 +1,0 @@
-﻿using System.Collections.Generic;
-
-namespace Contoso.Forms.View.Common
-{
-    #Modifier#public class #Name#View#Base#
-    {
-#Properties#
-    }
-}
