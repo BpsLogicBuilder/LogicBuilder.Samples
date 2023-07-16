@@ -128,10 +128,10 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="System.Text.Json">
-      <Version>7.0.2</Version>
+      <Version>7.0.3</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.Forms" Version="5.0.0.2578" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.5" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.7" />
     <PackageReference Include="System.Memory" Version="4.5.5">
       <IncludeAssets>none</IncludeAssets>
     </PackageReference>

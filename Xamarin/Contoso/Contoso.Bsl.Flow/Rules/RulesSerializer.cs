@@ -49,8 +49,7 @@ namespace Contoso.Bsl.Flow.Rules
             List<System.Reflection.Assembly> assemblies = new List<System.Reflection.Assembly>
             {
                 typeof(Contoso.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
-                //typeof(Forms.View.ViewBase).Assembly,
-                //typeof(LogicBuilder.Forms.Parameters.InputFormParameters).Assembly,
+                typeof(Contoso.Utils.TypeHelpers).Assembly,
                 typeof(Domain.BaseModelClass).Assembly,
                 typeof(LogicBuilder.RulesDirector.DirectorBase).Assembly,
                 typeof(string).Assembly
