@@ -45,6 +45,7 @@ namespace Enrollment.Bsl.Flow.Rules
             List<System.Reflection.Assembly> assemblies = new()
             {
                 typeof(Enrollment.Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
+                typeof(Enrollment.Utils.TypeHelpers).Assembly,
                 typeof(Domain.BaseModelClass).Assembly,
                 typeof(LogicBuilder.RulesDirector.DirectorBase).Assembly
             };
