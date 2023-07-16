@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseFilterCellComponent, FilterService } from '@progress/kendo-angular-grid';
-import { GridService } from '../../http/grid.service';
-import { CompositeFilterDescriptor, DataSourceRequestState } from '@progress/kendo-data-query';
-import { ObjectHelper } from '../../common/object-helper';
+import { GenericService } from '../../http/generic.service';
+import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
 @Component({
   selector: 'app-grid-column-dropdown-filter',
@@ -11,7 +10,7 @@ import { ObjectHelper } from '../../common/object-helper';
 })
 export class GridColumnDropdownFilterComponent extends BaseFilterCellComponent implements OnInit {
 
-  constructor(filterService: FilterService, private _gridService: GridService) { 
+  constructor(filterService: FilterService, private _genericService: GenericService) { 
     super(filterService);
   }
 
@@ -60,15 +59,7 @@ export class GridColumnDropdownFilterComponent extends BaseFilterCellComponent i
   }
 
   getFilterData(): any {
-    let state: DataSourceRequestState = {
-      skip: this.filterRowTemplate.state ? this.filterRowTemplate.state.skip : null,
-      take: this.filterRowTemplate.state ? this.filterRowTemplate.state.take : null,
-      filter: this.filterRowTemplate.state && this.filterRowTemplate.state.filterGroup
-        ? ObjectHelper.getCompositeFilter(this.filterRowTemplate.state.filterGroup)
-        : null
-    }
-
-    this._gridService.getFilterData(state, this.filterRowTemplate.requestDetails).subscribe(r => {
+    this._genericService.getList(this.filterRowTemplate.requestDetails, this.filterRowTemplate.textAndValueSelector).subscribe(r => {
       this.data = r;
       //console.log("this.filterCellTemplate Returned:   " + JSON.stringify(this.data));
     });

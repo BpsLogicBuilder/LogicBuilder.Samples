@@ -36,6 +36,56 @@ namespace Enrollment.Api.Web.Tests
             this.clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         }
 
+        private SelectOperatorDescriptor GetBodyForLookupsModelAsAnonymousTypes()
+            => new SelectOperatorDescriptor
+            {
+                SourceOperand = new OrderByOperatorDescriptor
+                {
+                    SourceOperand = new WhereOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
+                        FilterBody = new EqualsBinaryOperatorDescriptor
+                        {
+                            Left = new MemberSelectorOperatorDescriptor
+                            {
+                                SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                                MemberFullName = "ListName"
+                            },
+                            Right = new ConstantOperatorDescriptor
+                            {
+                                ConstantValue = "militaryBranch",
+                                Type = typeof(string).AssemblyQualifiedName
+                            }
+                        },
+                        FilterParameterName = "l"
+                    },
+                    SelectorBody = new MemberSelectorOperatorDescriptor
+                    {
+                        SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                        MemberFullName = "Text"
+                    },
+                    SortDirection = LogicBuilder.Expressions.Utils.Strutures.ListSortDirection.Descending,
+                    SelectorParameterName = "l"
+                },
+                SelectorBody = new MemberInitOperatorDescriptor
+                {
+                    MemberBindings = new Dictionary<string, OperatorDescriptorBase>
+                    {
+                        ["Value"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Value"
+                        },
+                        ["Text"] = new MemberSelectorOperatorDescriptor
+                        {
+                            SourceOperand = new ParameterOperatorDescriptor { ParameterName = "l" },
+                            MemberFullName = "Text"
+                        }
+                    }
+                },
+                SelectorParameterName = "l"
+            };
+
         private SelectOperatorDescriptor GetBodyForLookupsModel()
             => new SelectOperatorDescriptor
             {
@@ -130,6 +180,34 @@ namespace Enrollment.Api.Web.Tests
                 ParameterName = parameterName
             };
         #endregion Helpers
+
+        [Fact]
+        public async void GetDropDownListRequest_As_AnonymousTypes()
+        {
+            //arrange
+            var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<object>>
+            (
+                GetBodyForLookupsModelAsAnonymousTypes(),
+                "q"
+            );
+
+            var result = await this.clientFactory.PostAsync<System.Text.Json.Nodes.JsonObject>
+            (
+                "api/AnonymousTypeList/GetList",
+                JsonSerializer.Serialize
+                (
+                    new Bsl.Business.Requests.GetObjectListRequest
+                    {
+                        Selector = selectorLambdaOperatorDescriptor,
+                        ModelType = typeof(LookUpsModel).AssemblyQualifiedName,
+                        DataType = typeof(LookUps).AssemblyQualifiedName
+                    }
+                ),
+                BASE_URL
+            );
+
+            Assert.True(result.Any());
+        }
 
         [Fact]
         public async void GetDropDownListRequest_As_LookUpsModel()

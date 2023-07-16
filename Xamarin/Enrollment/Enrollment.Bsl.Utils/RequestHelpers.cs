@@ -2,6 +2,7 @@
 using Enrollment.Bsl.Business.Requests;
 using Enrollment.Bsl.Business.Responses;
 using Enrollment.Common.Utils;
+using Enrollment.Data;
 using Enrollment.Domain;
 using LogicBuilder.Data;
 using LogicBuilder.Domain;
@@ -19,8 +20,29 @@ namespace Enrollment.Bsl.Utils
 {
     public static class RequestHelpers
     {
+        public static async Task<GetObjectListResponse> GetAnonymousList(GetObjectListRequest request, IContextRepository contextRepository, IMapper mapper)
+            => await (Task<GetObjectListResponse>)nameof(GetAnonymousList).GetSelectMethod()
+            .MakeGenericMethod
+            (
+                request.ModelType.Contains(',') ? Type.GetType(request.ModelType) : typeof(BaseModelClass).Assembly.GetType(request.ModelType),
+                request.DataType.Contains(',') ? Type.GetType(request.DataType) : typeof(BaseDataClass).Assembly.GetType(request.DataType)
+            ).Invoke(null, new object[] { request, contextRepository, mapper });
+
+        public static async Task<GetObjectListResponse> GetAnonymousList<TModel, TData>(GetObjectListRequest request, IContextRepository contextRepository, IMapper mapper)
+            where TModel : BaseModel
+            where TData : BaseData
+            => new GetObjectListResponse
+            {
+                List = await Query<TModel, TData, IEnumerable<dynamic>, IEnumerable<dynamic>>
+                (
+                    contextRepository,
+                    mapper.MapToOperator(request.Selector)
+                ),
+                Success = true
+            };
+
         public static async Task<GetListResponse> GetList(GetTypedListRequest request, IContextRepository contextRepository, IMapper mapper)
-            => await (Task<GetListResponse>)"GetList".GetSelectMethod()
+            => await (Task<GetListResponse>)nameof(GetList).GetSelectMethod()
             .MakeGenericMethod
             (
                 Type.GetType(request.ModelType),
@@ -44,7 +66,7 @@ namespace Enrollment.Bsl.Utils
             };
 
         public static async Task<GetEntityResponse> GetEntity(GetEntityRequest request, IContextRepository contextRepository, IMapper mapper)
-            => await (Task<GetEntityResponse>)"GetEntity".GetSelectMethod()
+            => await (Task<GetEntityResponse>)nameof(GetEntity).GetSelectMethod()
             .MakeGenericMethod
             (
                 Type.GetType(request.ModelType),

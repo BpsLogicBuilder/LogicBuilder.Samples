@@ -1,9 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { IDropDownTemplate } from 'src/app/stuctures/screens/edit/i-edit-form-settings';
-import { GridService } from 'src/app/http/grid.service';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
-import { ObjectHelper } from 'src/app/common/object-helper';
+import { GenericService } from '../../http/generic.service';
 import { IDetailDropDownTemplate } from 'src/app/stuctures/screens/detail/i-detail-form-settings';
+import { SettingsService } from '../../http/settings.service';
 
 @Component({
   selector: '[app-display-dropdown-value]',
@@ -15,8 +13,9 @@ export class DisplayDropdownValueComponent implements OnInit {
   @Input() public valueTextTemplate: IDetailDropDownTemplate;
   @Input() public filterValueSourceItem?: any;
   @Input() public selectedValue: any;
+  @Input() public modelType?: any;
 
-  constructor(private _gridService: GridService) { }
+  constructor(private _genericService: GenericService, private _settingsService: SettingsService) { }
 
   public selectedText: string;
   public data: any;
@@ -27,29 +26,31 @@ export class DisplayDropdownValueComponent implements OnInit {
 
   getDropDownData(): any
   {
-    if (this.valueTextTemplate.state 
-      && this.valueTextTemplate.state.filterGroup 
-      && ObjectHelper.FilterRequiresValueSource(this.valueTextTemplate.state.filterGroup)
-      && !this.filterValueSourceItem)
-      return;
-      
-    let state: DataSourceRequestState = {
-      skip: this.valueTextTemplate.state ? this.valueTextTemplate.state.skip : null,
-      take: this.valueTextTemplate.state ? this.valueTextTemplate.state.take : null,
-      sort: this.valueTextTemplate.state && this.valueTextTemplate.state.sort ? ObjectHelper.getSortDescriptors(this.valueTextTemplate.state.sort) : null,
-      filter: this.valueTextTemplate.state && this.valueTextTemplate.state.filterGroup
-        ? ObjectHelper.getCompositeFilter(this.valueTextTemplate.state.filterGroup, this.filterValueSourceItem)
-        : null
-    };
-
-    this._gridService.getFilterData(state, this.valueTextTemplate.requestDetails).subscribe(r =>
+    if (!(this.filterValueSourceItem && this.valueTextTemplate.reloadItemsFlowName))
     {
-      this.data = r;
-      
-      let selected = this.data.find(i => i[this.valueTextTemplate.valueField] == this.selectedValue);
-      this.selectedText = selected ? selected[this.valueTextTemplate.textField] : "";
-      console.log("this.filterCellTemplate Returned:   " + JSON.stringify(this.data));
+      this.getList(this.valueTextTemplate.textAndValueSelector);
+      return;
+    }
+
+    this._settingsService.getSelector({ entity: Object.assign({typeFullName: this.modelType}, this.filterValueSourceItem), reloadItemsFlowName: this.valueTextTemplate.reloadItemsFlowName}).subscribe(selectorResponse => {
+      if (selectorResponse.success)
+      {
+        this.getList(selectorResponse.selector);
+      }
     });
+  }
+
+  getList(selector: any) : void{
+    this._genericService.getList(this.valueTextTemplate.requestDetails, selector).subscribe(r =>
+      {
+        this.data = r;
+        if(this.data && this.data.length)
+        {
+          let selected = this.data.find(i => i[this.valueTextTemplate.valueField] == this.selectedValue);
+          this.selectedText = selected ? selected[this.valueTextTemplate.textField] : "";
+        }
+        console.log("this.filterCellTemplate Returned:   " + JSON.stringify(this.data));
+      });
   }
 
 }

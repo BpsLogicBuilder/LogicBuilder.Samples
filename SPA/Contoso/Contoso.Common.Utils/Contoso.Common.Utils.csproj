@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Contoso.Common.Configuration\Contoso.Common.Configuration.csproj" />
+    <ProjectReference Include="..\Contoso.Parameters\Contoso.Parameters.csproj" />
+  </ItemGroup>
+
+</Project>

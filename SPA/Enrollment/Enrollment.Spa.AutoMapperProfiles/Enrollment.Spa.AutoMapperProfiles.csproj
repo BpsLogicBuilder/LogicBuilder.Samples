@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.Forms.Parameters\Enrollment.Forms.Parameters.csproj" />
+    <ProjectReference Include="..\Enrollment.Forms.View\Enrollment.Forms.View.csproj" />
+  </ItemGroup>
+
+</Project>

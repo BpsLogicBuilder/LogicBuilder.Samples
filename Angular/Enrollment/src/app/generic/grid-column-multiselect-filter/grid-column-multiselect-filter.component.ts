@@ -1,8 +1,7 @@
 import { Component, OnInit, AfterViewInit, EventEmitter, Input, Output } from '@angular/core';
-import { CompositeFilterDescriptor, distinct, filterBy, DataSourceRequestState, FilterDescriptor } from '@progress/kendo-data-query';
+import { CompositeFilterDescriptor, distinct, filterBy, FilterDescriptor } from '@progress/kendo-data-query';
 import { FilterService } from '@progress/kendo-angular-grid';
-import { GridService } from '../../http/grid.service';
-import { ObjectHelper } from '../../common/object-helper';
+import { GenericService } from '../../http/generic.service';
 
 @Component({
   selector: 'app-grid-column-multiselect-filter',
@@ -19,7 +18,7 @@ export class GridColumnMultiselectFilterComponent implements OnInit, AfterViewIn
   @Input() public field: string;
   @Output() public valueChange = new EventEmitter<number[]>();
 
-  constructor(private _gridService: GridService) { }
+  constructor(private _genericService: GenericService) { }
 
   public data: any;
   public currentData: any;
@@ -46,7 +45,7 @@ export class GridColumnMultiselectFilterComponent implements OnInit, AfterViewIn
     } else {
       this.value.push(item);
     }
-    //console.log("onSelectionChange:   " + JSON.stringify(this.value));
+
     this.filterService.filter({
       filters: this.value.map(value => ({
         field: this.field,
@@ -70,15 +69,7 @@ export class GridColumnMultiselectFilterComponent implements OnInit, AfterViewIn
   }
 
   getFilterData(): any {
-    let state: DataSourceRequestState = {
-      skip: this.filterMenuTemplate.state ? this.filterMenuTemplate.state.skip : null,
-      take: this.filterMenuTemplate.state ? this.filterMenuTemplate.state.take : null,
-      filter: this.filterMenuTemplate.state && this.filterMenuTemplate.state.filterGroup
-        ? ObjectHelper.getCompositeFilter(this.filterMenuTemplate.state.filterGroup)
-        : null
-    }
-
-    this._gridService.getFilterData(state, this.filterMenuTemplate.requestDetails).subscribe(r => {
+    this._genericService.getList(this.filterMenuTemplate.requestDetails, this.filterMenuTemplate.textAndValueSelector).subscribe(r => {
       this.data = r;
       console.log("this.MultiSelect Returned:   " + JSON.stringify(this.data));
 

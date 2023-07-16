@@ -1,7 +1,6 @@
-import { IFilterGroup } from "../i-filter-group";
 import { IDataRequestState } from "../i-data-request-state";
 import { IAggregate } from "../i-aggregate";
-import { IRequestDetails } from "../i-request-details";
+import { IGridRequestDetails, IRequestDetails } from "../i-request-details";
 
 export interface IGridSettings {
     title: string;
@@ -12,12 +11,11 @@ export interface IGridSettings {
     filterable: boolean | "row" | "menu" | "menu, row";
     columns: IColumnSettings[];
     gridId?: number;
-    itemFilter?: IFilterGroup;
     height?: number;
     commandColumn?: ICommandColumn;
     state?: IDataRequestState;
     aggregates?: IAggregate[];
-    requestDetails?: IRequestDetails;
+    requestDetails?: IGridRequestDetails;
     detailGridSettings?: IGridSettings;
 }
 
@@ -62,7 +60,7 @@ export interface IFilterTemplate {
     isPrimitive: boolean;
     textField: string;
     valueField: string;
-    state: IDataRequestState;
+    textAndValueSelector: any,
     requestDetails: IRequestDetails;
 }
 

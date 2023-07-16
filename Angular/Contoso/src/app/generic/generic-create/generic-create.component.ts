@@ -6,11 +6,9 @@ import { GenericService } from '../../http/generic.service';
 import { UiNotificationService } from '../../common/ui-notification.service';
 import { ListManagerService } from '../../common/list-manager.service';
 import { EntityType } from '../../stuctures/screens/i-base-model';
-import { GenericValidator } from '../../common/generic-validator';
 import { ObjectHelper } from '../../common/object-helper';
 import { debounceTime } from 'rxjs/operators';
 import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
 import { EditFormHelpers } from 'src/app/common/edit-form-helpers';
 import { Directives } from 'src/app/common/directives';
 import { DateService } from 'src/app/common/date.service';
@@ -176,7 +174,7 @@ export class GenericCreateComponent implements OnInit, AfterViewInit {
     itm = this._listManagerService.updateFormEntityState(itm, this.entity, this.itemForm, this.formSettings.fieldSettings, true);
     itm.typeFullName = this.formSettings.modelType;
 
-    this._genericService.insertItem(this.getState(), this.formSettings.requestDetails, itm)
+    this._genericService.insertItem(itm, this.formSettings.requestDetails)
       .subscribe(response => {
         this.navigateNext(button);
       },
@@ -188,10 +186,5 @@ export class GenericCreateComponent implements OnInit, AfterViewInit {
       viewType: ViewTypeEnum.Create,
       commandButtonRequest: { newSelection: button.shortString, cancel: button.cancel }
     });
-  }
-
-  private getState(): DataSourceRequestState {
-    return {
-    };
   }
 }

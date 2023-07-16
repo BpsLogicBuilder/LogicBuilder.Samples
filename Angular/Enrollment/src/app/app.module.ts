@@ -24,6 +24,7 @@ import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { ScreenHostComponent } from './screen-host/screen-host.component';
 import { HtmlPageComponent } from './html-page/html-page.component';
 import { DisplayDropdownValueComponent } from './generic/display-dropdown-value/display-dropdown-value.component';
+import { GenericListComponent } from './generic/generic-list/generic-list.component';
 
 
 
@@ -42,7 +43,8 @@ import { DisplayDropdownValueComponent } from './generic/display-dropdown-value/
     NavBarComponent,
     ScreenHostComponent,
     HtmlPageComponent,
-    DisplayDropdownValueComponent
+    DisplayDropdownValueComponent,
+    GenericListComponent
   ],
   imports: [
     BrowserModule,
@@ -56,9 +58,7 @@ import { DisplayDropdownValueComponent } from './generic/display-dropdown-value/
     HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [
-    { provide: 'baseUrl', useValue: 'http://localhost:54315' }
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

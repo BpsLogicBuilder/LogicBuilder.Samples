@@ -9,7 +9,6 @@ import { EntityType } from '../../stuctures/screens/i-base-model';
 import { ICommandButton } from '../../stuctures/i-command-button';
 import { ObjectHelper } from '../../common/object-helper';
 import { debounceTime } from 'rxjs/operators';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
 import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
 import { EditFormHelpers } from 'src/app/common/edit-form-helpers';
 import { EntityStateType } from 'src/app/stuctures/screens/entity-state-type';
@@ -173,7 +172,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
 
   getItem()
   {
-    this._genericService.getItem(this.getState(), this.formSettings.requestDetails).subscribe(
+    this._genericService.getItem(this.formSettings.requestDetails).subscribe(
       itm =>
       {
         this.entity = itm;
@@ -202,7 +201,7 @@ export class GenericEditComponent implements OnInit, AfterViewInit
     let itm: EntityType = Object.assign({}, this.entity, this.itemForm.value);
     itm = this._listManagerService.updateFormEntityState(itm, this.entity, this.itemForm, this.formSettings.fieldSettings, this.isInsert);
 
-    this._genericService.updateItem(this.getState(), this.formSettings.requestDetails, itm)
+    this._genericService.updateItem(itm, this.formSettings.requestDetails)
       .subscribe(response =>
       {
         this.navigateNext(button);
@@ -216,12 +215,5 @@ export class GenericEditComponent implements OnInit, AfterViewInit
       viewType: ViewTypeEnum.Edit,
       commandButtonRequest: { newSelection: button.shortString, cancel: button.cancel }
     });
-  }
-
-  private getState(): DataSourceRequestState
-  {
-    return {
-      filter: ObjectHelper.getCompositeFilter(this.formSettings.filterGroup)
-    };
   }
 }

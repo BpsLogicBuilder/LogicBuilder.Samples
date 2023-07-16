@@ -1,13 +1,10 @@
 import { IRequestDetails } from "../i-request-details";
-import { IFilterGroup } from "../i-filter-group";
-import { IDataRequestState } from "../i-data-request-state";
 
 export interface IDetailFormSettings {
     title: string;
     displayField: string;
     requestDetails: IRequestDetails;
     fieldSettings?: IDetailItem[];
-    filterGroup?: IFilterGroup;
 }
 
 export interface IDetailGroupSetting extends IDetailItem {
@@ -52,8 +49,9 @@ export interface IDetailDropDownTemplate {
     placeHolderText: string;
     textField: string;
     valueField: string;
-    state: IDataRequestState,
-    requestDetails: IRequestDetails,
+    textAndValueSelector: any;
+    requestDetails: IRequestDetails;
+    reloadItemsFlowName?: string;
 }
 
 export interface IDetailGroupTemplate {

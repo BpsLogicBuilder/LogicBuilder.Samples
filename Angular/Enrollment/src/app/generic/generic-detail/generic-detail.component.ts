@@ -4,8 +4,6 @@ import { UiNotificationService } from '../../common/ui-notification.service';
 import { ICommandButton } from '../../stuctures/i-command-button';
 import { IDetailFormSettings, IDetailFieldSetting, IDetailListSetting, detailKind, IDetailGroupSetting } from '../../stuctures/screens/detail/i-detail-form-settings';
 import { EntityType } from '../../stuctures/screens/i-base-model';
-import { DataSourceRequestState } from '@progress/kendo-data-query';
-import { ObjectHelper } from '../../common/object-helper';
 import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
 import { IDetailRequest } from '../../stuctures/screens/requests/i-requests-base';
 
@@ -65,22 +63,16 @@ export class GenericDetailComponent implements OnInit {
   }
 
   getItem() {
-    this._genericService.getItem(this.getState(), this.formSettings.requestDetails).subscribe(
+    this._genericService.getItem(this.formSettings.requestDetails).subscribe(
       itm => {
         this.entity = itm;
       },
       error => this.errorMessage = <any>error);
   }
 
-  private getState(): DataSourceRequestState {
-    return {
-      filter: ObjectHelper.getCompositeFilter(this.formSettings.filterGroup)
-    }
-  }
-
   submitClick(button: ICommandButton) {
     this.doPost({
-      filterGroup: this.formSettings.filterGroup,
+      entity: this.entity,
       viewType: ViewTypeEnum.Detail,
       commandButtonRequest: { newSelection: button.shortString, cancel: button.cancel }
     });

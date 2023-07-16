@@ -122,7 +122,9 @@
   let-aggregates="aggregates" 
   let-groupAggregates="groupAggregates"
   #groupHeaderTemplate>
+  <span *ngIf="aggregates && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><span *ngIf="idx !== 0">, </span>{{agg.label}} {{columnTitle}}: {{groupAggregates[field][agg.function]}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -132,7 +134,9 @@
   let-aggregates="aggregates" 
   let-groupAggregates="groupAggregates"
   #groupHeaderTemplate_Date>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><span *ngIf="idx !== 0">, </span>{{agg.label}} {{columnTitle}}: {{groupAggregates[field][agg.function] | date}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -142,7 +146,9 @@
   let-aggregates="aggregates" 
   let-groupAggregates="groupAggregates"
   #groupHeaderTemplate_Currency>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><span *ngIf="idx !== 0">, </span>{{agg.label}} {{columnTitle}}: {{groupAggregates[field][agg.function] | currency:'USD':'symbol':'1.2-2'}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -152,7 +158,9 @@
   let-aggregates="aggregates" 
   let-groupAggregates="groupAggregates"
   #groupFooterTemplate>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{groupAggregates[field][agg.function]}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -162,7 +170,9 @@
   let-aggregates="aggregates" 
   let-groupAggregates="groupAggregates"
   #groupFooterTemplate_Date>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{groupAggregates[field][agg.function] | date}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -172,7 +182,9 @@
   let-aggregates="aggregates" 
   let-groupAggregates="groupAggregates"
   #groupFooterTemplate_Currency>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{groupAggregates[field][agg.function] | currency:'USD':'symbol':'1.2-2'}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -182,7 +194,9 @@
   let-aggregates="aggregates" 
   let-gridAggregateResult="gridAggregateResult"
   #gridFooterTemplate>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{gridAggregateResult[field][agg.function]}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -192,7 +206,9 @@
   let-aggregates="aggregates" 
   let-gridAggregateResult="gridAggregateResult"
   #gridFooterTemplate_Date>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{gridAggregateResult[field][agg.function] | date}}</span>
+  </span>
 </ng-template>
 
 <ng-template 
@@ -202,5 +218,7 @@
   let-aggregates="aggregates" 
   let-gridAggregateResult="gridAggregateResult"
   #gridFooterTemplate_Currency>
+  <span *ngIf="gridAggregateResult && gridAggregateResult[field]">
   <span *ngFor="let agg of aggregates; let idx = index"><br *ngIf="idx !== 0">{{agg.label}}: {{gridAggregateResult[field][agg.function] | currency:'USD':'symbol':'1.2-2'}}</span>
+  </span>
 </ng-template>

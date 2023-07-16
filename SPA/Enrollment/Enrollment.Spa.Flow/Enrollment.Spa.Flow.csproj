@@ -1,0 +1,149 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<PropertyGroup>
+		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Remove="Rulesets\academic.module" />
+	  <None Remove="Rulesets\academic.resources" />
+	  <None Remove="Rulesets\admin.module" />
+	  <None Remove="Rulesets\admin.resources" />
+	  <None Remove="Rulesets\admissions.module" />
+	  <None Remove="Rulesets\admissions.resources" />
+	  <None Remove="Rulesets\admissionsprogramselector.module" />
+	  <None Remove="Rulesets\admissionsprogramselector.resources" />
+	  <None Remove="Rulesets\certification.module" />
+	  <None Remove="Rulesets\certification.resources" />
+	  <None Remove="Rulesets\contactinfo.module" />
+	  <None Remove="Rulesets\contactinfo.resources" />
+	  <None Remove="Rulesets\home.module" />
+	  <None Remove="Rulesets\home.resources" />
+	  <None Remove="Rulesets\initial.module" />
+	  <None Remove="Rulesets\initial.resources" />
+	  <None Remove="Rulesets\institutionnameselector.module" />
+	  <None Remove="Rulesets\institutionnameselector.resources" />
+	  <None Remove="Rulesets\item_filter_enrollee.module" />
+	  <None Remove="Rulesets\item_filter_enrollee.resources" />
+	  <None Remove="Rulesets\moreinfo.module" />
+	  <None Remove="Rulesets\moreinfo.resources" />
+	  <None Remove="Rulesets\nav_academic.module" />
+	  <None Remove="Rulesets\nav_academic.resources" />
+	  <None Remove="Rulesets\nav_admin.module" />
+	  <None Remove="Rulesets\nav_admin.resources" />
+	  <None Remove="Rulesets\nav_admissions.module" />
+	  <None Remove="Rulesets\nav_admissions.resources" />
+	  <None Remove="Rulesets\nav_certification.module" />
+	  <None Remove="Rulesets\nav_certification.resources" />
+	  <None Remove="Rulesets\nav_contactinfo.module" />
+	  <None Remove="Rulesets\nav_contactinfo.resources" />
+	  <None Remove="Rulesets\nav_home.module" />
+	  <None Remove="Rulesets\nav_home.resources" />
+	  <None Remove="Rulesets\nav_moreinfo.module" />
+	  <None Remove="Rulesets\nav_moreinfo.resources" />
+	  <None Remove="Rulesets\nav_personal.module" />
+	  <None Remove="Rulesets\nav_personal.resources" />
+	  <None Remove="Rulesets\nav_report.module" />
+	  <None Remove="Rulesets\nav_report.resources" />
+	  <None Remove="Rulesets\nav_residency.module" />
+	  <None Remove="Rulesets\nav_residency.resources" />
+	  <None Remove="Rulesets\personal.module" />
+	  <None Remove="Rulesets\personal.resources" />
+	  <None Remove="Rulesets\personalcountyselector.module" />
+	  <None Remove="Rulesets\personalcountyselector.resources" />
+	  <None Remove="Rulesets\report.module" />
+	  <None Remove="Rulesets\report.resources" />
+	  <None Remove="Rulesets\residency.module" />
+	  <None Remove="Rulesets\residency.resources" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Rulesets\academic.module" />
+	  <EmbeddedResource Include="Rulesets\academic.resources" />
+	  <EmbeddedResource Include="Rulesets\admin.module" />
+	  <EmbeddedResource Include="Rulesets\admin.resources" />
+	  <EmbeddedResource Include="Rulesets\admissions.module" />
+	  <EmbeddedResource Include="Rulesets\admissions.resources" />
+	  <EmbeddedResource Include="Rulesets\admissionsprogramselector.module" />
+	  <EmbeddedResource Include="Rulesets\admissionsprogramselector.resources" />
+	  <EmbeddedResource Include="Rulesets\certification.module" />
+	  <EmbeddedResource Include="Rulesets\certification.resources" />
+	  <EmbeddedResource Include="Rulesets\contactinfo.module" />
+	  <EmbeddedResource Include="Rulesets\contactinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\home.module" />
+	  <EmbeddedResource Include="Rulesets\home.resources" />
+	  <EmbeddedResource Include="Rulesets\initial.module" />
+	  <EmbeddedResource Include="Rulesets\initial.resources" />
+	  <EmbeddedResource Include="Rulesets\institutionnameselector.module" />
+	  <EmbeddedResource Include="Rulesets\institutionnameselector.resources" />
+	  <EmbeddedResource Include="Rulesets\item_filter_enrollee.module" />
+	  <EmbeddedResource Include="Rulesets\item_filter_enrollee.resources" />
+	  <EmbeddedResource Include="Rulesets\moreinfo.module" />
+	  <EmbeddedResource Include="Rulesets\moreinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_academic.module" />
+	  <EmbeddedResource Include="Rulesets\nav_academic.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_admin.module" />
+	  <EmbeddedResource Include="Rulesets\nav_admin.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_admissions.module" />
+	  <EmbeddedResource Include="Rulesets\nav_admissions.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_certification.module" />
+	  <EmbeddedResource Include="Rulesets\nav_certification.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_contactinfo.module" />
+	  <EmbeddedResource Include="Rulesets\nav_contactinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_home.module" />
+	  <EmbeddedResource Include="Rulesets\nav_home.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_moreinfo.module" />
+	  <EmbeddedResource Include="Rulesets\nav_moreinfo.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_personal.module" />
+	  <EmbeddedResource Include="Rulesets\nav_personal.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_report.module" />
+	  <EmbeddedResource Include="Rulesets\nav_report.resources" />
+	  <EmbeddedResource Include="Rulesets\nav_residency.module" />
+	  <EmbeddedResource Include="Rulesets\nav_residency.resources" />
+	  <EmbeddedResource Include="Rulesets\personal.module" />
+	  <EmbeddedResource Include="Rulesets\personal.resources" />
+	  <EmbeddedResource Include="Rulesets\personalcountyselector.module" />
+	  <EmbeddedResource Include="Rulesets\personalcountyselector.resources" />
+	  <EmbeddedResource Include="Rulesets\report.module" />
+	  <EmbeddedResource Include="Rulesets\report.resources" />
+	  <EmbeddedResource Include="Rulesets\residency.module" />
+	  <EmbeddedResource Include="Rulesets\residency.resources" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.9" />
+		<PackageReference Include="LogicBuilder.Forms.Parameters" Version="2.0.4" />
+		<PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.4" />
+	</ItemGroup>
+
+  <ItemGroup>
+		<ProjectReference Include="..\Enrollment.Common.Utils\Enrollment.Common.Utils.csproj" />
+		<ProjectReference Include="..\Enrollment.Data\Enrollment.Data.csproj" />
+    <ProjectReference Include="..\Enrollment.Domain\Enrollment.Domain.csproj" />
+    <ProjectReference Include="..\Enrollment.Forms.Parameters\Enrollment.Forms.Parameters.csproj" />
+    <ProjectReference Include="..\Enrollment.Forms.View\Enrollment.Forms.View.csproj" />
+    <ProjectReference Include="..\Enrollment.Utils\Enrollment.Utils.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

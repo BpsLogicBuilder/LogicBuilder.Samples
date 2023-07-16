@@ -1,0 +1,145 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Rulesets\deleteacademic.module" />
+    <None Remove="Rulesets\deleteacademic.resources" />
+    <None Remove="Rulesets\deleteadmissions.module" />
+    <None Remove="Rulesets\deleteadmissions.resources" />
+    <None Remove="Rulesets\deletecertification.module" />
+    <None Remove="Rulesets\deletecertification.resources" />
+    <None Remove="Rulesets\deletecontactinfo.module" />
+    <None Remove="Rulesets\deletecontactinfo.resources" />
+    <None Remove="Rulesets\deletemoreinfo.module" />
+    <None Remove="Rulesets\deletemoreinfo.resources" />
+    <None Remove="Rulesets\deletepersonal.module" />
+    <None Remove="Rulesets\deletepersonal.resources" />
+    <None Remove="Rulesets\deleteresidency.module" />
+    <None Remove="Rulesets\deleteresidency.resources" />
+    <None Remove="Rulesets\deleteuser.module" />
+    <None Remove="Rulesets\deleteuser.resources" />
+    <None Remove="Rulesets\logvalidationerrors.module" />
+    <None Remove="Rulesets\logvalidationerrors.resources" />
+    <None Remove="Rulesets\saveacademic.module" />
+    <None Remove="Rulesets\saveacademic.resources" />
+    <None Remove="Rulesets\saveadmissions.module" />
+    <None Remove="Rulesets\saveadmissions.resources" />
+    <None Remove="Rulesets\savecertification.module" />
+    <None Remove="Rulesets\savecertification.resources" />
+    <None Remove="Rulesets\savecontactinfo.module" />
+    <None Remove="Rulesets\savecontactinfo.resources" />
+    <None Remove="Rulesets\savemoreinfo.module" />
+    <None Remove="Rulesets\savemoreinfo.resources" />
+    <None Remove="Rulesets\savepersonal.module" />
+    <None Remove="Rulesets\savepersonal.resources" />
+    <None Remove="Rulesets\saveresidency.module" />
+    <None Remove="Rulesets\saveresidency.resources" />
+    <None Remove="Rulesets\saveuser.module" />
+    <None Remove="Rulesets\saveuser.resources" />
+    <None Remove="Rulesets\validateacademic.module" />
+    <None Remove="Rulesets\validateacademic.resources" />
+    <None Remove="Rulesets\validateadmissions.module" />
+    <None Remove="Rulesets\validateadmissions.resources" />
+    <None Remove="Rulesets\validatecertification.module" />
+    <None Remove="Rulesets\validatecertification.resources" />
+    <None Remove="Rulesets\validatecontactinfo.module" />
+    <None Remove="Rulesets\validatecontactinfo.resources" />
+    <None Remove="Rulesets\validateinstitutions.module" />
+    <None Remove="Rulesets\validateinstitutions.resources" />
+    <None Remove="Rulesets\validatemoreinfo.module" />
+    <None Remove="Rulesets\validatemoreinfo.resources" />
+    <None Remove="Rulesets\validatepersonal.module" />
+    <None Remove="Rulesets\validatepersonal.resources" />
+    <None Remove="Rulesets\validateresidency.module" />
+    <None Remove="Rulesets\validateresidency.resources" />
+    <None Remove="Rulesets\validateuser.module" />
+    <None Remove="Rulesets\validateuser.resources" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Rulesets\deleteacademic.module" />
+    <EmbeddedResource Include="Rulesets\deleteacademic.resources" />
+    <EmbeddedResource Include="Rulesets\deleteadmissions.module" />
+    <EmbeddedResource Include="Rulesets\deleteadmissions.resources" />
+    <EmbeddedResource Include="Rulesets\deletecertification.module" />
+    <EmbeddedResource Include="Rulesets\deletecertification.resources" />
+    <EmbeddedResource Include="Rulesets\deletecontactinfo.module" />
+    <EmbeddedResource Include="Rulesets\deletecontactinfo.resources" />
+    <EmbeddedResource Include="Rulesets\deletemoreinfo.module" />
+    <EmbeddedResource Include="Rulesets\deletemoreinfo.resources" />
+    <EmbeddedResource Include="Rulesets\deletepersonal.module" />
+    <EmbeddedResource Include="Rulesets\deletepersonal.resources" />
+    <EmbeddedResource Include="Rulesets\deleteresidency.module" />
+    <EmbeddedResource Include="Rulesets\deleteresidency.resources" />
+    <EmbeddedResource Include="Rulesets\deleteuser.module" />
+    <EmbeddedResource Include="Rulesets\deleteuser.resources" />
+    <EmbeddedResource Include="Rulesets\logvalidationerrors.module" />
+    <EmbeddedResource Include="Rulesets\logvalidationerrors.resources" />
+    <EmbeddedResource Include="Rulesets\saveacademic.module" />
+    <EmbeddedResource Include="Rulesets\saveacademic.resources" />
+    <EmbeddedResource Include="Rulesets\saveadmissions.module" />
+    <EmbeddedResource Include="Rulesets\saveadmissions.resources" />
+    <EmbeddedResource Include="Rulesets\savecertification.module" />
+    <EmbeddedResource Include="Rulesets\savecertification.resources" />
+    <EmbeddedResource Include="Rulesets\savecontactinfo.module" />
+    <EmbeddedResource Include="Rulesets\savecontactinfo.resources" />
+    <EmbeddedResource Include="Rulesets\savemoreinfo.module" />
+    <EmbeddedResource Include="Rulesets\savemoreinfo.resources" />
+    <EmbeddedResource Include="Rulesets\savepersonal.module" />
+    <EmbeddedResource Include="Rulesets\savepersonal.resources" />
+    <EmbeddedResource Include="Rulesets\saveresidency.module" />
+    <EmbeddedResource Include="Rulesets\saveresidency.resources" />
+    <EmbeddedResource Include="Rulesets\saveuser.module" />
+    <EmbeddedResource Include="Rulesets\saveuser.resources" />
+    <EmbeddedResource Include="Rulesets\validateacademic.module" />
+    <EmbeddedResource Include="Rulesets\validateacademic.resources" />
+    <EmbeddedResource Include="Rulesets\validateadmissions.module" />
+    <EmbeddedResource Include="Rulesets\validateadmissions.resources" />
+    <EmbeddedResource Include="Rulesets\validatecertification.module" />
+    <EmbeddedResource Include="Rulesets\validatecertification.resources" />
+    <EmbeddedResource Include="Rulesets\validatecontactinfo.module" />
+    <EmbeddedResource Include="Rulesets\validatecontactinfo.resources" />
+    <EmbeddedResource Include="Rulesets\validateinstitutions.module" />
+    <EmbeddedResource Include="Rulesets\validateinstitutions.resources" />
+    <EmbeddedResource Include="Rulesets\validatemoreinfo.module" />
+    <EmbeddedResource Include="Rulesets\validatemoreinfo.resources" />
+    <EmbeddedResource Include="Rulesets\validatepersonal.module" />
+    <EmbeddedResource Include="Rulesets\validatepersonal.resources" />
+    <EmbeddedResource Include="Rulesets\validateresidency.module" />
+    <EmbeddedResource Include="Rulesets\validateresidency.resources" />
+    <EmbeddedResource Include="Rulesets\validateuser.module" />
+    <EmbeddedResource Include="Rulesets\validateuser.resources" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LogicBuilder.RulesDirector" Version="2.0.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Enrollment.Bsl.Business\Enrollment.Bsl.Business.csproj" />
+    <ProjectReference Include="..\Enrollment.Bsl.Utils\Enrollment.Bsl.Utils.csproj" />
+    <ProjectReference Include="..\Enrollment.Parameters\Enrollment.Parameters.csproj" />
+    <ProjectReference Include="..\Enrollment.Repositories\Enrollment.Repositories.csproj" />
+    <ProjectReference Include="..\Enrollment.Domain\Enrollment.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
