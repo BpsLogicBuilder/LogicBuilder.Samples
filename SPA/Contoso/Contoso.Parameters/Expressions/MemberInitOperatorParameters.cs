@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using LogicBuilder.Attributes;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using LogicBuilder.Attributes;
 
 namespace Contoso.Parameters.Expressions
 {

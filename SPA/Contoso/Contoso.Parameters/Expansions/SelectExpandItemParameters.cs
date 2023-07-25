@@ -32,11 +32,11 @@ namespace Contoso.Parameters.Expansions
 
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
             [Comments("Fully qualified class name for the model type.")]
-            string fieldTypeSource = "Enrollment.Domain.Entities",
+            string fieldTypeSource = "Contoso.Domain.Entities",
 
             [ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
             [Comments("Fully qualified class name for the model type.")]
-            string navigationProperyType = "Enrollment.Domain.Entities"
+            string navigationProperyType = "Contoso.Domain.Entities"
         )
         {
             MemberName = memberName;

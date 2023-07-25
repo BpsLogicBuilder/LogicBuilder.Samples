@@ -30,7 +30,7 @@ namespace Contoso.Utils
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"{ ex.GetType().Name + " : " + ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"{ex.GetType().Name + " : " + ex.Message}");
                 throw;
             }
         }
@@ -50,7 +50,7 @@ namespace Contoso.Utils
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"{ ex.GetType().Name + " : " + ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"{ex.GetType().Name + " : " + ex.Message}");
                 throw;
             }
         }

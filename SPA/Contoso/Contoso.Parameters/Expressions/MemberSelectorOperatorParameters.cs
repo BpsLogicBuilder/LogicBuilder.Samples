@@ -19,7 +19,7 @@ namespace Contoso.Parameters.Expressions
 			IExpressionParameter sourceOperand,
 
 			[ParameterEditorControl(ParameterControlType.ParameterSourceOnly)]
-			[NameValue(AttributeNames.DEFAULTVALUE, "Enrollment.Domain.Entities")]
+			[NameValue(AttributeNames.DEFAULTVALUE, "Contoso.Domain.Entities")]
 			[Comments("Fully qualified class name for the model type.")]
 			string fieldTypeSource = null
 		)

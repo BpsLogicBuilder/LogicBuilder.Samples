@@ -51,7 +51,8 @@ namespace Contoso.Spa.Flow.Rules
                 typeof(Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
                 typeof(Utils.TypeHelpers).Assembly,
                 typeof(Domain.BaseModelClass).Assembly,
-                typeof(Data.BaseDataClass).Assembly,
+                typeof(Data.BaseDataClass).Assembly,/*Contoso.Data is needed for the Logic Builder at design time
+                                                     * - just to include the full name in the drop-down list and get the assembly qualified name.*/
                 typeof(DirectorBase).Assembly,
                 typeof(LogicBuilder.Forms.Parameters.ConnectorParameters).Assembly
             };
