@@ -1,4 +1,5 @@
 ﻿using Contoso.Domain.Entities;
+using LogicBuilder.RulesDirector;
 using LogicBuilder.Workflow.Activities.Rules;
 using System;
 using System.Collections;
@@ -12,9 +13,33 @@ namespace Contoso.Bsl.Flow.Rules
 {
     public class RulesLoader : IRulesLoader
     {
-        public RulesLoader()
+        public Task LoadRules(RulesModuleModel module, IRulesCache cache)
         {
-            //this._logger = logger;
+            return Task.Run
+            (
+                () =>
+                {
+                    string moduleName = module.Name.ToLowerInvariant();
+                    RuleSet ruleSet = module.DeserializeRuleSetFile() ?? throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Properties.Resources.invalidRulesetFormat, moduleName));
+
+                    if (cache.RuleEngines.ContainsKey(moduleName))
+                        cache.RuleEngines[moduleName] = new RuleEngine(ruleSet, RulesSerializer.GetValidation(ruleSet));
+                    else
+                        cache.RuleEngines.Add(moduleName, new RuleEngine(ruleSet, RulesSerializer.GetValidation(ruleSet)));
+
+                    using IResourceReader reader = new ResourceReader(new MemoryStream(module.ResourceSetFile));
+                    reader.OfType<DictionaryEntry>()
+                        .ToList()
+                        .ForEach(entry =>
+                        {
+                            string resourceKey = (string)entry.Key;
+                            if (cache.ResourceStrings.ContainsKey(resourceKey))
+                                cache.ResourceStrings[resourceKey] = (string)(entry.Value ?? "");
+                            else
+                                cache.ResourceStrings.Add(resourceKey, (string)(entry.Value ?? ""));
+                        });
+                }
+            );
         }
 
         #region Fields
@@ -22,25 +47,20 @@ namespace Contoso.Bsl.Flow.Rules
         #endregion Fields
 
         #region Methods
-        public async Task LoadRulesOnStartUp(RulesModuleModel module, RulesCache cache)
+        public Task LoadRulesOnStartUp(RulesModuleModel module, IRulesCache cache)
         {
-            await Task.Run
+            return Task.Run
             (
                 () =>
                 {
                     string moduleName = module.Name.ToLowerInvariant();
-                    RuleSet ruleSet = module.DeserializeRuleSetFile();
-                    if (ruleSet == null)
-                        throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Properties.Resources.invalidRulesetFormat, moduleName));
-
+                    RuleSet ruleSet = module.DeserializeRuleSetFile() ?? throw new ArgumentException(string.Format(CultureInfo.CurrentCulture, Properties.Resources.invalidRulesetFormat, moduleName));
                     cache.RuleEngines.Add(moduleName, new RuleEngine(ruleSet, RulesSerializer.GetValidation(ruleSet)));
 
-                    using (IResourceReader reader = new ResourceReader(new MemoryStream(module.ResourceSetFile)))
-                    {
-                        reader.OfType<DictionaryEntry>()
-                            .ToList()
-                            .ForEach(entry => cache.ResourceStrings.Add((string)entry.Key, (string)entry.Value));
-                    }
+                    using IResourceReader reader = new ResourceReader(new MemoryStream(module.ResourceSetFile));
+                    reader.OfType<DictionaryEntry>()
+                        .ToList()
+                        .ForEach(entry => cache.ResourceStrings.Add((string)entry.Key, (string)entry.Value));
                 }
             );
         }
