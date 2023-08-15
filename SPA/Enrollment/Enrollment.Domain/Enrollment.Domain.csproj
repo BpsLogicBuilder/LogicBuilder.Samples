@@ -6,7 +6,7 @@
 
   <ItemGroup>
     <PackageReference Include="LogicBuilder.Attributes" Version="2.0.4" />
-    <PackageReference Include="LogicBuilder.Domain" Version="5.0.9" />
+    <PackageReference Include="LogicBuilder.Domain" Version="5.0.10" />
   </ItemGroup>
 
   <ItemGroup>

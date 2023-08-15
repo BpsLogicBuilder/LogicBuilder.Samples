@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-		<PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.9" />
+		<PackageReference Include="LogicBuilder.Expressions.EntityFrameworkCore" Version="5.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
   </ItemGroup>
