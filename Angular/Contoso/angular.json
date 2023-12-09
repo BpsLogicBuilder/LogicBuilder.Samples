@@ -69,18 +69,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "contoso:build"
+            "buildTarget": "contoso:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "contoso:build:production"
+              "buildTarget": "contoso:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "contoso:build"
+            "buildTarget": "contoso:build"
           }
         },
         "test": {
