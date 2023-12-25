@@ -63,12 +63,14 @@ namespace Contoso.XPlatform.ViewModels.ListPage
 
             if (baseResponse.Success == false)
             {
+#if DEBUG
                 await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null here*/
                 (
                     "Errors",
                     string.Join(System.Environment.NewLine, baseResponse.ErrorMessages),
                     "Ok"
                 );
+#endif
                 return;
             }
 

@@ -32,7 +32,7 @@ namespace Contoso.XPlatform.Converters
 
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value!.ToString().TryParse(targetType, out object result))
+            if ((value ?? "").ToString().TryParse(targetType, out object result))
                 return result;
 
             return value;
