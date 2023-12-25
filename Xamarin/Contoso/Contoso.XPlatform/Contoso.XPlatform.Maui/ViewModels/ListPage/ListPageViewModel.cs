@@ -62,7 +62,15 @@ namespace Contoso.XPlatform.ViewModels.ListPage
             BaseResponse baseResponse = await GetList();
 
             if (baseResponse.Success == false)
+            {
+                await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null here*/
+                (
+                    "Errors",
+                    string.Join(System.Environment.NewLine, baseResponse.ErrorMessages),
+                    "Ok"
+                );
                 return;
+            }
 
             GetListResponse getListResponse = (GetListResponse)baseResponse;
             this.Items = new ObservableCollection<Dictionary<string, IReadOnly>>

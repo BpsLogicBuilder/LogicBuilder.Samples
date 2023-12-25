@@ -29,9 +29,11 @@ namespace Contoso.XPlatform.Utils
             catch (Exception ex)
             {
 #if DEBUG
-                TResult response = Activator.CreateInstance<TResult>();
+                BaseResponse response = typeof(TResult) == typeof(BaseResponse) 
+                    ? Activator.CreateInstance<ErrorResponse>() 
+                    : Activator.CreateInstance<TResult>();
                 response.ErrorMessages = new List<string> { ex.Message };
-                return response;
+                return (TResult)response;
 #else
                 throw;
 #endif

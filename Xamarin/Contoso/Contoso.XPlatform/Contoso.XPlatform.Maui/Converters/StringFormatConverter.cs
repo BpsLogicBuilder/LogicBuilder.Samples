@@ -8,7 +8,7 @@ namespace Contoso.XPlatform.Converters
 {
     public class StringFormatConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             return GetFormattedString(GetStringFormat());
 
@@ -24,15 +24,15 @@ namespace Contoso.XPlatform.Converters
             }
 
             string GetStringFormat()
-                => ((VisualElement)parameter).BindingContext.GetPropertyValue<string>
+                => ((VisualElement)parameter!).BindingContext.GetPropertyValue<string>
                 (
                     nameof(EntryValidatableObject<string>.StringFormat)
                 );
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
-            if (value.ToString().TryParse(targetType, out object result))
+            if (value!.ToString().TryParse(targetType, out object result))
                 return result;
 
             return value;
