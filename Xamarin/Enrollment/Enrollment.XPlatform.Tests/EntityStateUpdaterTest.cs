@@ -44,20 +44,17 @@ namespace Enrollment.XPlatform.Tests
                 HasValidDriversLicense = true,
                 StatesLivedIn = new List<StateLivedInModel>
                 {
-                    new StateLivedInModel
-                    {
+                    new() {
                         StateLivedInId = 1,
                         UserId = 3,
                         State = "GA"
                     },
-                    new StateLivedInModel
-                    {
+                    new() {
                         StateLivedInId = 2,
                         UserId = 3,
                         State = "MI"
                     },
-                    new StateLivedInModel
-                    {
+                    new() {
                         StateLivedInId = 3,
                         UserId = 3,
                         State = "OH"
@@ -73,8 +70,7 @@ namespace Enrollment.XPlatform.Tests
             propertiesDictionary["HasValidDriversLicense"].Value = true;
             propertiesDictionary["StatesLivedIn"].Value = new ObservableCollection<StateLivedInModel>
             (
-                new List<StateLivedInModel>
-                {
+                [
                     new StateLivedInModel
                     {
                         StateLivedInId = 1,
@@ -93,7 +89,7 @@ namespace Enrollment.XPlatform.Tests
                         UserId = 3,
                         State = "IN"
                     }
-                }
+                ]
             );
 
             ResidencyModel currentResidency = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
@@ -133,8 +129,7 @@ namespace Enrollment.XPlatform.Tests
                 EarnedCreditAtCmc = true,
                 Institutions = new List<InstitutionModel>
                 {
-                    new InstitutionModel
-                    {
+                    new() {
                         InstitutionId = 1,
                         InstitutionState = "FL",
                         InstitutionName = "I1",
@@ -142,8 +137,7 @@ namespace Enrollment.XPlatform.Tests
                         EndYear = "2013",
                         HighestDegreeEarned = "CT"
                     },
-                    new InstitutionModel
-                    {
+                    new() {
                         InstitutionId = 2,
                         InstitutionState = "GA",
                         InstitutionName = "I1",
@@ -151,8 +145,7 @@ namespace Enrollment.XPlatform.Tests
                         EndYear = "2014",
                         HighestDegreeEarned = "DP"
                     },
-                    new InstitutionModel
-                    {
+                    new() {
                         InstitutionId = 3,
                         InstitutionState = "FL",
                         InstitutionName = "I2",
@@ -174,8 +167,7 @@ namespace Enrollment.XPlatform.Tests
             propertiesDictionary["EarnedCreditAtCmc"].Value = true;
             propertiesDictionary["Institutions"].Value = new ObservableCollection<InstitutionModel>
             (
-                new List<InstitutionModel>
-                {
+                [
                     new InstitutionModel
                     {
                         InstitutionId = 1,
@@ -203,7 +195,7 @@ namespace Enrollment.XPlatform.Tests
                         EndYear = "2019",
                         HighestDegreeEarned = "MA"
                     }
-                }
+                ]
             );
 
             AcademicModel currentAcademic = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
@@ -244,8 +236,7 @@ namespace Enrollment.XPlatform.Tests
             propertiesDictionary["EarnedCreditAtCmc"].Value = true;
             propertiesDictionary["Institutions"].Value = new ObservableCollection<InstitutionModel>
             (
-                new List<InstitutionModel>
-                {
+                [
                     new InstitutionModel
                     {
                         InstitutionId = 1,
@@ -273,7 +264,7 @@ namespace Enrollment.XPlatform.Tests
                         EndYear = "2019",
                         HighestDegreeEarned = "MA"
                     }
-                }
+                ]
             );
 
             AcademicModel currentAcademic = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel

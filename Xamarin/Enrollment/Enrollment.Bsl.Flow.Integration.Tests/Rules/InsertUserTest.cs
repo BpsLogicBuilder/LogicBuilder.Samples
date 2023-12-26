@@ -80,16 +80,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
         }
 
         #region Helpers
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -99,7 +97,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

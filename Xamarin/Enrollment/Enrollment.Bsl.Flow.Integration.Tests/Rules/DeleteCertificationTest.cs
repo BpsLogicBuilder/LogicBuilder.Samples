@@ -34,14 +34,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidCertificationRequest()
+        public async void DeleteValidCertificationRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var certification = flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
+            var certification = (await flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = certification };
 
             //act
@@ -50,10 +50,10 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid certification = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            certification = flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
+            certification = (await flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteCertificationNotFoundRequest()
+        public async void DeleteCertificationNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var certification = flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
+            var certification = (await flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             certification.UserId = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = certification };
 
@@ -78,14 +78,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting certification not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            certification = flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
+            certification = (await flowManager.EnrollmentRepository.GetAsync<CertificationModel, Certification>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(certification);
         }
 
@@ -93,15 +93,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(EnrollmentProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

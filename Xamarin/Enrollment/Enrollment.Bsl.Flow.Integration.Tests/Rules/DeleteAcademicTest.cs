@@ -34,14 +34,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidAcademicRequest()
+        public async void DeleteValidAcademicRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var academic = flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
+            var academic = (await flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = academic };
 
             //act
@@ -50,10 +50,10 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid academic = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            academic = flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
+            academic = (await flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteAcademicNotFoundRequest()
+        public async void DeleteAcademicNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var academic = flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
+            var academic = (await flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             academic.UserId = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = academic };
 
@@ -78,14 +78,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting academic not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            academic = flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
+            academic = (await flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(academic);
         }
 
@@ -93,15 +93,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(EnrollmentProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

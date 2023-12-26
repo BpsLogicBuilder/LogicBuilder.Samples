@@ -4,7 +4,7 @@
 
 namespace MigrationTool.Migrations
 {
-    public partial class nlog : Migration
+    public partial class Nlog : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -36,20 +36,17 @@ namespace Enrollment.XPlatform.Tests
                 HasValidDriversLicense = true,
                 StatesLivedIn = new List<StateLivedInModel>
                 {
-                    new StateLivedInModel
-                    {
+                    new() {
                         StateLivedInId = 1,
                         UserId = 3,
                         State = "GA"
                     },
-                    new StateLivedInModel
-                    {
+                    new() {
                         StateLivedInId = 2,
                         UserId = 3,
                         State = "MI"
                     },
-                    new StateLivedInModel
-                    {
+                    new() {
                         StateLivedInId = 3,
                         UserId = 3,
                         State = "OH"
@@ -96,8 +93,7 @@ namespace Enrollment.XPlatform.Tests
                 EarnedCreditAtCmc = true,
                 Institutions = new List<InstitutionModel>
                 {
-                    new InstitutionModel
-                    {
+                    new() {
                         InstitutionId = 1,
                         InstitutionState = "FL",
                         InstitutionName = "I1",
@@ -105,8 +101,7 @@ namespace Enrollment.XPlatform.Tests
                         EndYear = "2013",
                         HighestDegreeEarned = "CT"
                     },
-                    new InstitutionModel
-                    {
+                    new() {
                         InstitutionId = 2,
                         InstitutionState = "GA",
                         InstitutionName = "I1",
@@ -114,8 +109,7 @@ namespace Enrollment.XPlatform.Tests
                         EndYear = "2014",
                         HighestDegreeEarned = "DP"
                     },
-                    new InstitutionModel
-                    {
+                    new() {
                         InstitutionId = 3,
                         InstitutionState = "FL",
                         InstitutionName = "I2",
