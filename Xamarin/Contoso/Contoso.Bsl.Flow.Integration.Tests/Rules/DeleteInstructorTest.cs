@@ -34,14 +34,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidInstructorRequest()
+        public async void DeleteValidInstructorRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Candace Kapoor"
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = instructor };
 
             //act
@@ -50,10 +50,10 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid instructor = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Candace Kapoor"
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteInvalidInstructorRequest()
+        public async void DeleteInvalidInstructorRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Candace Kapoor"
-            ).Result.Single();
+            )).Single();
             instructor.FirstName = "";
             instructor.LastName = "";
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = instructor };
@@ -79,10 +79,10 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting invalid instructor = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Candace Kapoor"
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
@@ -91,14 +91,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteInstructorNotFoundRequest()
+        public async void DeleteInstructorNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Candace Kapoor"
-            ).Result.Single();
+            )).Single();
             instructor.ID = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = instructor };
 
@@ -108,14 +108,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting instructor not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Candace Kapoor"
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(instructor);
         }
 
@@ -123,15 +123,12 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(SchoolProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>

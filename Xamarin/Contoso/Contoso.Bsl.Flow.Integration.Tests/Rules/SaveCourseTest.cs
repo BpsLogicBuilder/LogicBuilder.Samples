@@ -35,14 +35,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void SaveCourse1()
+        public async void SaveCourse1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var course = flowManager.SchoolRepository.GetAsync<CourseModel, Course>
+            var course = (await flowManager.SchoolRepository.GetAsync<CourseModel, Course>
             (
                 s => s.CourseID == 1050
-            ).Result.Single();
+            )).Single();
             course.Title = "First";
             course.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = course };
@@ -59,14 +59,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveCourse2()
+        public async void SaveCourse2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var course = flowManager.SchoolRepository.GetAsync<CourseModel, Course>
+            var course = (await flowManager.SchoolRepository.GetAsync<CourseModel, Course>
             (
                 s => s.CourseID == 1050
-            ).Result.Single();
+            )).Single();
             course.Title = "First";
             course.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = course };
@@ -83,14 +83,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidCourse1()
+        public async void SaveInvalidCourse1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var course = flowManager.SchoolRepository.GetAsync<CourseModel, Course>
+            var course = (await flowManager.SchoolRepository.GetAsync<CourseModel, Course>
             (
                 s => s.CourseID == 1050
-            ).Result.Single();
+            )).Single();
             course.CourseID = 0;
             course.Credits = 6;
             course.DepartmentID = 0;
@@ -109,14 +109,11 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidCourse2()
+        public async void SaveInvalidCourse2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var course = flowManager.SchoolRepository.GetAsync<CourseModel, Course>
-            (
-                s => s.CourseID == 1050
-            ).Result.Single();
+            var course = (await flowManager.SchoolRepository.GetAsync<CourseModel, Course>(s => s.CourseID == 1050)).Single();
             course.CourseID = 0;
             course.Credits = 6;
             course.DepartmentID = 0;
@@ -138,9 +135,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -150,7 +145,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>

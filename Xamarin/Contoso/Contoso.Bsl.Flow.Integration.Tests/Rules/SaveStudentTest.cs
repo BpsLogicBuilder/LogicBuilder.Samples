@@ -32,21 +32,21 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveStudentRequestWithEnrollments1()
+        public async void SaveStudentRequestWithEnrollments1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var student = flowManager.SchoolRepository.GetAsync<StudentModel, Student>
+            var student = (await flowManager.SchoolRepository.GetAsync<StudentModel, Student>
             (
                 s => s.FullName == "Carson Alexander",
                 selectExpandDefinition: new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {
+                    ExpandedItems =
+                    [
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem { MemberName = "enrollments" }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
             student.FirstName = "First";
             student.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             student.Enrollments.ToList().ForEach(enrollment =>
@@ -69,14 +69,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveValidStudentRequest()
+        public async void SaveValidStudentRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var student = flowManager.SchoolRepository.GetAsync<StudentModel, Student>
+            var student = (await flowManager.SchoolRepository.GetAsync<StudentModel, Student>
             (
                 s => s.FullName == "Carson Alexander"
-            ).Result.Single();
+            )).Single();
             student.FirstName = "First";
             student.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = student };
@@ -93,14 +93,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidStudentRequest()
+        public async void SaveInvalidStudentRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var student = flowManager.SchoolRepository.GetAsync<StudentModel, Student>
+            var student = (await flowManager.SchoolRepository.GetAsync<StudentModel, Student>
             (
                 s => s.FullName == "Carson Alexander"
-            ).Result.Single();
+            )).Single();
             student.FirstName = "";
             student.LastName = "";
             student.EnrollmentDate = default;
@@ -127,9 +127,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -139,7 +137,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>
