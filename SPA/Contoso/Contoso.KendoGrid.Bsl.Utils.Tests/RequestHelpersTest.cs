@@ -298,7 +298,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                 .BuildServiceProvider();
 
             SchoolContext context = serviceProvider.GetRequiredService<SchoolContext>();
-            //context.Database.EnsureDeleted();
+            context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             Seed_Database(serviceProvider.GetRequiredService<ISchoolRepository>()).Wait();

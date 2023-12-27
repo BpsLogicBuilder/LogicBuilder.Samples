@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="5.0.10" />
-		<PackageReference Include="LogicBuilder.Kendo.ExpressionExtensions" Version="5.0.10" />
+		<PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="5.0.13-alpha.0.1" />
+		<PackageReference Include="LogicBuilder.Kendo.ExpressionExtensions" Version="5.0.13-alpha.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
