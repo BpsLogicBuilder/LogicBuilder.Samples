@@ -5,6 +5,7 @@ using Enrollment.Web.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace Enrollment.Api.Web.Tests
         [Fact]
         public async void SaveResidency()
         {
-            List<Task<SaveEntityResponse>> tasks = new List<Task<SaveEntityResponse>>();
+            List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -52,8 +53,8 @@ namespace Enrollment.Api.Web.Tests
                                     ResidentState = "AR",
                                     StatesLivedIn = new List<StateLivedInModel>
                                     {
-                                        new StateLivedInModel { StateLivedInId = 1, UserId = 1, EntityState = LogicBuilder.Domain.EntityStateType.Modified, State = "GA"  },
-                                        new StateLivedInModel { StateLivedInId = 2, UserId = 1, EntityState = LogicBuilder.Domain.EntityStateType.Modified, State = "TN" }
+                                        new() { StateLivedInId = 1, UserId = 1, EntityState = LogicBuilder.Domain.EntityStateType.Modified, State = "GA"  },
+                                        new() { StateLivedInId = 2, UserId = 1, EntityState = LogicBuilder.Domain.EntityStateType.Modified, State = "TN" }
                                     },
                                     EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                 }
@@ -63,9 +64,9 @@ namespace Enrollment.Api.Web.Tests
                     )
                 );
 
-                await Task.WhenAll(tasks);
+                var reults = (await Task.WhenAll(tasks)).ToList();
 
-                tasks.ForEach(task => Assert.True(task.Result.Success));
+                reults.ForEach(result => Assert.True(result.Success));
             }
         }
 

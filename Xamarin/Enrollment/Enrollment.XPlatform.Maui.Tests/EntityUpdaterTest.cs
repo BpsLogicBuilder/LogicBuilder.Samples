@@ -43,8 +43,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             propertiesDictionary["HasValidDriversLicense"].Value = true;
             propertiesDictionary["StatesLivedIn"].Value = new ObservableCollection<StateLivedInModel>
             (
-                new List<StateLivedInModel>
-                {
+                [
                     new StateLivedInModel
                     {
                         StateLivedInId = 1,
@@ -63,14 +62,14 @@ namespace Enrollment.XPlatform.Maui.Tests
                         UserId = 3,
                         State = "IN"
                     }
-                }
+                ]
             );
 
             //act
             ResidencyModel residencyModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (ResidencyModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.ResidencyForm.FieldSettings
             );
@@ -105,8 +104,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             propertiesDictionary["EarnedCreditAtCmc"].Value = true;
             propertiesDictionary["Institutions"].Value = new ObservableCollection<InstitutionModel>
             (
-                new List<InstitutionModel>
-                {
+                [
                     new InstitutionModel
                     {
                         InstitutionId = 1,
@@ -134,14 +132,14 @@ namespace Enrollment.XPlatform.Maui.Tests
                         EndYear = "2019",
                         HighestDegreeEarned = "MA"
                     }
-                }
+                ]
             );
 
             //act
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (AcademicModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -178,8 +176,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             propertiesDictionary["EarnedCreditAtCmc"].Value = true;
             propertiesDictionary["Institutions"].Value = new ObservableCollection<InstitutionModel>
             (
-                new List<InstitutionModel>
-                {
+                [
                     new InstitutionModel
                     {
                         InstitutionId = 1,
@@ -207,14 +204,14 @@ namespace Enrollment.XPlatform.Maui.Tests
                         EndYear = "2019",
                         HighestDegreeEarned = "MA"
                     }
-                }
+                ]
             );
 
             //act
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (AcademicModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -249,7 +246,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (AcademicModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -280,7 +277,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             ResidencyModel residencyModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (ResidencyModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.ResidencyForm.FieldSettings
             );
@@ -318,7 +315,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             AcademicModel academicModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (AcademicModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.AcademicForm.FieldSettings
             );
@@ -365,7 +362,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             UserModel userModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (UserModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.PersonalFrom.FieldSettings
             );

@@ -33,7 +33,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         #endregion Fields
 
         [Fact]
-        public void Select_Departments_In_Ascending_Order_As_LookUpsModel_Type()
+        public async void Select_Departments_In_Ascending_Order_As_LookUpsModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IEnumerable<LookUpsModel>>
@@ -46,7 +46,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<DepartmentModel, Department, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
+            var list = (await RequestHelpers.GetList<DepartmentModel, Department, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -54,7 +54,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.Name).Select(d => new LookUpsModel() {NumericValue = Convert(d.DepartmentID), Text = d.Name}))");
@@ -62,7 +62,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Courses_In_Ascending_Order_As_CourseModel_Type()
+        public async void Select_Courses_In_Ascending_Order_As_CourseModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<CourseModel>, IEnumerable<CourseModel>>
@@ -75,7 +75,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<CourseModel, Course, IEnumerable<CourseModel>, IEnumerable<Course>>
+            var list = (await RequestHelpers.GetList<CourseModel, Course, IEnumerable<CourseModel>, IEnumerable<Course>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -87,7 +87,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List.ToList();
+            )).List.ToList();
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.Title))");
@@ -95,7 +95,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Students_In_Ascending_Order_As_StudentModel_Type()
+        public async void Select_Students_In_Ascending_Order_As_StudentModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<StudentModel>, IEnumerable<StudentModel>>
@@ -108,7 +108,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<StudentModel, Student, IEnumerable<StudentModel>, IEnumerable<Student>>
+            var list = (await RequestHelpers.GetList<StudentModel, Student, IEnumerable<StudentModel>, IEnumerable<Student>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -120,7 +120,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List.ToList();
+            )).List.ToList();
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.FullName).Take(2))");
@@ -128,7 +128,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Get_Departments_ById_And_Courses_WithGenericHelper()
+        public async void Get_Departments_ById_And_Courses_WithGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<DepartmentModel>
@@ -144,16 +144,16 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
             var expression = mapper.MapToOperator(filterLambdaOperatorDescriptor).Build();
             var selectAndExpand = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
             {
-                ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                {
+                ExpandedItems =
+                [
                     new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                     {
                         MemberName = "Courses"
                     }
-                }
+                ]
             };
 
-            var entity = (DepartmentModel)RequestHelpers.GetEntity<DepartmentModel, Department>
+            var entity = (DepartmentModel)(await RequestHelpers.GetEntity<DepartmentModel, Department>
             (
                 new Business.Requests.GetEntityRequest
                 {
@@ -162,15 +162,15 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.Entity;
+            )).Entity;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => (q.Name == \"Engineering\")");
-            Assert.Equal(1, entity.Courses.Count);
+            Assert.Single(entity.Courses);
         }
 
         [Fact]
-        public void Get_Departments_ById_And_Courses_WithoutGenericHelper()
+        public async void Get_Departments_ById_And_Courses_WithoutGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<DepartmentModel>
@@ -186,16 +186,16 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
             var expression = mapper.MapToOperator(filterLambdaOperatorDescriptor).Build();
             var selectAndExpand = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
             {
-                ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                {
+                ExpandedItems =
+                [
                     new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                     {
                         MemberName = "Courses"
                     }
-                }
+                ]
             };
 
-            var entity = (DepartmentModel)RequestHelpers.GetEntity
+            var entity = (DepartmentModel)(await RequestHelpers.GetEntity
             (
                 new Business.Requests.GetEntityRequest
                 {
@@ -206,7 +206,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.Entity;
+            )).Entity;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => (q.DepartmentID == 2)");
@@ -214,7 +214,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Departments_In_Ascending_Order_As_DepartmentModel_Type()
+        public async void Select_Departments_In_Ascending_Order_As_DepartmentModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IEnumerable<DepartmentModel>>
@@ -227,7 +227,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<DepartmentModel, Department, IEnumerable<DepartmentModel>, IEnumerable<Department>>
+            var list = (await RequestHelpers.GetList<DepartmentModel, Department, IEnumerable<DepartmentModel>, IEnumerable<Department>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -235,7 +235,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.Name).Select(d => new DepartmentModel() {DepartmentID = d.DepartmentID, Name = d.Name}))");
@@ -243,7 +243,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Departments_In_Ascending_Order_As_DepartmentModel_Type_With_Courses()
+        public async void Select_Departments_In_Ascending_Order_As_DepartmentModel_Type_With_Courses()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IQueryable<DepartmentModel>>
@@ -258,15 +258,15 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
             var selectAndExpand = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
             {
-                ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                {
+                ExpandedItems =
+                [
                     new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                     {
                         MemberName = "Courses"
                     }
-                }
+                ]
             };
-            var list = RequestHelpers.GetList<DepartmentModel, Department, IQueryable<DepartmentModel>, IQueryable<Department>>
+            var list = (await RequestHelpers.GetList<DepartmentModel, Department, IQueryable<DepartmentModel>, IQueryable<Department>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -275,16 +275,16 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List.Cast<DepartmentModel>().ToList();
+            )).List.Cast<DepartmentModel>().ToList();
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.Name))");
             Assert.Equal(4, list.Count);
-            Assert.True(list.All(d => d.Courses.Any()));
+            Assert.True(list.All(d => d.Courses.Count != 0));
         }
 
         [Fact]
-        public void Select_Instructors_In_Ascending_Order_As_InstructorModel_Type()
+        public async void Select_Instructors_In_Ascending_Order_As_InstructorModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<InstructorModel>, IEnumerable<InstructorModel>>
@@ -297,7 +297,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<InstructorModel, Instructor, IEnumerable<InstructorModel>, IEnumerable<Instructor>>
+            var list = (await RequestHelpers.GetList<InstructorModel, Instructor, IEnumerable<InstructorModel>, IEnumerable<Instructor>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -305,7 +305,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.FullName).Select(d => new InstructorModel() {ID = d.ID, FirstName = d.FirstName, LastName = d.LastName, FullName = d.FullName}))");
@@ -314,7 +314,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
+        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -327,7 +327,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var response = RequestHelpers.GetList<LookUpsModel, LookUps, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
+            var response = await RequestHelpers.GetList<LookUpsModel, LookUps, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -339,7 +339,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result;
+            );
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.Where(l => (l.ListName == \"Credits\")).OrderByDescending(l => l.NumericValue).Select(l => new LookUpsModel() {NumericValue = l.NumericValue, Text = l.Text}))");
@@ -347,7 +347,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel()
+        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -360,7 +360,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList
+            var list = (await RequestHelpers.GetList
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -372,7 +372,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.Where(l => (l.ListName == \"Credits\")).OrderByDescending(l => l.NumericValue).Select(l => new LookUpsModel() {NumericValue = l.NumericValue, Text = l.Text}))");
@@ -380,7 +380,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel_Using_Object_ReturnType()
+        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel_Using_Object_ReturnType()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -393,7 +393,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var response = RequestHelpers.GetList<LookUpsModel, LookUps, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
+            var response = await RequestHelpers.GetList<LookUpsModel, LookUps, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -401,7 +401,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result;
+            );
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.Where(l => (l.ListName == \"Credits\")).OrderByDescending(l => l.NumericValue).Select(l => new LookUpsModel() {NumericValue = l.NumericValue, Text = l.Text}))");
@@ -409,7 +409,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel_Using_Object_ReturnType()
+        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel_Using_Object_ReturnType()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -422,7 +422,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList
+            var list = (await RequestHelpers.GetList
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -434,7 +434,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.Where(l => (l.ListName == \"Credits\")).OrderByDescending(l => l.NumericValue).Select(l => new LookUpsModel() {NumericValue = l.NumericValue, Text = l.Text}))");
@@ -442,7 +442,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Group_Students_By_EnrollmentDate_Return_EnrollmentDate_With_Count()
+        public async void Select_Group_Students_By_EnrollmentDate_Return_EnrollmentDate_With_Count()
         {
             //arrange
             Expression<Func<IQueryable<StudentModel>, IQueryable<LookUpsModel>>> expression1 =
@@ -469,7 +469,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList
+            var list = (await RequestHelpers.GetList
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -481,7 +481,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List.ToList();
+            )).List.ToList();
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => q.GroupBy(item => item.EnrollmentDate).OrderByDescending(group => group.Key).Select(sel => new LookUpsModel() {DateTimeValue = sel.Key, NumericValue = Convert(sel.AsQueryable().Count())})");
@@ -819,9 +819,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -829,7 +827,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     cfg.AddProfile<SchoolProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>
@@ -863,18 +860,18 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
             if ((await repository.CountAsync<StudentModel, Student>()) > 0)
                 return;//database has been seeded
 
-            InstructorModel[] instructors = new InstructorModel[]
-            {
+            InstructorModel[] instructors =
+            [
                 new InstructorModel { FirstName = "Roger",   LastName = "Zheng", HireDate = DateTime.Parse("2004-02-12"), EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new InstructorModel { FirstName = "Kim", LastName = "Abercrombie", HireDate = DateTime.Parse("1995-03-11"), EntityState = LogicBuilder.Domain.EntityStateType.Added},
                 new InstructorModel { FirstName = "Fadi", LastName = "Fakhouri", HireDate = DateTime.Parse("2002-07-06"), OfficeAssignment = new OfficeAssignmentModel { Location = "Smith 17" }, EntityState = LogicBuilder.Domain.EntityStateType.Added},
                 new InstructorModel { FirstName = "Roger", LastName = "Harui", HireDate = DateTime.Parse("1998-07-01"), OfficeAssignment = new OfficeAssignmentModel { Location = "Gowan 27" }, EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new InstructorModel { FirstName = "Candace", LastName = "Kapoor", HireDate = DateTime.Parse("2001-01-15"), OfficeAssignment = new OfficeAssignmentModel { Location = "Thompson 304" }, EntityState = LogicBuilder.Domain.EntityStateType.Added }
-            };
+            ];
             await repository.SaveGraphsAsync<InstructorModel, Instructor>(instructors);
 
-            DepartmentModel[] departments = new DepartmentModel[]
-            {
+            DepartmentModel[] departments =
+            [
                 new DepartmentModel
                 {
                     EntityState = LogicBuilder.Domain.EntityStateType.Added,
@@ -883,8 +880,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     InstructorID = instructors.Single(i => i.FirstName == "Kim" && i.LastName == "Abercrombie").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 2021, Title = "Composition",    Credits = 3},
-                        new CourseModel {CourseID = 2042, Title = "Literature",     Credits = 4}
+                        new() {CourseID = 2021, Title = "Composition",    Credits = 3},
+                        new() {CourseID = 2042, Title = "Literature",     Credits = 4}
                     }
                 },
                 new DepartmentModel
@@ -896,8 +893,8 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     InstructorID = instructors.Single(i => i.FirstName == "Fadi" && i.LastName == "Fakhouri").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 1045, Title = "Calculus",       Credits = 4},
-                        new CourseModel {CourseID = 3141, Title = "Trigonometry",   Credits = 4}
+                        new() {CourseID = 1045, Title = "Calculus",       Credits = 4},
+                        new() {CourseID = 3141, Title = "Trigonometry",   Credits = 4}
                     }
                 },
                 new DepartmentModel
@@ -908,7 +905,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     InstructorID = instructors.Single(i => i.FirstName == "Roger" && i.LastName == "Harui").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 1050, Title = "Chemistry",      Credits = 3}
+                        new() {CourseID = 1050, Title = "Chemistry",      Credits = 3}
                     }
                 },
                 new DepartmentModel
@@ -920,16 +917,16 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     InstructorID = instructors.Single(i => i.FirstName == "Candace" && i.LastName == "Kapoor").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 4022, Title = "Microeconomics", Credits = 3},
-                        new CourseModel {CourseID = 4041, Title = "Macroeconomics", Credits = 3 }
+                        new() {CourseID = 4022, Title = "Microeconomics", Credits = 3},
+                        new() {CourseID = 4041, Title = "Macroeconomics", Credits = 3 }
                     }
                 }
-            };
+            ];
             await repository.SaveGraphsAsync<DepartmentModel, Department>(departments);
 
             IEnumerable<CourseModel> courses = departments.SelectMany(d => d.Courses);
-            CourseAssignmentModel[] courseInstructors = new CourseAssignmentModel[]
-            {
+            CourseAssignmentModel[] courseInstructors =
+            [
                 new CourseAssignmentModel {
                     EntityState = LogicBuilder.Domain.EntityStateType.Added,
                     CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
@@ -970,11 +967,11 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     CourseID = courses.Single(c => c.Title == "Literature" ).CourseID,
                     InstructorID = instructors.Single(i => i.LastName == "Abercrombie").ID
                     },
-            };
+            ];
             await repository.SaveGraphsAsync<CourseAssignmentModel, CourseAssignment>(courseInstructors);
 
-            StudentModel[] students = new StudentModel[]
-            {
+            StudentModel[] students =
+            [
                 new StudentModel
                 {
                     EntityState =  LogicBuilder.Domain.EntityStateType.Added,
@@ -982,18 +979,15 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2010-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.A
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.C
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1006,18 +1000,15 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2012-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Composition" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1030,12 +1021,10 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2013-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         },
@@ -1048,8 +1037,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2012-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Chemistry").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1062,8 +1050,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2012-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Composition").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1076,8 +1063,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2011-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Literature").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1103,8 +1089,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2010-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = 1045,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1118,8 +1103,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2010-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = 1050,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -1133,19 +1117,18 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                     EnrollmentDate = DateTime.Parse("2017-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = 2021,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
                     }
                 }
-            };
+            ];
 
             await repository.SaveGraphsAsync<StudentModel, Student>(students);
 
-            LookUpsModel[] lookups = new LookUpsModel[]
-            {
+            LookUpsModel[] lookups =
+            [
                 new  LookUpsModel { ListName = "Grades", Text="A", Value="A", EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Grades", Text="B", Value="B", EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Grades", Text="C", Value="C", EntityState = LogicBuilder.Domain.EntityStateType.Added },
@@ -1157,7 +1140,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
                 new  LookUpsModel { ListName = "Credits", Text="Three", NumericValue=3, EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Credits", Text="Four", NumericValue=4, EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Credits", Text="Five", NumericValue=5, EntityState = LogicBuilder.Domain.EntityStateType.Added }
-            };
+            ];
             await repository.SaveGraphsAsync<LookUpsModel, LookUps>(lookups);
         }
         #endregion Seed DB

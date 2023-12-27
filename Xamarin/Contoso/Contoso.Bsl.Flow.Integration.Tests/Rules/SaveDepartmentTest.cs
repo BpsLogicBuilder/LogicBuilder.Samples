@@ -38,26 +38,26 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
 
         #region Tests
         [Fact]
-        public void SaveDepartment1()
+        public async void SaveDepartment1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics",
                 selectExpandDefinition: new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {//Need expansion because RowVersion is not a literal type (included without explicit expansion)
+                    ExpandedItems =
+                    [//Need expansion because RowVersion is not a literal type (included without explicit expansion)
                      //Or use GetItemsAsync which does not use projection.
                      //Todo include check for typeof(byte[]) in LogicBuilder.Expressions.Utils.TypeExtension.GetValueTypeMembers()
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
                         {
                             MemberName = "RowVersion"
                         }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
             department.Budget = 1000.1m;
             department.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = department };
@@ -74,14 +74,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveDepartment2()
+        public async void SaveDepartment2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetItemsAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetItemsAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.Single();
+            )).Single();
             department.Budget = 1000.1m;
             department.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = department };
@@ -98,26 +98,26 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidSaveDepartment1()
+        public async void SaveInvalidSaveDepartment1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics",
                 selectExpandDefinition: new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {//Need expansion because RowVersion is not a literal type (included without explicit expansion)
+                    ExpandedItems =
+                    [//Need expansion because RowVersion is not a literal type (included without explicit expansion)
                      //Or use GetItemsAsync which does not use projection.
                      //Todo include check for typeof(byte[]) in LogicBuilder.Expressions.Utils.TypeExtension.GetValueTypeMembers()
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
                         {
                             MemberName = "RowVersion"
                         }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
             department.DepartmentID = 0;
             department.InstructorID = null;
             department.Budget = -1m;
@@ -137,14 +137,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidSaveDepartment2()
+        public async void SaveInvalidSaveDepartment2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetItemsAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetItemsAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.Single();
+            )).Single();
             department.DepartmentID = 0;
             department.InstructorID = null;
             department.Budget = -1m;
@@ -168,9 +168,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -180,7 +178,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>

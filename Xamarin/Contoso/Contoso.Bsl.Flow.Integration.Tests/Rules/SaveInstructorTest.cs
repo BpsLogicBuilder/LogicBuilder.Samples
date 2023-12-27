@@ -37,14 +37,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void SaveValidInstructorRequest1()
+        public async void SaveValidInstructorRequest1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Roger Zheng"
-            ).Result.Single();
+            )).Single();
             instructor.FirstName = "First";
             instructor.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = instructor };
@@ -61,14 +61,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveValidInstructorRequest2()
+        public async void SaveValidInstructorRequest2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Roger Zheng"
-            ).Result.Single();
+            )).Single();
             instructor.FirstName = "First";
             instructor.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
             flowManager.FlowDataCache.Request = new SaveEntityRequest { Entity = instructor };
@@ -85,14 +85,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidInstructorRequest1()
+        public async void SaveInvalidInstructorRequest1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
             (
                 s => s.FullName == "Roger Zheng"
-            ).Result.Single();
+            )).Single();
             instructor.ID = 0;
             instructor.FirstName = "";
             instructor.LastName = "";
@@ -112,14 +112,11 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidInstructorRequest2()
+        public async void SaveInvalidInstructorRequest2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var instructor = flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>
-            (
-                s => s.FullName == "Roger Zheng"
-            ).Result.Single();
+            var instructor = (await flowManager.SchoolRepository.GetAsync<InstructorModel, Instructor>(s => s.FullName == "Roger Zheng")).Single();
             instructor.ID = 0;
             instructor.FirstName = "";
             instructor.LastName = "";
@@ -141,9 +138,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -153,7 +148,6 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>

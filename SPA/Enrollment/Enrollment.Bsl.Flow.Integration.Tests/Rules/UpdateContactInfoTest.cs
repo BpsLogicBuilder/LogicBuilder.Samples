@@ -35,14 +35,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void SaveContactInfo()
+        public async void SaveContactInfo()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var contactInfo = flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
+            var contactInfo = (await flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
 
             contactInfo.EnergencyContactFirstName = "Samson";
             contactInfo.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
@@ -63,14 +63,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidContactInfo()
+        public async void SaveInvalidContactInfo()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var contactInfo = flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
+            var contactInfo = (await flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             contactInfo.HasFormerName = true;
             contactInfo.FormerFirstName = null;
             contactInfo.FormerLastName = null;
@@ -101,9 +101,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -113,7 +111,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

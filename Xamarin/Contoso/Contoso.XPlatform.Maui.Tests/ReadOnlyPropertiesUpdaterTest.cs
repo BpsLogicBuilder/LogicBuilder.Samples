@@ -40,20 +40,17 @@ namespace Contoso.XPlatform.Maui.Tests
                 },
                 Courses = new List<CourseAssignmentModel>
                 {
-                    new CourseAssignmentModel
-                    {
+                    new() {
                         CourseID = 1,
                         InstructorID = 2,
                         CourseTitle = "Chemistry"
                     },
-                    new CourseAssignmentModel
-                    {
+                    new() {
                         CourseID = 2,
                         InstructorID = 3,
                         CourseTitle = "Physics"
                     },
-                    new CourseAssignmentModel
-                    {
+                    new() {
                         CourseID = 3,
                         InstructorID = 4,
                         CourseTitle = "Mathematics"
@@ -102,20 +99,17 @@ namespace Contoso.XPlatform.Maui.Tests
                 },
                 Courses = new List<CourseAssignmentModel>
                 {
-                    new CourseAssignmentModel
-                    {
+                    new() {
                         CourseID = 1,
                         InstructorID = 2,
                         CourseTitle = "Chemistry"
                     },
-                    new CourseAssignmentModel
-                    {
+                    new() {
                         CourseID = 2,
                         InstructorID = 3,
                         CourseTitle = "Physics"
                     },
-                    new CourseAssignmentModel
-                    {
+                    new() {
                         CourseID = 3,
                         InstructorID = 4,
                         CourseTitle = "Mathematics"
@@ -161,20 +155,17 @@ namespace Contoso.XPlatform.Maui.Tests
                 InstructorID = 1,
                 Courses = new List<CourseModel>
                 {
-                    new CourseModel
-                    {
+                    new() {
                         CourseID = 1,
                         Credits = 3,
                         Title = "Trigonometry"
                     },
-                    new CourseModel
-                    {
+                    new() {
                         CourseID = 2,
                         Credits = 4,
                         Title = "Physics"
                     },
-                    new CourseModel
-                    {
+                    new() {
                         CourseID = 3,
                         Credits = 5,
                         Title = "Calculus"

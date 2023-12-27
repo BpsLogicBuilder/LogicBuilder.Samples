@@ -24,6 +24,7 @@ namespace Contoso.XPlatform.Droid
         }
 
         // Prevent the back button from canceling the startup process
+        [System.Obsolete]
         public override void OnBackPressed() { }
     }
 }

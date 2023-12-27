@@ -7,12 +7,12 @@ namespace Enrollment.XPlatform.Converters
 {
     public class MenuItemColorConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (Application.Current == null)
                 throw new ArgumentException(nameof(Application.Current));
 
-            bool active = (bool)value;
+            bool active = (bool)value!;
             if (active)
             {
                 if (!Application.Current.Resources.TryGetValue(ColorKeys.PrimaryColor, out object color))
@@ -29,7 +29,7 @@ namespace Enrollment.XPlatform.Converters
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

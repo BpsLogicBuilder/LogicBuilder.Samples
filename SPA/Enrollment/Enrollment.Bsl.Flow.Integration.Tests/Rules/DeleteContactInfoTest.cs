@@ -34,14 +34,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidContactInfoRequest()
+        public async void DeleteValidContactInfoRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var contactInfo = flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
+            var contactInfo = (await flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = contactInfo };
 
             //act
@@ -50,10 +50,10 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid contactInfo = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            contactInfo = flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
+            contactInfo = (await flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteContactInfoNotFoundRequest()
+        public async void DeleteContactInfoNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var contactInfo = flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
+            var contactInfo = (await flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             contactInfo.UserId = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = contactInfo };
 
@@ -78,14 +78,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting contactInfo not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            contactInfo = flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
+            contactInfo = (await flowManager.EnrollmentRepository.GetAsync<ContactInfoModel, ContactInfo>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(contactInfo);
         }
 
@@ -93,15 +93,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(EnrollmentProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

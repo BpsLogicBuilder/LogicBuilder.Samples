@@ -6,6 +6,7 @@ using Enrollment.XPlatform.Flow.Settings.Screen;
 using Enrollment.XPlatform.Services;
 using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.ViewModels.ReadOnlys;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -62,7 +63,17 @@ namespace Enrollment.XPlatform.ViewModels.ListPage
             BaseResponse baseResponse = await GetList();
 
             if (baseResponse.Success == false)
+            {
+#if DEBUG
+                await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null here*/
+                (
+                    "Errors",
+                    string.Join(System.Environment.NewLine, baseResponse.ErrorMessages),
+                    "Ok"
+                );
+#endif
                 return;
+            }
 
             GetListResponse getListResponse = (GetListResponse)baseResponse;
             this.Items = new ObservableCollection<Dictionary<string, IReadOnly>>

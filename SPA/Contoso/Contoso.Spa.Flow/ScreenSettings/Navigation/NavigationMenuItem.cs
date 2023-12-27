@@ -2,20 +2,12 @@
 
 namespace Contoso.Spa.Flow.ScreenSettings.Navigation
 {
-    public class NavigationMenuItem
+    public class NavigationMenuItem(int targetModule, string initialModule = "initial", string Text = "menuText", List<NavigationMenuItem> SubItems = null!)
     {
-        public NavigationMenuItem(int targetModule, string initialModule = "initial", string Text = "menuText", List<NavigationMenuItem> SubItems = null)
-        {
-            this.TargetModule = targetModule;
-            this.InitialModule = initialModule;
-            this.Text = Text;
-            this.SubItems = SubItems;
-        }
-
-        public int TargetModule { get; set; }
-        public string InitialModule { get; set; }
-        public string Text { get; set; }
+        public int TargetModule { get; set; } = targetModule;
+        public string InitialModule { get; set; } = initialModule;
+        public string Text { get; set; } = Text;
         public bool Active { get; set; }
-        public List<NavigationMenuItem> SubItems { get; set; }
+        public List<NavigationMenuItem> SubItems { get; set; } = SubItems ?? [];
     }
 }

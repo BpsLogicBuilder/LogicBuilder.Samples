@@ -40,7 +40,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
         #endregion Fields
 
         [Fact]
-        public void Get_persons_ungrouped_with_aggregates()
+        public async void Get_persons_ungrouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -59,7 +59,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(2, result.Total);
             Assert.Equal(2, ((IEnumerable<PersonalModel>)result.Data).Count());
@@ -69,7 +69,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_persons_grouped_with_aggregates()
+        public async void Get_persons_grouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -88,7 +88,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
 
             IEnrollmentRepository repository = serviceProvider.GetRequiredService<IEnrollmentRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(2, result.Total);
             Assert.Single((IEnumerable<AggregateFunctionsGroup>)result.Data);
@@ -149,10 +149,10 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
             if ((await repository.CountAsync<LookUpsModel, LookUps>()) > 0)
                 return;//database has been seeded
 
-            XmlDocument xDoc = new XmlDocument();
+            XmlDocument xDoc = new();
             xDoc.Load(Path.Combine(Directory.GetCurrentDirectory(), "DropDowns.xml"));
 
-            IList<LookUpsModel> lookUps = xDoc.SelectNodes("//list")
+            IList<LookUpsModel> lookUps = xDoc.SelectNodes("//list")!
                 .OfType<XmlElement>()
                 .SelectMany
                 (
@@ -162,22 +162,22 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                     (
                         i =>
                         {
-                            if (new HashSet<string> { "isVeteran", "receivedGed", "creditHoursAtCmc", "yesNo" }.Contains(e.Attributes["id"].Value))
+                            if (new HashSet<string> { "isVeteran", "receivedGed", "creditHoursAtCmc", "yesNo" }.Contains(e.Attributes["id"]!.Value))
                                 return new LookUpsModel
                                 {
-                                    ListName = e.Attributes["id"].Value,
+                                    ListName = e.Attributes["id"]!.Value,
                                     EntityState = LogicBuilder.Domain.EntityStateType.Added,
-                                    BooleanValue = bool.Parse(i.Attributes["name"].Value),
-                                    Text = i.Attributes["value"].Value,
+                                    BooleanValue = bool.Parse(i.Attributes["name"]!.Value),
+                                    Text = i.Attributes["value"]!.Value,
                                     Order = 0
                                 };
                             else
                                 return new LookUpsModel
                                 {
-                                    ListName = e.Attributes["id"].Value,
+                                    ListName = e.Attributes["id"]!.Value,
                                     EntityState = LogicBuilder.Domain.EntityStateType.Added,
-                                    Value = i.Attributes["name"].Value,
-                                    Text = i.Attributes["value"].Value,
+                                    Value = i.Attributes["name"]!.Value,
+                                    Text = i.Attributes["value"]!.Value,
                                     Order = 0
                                 };
                         }
@@ -186,8 +186,8 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
 
             await repository.SaveGraphsAsync<LookUpsModel, LookUps>(lookUps);
 
-            UserModel[] users = new UserModel[]
-            {
+            UserModel[] users =
+            [
                 new UserModel
                 {
                     UserName = "ForeignStudent01",
@@ -202,8 +202,8 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                         ResidentState = "AR",
                         StatesLivedIn = new List<StateLivedInModel>
                         {
-                            new StateLivedInModel { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "OH"  },
-                            new StateLivedInModel { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "TN"  }
+                            new() { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "OH"  },
+                            new() { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "TN"  }
                         }
                     },
                     Academic = new AcademicModel
@@ -218,8 +218,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                         NcHighSchoolName = "NCSCHOOL1",
                         Institutions = new List<InstitutionModel>
                         {
-                            new InstitutionModel
-                            {
+                            new() {
                                 EntityState = LogicBuilder.Domain.EntityStateType.Added,
                                 HighestDegreeEarned = "BD",
                                 StartYear = "2015",
@@ -303,8 +302,8 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                         ResidentState = "AR",
                         StatesLivedIn = new List<StateLivedInModel>
                         {
-                            new StateLivedInModel { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "GA"  },
-                            new StateLivedInModel { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "TN" }
+                            new() { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "GA"  },
+                            new() { EntityState = LogicBuilder.Domain.EntityStateType.Added, State = "TN" }
                         }
                     },
                     Academic = new AcademicModel
@@ -319,8 +318,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                         NcHighSchoolName = "NCSCHOOL1",
                         Institutions = new List<InstitutionModel>
                         {
-                            new InstitutionModel
-                            {
+                            new() {
                                 EntityState = LogicBuilder.Domain.EntityStateType.Added,
                                 HighestDegreeEarned = "CT",
                                 StartYear = "2016",
@@ -386,7 +384,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
                     },
                     EntityState = LogicBuilder.Domain.EntityStateType.Added
                 }
-            };
+            ];
 
             await repository.SaveGraphsAsync<UserModel, User>(users);
         }

@@ -25,17 +25,15 @@ namespace Contoso.XPlatform.Tests
         #endregion Fields
 
         [Fact]
-        public void CanCreatePagingSelectorDescriptorWithoutFilter()
+        public async void CanCreatePagingSelectorDescriptorWithoutFilter()
         {
             //act
-            SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = serviceProvider.GetRequiredService<IPagingSelectorBuilder>().CreateSelector
+            SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = await serviceProvider.GetRequiredService<IPagingSelectorBuilder>().CreateSelector
             (
                 10,
                 "",
                 SearchFormDescriptors.SudentsForm.CreatePagingSelectorFlowName
-            )
-            .GetAwaiter()
-            .GetResult();
+            );
 
             SelectorLambdaOperator selectorLambdaOperator = (SelectorLambdaOperator)serviceProvider.GetRequiredService<IMapper>().MapToOperator(selectorLambdaOperatorDescriptor);
             Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>> selector = (Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>>)selectorLambdaOperator.Build();
@@ -49,17 +47,15 @@ namespace Contoso.XPlatform.Tests
         }
 
         [Fact]
-        public void CanCreatePagingSelectorDescriptorWithFilter()
+        public async void CanCreatePagingSelectorDescriptorWithFilter()
         {
             //act
-            SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = serviceProvider.GetRequiredService<IPagingSelectorBuilder>().CreateSelector
+            SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = await serviceProvider.GetRequiredService<IPagingSelectorBuilder>().CreateSelector
             (
                 10,
                 "Joh",
                 SearchFormDescriptors.SudentsForm.CreatePagingSelectorFlowName
-            )
-            .GetAwaiter()
-            .GetResult();
+            );
 
             SelectorLambdaOperator selectorLambdaOperator = (SelectorLambdaOperator)serviceProvider.GetRequiredService<IMapper>().MapToOperator(selectorLambdaOperatorDescriptor);
             Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>> selector = (Expression<Func<IQueryable<StudentModel>, IQueryable<StudentModel>>>)selectorLambdaOperator.Build();

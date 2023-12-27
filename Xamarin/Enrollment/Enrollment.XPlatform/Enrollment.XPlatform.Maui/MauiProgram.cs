@@ -34,8 +34,8 @@ namespace Enrollment.XPlatform
                     if (DeviceInfo.Platform == DevicePlatform.WinUI)
                         fonts.AddFont(FontAwesomeFontFile, FontAwesomeFontFamily.WinUISolid);
 
-                    fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
-                    fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                    fonts.AddFont("OpenSans_Regular.ttf", "OpenSansRegular");
+                    fonts.AddFont("OpenSans_Semibold.ttf", "OpenSansSemibold");
                 });
 
             BlobCache.ApplicationName = AppConstants.ApplicationName;

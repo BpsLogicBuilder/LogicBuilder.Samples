@@ -35,25 +35,25 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void SaveAcademic()
+        public async void SaveAcademic()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var academic = flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
+            var academic = (await flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
             (
                 s => s.UserId == 1,
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new System.Collections.Generic.List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {
+                    ExpandedItems =
+                    [
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
                         {
                             MemberName = "Institutions"
                         }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
 
             academic.LastHighSchoolLocation = "FL";
             InstitutionModel institution = academic.Institutions.First();
@@ -78,25 +78,25 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidAcademic()
+        public async void SaveInvalidAcademic()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var academic = flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
+            var academic = (await flowManager.EnrollmentRepository.GetAsync<AcademicModel, Academic>
             (
                 s => s.UserId == 1,
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new System.Collections.Generic.List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {
+                    ExpandedItems =
+                    [
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
                         {
                             MemberName = "Institutions"
                         }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
             academic.LastHighSchoolLocation = null;
             academic.FromDate = new DateTime();
             academic.ToDate = new DateTime();
@@ -122,9 +122,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -134,7 +132,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

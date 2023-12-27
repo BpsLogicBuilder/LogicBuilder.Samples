@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace MigrationTool.Migrations
 {
-    public partial class lookup : Migration
+    public partial class Lookup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -27,7 +27,7 @@ namespace Contoso.Bsl.Web.Tests
         [Fact]
         public async void SaveInstructor()
         {
-            List<Task<SaveEntityResponse>> tasks = new List<Task<SaveEntityResponse>>();
+            List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -48,7 +48,7 @@ namespace Contoso.Bsl.Web.Tests
                                     OfficeAssignment = new OfficeAssignmentModel { Location = "Smith 17", EntityState = LogicBuilder.Domain.EntityStateType.Modified }, 
                                     Courses = new List<CourseAssignmentModel>
                                     {
-                                        new CourseAssignmentModel { CourseID = 1045, InstructorID = 3, EntityState = LogicBuilder.Domain.EntityStateType.Unchanged }
+                                        new() { CourseID = 1045, InstructorID = 3, EntityState = LogicBuilder.Domain.EntityStateType.Unchanged }
                                     },
                                     EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                 }
@@ -58,9 +58,10 @@ namespace Contoso.Bsl.Web.Tests
                     )
                 );
 
-                await Task.WhenAll(tasks);
+                var results = await Task.WhenAll(tasks);
 
-                tasks.ForEach(task => Assert.True(task.Result.Success));
+                foreach (var result in results)
+                    Assert.True(result.Success);
             }
         }
 

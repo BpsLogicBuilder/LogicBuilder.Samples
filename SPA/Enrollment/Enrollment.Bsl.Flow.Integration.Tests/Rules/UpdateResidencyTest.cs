@@ -36,25 +36,25 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void SaveResidency()
+        public async void SaveResidency()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var residency = flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
+            var residency = (await flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
             (
                 s => s.UserId == 1,
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new System.Collections.Generic.List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {
+                    ExpandedItems =
+                    [
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
                         {
                             MemberName = "StatesLivedIn"
                         }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
 
             residency.DriversLicenseNumber = "NC54321";
             StateLivedInModel stateLivedIn = residency.StatesLivedIn.First();
@@ -79,25 +79,25 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidResidency()
+        public async void SaveInvalidResidency()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var residency = flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
+            var residency = (await flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
             (
                 s => s.User.UserName == "DomesticStudent01",
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
                 {
-                    ExpandedItems = new System.Collections.Generic.List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {
+                    ExpandedItems =
+                    [
                         new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
                         {
                             MemberName = "StatesLivedIn"
                         }
-                    }
+                    ]
                 }
-            ).Result.Single();
+            )).Single();
             residency.CitizenshipStatus = null;
             residency.StatesLivedIn = new List<StateLivedInModel>();
             residency.ResidentState = null;
@@ -122,9 +122,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -134,7 +132,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

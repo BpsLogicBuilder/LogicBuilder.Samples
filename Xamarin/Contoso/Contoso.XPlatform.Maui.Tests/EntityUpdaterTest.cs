@@ -44,8 +44,7 @@ namespace Contoso.XPlatform.Maui.Tests
             propertiesDictionary["OfficeAssignment.Location"].Value = "Location1";
             propertiesDictionary["Courses"].Value = new ObservableCollection<CourseAssignmentModel>
             (
-                new List<CourseAssignmentModel>
-                {
+                [
                     new CourseAssignmentModel
                     {
                         CourseID = 1,
@@ -64,14 +63,14 @@ namespace Contoso.XPlatform.Maui.Tests
                         InstructorID = 2,
                         CourseTitle = "Mathematics"
                     }
-                }
+                ]
             );
 
             //act
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithInlineOfficeAssignment.FieldSettings
             );
@@ -105,8 +104,7 @@ namespace Contoso.XPlatform.Maui.Tests
             propertiesDictionary["OfficeAssignment"].Value = new OfficeAssignmentModel { Location = "Location1" };
             propertiesDictionary["Courses"].Value = new ObservableCollection<CourseAssignmentModel>
             (
-                new List<CourseAssignmentModel>
-                {
+                [
                     new CourseAssignmentModel
                     {
                         CourseID = 1,
@@ -125,14 +123,14 @@ namespace Contoso.XPlatform.Maui.Tests
                         InstructorID = 2,
                         CourseTitle = "Mathematics"
                     }
-                }
+                ]
             );
 
             //act
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithPopupOfficeAssignment.FieldSettings
             );/*does not return null*/
@@ -166,8 +164,7 @@ namespace Contoso.XPlatform.Maui.Tests
             propertiesDictionary["InstructorID"].Value = 1;
             propertiesDictionary["Courses"].Value = new ObservableCollection<CourseModel>
             (
-                new List<CourseModel>
-                {
+                [
                     new CourseModel
                     {
                         CourseID = 1,
@@ -186,14 +183,14 @@ namespace Contoso.XPlatform.Maui.Tests
                         Credits = 5,
                         Title = "Calculus"
                     }
-                }
+                ]
             );
 
             //act
             DepartmentModel departmentModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (DepartmentModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.DepartmentForm.FieldSettings
             );/*does not return null*/
@@ -227,8 +224,7 @@ namespace Contoso.XPlatform.Maui.Tests
             propertiesDictionary["InstructorID"].Value = 1;
             propertiesDictionary["Courses"].Value = new ObservableCollection<CourseModel>
             (
-                new List<CourseModel>
-                {
+                [
                     new CourseModel
                     {
                         CourseID = 1,
@@ -247,14 +243,14 @@ namespace Contoso.XPlatform.Maui.Tests
                         Credits = 5,
                         Title = "Calculus"
                     }
-                }
+                ]
             );
 
             //act
             DepartmentModel departmentModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (DepartmentModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.DepartmentForm.FieldSettings
             );
@@ -288,7 +284,7 @@ namespace Contoso.XPlatform.Maui.Tests
             DepartmentModel departmentModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (DepartmentModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.DepartmentForm.FieldSettings
             );
@@ -317,8 +313,7 @@ namespace Contoso.XPlatform.Maui.Tests
             //propertiesDictionary["OfficeAssignment.Location"].Value = "Location1";
             propertiesDictionary["Courses"].Value = new ObservableCollection<CourseAssignmentModel>
             (
-                new List<CourseAssignmentModel>
-                {
+                [
                     new CourseAssignmentModel
                     {
                         CourseID = 1,
@@ -337,14 +332,14 @@ namespace Contoso.XPlatform.Maui.Tests
                         InstructorID = 2,
                         CourseTitle = "Mathematics"
                     }
-                }
+                ]
             );
 
             //act
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithInlineOfficeAssignment.FieldSettings
             );
@@ -377,7 +372,7 @@ namespace Contoso.XPlatform.Maui.Tests
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithInlineOfficeAssignment.FieldSettings
             );
@@ -406,8 +401,7 @@ namespace Contoso.XPlatform.Maui.Tests
             //propertiesDictionary["OfficeAssignment"].Value = new OfficeAssignmentModel { Location = "Location1" };
             propertiesDictionary["Courses"].Value = new ObservableCollection<CourseAssignmentModel>
             (
-                new List<CourseAssignmentModel>
-                {
+                [
                     new CourseAssignmentModel
                     {
                         CourseID = 1,
@@ -426,14 +420,14 @@ namespace Contoso.XPlatform.Maui.Tests
                         InstructorID = 2,
                         CourseTitle = "Mathematics"
                     }
-                }
+                ]
             );
 
             //act
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithPopupOfficeAssignment.FieldSettings
             );
@@ -466,7 +460,7 @@ namespace Contoso.XPlatform.Maui.Tests
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithPopupOfficeAssignment.FieldSettings
             );
@@ -497,7 +491,7 @@ namespace Contoso.XPlatform.Maui.Tests
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithPopupOfficeAssignment.FieldSettings
             );
@@ -530,7 +524,7 @@ namespace Contoso.XPlatform.Maui.Tests
             InstructorModel instructorModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (InstructorModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.InstructorFormWithPopupOfficeAssignment.FieldSettings
             );
@@ -562,7 +556,7 @@ namespace Contoso.XPlatform.Maui.Tests
             DepartmentModel departmentModel = serviceProvider.GetRequiredService<IEntityStateUpdater>().GetUpdatedModel
             (
                 (DepartmentModel?)null,
-                new Dictionary<string, object?>(),
+                [],
                 properties,
                 Descriptors.DepartmentForm.FieldSettings
             );

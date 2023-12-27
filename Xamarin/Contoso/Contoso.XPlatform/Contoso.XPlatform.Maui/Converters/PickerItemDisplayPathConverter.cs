@@ -9,12 +9,12 @@ namespace Contoso.XPlatform.Converters
 {
     public class PickerItemDisplayPathConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             if (value == null)
                 return null!;/*ok to return null for converters*/
 
-            object bindingContext = ((VisualElement)parameter).BindingContext;
+            object bindingContext = ((VisualElement)parameter!).BindingContext;
             var dropDownTemplate = bindingContext.GetPropertyValue<DropDownTemplateDescriptor>
             (
                 nameof(PickerValidatableObject<int>.DropDownTemplate)
@@ -23,7 +23,7 @@ namespace Contoso.XPlatform.Converters
             return value.GetPropertyValue<string>(dropDownTemplate.TextField);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
         }

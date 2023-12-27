@@ -31,8 +31,7 @@ namespace Enrollment.XPlatform.Tests
                 typeof(LookUpsModel),
                 "Loading ...",
                 "TextDetailTemplate",
-                new List<ItemBindingParameters>
-                {
+                [
                     new TextItemBindingParameters
                     (
                         "Text",
@@ -41,7 +40,7 @@ namespace Enrollment.XPlatform.Tests
                         "Enrollment Date: {0:MM/dd/yyyy}",
                         new TextFieldTemplateParameters("TextTemplate")
                     )
-                },
+                ],
                 null,
                 null
             );

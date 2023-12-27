@@ -34,14 +34,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidResidencyRequest()
+        public async void DeleteValidResidencyRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var residency = flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
+            var residency = (await flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = residency };
 
             //act
@@ -50,10 +50,10 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid residency = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            residency = flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
+            residency = (await flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteResidencyNotFoundRequest()
+        public async void DeleteResidencyNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var residency = flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
+            var residency = (await flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             residency.UserId = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = residency };
 
@@ -78,14 +78,11 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting residency not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            residency = flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>
-            (
-                s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            residency = (await flowManager.EnrollmentRepository.GetAsync<ResidencyModel, Residency>(s => s.UserId == 1)).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(residency);
         }
 
@@ -93,15 +90,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(EnrollmentProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

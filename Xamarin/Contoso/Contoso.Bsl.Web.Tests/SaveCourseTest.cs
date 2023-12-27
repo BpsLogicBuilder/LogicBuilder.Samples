@@ -27,7 +27,7 @@ namespace Contoso.Bsl.Web.Tests
         [Fact]
         public async void SaveCourse()
         {
-            List<Task<SaveEntityResponse>> tasks = new List<Task<SaveEntityResponse>>();
+            List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -53,9 +53,10 @@ namespace Contoso.Bsl.Web.Tests
                     )
                 );
 
-                await Task.WhenAll(tasks);
+                var results = await Task.WhenAll(tasks);
 
-                tasks.ForEach(task => Assert.True(task.Result.Success));
+                foreach (var result in results)
+                    Assert.True(result.Success);
             }
         }
 

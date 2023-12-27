@@ -35,14 +35,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void SavePersonal()
+        public async void SavePersonal()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var personal = flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
+            var personal = (await flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
 
             personal.FirstName = "Samson";
             personal.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
@@ -63,14 +63,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void SaveInvalidPersonal()
+        public async void SaveInvalidPersonal()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var personal = flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
+            var personal = (await flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             personal.FirstName = null;
             personal.MiddleName = null;
             personal.LastName = null;
@@ -100,9 +100,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -112,7 +110,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

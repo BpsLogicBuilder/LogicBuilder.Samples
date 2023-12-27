@@ -5,6 +5,7 @@ using Contoso.Web.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -27,7 +28,7 @@ namespace Contoso.Api.Web.Tests
         [Fact]
         public async void SaveInstructor()
         {
-            List<Task<SaveEntityResponse>> tasks = new();
+            List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -48,7 +49,7 @@ namespace Contoso.Api.Web.Tests
                                     OfficeAssignment = new OfficeAssignmentModel { Location = "Smith 17", EntityState = LogicBuilder.Domain.EntityStateType.Modified }, 
                                     Courses = new List<CourseAssignmentModel>
                                     {
-                                        new CourseAssignmentModel { CourseID = 1045, InstructorID = 3, EntityState = LogicBuilder.Domain.EntityStateType.Unchanged }
+                                        new() { CourseID = 1045, InstructorID = 3, EntityState = LogicBuilder.Domain.EntityStateType.Unchanged }
                                     },
                                     EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                 }
@@ -58,9 +59,9 @@ namespace Contoso.Api.Web.Tests
                     )
                 );
 
-                await Task.WhenAll(tasks);
+                var results = (await Task.WhenAll(tasks)).ToList();
 
-                tasks.ForEach(task => Assert.True(task.Result.Success));
+                results.ForEach(result => Assert.True(result.Success));
             }
         }
 

@@ -34,14 +34,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidDepartmentRequest()
+        public async void DeleteValidDepartmentRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = department };
 
             //act
@@ -50,10 +50,10 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid department = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeleteInvalidDepartmentRequest()
+        public async void DeleteInvalidDepartmentRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.Single();
+            )).Single();
             department.Name = "";
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = department };
 
@@ -78,26 +78,26 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting invalid department = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(department);
         }
 
         [Fact]
-        public void DeleteDepartmentNotFoundRequest()
+        public async void DeleteDepartmentNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.Single();
+            )).Single();
             department.DepartmentID = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = department };
 
@@ -107,14 +107,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting department not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            department = flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
+            department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(department);
         }
 
@@ -122,15 +122,12 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(SchoolProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>

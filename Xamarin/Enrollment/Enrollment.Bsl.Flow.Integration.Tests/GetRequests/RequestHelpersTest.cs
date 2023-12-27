@@ -35,7 +35,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         #endregion Fields
 
         [Fact]
-        public void Select_Residencies_In_Ascending_Order_As_LookUpsModel_Type()
+        public async void Select_Residencies_In_Ascending_Order_As_LookUpsModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<ResidencyModel>, IEnumerable<LookUpsModel>>
@@ -48,7 +48,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<ResidencyModel, Residency, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
+            var list = (await RequestHelpers.GetList<ResidencyModel, Residency, IEnumerable<LookUpsModel>, IEnumerable<LookUps>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -56,7 +56,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.DriversLicenseNumber).Select(d => new LookUpsModel() {NumericValue = Convert(d.UserId), Text = d.DriversLicenseNumber}))");
@@ -64,7 +64,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Users_In_Ascending_Order_As_UserModel_Type()
+        public async void Select_Users_In_Ascending_Order_As_UserModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<UserModel>, IEnumerable<UserModel>>
@@ -77,7 +77,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<UserModel, User, IEnumerable<UserModel>, IEnumerable<User>>
+            var list = (await RequestHelpers.GetList<UserModel, User, IEnumerable<UserModel>, IEnumerable<User>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -89,7 +89,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List.ToList();
+            )).List.ToList();
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.UserName))");
@@ -97,7 +97,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Get_Residency_ById_And_Courses_WithGenericHelper()
+        public async void Get_Residency_ById_And_Courses_WithGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<ResidencyModel>
@@ -113,16 +113,16 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
             var expression = mapper.MapToOperator(filterLambdaOperatorDescriptor).Build();
             var selectAndExpand = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
             {
-                ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                {
+                ExpandedItems =
+                [
                     new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                     {
                         MemberName = "StatesLivedIn"
                     }
-                }
+                ]
             };
 
-            var entity = (ResidencyModel)RequestHelpers.GetEntity<ResidencyModel, Residency>
+            var entity = (ResidencyModel)(await RequestHelpers.GetEntity<ResidencyModel, Residency>
             (
                 new Business.Requests.GetEntityRequest
                 {
@@ -131,7 +131,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.Entity;
+            )).Entity;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => (q.UserId == 1)");
@@ -139,7 +139,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Get_Residency_ById_And_Courses_WithoutGenericHelper()
+        public async void Get_Residency_ById_And_Courses_WithoutGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<ResidencyModel>
@@ -155,16 +155,16 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
             var expression = mapper.MapToOperator(filterLambdaOperatorDescriptor).Build();
             var selectAndExpand = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
             {
-                ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                {
+                ExpandedItems =
+                [
                     new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                     {
                         MemberName = "StatesLivedIn"
                     }
-                }
+                ]
             };
 
-            var entity = (ResidencyModel)RequestHelpers.GetEntity
+            var entity = (ResidencyModel)(await RequestHelpers.GetEntity
             (
                 new Business.Requests.GetEntityRequest
                 {
@@ -175,7 +175,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.Entity;
+            )).Entity;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => (q.UserId == 2)");
@@ -183,7 +183,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type()
+        public async void Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<ResidencyModel>, IEnumerable<ResidencyModel>>
@@ -196,7 +196,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
 
             //act
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
-            var list = RequestHelpers.GetList<ResidencyModel, Residency, IEnumerable<ResidencyModel>, IEnumerable<Residency>>
+            var list = (await RequestHelpers.GetList<ResidencyModel, Residency, IEnumerable<ResidencyModel>, IEnumerable<Residency>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -204,7 +204,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List;
+            )).List;
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.DriversLicenseNumber).Select(d => new ResidencyModel() {UserId = d.UserId, DriversLicenseNumber = d.DriversLicenseNumber}))");
@@ -212,7 +212,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public void Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type_With_Courses()
+        public async void Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type_With_Courses()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<ResidencyModel>, IQueryable<ResidencyModel>>
@@ -227,15 +227,15 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
             var expression = mapper.MapToOperator(selectorLambdaOperatorDescriptor).Build();
             var selectAndExpand = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
             {
-                ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                {
+                ExpandedItems =
+                [
                     new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                     {
                         MemberName = "StatesLivedIn"
                     }
-                }
+                ]
             };
-            var list = RequestHelpers.GetList<ResidencyModel, Residency, IQueryable<ResidencyModel>, IQueryable<Residency>>
+            var list = (await RequestHelpers.GetList<ResidencyModel, Residency, IQueryable<ResidencyModel>, IQueryable<Residency>>
             (
                 new Business.Requests.GetTypedListRequest
                 {
@@ -244,17 +244,17 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 },
                 repository,
                 mapper
-            ).Result.List.Cast<ResidencyModel>().ToList();
+            )).List.Cast<ResidencyModel>().ToList();
 
             //assert
             AssertFilterStringIsCorrect(expression, "q => Convert(q.OrderBy(d => d.DriversLicenseNumber))");
             Assert.Equal(2, list.Count);
-            Assert.True(list.All(d => d.StatesLivedIn.Any()));
+            Assert.True(list.All(d => d.StatesLivedIn.Count != 0));
         }
 
         #region Helpers
-        private SelectOperatorDescriptor GetResidenciesBodyForLookupModelType()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetResidenciesBodyForLookupModelType()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -291,8 +291,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private SelectOperatorDescriptor GetResidenciesBodyForResidencyModelType()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetResidenciesBodyForResidencyModelType()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -325,8 +325,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private OrderByOperatorDescriptor GetResidenciesBodyOrderByDriversLicenseNumber()
-            => new OrderByOperatorDescriptor
+        private static OrderByOperatorDescriptor GetResidenciesBodyOrderByDriversLicenseNumber()
+            => new()
             {
                 SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
                 SelectorBody = new MemberSelectorOperatorDescriptor
@@ -338,8 +338,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private OrderByOperatorDescriptor GetUsersBodyForUserModelType()
-            => new OrderByOperatorDescriptor
+        private static OrderByOperatorDescriptor GetUsersBodyForUserModelType()
+            => new()
             {
                 SourceOperand = new ParameterOperatorDescriptor { ParameterName = "q" },
                 SelectorBody = new MemberSelectorOperatorDescriptor
@@ -351,8 +351,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 SelectorParameterName = "d"
             };
 
-        private EqualsBinaryOperatorDescriptor GetResidencyByIdFilterBody(int id)
-            => new EqualsBinaryOperatorDescriptor
+        private static EqualsBinaryOperatorDescriptor GetResidencyByIdFilterBody(int id)
+            => new()
             {
                 Left = new MemberSelectorOperatorDescriptor
                 {
@@ -362,8 +362,8 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 Right = new ConstantOperatorDescriptor { Type = typeof(int).FullName, ConstantValue = id }
             };
 
-        private SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
-            => new SelectorLambdaOperatorDescriptor
+        private static SelectorLambdaOperatorDescriptor GetExpressionDescriptor<T, TResult>(OperatorDescriptorBase selectorBody, string parameterName = "$it")
+            => new()
             {
                 Selector = selectorBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
@@ -371,15 +371,15 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                 BodyType = typeof(TResult).AssemblyQualifiedName
             };
 
-        private FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
-            => new FilterLambdaOperatorDescriptor
+        private static FilterLambdaOperatorDescriptor GetFilterExpressionDescriptor<T>(OperatorDescriptorBase filterBody, string parameterName = "$it")
+            => new()
             {
                 FilterBody = filterBody,
                 SourceElementType = typeof(T).AssemblyQualifiedName,
                 ParameterName = parameterName
             };
 
-        private void AssertFilterStringIsCorrect(Expression expression, string expected)
+        private static void AssertFilterStringIsCorrect(Expression expression, string expected)
         {
             AssertStringIsCorrect(ExpressionStringBuilder.ToString(expression));
 
@@ -395,9 +395,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
 
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -405,7 +403,6 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
                     cfg.AddProfile<EnrollmentProfile>();
                     cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>

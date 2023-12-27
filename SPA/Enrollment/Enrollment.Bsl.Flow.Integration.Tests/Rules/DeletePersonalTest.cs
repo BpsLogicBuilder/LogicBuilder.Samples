@@ -34,14 +34,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public void DeleteValidPersonalRequest()
+        public async void DeleteValidPersonalRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var personal = flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
+            var personal = (await flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = personal };
 
             //act
@@ -50,10 +50,10 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting valid personal = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            personal = flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
+            personal = (await flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.True(flowManager.FlowDataCache.Response.Success);
@@ -61,14 +61,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public void DeletePersonalNotFoundRequest()
+        public async void DeletePersonalNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var personal = flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
+            var personal = (await flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
             (
                 s => s.UserId == 1
-            ).Result.Single();
+            )).Single();
             personal.UserId = Int32.MaxValue;
             flowManager.FlowDataCache.Request = new DeleteEntityRequest { Entity = personal };
 
@@ -78,14 +78,14 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
             stopWatch.Stop();
             this.output.WriteLine("Deleting personal not found = {0}", stopWatch.Elapsed.TotalMilliseconds);
 
-            personal = flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
+            personal = (await flowManager.EnrollmentRepository.GetAsync<PersonalModel, Personal>
             (
                 s => s.UserId == 1
-            ).Result.SingleOrDefault();
+            )).SingleOrDefault();
 
             //assert
             Assert.False(flowManager.FlowDataCache.Response.Success);
-            Assert.Equal(1, flowManager.FlowDataCache.Response.ErrorMessages.Count);
+            Assert.Single(flowManager.FlowDataCache.Response.ErrorMessages);
             Assert.NotNull(personal);
         }
 
@@ -93,15 +93,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            if (MapperConfiguration == null)
-            {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration ??= new MapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
                     cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(EnrollmentProfile));
                 });
-            }
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<EnrollmentContext>
