@@ -65,7 +65,7 @@ namespace Enrollment.KendoGrid.Api.Tests
                 BASE_URL
             );
 
-            Assert.True(result.Any());
+            Assert.NotEmpty(result);
         }
     }
 }

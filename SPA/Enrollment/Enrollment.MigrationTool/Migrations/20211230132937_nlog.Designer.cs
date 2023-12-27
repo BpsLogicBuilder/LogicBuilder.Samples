@@ -12,7 +12,7 @@ namespace Enrollment.MigrationTool.Migrations
 {
     [DbContext(typeof(MigrationContext))]
     [Migration("20211230132937_nlog")]
-    partial class nlog
+    partial class Nlog
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

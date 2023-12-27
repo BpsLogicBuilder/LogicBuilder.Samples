@@ -13,7 +13,7 @@ namespace MigrationTool.Migrations
 {
     [DbContext(typeof(MigrationContext))]
     [Migration("20181006135711_lookup")]
-    partial class lookup
+    partial class Lookup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

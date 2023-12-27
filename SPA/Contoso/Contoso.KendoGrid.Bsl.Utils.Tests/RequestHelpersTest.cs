@@ -39,7 +39,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         #endregion Fields
 
         [Fact]
-        public void Get_students_ungrouped_with_aggregates()
+        public async void Get_students_ungrouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -58,7 +58,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(11, result.Total);
             Assert.Equal(5, ((IEnumerable<StudentModel>)result.Data).Count());
@@ -69,7 +69,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_students_grouped_with_aggregates()
+        public async void Get_students_grouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -88,7 +88,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(11, result.Total);
             Assert.Equal(3, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
@@ -98,7 +98,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_departments_ungrouped_with_aggregates_and_includes()
+        public async void Get_departments_ungrouped_with_aggregates_and_includes()
         {
             KendoGridDataRequest request = new()
             {
@@ -117,7 +117,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(4, result.Total);
             Assert.Equal(4, ((IEnumerable<DepartmentModel>)result.Data).Count());
@@ -128,7 +128,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_departments_grouped_with_aggregates()
+        public async void Get_departments_grouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -147,7 +147,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(4, result.Total);
             Assert.Equal(2, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
@@ -157,7 +157,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_instructors_ungrouped_with_aggregates()
+        public async void Get_instructors_ungrouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -176,7 +176,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(5, result.Total);
             Assert.Equal(5, ((IEnumerable<InstructorModel>)result.Data).Count());
@@ -185,7 +185,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_instructors_grouped_with_aggregates_and_expansions()
+        public async void Get_instructors_grouped_with_aggregates_and_expansions()
         {
             KendoGridDataRequest request = new()
             {
@@ -202,8 +202,8 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                 DataType = typeof(Instructor).FullName,
                 SelectExpandDefinition = new SelectExpandDefinitionDescriptor
                 {
-                    ExpandedItems = new List<SelectExpandItemDescriptor>
-                    {
+                    ExpandedItems =
+                    [
                         new SelectExpandItemDescriptor
                         {
                             MemberName = "courses"
@@ -212,13 +212,13 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                         {
                             MemberName = "officeAssignment"
                         }
-                    }
+                    ]
                 }
             };
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(5, result.Total);
             Assert.Equal(5, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
@@ -229,7 +229,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public void Get_instructors_grouped_with_aggregates_without_expansions()
+        public async void Get_instructors_grouped_with_aggregates_without_expansions()
         {
             KendoGridDataRequest request = new()
             {
@@ -248,7 +248,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
 
             ISchoolRepository repository = serviceProvider.GetRequiredService<ISchoolRepository>();
             IMapper mapper = serviceProvider.GetRequiredService<IMapper>();
-            DataSourceResult result = Task.Run(() => request.GetData(repository, mapper)).Result;
+            DataSourceResult result = await request.GetData(repository, mapper);
 
             Assert.Equal(5, result.Total);
             Assert.Equal(5, ((IEnumerable<AggregateFunctionsGroup>)result.Data).Count());
@@ -311,18 +311,18 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
             if ((await repository.CountAsync<StudentModel, Student>()) > 0)
                 return;//database has been seeded
 
-            InstructorModel[] instructors = new InstructorModel[]
-            {
+            InstructorModel[] instructors =
+            [
                 new InstructorModel { FirstName = "Roger",   LastName = "Zheng", HireDate = DateTime.Parse("2004-02-12"), EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new InstructorModel { FirstName = "Kim", LastName = "Abercrombie", HireDate = DateTime.Parse("1995-03-11"), EntityState = LogicBuilder.Domain.EntityStateType.Added},
                 new InstructorModel { FirstName = "Fadi", LastName = "Fakhouri", HireDate = DateTime.Parse("2002-07-06"), OfficeAssignment = new OfficeAssignmentModel { Location = "Smith 17" }, EntityState = LogicBuilder.Domain.EntityStateType.Added},
                 new InstructorModel { FirstName = "Roger", LastName = "Harui", HireDate = DateTime.Parse("1998-07-01"), OfficeAssignment = new OfficeAssignmentModel { Location = "Gowan 27" }, EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new InstructorModel { FirstName = "Candace", LastName = "Kapoor", HireDate = DateTime.Parse("2001-01-15"), OfficeAssignment = new OfficeAssignmentModel { Location = "Thompson 304" }, EntityState = LogicBuilder.Domain.EntityStateType.Added }
-            };
+            ];
             await repository.SaveGraphsAsync<InstructorModel, Instructor>(instructors);
 
-            DepartmentModel[] departments = new DepartmentModel[]
-            {
+            DepartmentModel[] departments =
+            [
                 new DepartmentModel
                 {
                     EntityState = LogicBuilder.Domain.EntityStateType.Added,
@@ -331,8 +331,8 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     InstructorID = instructors.Single(i => i.FirstName == "Kim" && i.LastName == "Abercrombie").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 2021, Title = "Composition",    Credits = 3},
-                        new CourseModel {CourseID = 2042, Title = "Literature",     Credits = 4}
+                        new() {CourseID = 2021, Title = "Composition",    Credits = 3},
+                        new() {CourseID = 2042, Title = "Literature",     Credits = 4}
                     }
                 },
                 new DepartmentModel
@@ -344,8 +344,8 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     InstructorID = instructors.Single(i => i.FirstName == "Fadi" && i.LastName == "Fakhouri").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 1045, Title = "Calculus",       Credits = 4},
-                        new CourseModel {CourseID = 3141, Title = "Trigonometry",   Credits = 4}
+                        new() {CourseID = 1045, Title = "Calculus",       Credits = 4},
+                        new() {CourseID = 3141, Title = "Trigonometry",   Credits = 4}
                     }
                 },
                 new DepartmentModel
@@ -356,7 +356,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     InstructorID = instructors.Single(i => i.FirstName == "Roger" && i.LastName == "Harui").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 1050, Title = "Chemistry",      Credits = 3}
+                        new() {CourseID = 1050, Title = "Chemistry",      Credits = 3}
                     }
                 },
                 new DepartmentModel
@@ -368,16 +368,16 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     InstructorID = instructors.Single(i => i.FirstName == "Candace" && i.LastName == "Kapoor").ID,
                     Courses =  new HashSet<CourseModel>
                     {
-                        new CourseModel {CourseID = 4022, Title = "Microeconomics", Credits = 3},
-                        new CourseModel {CourseID = 4041, Title = "Macroeconomics", Credits = 3 }
+                        new() {CourseID = 4022, Title = "Microeconomics", Credits = 3},
+                        new() {CourseID = 4041, Title = "Macroeconomics", Credits = 3 }
                     }
                 }
-            };
+            ];
             await repository.SaveGraphsAsync<DepartmentModel, Department>(departments);
 
             IEnumerable<CourseModel> courses = departments.SelectMany(d => d.Courses);
-            CourseAssignmentModel[] courseInstructors = new CourseAssignmentModel[]
-            {
+            CourseAssignmentModel[] courseInstructors =
+            [
                 new CourseAssignmentModel {
                     EntityState = LogicBuilder.Domain.EntityStateType.Added,
                     CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
@@ -418,11 +418,11 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     CourseID = courses.Single(c => c.Title == "Literature" ).CourseID,
                     InstructorID = instructors.Single(i => i.LastName == "Abercrombie").ID
                     },
-            };
+            ];
             await repository.SaveGraphsAsync<CourseAssignmentModel, CourseAssignment>(courseInstructors);
 
-            StudentModel[] students = new StudentModel[]
-            {
+            StudentModel[] students =
+            [
                 new StudentModel
                 {
                     EntityState =  LogicBuilder.Domain.EntityStateType.Added,
@@ -430,18 +430,15 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2010-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.A
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Microeconomics" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.C
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Macroeconomics" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -454,18 +451,15 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2012-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Calculus" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Trigonometry" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Composition" ).CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -478,12 +472,10 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2013-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Chemistry" ).CourseID
                         },
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Microeconomics").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         },
@@ -496,8 +488,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2012-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Chemistry").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -510,8 +501,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2012-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Composition").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -524,8 +514,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2011-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = courses.Single(c => c.Title == "Literature").CourseID,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -551,8 +540,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2010-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = 1045,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -566,8 +554,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2010-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = 1050,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
@@ -581,19 +568,18 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                     EnrollmentDate = DateTime.Parse("2017-09-01"),
                     Enrollments = new HashSet<EnrollmentModel>
                     {
-                        new EnrollmentModel
-                        {
+                        new() {
                             CourseID = 2021,
                             Grade = Contoso.Domain.Entities.Grade.B
                         }
                     }
                 }
-            };
+            ];
 
             await repository.SaveGraphsAsync<StudentModel, Student>(students);
 
-            LookUpsModel[] lookups = new LookUpsModel[]
-            {
+            LookUpsModel[] lookups =
+            [
                 new  LookUpsModel { ListName = "Grades", Text="A", Value="A", EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Grades", Text="B", Value="B", EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Grades", Text="C", Value="C", EntityState = LogicBuilder.Domain.EntityStateType.Added },
@@ -605,7 +591,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                 new  LookUpsModel { ListName = "Credits", Text="Three", NumericValue=3, EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Credits", Text="Four", NumericValue=4, EntityState = LogicBuilder.Domain.EntityStateType.Added },
                 new  LookUpsModel { ListName = "Credits", Text="Five", NumericValue=5, EntityState = LogicBuilder.Domain.EntityStateType.Added }
-            };
+            ];
             await repository.SaveGraphsAsync<LookUpsModel, LookUps>(lookups);
         }
         #endregion Seed DB

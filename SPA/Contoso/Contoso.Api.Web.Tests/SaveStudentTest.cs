@@ -5,6 +5,7 @@ using Contoso.Web.Utils;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,7 +29,7 @@ namespace Contoso.Api.Web.Tests
         [Fact]
         public async void SaveStudent()
         {
-            List<Task<BaseResponse>> tasks = new();
+            List<Task<BaseResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -49,22 +50,19 @@ namespace Contoso.Api.Web.Tests
                                     EntityState = LogicBuilder.Domain.EntityStateType.Modified,
                                     Enrollments = new HashSet<EnrollmentModel>
                                     {
-                                        new EnrollmentModel
-                                        {
+                                        new() {
                                             EnrollmentID = 1,
                                             CourseID = 1050,
                                             Grade = Contoso.Domain.Entities.Grade.A,
                                             EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                         },
-                                        new EnrollmentModel
-                                        {
+                                        new() {
                                             EnrollmentID = 2,
                                             CourseID = 4022,
                                             Grade = Contoso.Domain.Entities.Grade.C,
                                             EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                         },
-                                        new EnrollmentModel
-                                        {
+                                        new() {
                                             EnrollmentID = 3,
                                             CourseID = 4041,
                                             Grade = Contoso.Domain.Entities.Grade.B,
@@ -78,13 +76,13 @@ namespace Contoso.Api.Web.Tests
                     )
                 );
 
-                await Task.WhenAll(tasks);
+                var results = (await Task.WhenAll(tasks)).ToList();
 
-                tasks.ForEach(task =>
+                results.ForEach(result =>
                 {
-                    Assert.True(task.Result.Success);
-                    Assert.True(task.Result is SaveEntityResponse saveEntityResponse);
-                    Assert.NotNull(((SaveEntityResponse)task.Result).Entity as StudentModel);
+                    Assert.True(result.Success);
+                    Assert.True(result is SaveEntityResponse saveEntityResponse);
+                    Assert.NotNull(((SaveEntityResponse)result).Entity as StudentModel);
                 });
             }
         }
@@ -92,7 +90,7 @@ namespace Contoso.Api.Web.Tests
         [Fact]
         public async void SaveStudentWithoutRules()
         {
-            List<Task<SaveEntityResponse>> tasks = new();
+            List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
             {
                 tasks.Add
@@ -113,22 +111,19 @@ namespace Contoso.Api.Web.Tests
                                     EntityState = LogicBuilder.Domain.EntityStateType.Modified,
                                     Enrollments = new HashSet<EnrollmentModel>
                                     {
-                                        new EnrollmentModel
-                                        {
+                                        new() {
                                             EnrollmentID = 1,
                                             CourseID = 1050,
                                             Grade = Contoso.Domain.Entities.Grade.A,
                                             EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                         },
-                                        new EnrollmentModel
-                                        {
+                                        new() {
                                             EnrollmentID = 2,
                                             CourseID = 4022,
                                             Grade = Contoso.Domain.Entities.Grade.C,
                                             EntityState = LogicBuilder.Domain.EntityStateType.Modified
                                         },
-                                        new EnrollmentModel
-                                        {
+                                        new() {
                                             EnrollmentID = 3,
                                             CourseID = 4041,
                                             Grade = Contoso.Domain.Entities.Grade.B,
@@ -142,8 +137,9 @@ namespace Contoso.Api.Web.Tests
                     )
                 );
 
-                await Task.WhenAll(tasks);
-                tasks.ForEach(task => Assert.True(task.Result.Success));
+                var results = (await Task.WhenAll(tasks)).ToList();
+
+                results.ForEach(result => Assert.True(result.Success));
             }
         }
         #endregion Tests

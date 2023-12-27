@@ -29,7 +29,7 @@ namespace Enrollment.Bsl
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            System.Collections.Generic.List<System.Reflection.Assembly> assemblies = new System.Collections.Generic.List<System.Reflection.Assembly>
+            _ = new System.Collections.Generic.List<System.Reflection.Assembly>
             {
                 typeof(Parameters.Expansions.SelectExpandDefinitionParameters).Assembly,
                 typeof(Enrollment.Utils.TypeHelpers).Assembly,

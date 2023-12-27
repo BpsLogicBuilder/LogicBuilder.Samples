@@ -36,8 +36,8 @@ namespace Enrollment.Api.Web.Tests
             this.clientFactory = serviceProvider.GetRequiredService<IHttpClientFactory>();
         }
 
-        private SelectOperatorDescriptor GetBodyForLookupsModelAsAnonymousTypes()
-            => new SelectOperatorDescriptor
+        private static SelectOperatorDescriptor GetBodyForLookupsModelAsAnonymousTypes()
+            => new()
             {
                 SourceOperand = new OrderByOperatorDescriptor
                 {
@@ -252,7 +252,7 @@ namespace Enrollment.Api.Web.Tests
                 BASE_URL
             );
 
-            Assert.True(result.Any());
+            Assert.NotEmpty(result);
         }
 
         [Fact]
@@ -332,13 +332,13 @@ namespace Enrollment.Api.Web.Tests
                         ),
                         SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
                         {
-                            ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                            {
+                            ExpandedItems =
+                            [
                                 new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                                 {
                                     MemberName = "StatesLivedIn"
                                 }
-                            }
+                            ]
                         },
                         ModelType = typeof(ResidencyModel).AssemblyQualifiedName,
                         DataType = typeof(Residency).AssemblyQualifiedName
@@ -369,13 +369,13 @@ namespace Enrollment.Api.Web.Tests
                         ),
                         SelectExpandDefinition = new Common.Configuration.ExpansionDescriptors.SelectExpandDefinitionDescriptor
                         {
-                            ExpandedItems = new List<Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor>
-                            {
+                            ExpandedItems =
+                            [
                                 new Common.Configuration.ExpansionDescriptors.SelectExpandItemDescriptor
                                 {
                                     MemberName = "StatesLivedIn"
                                 }
-                            }
+                            ]
                         },
                         ModelType = typeof(ResidencyModel).AssemblyQualifiedName,
                         DataType = typeof(Residency).AssemblyQualifiedName
