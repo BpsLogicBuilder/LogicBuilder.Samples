@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Contoso.XPlatform.Views.Flyout"
              xmlns:converters="clr-namespace:Contoso.XPlatform.Converters"
+             xmlns:vm="clr-namespace:Contoso.XPlatform.ViewModels"
              BackgroundColor="{DynamicResource PageBackgroundColor}"
              Padding="0,60,0,0"
              IconImageSource="hamburger.png"
@@ -14,12 +15,13 @@
     </ContentPage.Resources>
     <Grid>
         <CollectionView x:Name="MenuItemsListView"
+                        x:DataType="vm:MainPageViewModel" 
                         BackgroundColor="{DynamicResource ResultListBackgroundColor}"
                         SelectionMode="Single"
                         ItemsSource="{Binding MenuItems}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Grid Padding="5,10" IsEnabled="{Binding Active, Converter={StaticResource InverseBoolConverter}}">
+                    <Grid x:DataType="vm:FlyoutMenuItem" Padding="5,10" IsEnabled="{Binding Active, Converter={StaticResource InverseBoolConverter}}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="{OnPlatform WinUI=40, Default=30}" />
                             <ColumnDefinition Width="*" />
