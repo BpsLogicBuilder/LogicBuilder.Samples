@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { GridModule } from '@progress/kendo-angular-grid';
@@ -28,37 +28,30 @@ import { GenericListComponent } from './generic/generic-list/generic-list.compon
 
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    GenericCreateComponent,
-    GenericDeleteComponent,
-    GenericDetailComponent,
-    GenericEditComponent,
-    GenericGridComponent,
-    FormFieldDropdownComponent,
-    FormFieldMultiselectComponent,
-    GridColumnDropdownFilterComponent,
-    GridColumnMultiselectFilterComponent,
-    NavBarComponent,
-    ScreenHostComponent,
-    HtmlPageComponent,
-    DisplayDropdownValueComponent,
-    GenericListComponent
-  ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    ButtonsModule,
-    DropDownsModule,
-    DropDownListModule,
-    DatePickerModule,
-    GridModule,
-    NgbModule,
-    HttpClientModule,
-    ReactiveFormsModule
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        GenericCreateComponent,
+        GenericDeleteComponent,
+        GenericDetailComponent,
+        GenericEditComponent,
+        GenericGridComponent,
+        FormFieldDropdownComponent,
+        FormFieldMultiselectComponent,
+        GridColumnDropdownFilterComponent,
+        GridColumnMultiselectFilterComponent,
+        NavBarComponent,
+        ScreenHostComponent,
+        HtmlPageComponent,
+        DisplayDropdownValueComponent,
+        GenericListComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        BrowserAnimationsModule,
+        ButtonsModule,
+        DropDownsModule,
+        DropDownListModule,
+        DatePickerModule,
+        GridModule,
+        NgbModule,
+        ReactiveFormsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
