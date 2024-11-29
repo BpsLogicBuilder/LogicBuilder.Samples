@@ -174,7 +174,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PopModalAsync()
+                            () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()
                         );
 
                         Submitted?.Invoke(this, new EventArgs());
@@ -200,7 +200,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null here*/
+                            () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync/*App.Current.MainPage is not null here*/
                             (
                                 popupFormFactory.CreateChildFormPage(this)
                             )
@@ -233,7 +233,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         {
             MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current!.MainPage!.Navigation.PopModalAsync()
+                () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()
             );
 
             Cancelled?.Invoke(this, new EventArgs());

@@ -27,7 +27,7 @@ public partial class ExtendedSplashView : ContentPage
         App.ServiceProvider = App.ServiceCollection.BuildServiceProvider();
         MainThread.BeginInvokeOnMainThread
         (
-            () => ((App)Application.Current!).MainPage = App.ServiceProvider.GetRequiredService<MainPageView>()/*Application.Current not null here*/
+            () => ((App)Application.Current!).Windows[0].Page = App.ServiceProvider.GetRequiredService<MainPageView>()/*Application.Current not null here*/
                                                                                     /*Can't inject MainPageView since we're rebuilding the service provider*/
         );
     }

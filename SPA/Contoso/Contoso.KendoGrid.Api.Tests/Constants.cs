@@ -2,6 +2,6 @@
 {
     internal class Constants
     {
-        public const string BASE_URL = "http://localhost:12055/";
+        public const string BASE_URL = "http://localhost:53345/";
     }
 }

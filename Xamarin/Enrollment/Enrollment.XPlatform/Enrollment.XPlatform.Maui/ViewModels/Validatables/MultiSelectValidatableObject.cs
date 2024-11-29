@@ -160,7 +160,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                 if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current!.MainPage!.DisplayAlert
+                    await App.Current!.Windows[0].Page!.DisplayAlert
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),
@@ -241,7 +241,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PopModalAsync()
+                            () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()
                         );
                     },
                     () => canExecute
@@ -265,7 +265,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     {
                         await MainThread.InvokeOnMainThreadAsync
                         (
-                            () => App.Current!.MainPage!.Navigation.PushModalAsync
+                            () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync
                             (
                                 popupFormFactory.CreateMultiSelectPage(this)
                             )
@@ -292,7 +292,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
+                            () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
                         );
                     });
 

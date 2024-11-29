@@ -35,7 +35,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         #endregion Fields
 
         [Fact]
-        public async void Select_Residencies_In_Ascending_Order_As_LookUpsModel_Type()
+        public async Task Select_Residencies_In_Ascending_Order_As_LookUpsModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<ResidencyModel>, IEnumerable<LookUpsModel>>
@@ -64,7 +64,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Users_In_Ascending_Order_As_UserModel_Type()
+        public async Task Select_Users_In_Ascending_Order_As_UserModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<UserModel>, IEnumerable<UserModel>>
@@ -97,7 +97,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Get_Residency_ById_And_Courses_WithGenericHelper()
+        public async Task Get_Residency_ById_And_Courses_WithGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<ResidencyModel>
@@ -139,7 +139,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Get_Residency_ById_And_Courses_WithoutGenericHelper()
+        public async Task Get_Residency_ById_And_Courses_WithoutGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<ResidencyModel>
@@ -183,7 +183,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type()
+        public async Task Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<ResidencyModel>, IEnumerable<ResidencyModel>>
@@ -212,7 +212,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type_With_Courses()
+        public async Task Select_Residencies_In_Ascending_Order_As_ResidencyModel_Type_With_Courses()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<ResidencyModel>, IQueryable<ResidencyModel>>

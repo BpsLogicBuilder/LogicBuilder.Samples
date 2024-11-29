@@ -46,7 +46,7 @@ namespace Enrollment.XPlatform.Utils
 
                 return MainThread.InvokeOnMainThreadAsync
                 (/*App.Current.MainPage is not null at this point*/
-                    async () => await App.Current!.MainPage!.Navigation.PushModalAsync
+                    async () => await App.Current!.Windows[0].Page!.Navigation.PushModalAsync
                     (
                         new Views.BusyIndicator(), false
                     ).ConfigureAwait(true)
@@ -62,7 +62,7 @@ namespace Enrollment.XPlatform.Utils
 
                 return MainThread.InvokeOnMainThreadAsync
                 (/*App.Current.MainPage is not null at this point*/
-                    async () => await App.Current!.MainPage!.Navigation.PopModalAsync(false).ConfigureAwait(true)
+                    async () => await App.Current!.Windows[0].Page!.Navigation.PopModalAsync(false).ConfigureAwait(true)
                 );
             }
         }

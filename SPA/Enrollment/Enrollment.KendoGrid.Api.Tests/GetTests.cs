@@ -22,7 +22,7 @@ namespace Enrollment.KendoGrid.Api.Tests
         #region Fields
         private IServiceProvider serviceProvider;
         private IHttpClientFactory clientFactory;
-        private const string BASE_URL = "http://localhost:12055/";
+        private const string BASE_URL = "http://localhost:53345/";
         #endregion Fields
 
         #region Helpers

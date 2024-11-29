@@ -80,7 +80,7 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
 
                          if (response.Success == false)
                          {
-                             await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null at this point*/
+                             await App.Current!.Windows[0].Page!.DisplayAlert/*App.Current.MainPage is not null at this point*/
                              (
                                  "Errors",
                                  string.Join(Environment.NewLine, response.ErrorMessages),
@@ -159,7 +159,7 @@ namespace Contoso.XPlatform.ViewModels.DetailForm
 
             if (baseResponse.Success == false)
             {
-                await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null at this point*/
+                await App.Current!.Windows[0].Page!.DisplayAlert/*App.Current.MainPage is not null at this point*/
                 (
                     "Errors",
                     string.Join(Environment.NewLine, baseResponse.ErrorMessages),

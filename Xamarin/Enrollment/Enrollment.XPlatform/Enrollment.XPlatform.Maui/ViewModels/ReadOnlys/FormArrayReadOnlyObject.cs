@@ -143,7 +143,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
+                            () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
                                 popupFormFactory.CreateReadOnlyChildFormArrayPage(this)
                             )
@@ -168,7 +168,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
+                            () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()/*App.Current.MainPage is not null at this point*/
                         );
                     });
 
@@ -237,7 +237,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                     );
                     formValidatable.Value = this._entitiesDictionary[this.SelectedItem];
 
-                    App.Current!.MainPage!.Navigation.PushModalAsync
+                    App.Current!.Windows[0].Page!.Navigation.PushModalAsync
                     (
                         popupFormFactory.CreateReadOnlyChildFormPage
                         (

@@ -160,7 +160,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                 if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current!.MainPage!.DisplayAlert/*App.Current.MainPage is not null at this point*/
+                    await App.Current!.Windows[0].Page!.DisplayAlert/*App.Current.MainPage is not null at this point*/
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),

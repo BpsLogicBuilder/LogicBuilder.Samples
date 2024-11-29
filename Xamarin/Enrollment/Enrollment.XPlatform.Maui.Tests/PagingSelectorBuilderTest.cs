@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Enrollment.XPlatform.Maui.Tests
@@ -25,7 +26,7 @@ namespace Enrollment.XPlatform.Maui.Tests
         #endregion Fields
 
         [Fact]
-        public async void CanCreatePagingSelectorDescriptorWithoutFilter()
+        public async Task CanCreatePagingSelectorDescriptorWithoutFilter()
         {
             //act
             SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = await serviceProvider.GetRequiredService<IPagingSelectorBuilder>().CreateSelector
@@ -47,7 +48,7 @@ namespace Enrollment.XPlatform.Maui.Tests
         }
 
         [Fact]
-        public async void CanCreatePagingSelectorDescriptorWithFilter()
+        public async Task CanCreatePagingSelectorDescriptorWithFilter()
         {
             //act
             SelectorLambdaOperatorDescriptor selectorLambdaOperatorDescriptor = await serviceProvider.GetRequiredService<IPagingSelectorBuilder>().CreateSelector
