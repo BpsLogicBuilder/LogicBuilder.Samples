@@ -144,7 +144,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
                 if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current!.MainPage!.DisplayAlert
+                    await App.Current!.Windows[0].Page!.DisplayAlert
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),

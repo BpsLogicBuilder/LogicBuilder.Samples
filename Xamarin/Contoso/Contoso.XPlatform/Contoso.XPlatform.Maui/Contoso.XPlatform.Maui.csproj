@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFrameworks>net8.0-android;net8.0-ios;net8.0-maccatalyst;net8.0</TargetFrameworks>
-		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+		<TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst;net9.0</TargetFrameworks>
+		<TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
 		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
-		<!-- <TargetFrameworks>$(TargetFrameworks);net8.0-tizen</TargetFrameworks> -->
-		<OutputType Condition="$(TargetFramework) == 'net8.0-android' OR $(TargetFramework) == 'net8.0-ios' OR $(TargetFramework) == 'net8.0-maccatalyst' OR $(TargetFramework) == 'net8.0-windows10.0.19041.0'">Exe</OutputType>
-		<OutputType Condition="$(TargetFramework) == 'net8.0'">Library</OutputType>
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+		<OutputType Condition="$(TargetFramework) == 'net9.0-android' OR $(TargetFramework) == 'net9.0-ios' OR $(TargetFramework) == 'net9.0-maccatalyst' OR $(TargetFramework) == 'net9.0-windows10.0.19041.0'">Exe</OutputType>
+		<OutputType Condition="$(TargetFramework) == 'net9.0'">Library</OutputType>
 		<RootNamespace>Contoso.XPlatform</RootNamespace>
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
@@ -17,7 +17,7 @@
 		<ApplicationTitle>Contoso.XPlatform</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.contoso.xplatform</ApplicationId>
+		<ApplicationId>com.companyname.contoso</ApplicationId>
 		<ApplicationIdGuid>4D813FAA-56A8-45DC-8C92-4AC1D26717E2</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -143,14 +143,15 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="akavache" Version="9.1.20" />
-		<PackageReference Include="AutoMapper" Version="12.0.1" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
-		<PackageReference Include="Microsoft.Maui.Controls" Version="8.0.6-nightly.9804" />
-		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="8.0.6-nightly.9804" />
-		<PackageReference Include="Polly" Version="8.2.0" />
-		<PackageReference Include="System.Reactive" Version="6.0.0" />
+		<PackageReference Include="akavache" Version="10.1.6" />
+		<PackageReference Include="AutoMapper" Version="13.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.10" />
+		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="9.0.10" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+		<PackageReference Include="Polly" Version="8.5.0" />
+		<PackageReference Include="System.Reactive" Version="6.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
