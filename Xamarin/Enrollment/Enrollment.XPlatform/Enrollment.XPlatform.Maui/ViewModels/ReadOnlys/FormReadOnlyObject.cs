@@ -114,7 +114,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
+                            () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync/*App.Current.MainPage is not null at this point*/
                             (
                                 popupFormFactory.CreateReadOnlyChildFormPage(this)
                             )
@@ -147,7 +147,7 @@ namespace Enrollment.XPlatform.ViewModels.ReadOnlys
         {
             MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current!.MainPage!.Navigation.PopModalAsync()
+                () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()
             );
         }
 

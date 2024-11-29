@@ -168,7 +168,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PopModalAsync()
+                            () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()
                         );
                     },
                     () => IsValid
@@ -192,7 +192,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                     {
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PushModalAsync
+                            () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync
                             (
                                 popupFormFactory.CreateChildFormArrayPage(this)
                             )
@@ -218,7 +218,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
                         Value = _initialValue;
                         MainThread.BeginInvokeOnMainThread
                         (
-                            () => App.Current!.MainPage!.Navigation.PopModalAsync()
+                            () => App.Current!.Windows[0].Page!.Navigation.PopModalAsync()
                         );
                     });
 
@@ -335,7 +335,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
             MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current!.MainPage!.Navigation.PushModalAsync
+                () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync
                 (
                     popupFormFactory.CreateChildFormPage(formValidatable)
                 )
@@ -379,7 +379,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
 
             MainThread.BeginInvokeOnMainThread
             (
-                () => App.Current!.MainPage!.Navigation.PushModalAsync
+                () => App.Current!.Windows[0].Page!.Navigation.PushModalAsync
                 (
                     popupFormFactory.CreateChildFormPage(addValidatable)
                 )
