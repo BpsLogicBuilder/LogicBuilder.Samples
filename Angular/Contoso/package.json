@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "^19.2.15",
     "@angular/router": "^19.2.15",
     "@fortawesome/angular-fontawesome": "^0.10.2",
-    "@ng-bootstrap/ng-bootstrap": "^17.0.1",
+    "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@popperjs/core": "^2.11.6",
     "@progress/kendo-angular-buttons": "latest",
     "@progress/kendo-angular-common": "latest",
