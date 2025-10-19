@@ -5,9 +5,10 @@ import { IHtmlPageSettings, IContentTemplate, IMessageTemplate } from '../stuctu
 import { ViewTypeEnum } from '../stuctures/screens/i-view-type';
 
 @Component({
-  selector: 'app-html-page',
-  templateUrl: './html-page.component.html',
-  styleUrls: ['./html-page.component.css']
+    selector: 'app-html-page',
+    templateUrl: './html-page.component.html',
+    styleUrls: ['./html-page.component.css'],
+    standalone: false
 })
 export class HtmlPageComponent implements OnInit {
   @ViewChild('welcomeTemplate', { static: true }) welcomeTemplate: TemplateRef<any>;

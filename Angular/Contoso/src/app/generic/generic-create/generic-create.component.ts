@@ -14,9 +14,10 @@ import { Directives } from 'src/app/common/directives';
 import { DateService } from 'src/app/common/date.service';
 
 @Component({
-  selector: 'app-generic-create',
-  templateUrl: './generic-create.component.html',
-  styleUrls: ['./generic-create.component.css']
+    selector: 'app-generic-create',
+    templateUrl: './generic-create.component.html',
+    styleUrls: ['./generic-create.component.css'],
+    standalone: false
 })
 export class GenericCreateComponent implements OnInit, AfterViewInit {
   @ViewChild('labelTemplate', { static: true }) labelTemplate: TemplateRef<any>;

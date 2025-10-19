@@ -4,16 +4,17 @@ import { IMultiSelectTemplate } from '../../stuctures/screens/edit/i-edit-form-s
 import { GenericService } from '../../http/generic.service';
 
 @Component({
-  selector: 'app-form-field-multiselect',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => FormFieldMultiselectComponent),
-    }
-  ],
-  templateUrl: './form-field-multiselect.component.html',
-  styleUrls: ['./form-field-multiselect.component.css']
+    selector: 'app-form-field-multiselect',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: forwardRef(() => FormFieldMultiselectComponent),
+        }
+    ],
+    templateUrl: './form-field-multiselect.component.html',
+    styleUrls: ['./form-field-multiselect.component.css'],
+    standalone: false
 })
 export class FormFieldMultiselectComponent implements OnInit, ControlValueAccessor {
 

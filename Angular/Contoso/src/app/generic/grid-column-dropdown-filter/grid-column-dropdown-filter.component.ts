@@ -4,9 +4,10 @@ import { GenericService } from '../../http/generic.service';
 import { CompositeFilterDescriptor } from '@progress/kendo-data-query';
 
 @Component({
-  selector: 'app-grid-column-dropdown-filter',
-  templateUrl: './grid-column-dropdown-filter.component.html',
-  styleUrls: ['./grid-column-dropdown-filter.component.css']
+    selector: 'app-grid-column-dropdown-filter',
+    templateUrl: './grid-column-dropdown-filter.component.html',
+    styleUrls: ['./grid-column-dropdown-filter.component.css'],
+    standalone: false
 })
 export class GridColumnDropdownFilterComponent extends BaseFilterCellComponent implements OnInit {
 

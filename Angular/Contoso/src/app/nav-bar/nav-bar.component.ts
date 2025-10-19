@@ -4,21 +4,22 @@ import { INavigationBar } from '../stuctures/i-navigation-bar';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.css'],
-  animations: [
-    trigger('itemState', [
-      state('inactive', style({
-        background: "inherit", color: "inherit"
-      })),
-      state('active',   style({
-        background: "#4189C7", color: "white"
-      })),
-      transition('inactive => active', animate('0.2s 100ms ease-in')),
-      transition('active => inactive', animate('0.2s 100ms ease-out'))
-    ])
-  ]
+    selector: 'app-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.css'],
+    animations: [
+        trigger('itemState', [
+            state('inactive', style({
+                background: "inherit", color: "inherit"
+            })),
+            state('active', style({
+                background: "#4189C7", color: "white"
+            })),
+            transition('inactive => active', animate('0.2s 100ms ease-in')),
+            transition('active => inactive', animate('0.2s 100ms ease-out'))
+        ])
+    ],
+    standalone: false
 })
 export class NavBarComponent implements OnInit {
 
