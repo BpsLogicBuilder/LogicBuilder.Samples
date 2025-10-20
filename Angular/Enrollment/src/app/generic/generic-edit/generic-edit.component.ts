@@ -15,9 +15,10 @@ import { EntityStateType } from 'src/app/stuctures/screens/entity-state-type';
 import { Directives } from 'src/app/common/directives';
 
 @Component({
-  selector: 'app-generic-edit',
-  templateUrl: './generic-edit.component.html',
-  styleUrls: ['./generic-edit.component.css']
+    selector: 'app-generic-edit',
+    templateUrl: './generic-edit.component.html',
+    styleUrls: ['./generic-edit.component.css'],
+    standalone: false
 })
 export class GenericEditComponent implements OnInit, AfterViewInit
 {

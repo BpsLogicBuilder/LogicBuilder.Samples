@@ -4,9 +4,10 @@ import { FilterService } from '@progress/kendo-angular-grid';
 import { GenericService } from '../../http/generic.service';
 
 @Component({
-  selector: 'app-grid-column-multiselect-filter',
-  templateUrl: './grid-column-multiselect-filter.component.html',
-  styleUrls: ['./grid-column-multiselect-filter.component.css']
+    selector: 'app-grid-column-multiselect-filter',
+    templateUrl: './grid-column-multiselect-filter.component.html',
+    styleUrls: ['./grid-column-multiselect-filter.component.css'],
+    standalone: false
 })
 export class GridColumnMultiselectFilterComponent implements OnInit, AfterViewInit {
   @Input() public isPrimitive: boolean;

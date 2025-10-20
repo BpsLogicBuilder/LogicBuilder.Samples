@@ -7,9 +7,10 @@ import { IDetailFieldSetting } from '../../stuctures/screens/detail/i-detail-for
 import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
 
 @Component({
-  selector: 'app-generic-list',
-  templateUrl: './generic-list.component.html',
-  styleUrls: ['./generic-list.component.css']
+    selector: 'app-generic-list',
+    templateUrl: './generic-list.component.html',
+    styleUrls: ['./generic-list.component.css'],
+    standalone: false
 })
 export class GenericListComponent implements OnInit {
   @ViewChild('textTemplate', { static: true }) textTemplate: TemplateRef<any>;

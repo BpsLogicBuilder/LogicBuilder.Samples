@@ -8,9 +8,10 @@ import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
 import { IDetailRequest } from '../../stuctures/screens/requests/i-requests-base';
 
 @Component({
-  selector: 'app-generic-detail',
-  templateUrl: './generic-detail.component.html',
-  styleUrls: ['./generic-detail.component.css']
+    selector: 'app-generic-detail',
+    templateUrl: './generic-detail.component.html',
+    styleUrls: ['./generic-detail.component.css'],
+    standalone: false
 })
 export class GenericDetailComponent implements OnInit {
   @ViewChild('currencyTemplate', { static: true }) currencyTemplate: TemplateRef<any>;

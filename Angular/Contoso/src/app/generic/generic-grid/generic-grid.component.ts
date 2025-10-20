@@ -15,9 +15,10 @@ import { EntityType } from '../../stuctures/screens/i-base-model';
 
 
 @Component({
-  selector: 'app-generic-grid',
-  templateUrl: './generic-grid.component.html',
-  styleUrls: ['./generic-grid.component.css']
+    selector: 'app-generic-grid',
+    templateUrl: './generic-grid.component.html',
+    styleUrls: ['./generic-grid.component.css'],
+    standalone: false
 })
 export class GenericGridComponent implements OnInit {
   @ViewChild('gridCellTemplate_Date', { static: true }) gridCellTemplate_Date: TemplateRef<any>;

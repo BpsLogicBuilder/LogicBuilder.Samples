@@ -5,16 +5,17 @@ import { GenericService } from '../../http/generic.service';
 import { SettingsService } from '../../http/settings.service';
 
 @Component({
-  selector: 'app-form-field-dropdown',
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: forwardRef(() => FormFieldDropdownComponent),
-    }
-  ],
-  templateUrl: './form-field-dropdown.component.html',
-  styleUrls: ['./form-field-dropdown.component.css']
+    selector: 'app-form-field-dropdown',
+    providers: [
+        {
+            provide: NG_VALUE_ACCESSOR,
+            multi: true,
+            useExisting: forwardRef(() => FormFieldDropdownComponent),
+        }
+    ],
+    templateUrl: './form-field-dropdown.component.html',
+    styleUrls: ['./form-field-dropdown.component.css'],
+    standalone: false
 })
 export class FormFieldDropdownComponent implements OnInit, ControlValueAccessor
 {
