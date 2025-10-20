@@ -7,9 +7,10 @@ import { EntityType } from '../../stuctures/screens/i-base-model';
 import { ViewTypeEnum } from '../../stuctures/screens/i-view-type';
 
 @Component({
-  selector: 'app-generic-delete',
-  templateUrl: './generic-delete.component.html',
-  styleUrls: ['./generic-delete.component.css']
+    selector: 'app-generic-delete',
+    templateUrl: './generic-delete.component.html',
+    styleUrls: ['./generic-delete.component.css'],
+    standalone: false
 })
 export class GenericDeleteComponent implements OnInit {
   @ViewChild('currencyTemplate', { static: true }) currencyTemplate: TemplateRef<any>;

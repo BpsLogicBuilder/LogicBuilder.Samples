@@ -4,9 +4,10 @@ import { IDetailDropDownTemplate } from 'src/app/stuctures/screens/detail/i-deta
 import { SettingsService } from '../../http/settings.service';
 
 @Component({
-  selector: '[app-display-dropdown-value]',
-  templateUrl: './display-dropdown-value.component.html',
-  styleUrls: ['./display-dropdown-value.component.css']
+    selector: '[app-display-dropdown-value]',
+    templateUrl: './display-dropdown-value.component.html',
+    styleUrls: ['./display-dropdown-value.component.css'],
+    standalone: false
 })
 export class DisplayDropdownValueComponent implements OnInit {
 
