@@ -133,7 +133,7 @@ namespace SeedTheDatabase
                     {
                         EnteringStatus = "1",
                         EnrollmentTerm = "FA",
-                        EnrollmentYear = "2021",
+                        EnrollmentYear = "2026",
                         ProgramType = "degreePrograms",
                         Program = "degreeProgram1",
                         EntityState = LogicBuilder.Domain.EntityStateType.Added
@@ -234,7 +234,7 @@ namespace SeedTheDatabase
                     {
                         EnteringStatus = "1",
                         EnrollmentTerm = "FA",
-                        EnrollmentYear = "2021",
+                        EnrollmentYear = "2026",
                         ProgramType = "degreePrograms",
                         Program = "degreeProgram1",
                         EntityState = LogicBuilder.Domain.EntityStateType.Added
