@@ -240,9 +240,10 @@
     <item name="SU" value="Summer (May – Aug)" />
   </list>
   <list id="enrollmentYear">
-    <item name="2019" value="2019" />
-    <item name="2020" value="2020" />
-    <item name="2021" value="2021" />
+    <item name="2026" value="2026" />
+    <item name="2027" value="2027" />
+    <item name="2028" value="2028" />
+		<item name="2029" value="2029" />
   </list>
   <list id="programType">
     <item name="degreePrograms" value="Degree" description="An Associate Degree can be earned in approximately two years." />
