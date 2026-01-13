@@ -37,7 +37,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
 
         #region Tests
         [Fact]
-        public async void SaveStudentRequestWithEnrollments1()
+        public async Task SaveStudentRequestWithEnrollments1()
         {
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
 
@@ -66,7 +66,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void SaveStudentRequestWithEnrollments2()
+        public async Task SaveStudentRequestWithEnrollments2()
         {
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
 
@@ -95,7 +95,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void SaveStudentRequestWithEnrollmentsWithoutRules1()
+        public async Task SaveStudentRequestWithEnrollmentsWithoutRules1()
         {
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
             ISchoolRepository schoolRepository = serviceProvider.GetRequiredService<ISchoolRepository>();
@@ -161,7 +161,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void SaveStudentRequestWithEnrollmentsWithoutRules2()
+        public async Task SaveStudentRequestWithEnrollmentsWithoutRules2()
         {
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
             ISchoolRepository schoolRepository = serviceProvider.GetRequiredService<ISchoolRepository>();

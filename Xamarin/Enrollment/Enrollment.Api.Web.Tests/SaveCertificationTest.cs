@@ -27,7 +27,7 @@ namespace Enrollment.Api.Web.Tests
         #endregion Fields
 
         [Fact]
-        public async void SaveCertification()
+        public async Task SaveCertification()
         {
             List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)

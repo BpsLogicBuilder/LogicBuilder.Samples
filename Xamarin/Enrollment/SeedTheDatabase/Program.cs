@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using Enrollment.BSL.AutoMapperProfiles;
 using Enrollment.Contexts;
 using Enrollment.Data.Entities;
@@ -32,7 +33,7 @@ namespace SeedTheDatabase
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient)
                 .AddTransient<IEnrollmentStore, EnrollmentStore>()
                 .AddTransient<IEnrollmentRepository, EnrollmentRepository>()
-                .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddMaps(typeof(EnrollmentProfile).GetTypeInfo().Assembly)))
+                .AddSingleton<AutoMapper.IConfigurationProvider>(ConfigurationHelper.GetMapperConfiguration(cfg => cfg.AddMaps(typeof(EnrollmentProfile).GetTypeInfo().Assembly)))
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .BuildServiceProvider();
 

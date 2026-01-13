@@ -70,7 +70,7 @@ namespace Enrollment.Bsl.Flow.Rules
             using (Stream platformStream = assembly.GetManifestResourceStream(file))
             {
                 byte[] byteArray = new byte[platformStream.Length];
-                platformStream.Read(byteArray, 0, byteArray.Length);
+                platformStream.ReadExactly(byteArray);
                 return byteArray;
             }
         }

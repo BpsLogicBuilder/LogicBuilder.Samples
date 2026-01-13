@@ -27,7 +27,7 @@ namespace Contoso.Bsl.Web.Tests
 
         #region Tests
         [Fact]
-        public async void SaveStudent()
+        public async Task SaveStudent()
         {
             List<Task<BaseResponse>> tasks = [];
             for (int i = 0; i < 30; i++)
@@ -88,7 +88,7 @@ namespace Contoso.Bsl.Web.Tests
         }
 
         [Fact]
-        public async void SaveStudentWithoutRules()
+        public async Task SaveStudentWithoutRules()
         {
             List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)

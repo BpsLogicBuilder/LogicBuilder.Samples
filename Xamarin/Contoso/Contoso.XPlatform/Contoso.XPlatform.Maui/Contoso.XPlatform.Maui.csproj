@@ -151,8 +151,8 @@
 		<PackageReference Include="Akavache.Sqlite3" Version="11.5.1" />
 		<PackageReference Include="Akavache.SystemTextJson" Version="11.5.1" />
 		<PackageReference Include="AutoMapper" Version="16.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="10.0.2" />
 		<PackageReference Include="Microsoft.Maui.Controls" Version="10.0.20" />
 		<PackageReference Include="Microsoft.Maui.Controls.Compatibility" Version="10.0.20" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />

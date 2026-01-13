@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Enrollment.AutoMapperProfiles;
 using Enrollment.XPlatform.AutoMapperProfiles;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -26,7 +27,7 @@ namespace Enrollment.XPlatform.Maui.Tests
             config = new MapperConfiguration(cfg =>
             {
                 cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile));//AddMaps adds all other profiles
-            });
+            }, new NullLoggerFactory());
         }
     }
 }
