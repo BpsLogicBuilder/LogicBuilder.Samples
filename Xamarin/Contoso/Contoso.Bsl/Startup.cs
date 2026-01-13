@@ -14,12 +14,9 @@ using LogicBuilder.RulesDirector;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using System;
 
 namespace Contoso.Bsl
@@ -61,7 +58,7 @@ namespace Contoso.Bsl
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Contoso.Bsl", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo { Title = "Contoso.Bsl", Version = "v1" });
             })
             .AddDbContext<SchoolContext>
             (
@@ -74,7 +71,7 @@ namespace Contoso.Bsl
             .AddScoped<ISchoolRepository, SchoolRepository>()
             .AddSingleton<AutoMapper.IConfigurationProvider>
             (
-                new MapperConfiguration(cfg =>
+                ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 
@@ -92,7 +89,7 @@ namespace Contoso.Bsl
             //    if (!cache.TryGetValue<AutoMapper.IConfigurationProvider>(mapperConfigurationKey, out AutoMapper.IConfigurationProvider config))
             //    {
 
-            //        config = new MapperConfiguration(cfg =>
+            //        config = ConfigurationHelper.GetMapperConfiguration(cfg =>
             //        {
             //            cfg.AddExpressionMapping();
 

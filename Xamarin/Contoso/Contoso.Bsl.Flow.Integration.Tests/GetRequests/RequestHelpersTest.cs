@@ -819,7 +819,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
         private void Initialize()
         {
-            MapperConfiguration ??= new MapperConfiguration(cfg =>
+            MapperConfiguration ??= ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -31,7 +32,7 @@ namespace Contoso.XPlatform.Maui.Tests
             config = new MapperConfiguration(cfg =>
             {
                 cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile));//AddMaps adds all other profiles
-            });
+            }, new NullLoggerFactory());
         }
     }
 }

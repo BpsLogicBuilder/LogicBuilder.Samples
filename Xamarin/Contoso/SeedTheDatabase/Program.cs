@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.Extensions.ExpressionMapping;
 using Contoso.BSL.AutoMapperProfiles;
 using Contoso.Contexts;
 using Contoso.Data.Entities;
@@ -30,7 +31,7 @@ namespace SeedTheDatabase
                 options.UseSqlServer(config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient)
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()
-                .AddSingleton<AutoMapper.IConfigurationProvider>(new MapperConfiguration(cfg => cfg.AddMaps(typeof(SchoolProfile).GetTypeInfo().Assembly)))
+                .AddSingleton<AutoMapper.IConfigurationProvider>(ConfigurationHelper.GetMapperConfiguration(cfg => cfg.AddMaps(typeof(SchoolProfile).GetTypeInfo().Assembly)))
                 .AddTransient<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .BuildServiceProvider();
 

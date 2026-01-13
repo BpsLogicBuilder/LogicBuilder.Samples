@@ -171,7 +171,7 @@ namespace Contoso.XPlatform.ViewModels.ReadOnlys
                 if (response.Success != true)
                 {
 #if DEBUG
-                    await App.Current!.Windows[0].Page!.DisplayAlert
+                    await App.Current!.Windows[0].Page!.DisplayAlertAsync
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),

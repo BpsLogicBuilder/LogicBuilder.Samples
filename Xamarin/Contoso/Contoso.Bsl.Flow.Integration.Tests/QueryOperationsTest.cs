@@ -1685,7 +1685,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests
         {
             if (MapperConfiguration == null)
             {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+                MapperConfiguration = ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

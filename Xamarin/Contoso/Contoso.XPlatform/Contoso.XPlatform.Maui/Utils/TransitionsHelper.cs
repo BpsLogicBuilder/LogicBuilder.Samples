@@ -8,9 +8,9 @@ namespace Contoso.XPlatform.Utils
     {
         public static async Task EntranceTransition(this View view, View transitionGrid, double offset)
         {
-            await view.TranslateTo(offset, 0, 0);
+            await view.TranslateToAsync(offset, 0, 0);
             transitionGrid.IsVisible = false;
-            await view.TranslateTo(0, 0, 1000, Easing.CubicOut);
+            await view.TranslateToAsync(0, 0, 1000, Easing.CubicOut);
         }
     }
 }

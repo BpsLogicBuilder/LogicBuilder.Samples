@@ -64,7 +64,7 @@ namespace Contoso.XPlatform.ViewModels.ListPage
             if (baseResponse.Success == false)
             {
 #if DEBUG
-                await App.Current!.Windows[0].Page!.DisplayAlert/*App.Current.MainPage is not null here*/
+                await App.Current!.Windows[0].Page!.DisplayAlertAsync/*App.Current.MainPage is not null here*/
                 (
                     "Errors",
                     string.Join(System.Environment.NewLine, baseResponse.ErrorMessages),

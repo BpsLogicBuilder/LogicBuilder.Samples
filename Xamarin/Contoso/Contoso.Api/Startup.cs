@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace Contoso.Api
 {
@@ -35,7 +34,7 @@ namespace Contoso.Api
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Contoso.Api", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo { Title = "Contoso.Api", Version = "v1" });
             });
 
             services.Configure<ConfigurationOptions>(Configuration);
