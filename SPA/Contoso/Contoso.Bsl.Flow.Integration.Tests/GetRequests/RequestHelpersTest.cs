@@ -33,7 +33,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         #endregion Fields
 
         [Fact]
-        public async void Select_Departments_In_Ascending_Order_As_LookUpsModel_Type()
+        public async Task Select_Departments_In_Ascending_Order_As_LookUpsModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IEnumerable<LookUpsModel>>
@@ -62,7 +62,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Courses_In_Ascending_Order_As_CourseModel_Type()
+        public async Task Select_Courses_In_Ascending_Order_As_CourseModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<CourseModel>, IEnumerable<CourseModel>>
@@ -95,7 +95,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Students_In_Ascending_Order_As_StudentModel_Type()
+        public async Task Select_Students_In_Ascending_Order_As_StudentModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<StudentModel>, IEnumerable<StudentModel>>
@@ -128,7 +128,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Get_Departments_ById_And_Courses_WithGenericHelper()
+        public async Task Get_Departments_ById_And_Courses_WithGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<DepartmentModel>
@@ -170,7 +170,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Get_Departments_ById_And_Courses_WithoutGenericHelper()
+        public async Task Get_Departments_ById_And_Courses_WithoutGenericHelper()
         {
             //arrange
             var filterLambdaOperatorDescriptor = GetFilterExpressionDescriptor<DepartmentModel>
@@ -214,7 +214,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Departments_In_Ascending_Order_As_DepartmentModel_Type()
+        public async Task Select_Departments_In_Ascending_Order_As_DepartmentModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IEnumerable<DepartmentModel>>
@@ -243,7 +243,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Departments_In_Ascending_Order_As_DepartmentModel_Type_With_Courses()
+        public async Task Select_Departments_In_Ascending_Order_As_DepartmentModel_Type_With_Courses()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IQueryable<DepartmentModel>>
@@ -284,7 +284,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Instructors_In_Ascending_Order_As_InstructorModel_Type()
+        public async Task Select_Instructors_In_Ascending_Order_As_InstructorModel_Type()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<InstructorModel>, IEnumerable<InstructorModel>>
@@ -314,7 +314,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
+        public async Task Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -347,7 +347,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel()
+        public async Task Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -380,7 +380,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel_Using_Object_ReturnType()
+        public async Task Select_Credits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel_Using_Object_ReturnType()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -409,7 +409,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel_Using_Object_ReturnType()
+        public async Task Select_Credits_From_Lookups_Table_In_Descending_Order_From_DropDownListRequest_As_LookUpsModel_Using_Object_ReturnType()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -442,7 +442,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
         }
 
         [Fact]
-        public async void Select_Group_Students_By_EnrollmentDate_Return_EnrollmentDate_With_Count()
+        public async Task Select_Group_Students_By_EnrollmentDate_Return_EnrollmentDate_With_Count()
         {
             //arrange
             Expression<Func<IQueryable<StudentModel>, IQueryable<LookUpsModel>>> expression1 =
@@ -819,7 +819,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.GetRequests
 
         private void Initialize()
         {
-            MapperConfiguration ??= new MapperConfiguration(cfg =>
+            MapperConfiguration ??= ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

@@ -26,7 +26,7 @@ namespace Contoso.Api.Web.Tests
         #endregion Fields
 
         [Fact]
-        public async void SaveInstructor()
+        public async Task SaveInstructor()
         {
             List<Task<SaveEntityResponse>> tasks = [];
             for (int i = 0; i < 30; i++)

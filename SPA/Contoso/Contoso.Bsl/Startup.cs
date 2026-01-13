@@ -14,13 +14,10 @@ using LogicBuilder.RulesDirector;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using System;
+using Microsoft.OpenApi;
 
 namespace Contoso.Bsl
 {
@@ -74,7 +71,7 @@ namespace Contoso.Bsl
             .AddScoped<ISchoolRepository, SchoolRepository>()
             .AddSingleton<AutoMapper.IConfigurationProvider>
             (
-                new MapperConfiguration(cfg =>
+                ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

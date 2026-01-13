@@ -4,6 +4,7 @@ using Contoso.Forms.Parameters;
 using Contoso.Forms.View;
 using Contoso.Spa.AutoMapperProfiles;
 using LogicBuilder.Forms.Parameters;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -83,7 +84,7 @@ namespace MapperTests
             {
                 cfg.AddMaps(typeof(ConnectorProfile));
                 cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile));
-            });
+            }, new NullLoggerFactory());
             config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }

@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using AutoMapper.Extensions.ExpressionMapping;
 using Contoso.AutoMapperProfiles;
-using Contoso.Common.Configuration.ExpressionDescriptors;
 using Contoso.Bsl.Flow.Unit.Tests.Data;
+using Contoso.Common.Configuration.ExpressionDescriptors;
 using Contoso.Parameters.Expressions;
 using LogicBuilder.Expressions.Utils.ExpressionBuilder.Lambda;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OData.Edm;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -3232,7 +3231,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(10)
                     ),
-                    "$it => ($it.NullableTimeOfDayProperty.Value.Hours == 10)"
+                    "$it => ($it.NullableTimeOfDayProperty.Value.Hour == 10)"
                 },
                 new object[]
                 {
@@ -3244,7 +3243,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(20)
                     ),
-                    "$it => ($it.NullableTimeOfDayProperty.Value.Minutes == 20)"
+                    "$it => ($it.NullableTimeOfDayProperty.Value.Minute == 20)"
                 },
                 new object[]
                 {
@@ -3256,7 +3255,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(30)
                     ),
-                    "$it => ($it.NullableTimeOfDayProperty.Value.Seconds == 30)"
+                    "$it => ($it.NullableTimeOfDayProperty.Value.Second == 30)"
                 },
             };
 
@@ -3290,7 +3289,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(10)
                     ),
-                    "$it => ($it.TimeOfDayProperty.Hours == 10)"
+                    "$it => ($it.TimeOfDayProperty.Hour == 10)"
                 },
                 new object[]
                 {
@@ -3302,7 +3301,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(20)
                     ),
-                    "$it => ($it.TimeOfDayProperty.Minutes == 20)"
+                    "$it => ($it.TimeOfDayProperty.Minute == 20)"
                 },
                 new object[]
                 {
@@ -3314,7 +3313,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(30)
                     ),
-                    "$it => ($it.TimeOfDayProperty.Seconds == 30)"
+                    "$it => ($it.TimeOfDayProperty.Second == 30)"
                 },
             };
 
@@ -3360,7 +3359,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(0.2m)
                     ),
-                    "$it => ((Convert($it.NullableTimeOfDayProperty.Value.Milliseconds) / 1000) == 0.2)"
+                    "$it => ((Convert($it.NullableTimeOfDayProperty.Value.Millisecond) / 1000) == 0.2)"
                 },
             };
 
@@ -3406,7 +3405,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConstantOperatorParameters(0.2m)
                     ),
-                    "$it => ((Convert($it.TimeOfDayProperty.Milliseconds) / 1000) == 0.2)"
+                    "$it => ((Convert($it.TimeOfDayProperty.Millisecond) / 1000) == 0.2)"
                 },
             };
 
@@ -3440,10 +3439,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericDateOperatorParameters
                         (
-                            new ConstantOperatorParameters(new Date(2015, 2, 26))
+                            new ConstantOperatorParameters(new DateOnly(2015, 2, 26))
                         )
                     ),
-                    "$it => (((($it.DiscontinuedDate.Value.Year * 10000) + ($it.DiscontinuedDate.Value.Month * 100)) + $it.DiscontinuedDate.Value.Day) == (((2015-02-26.Year * 10000) + (2015-02-26.Month * 100)) + 2015-02-26.Day))"
+                    "$it => (((($it.DiscontinuedDate.Value.Year * 10000) + ($it.DiscontinuedDate.Value.Month * 100)) + $it.DiscontinuedDate.Value.Day) == (((02/26/2015.Year * 10000) + (02/26/2015.Month * 100)) + 02/26/2015.Day))"
                 },
                 new object[]
                 {
@@ -3455,10 +3454,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericDateOperatorParameters
                         (
-                            new ConstantOperatorParameters(new Date(2016, 2, 26))
+                            new ConstantOperatorParameters(new DateOnly(2016, 2, 26))
                         )
                     ),
-                    "$it => (((($it.DiscontinuedDate.Value.Year * 10000) + ($it.DiscontinuedDate.Value.Month * 100)) + $it.DiscontinuedDate.Value.Day) < (((2016-02-26.Year * 10000) + (2016-02-26.Month * 100)) + 2016-02-26.Day))"
+                    "$it => (((($it.DiscontinuedDate.Value.Year * 10000) + ($it.DiscontinuedDate.Value.Month * 100)) + $it.DiscontinuedDate.Value.Day) < (((02/26/2016.Year * 10000) + (02/26/2016.Month * 100)) + 02/26/2016.Day))"
                 },
                 new object[]
                 {
@@ -3466,14 +3465,14 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                     (
                         new ConvertToNumericDateOperatorParameters
                         (
-                            new ConstantOperatorParameters(new Date(2015, 2, 26))
+                            new ConstantOperatorParameters(new DateOnly(2015, 2, 26))
                         ),
                         new ConvertToNumericDateOperatorParameters
                         (
                             new MemberSelectorOperatorParameters("DiscontinuedDate", new ParameterOperatorParameters(parameterName))
                         )
                     ),
-                    "$it => ((((2015-02-26.Year * 10000) + (2015-02-26.Month * 100)) + 2015-02-26.Day) >= ((($it.DiscontinuedDate.Value.Year * 10000) + ($it.DiscontinuedDate.Value.Month * 100)) + $it.DiscontinuedDate.Value.Day))"
+                    "$it => ((((02/26/2015.Year * 10000) + (02/26/2015.Month * 100)) + 02/26/2015.Day) >= ((($it.DiscontinuedDate.Value.Year * 10000) + ($it.DiscontinuedDate.Value.Month * 100)) + $it.DiscontinuedDate.Value.Day))"
                 },
                 new object[]
                 {
@@ -3525,10 +3524,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericDateOperatorParameters
                         (
-                            new ConstantOperatorParameters(new Date(2015, 2, 26))
+                            new ConstantOperatorParameters(new DateOnly(2015, 2, 26))
                         )
                     ),
-                    "$it => (((($it.NonNullableDiscontinuedDate.Year * 10000) + ($it.NonNullableDiscontinuedDate.Month * 100)) + $it.NonNullableDiscontinuedDate.Day) == (((2015-02-26.Year * 10000) + (2015-02-26.Month * 100)) + 2015-02-26.Day))"
+                    "$it => (((($it.NonNullableDiscontinuedDate.Year * 10000) + ($it.NonNullableDiscontinuedDate.Month * 100)) + $it.NonNullableDiscontinuedDate.Day) == (((02/26/2015.Year * 10000) + (02/26/2015.Month * 100)) + 02/26/2015.Day))"
                 },
                 new object[]
                 {
@@ -3540,10 +3539,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericDateOperatorParameters
                         (
-                            new ConstantOperatorParameters(new Date(2016, 2, 26))
+                            new ConstantOperatorParameters(new DateOnly(2016, 2, 26))
                         )
                     ),
-                    "$it => (((($it.NonNullableDiscontinuedDate.Year * 10000) + ($it.NonNullableDiscontinuedDate.Month * 100)) + $it.NonNullableDiscontinuedDate.Day) < (((2016-02-26.Year * 10000) + (2016-02-26.Month * 100)) + 2016-02-26.Day))"
+                    "$it => (((($it.NonNullableDiscontinuedDate.Year * 10000) + ($it.NonNullableDiscontinuedDate.Month * 100)) + $it.NonNullableDiscontinuedDate.Day) < (((02/26/2016.Year * 10000) + (02/26/2016.Month * 100)) + 02/26/2016.Day))"
                 },
                 new object[]
                 {
@@ -3551,14 +3550,14 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                     (
                         new ConvertToNumericDateOperatorParameters
                         (
-                            new ConstantOperatorParameters(new Date(2015, 2, 26))
+                            new ConstantOperatorParameters(new DateOnly(2015, 2, 26))
                         ),
                         new ConvertToNumericDateOperatorParameters
                         (
                             new MemberSelectorOperatorParameters("NonNullableDiscontinuedDate", new ParameterOperatorParameters(parameterName))
                         )
                     ),
-                    "$it => ((((2015-02-26.Year * 10000) + (2015-02-26.Month * 100)) + 2015-02-26.Day) >= ((($it.NonNullableDiscontinuedDate.Year * 10000) + ($it.NonNullableDiscontinuedDate.Month * 100)) + $it.NonNullableDiscontinuedDate.Day))"
+                    "$it => ((((02/26/2015.Year * 10000) + (02/26/2015.Month * 100)) + 02/26/2015.Day) >= ((($it.NonNullableDiscontinuedDate.Year * 10000) + ($it.NonNullableDiscontinuedDate.Month * 100)) + $it.NonNullableDiscontinuedDate.Day))"
                 }
             };
 
@@ -3592,10 +3591,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericTimeOperatorParameters
                         (
-                            new ConstantOperatorParameters(new TimeOfDay(1, 2, 3, 4))
+                            new ConstantOperatorParameters(new TimeOnly(1, 2, 3, 4))
                         )
                     ),
-                    "$it => (((Convert($it.DiscontinuedDate.Value.Hour) * 36000000000) + ((Convert($it.DiscontinuedDate.Value.Minute) * 600000000) + ((Convert($it.DiscontinuedDate.Value.Second) * 10000000) + Convert($it.DiscontinuedDate.Value.Millisecond)))) == ((Convert(01:02:03.0040000.Hours) * 36000000000) + ((Convert(01:02:03.0040000.Minutes) * 600000000) + ((Convert(01:02:03.0040000.Seconds) * 10000000) + Convert(01:02:03.0040000.Milliseconds)))))"
+                    "$it => (((Convert($it.DiscontinuedDate.Value.Hour) * 36000000000) + ((Convert($it.DiscontinuedDate.Value.Minute) * 600000000) + ((Convert($it.DiscontinuedDate.Value.Second) * 10000000) + Convert($it.DiscontinuedDate.Value.Millisecond)))) == ((Convert(01:02.Hour) * 36000000000) + ((Convert(01:02.Minute) * 600000000) + ((Convert(01:02.Second) * 10000000) + Convert(01:02.Millisecond)))))"
                 },
                 new object[]
                 {
@@ -3607,10 +3606,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericTimeOperatorParameters
                         (
-                            new ConstantOperatorParameters(new TimeOfDay(1, 2, 3, 4))
+                            new ConstantOperatorParameters(new TimeOnly(1, 2, 3, 4))
                         )
                     ),
-                    "$it => (((Convert($it.DiscontinuedDate.Value.Hour) * 36000000000) + ((Convert($it.DiscontinuedDate.Value.Minute) * 600000000) + ((Convert($it.DiscontinuedDate.Value.Second) * 10000000) + Convert($it.DiscontinuedDate.Value.Millisecond)))) >= ((Convert(01:02:03.0040000.Hours) * 36000000000) + ((Convert(01:02:03.0040000.Minutes) * 600000000) + ((Convert(01:02:03.0040000.Seconds) * 10000000) + Convert(01:02:03.0040000.Milliseconds)))))"
+                    "$it => (((Convert($it.DiscontinuedDate.Value.Hour) * 36000000000) + ((Convert($it.DiscontinuedDate.Value.Minute) * 600000000) + ((Convert($it.DiscontinuedDate.Value.Second) * 10000000) + Convert($it.DiscontinuedDate.Value.Millisecond)))) >= ((Convert(01:02.Hour) * 36000000000) + ((Convert(01:02.Minute) * 600000000) + ((Convert(01:02.Second) * 10000000) + Convert(01:02.Millisecond)))))"
                 },
                 new object[]
                 {
@@ -3618,14 +3617,14 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                     (
                         new ConvertToNumericTimeOperatorParameters
                         (
-                            new ConstantOperatorParameters(new TimeOfDay(1, 2, 3, 4))
+                            new ConstantOperatorParameters(new TimeOnly(1, 2, 3, 4))
                         ),
                         new ConvertToNumericTimeOperatorParameters
                         (
                             new MemberSelectorOperatorParameters("DiscontinuedDate", new ParameterOperatorParameters(parameterName))
                         )
                     ),
-                    "$it => (((Convert(01:02:03.0040000.Hours) * 36000000000) + ((Convert(01:02:03.0040000.Minutes) * 600000000) + ((Convert(01:02:03.0040000.Seconds) * 10000000) + Convert(01:02:03.0040000.Milliseconds)))) <= ((Convert($it.DiscontinuedDate.Value.Hour) * 36000000000) + ((Convert($it.DiscontinuedDate.Value.Minute) * 600000000) + ((Convert($it.DiscontinuedDate.Value.Second) * 10000000) + Convert($it.DiscontinuedDate.Value.Millisecond)))))"
+                    "$it => (((Convert(01:02.Hour) * 36000000000) + ((Convert(01:02.Minute) * 600000000) + ((Convert(01:02.Second) * 10000000) + Convert(01:02.Millisecond)))) <= ((Convert($it.DiscontinuedDate.Value.Hour) * 36000000000) + ((Convert($it.DiscontinuedDate.Value.Minute) * 600000000) + ((Convert($it.DiscontinuedDate.Value.Second) * 10000000) + Convert($it.DiscontinuedDate.Value.Millisecond)))))"
                 },
                 new object[]
                 {
@@ -3677,10 +3676,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericTimeOperatorParameters
                         (
-                            new ConstantOperatorParameters(new TimeOfDay(1, 2, 3, 4))
+                            new ConstantOperatorParameters(new TimeOnly(1, 2, 3, 4))
                         )
                     ),
-                    "$it => (((Convert($it.NonNullableDiscontinuedDate.Hour) * 36000000000) + ((Convert($it.NonNullableDiscontinuedDate.Minute) * 600000000) + ((Convert($it.NonNullableDiscontinuedDate.Second) * 10000000) + Convert($it.NonNullableDiscontinuedDate.Millisecond)))) == ((Convert(01:02:03.0040000.Hours) * 36000000000) + ((Convert(01:02:03.0040000.Minutes) * 600000000) + ((Convert(01:02:03.0040000.Seconds) * 10000000) + Convert(01:02:03.0040000.Milliseconds)))))"
+                    "$it => (((Convert($it.NonNullableDiscontinuedDate.Hour) * 36000000000) + ((Convert($it.NonNullableDiscontinuedDate.Minute) * 600000000) + ((Convert($it.NonNullableDiscontinuedDate.Second) * 10000000) + Convert($it.NonNullableDiscontinuedDate.Millisecond)))) == ((Convert(01:02.Hour) * 36000000000) + ((Convert(01:02.Minute) * 600000000) + ((Convert(01:02.Second) * 10000000) + Convert(01:02.Millisecond)))))"
                 },
                 new object[]
                 {
@@ -3692,10 +3691,10 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                         ),
                         new ConvertToNumericTimeOperatorParameters
                         (
-                            new ConstantOperatorParameters(new TimeOfDay(1, 2, 3, 4))
+                            new ConstantOperatorParameters(new TimeOnly(1, 2, 3, 4))
                         )
                     ),
-                    "$it => (((Convert($it.NonNullableDiscontinuedDate.Hour) * 36000000000) + ((Convert($it.NonNullableDiscontinuedDate.Minute) * 600000000) + ((Convert($it.NonNullableDiscontinuedDate.Second) * 10000000) + Convert($it.NonNullableDiscontinuedDate.Millisecond)))) >= ((Convert(01:02:03.0040000.Hours) * 36000000000) + ((Convert(01:02:03.0040000.Minutes) * 600000000) + ((Convert(01:02:03.0040000.Seconds) * 10000000) + Convert(01:02:03.0040000.Milliseconds)))))"
+                    "$it => (((Convert($it.NonNullableDiscontinuedDate.Hour) * 36000000000) + ((Convert($it.NonNullableDiscontinuedDate.Minute) * 600000000) + ((Convert($it.NonNullableDiscontinuedDate.Second) * 10000000) + Convert($it.NonNullableDiscontinuedDate.Millisecond)))) >= ((Convert(01:02.Hour) * 36000000000) + ((Convert(01:02.Minute) * 600000000) + ((Convert(01:02.Second) * 10000000) + Convert(01:02.Millisecond)))))"
                 },
                 new object[]
                 {
@@ -3703,14 +3702,14 @@ namespace Contoso.Bsl.Flow.Unit.Tests
                     (
                         new ConvertToNumericTimeOperatorParameters
                         (
-                            new ConstantOperatorParameters(new TimeOfDay(1, 2, 3, 4))
+                            new ConstantOperatorParameters(new TimeOnly(1, 2, 3, 4))
                         ),
                         new ConvertToNumericTimeOperatorParameters
                         (
                             new MemberSelectorOperatorParameters("NonNullableDiscontinuedDate", new ParameterOperatorParameters(parameterName))
                         )
                     ),
-                    "$it => (((Convert(01:02:03.0040000.Hours) * 36000000000) + ((Convert(01:02:03.0040000.Minutes) * 600000000) + ((Convert(01:02:03.0040000.Seconds) * 10000000) + Convert(01:02:03.0040000.Milliseconds)))) <= ((Convert($it.NonNullableDiscontinuedDate.Hour) * 36000000000) + ((Convert($it.NonNullableDiscontinuedDate.Minute) * 600000000) + ((Convert($it.NonNullableDiscontinuedDate.Second) * 10000000) + Convert($it.NonNullableDiscontinuedDate.Millisecond)))))"
+                    "$it => (((Convert(01:02.Hour) * 36000000000) + ((Convert(01:02.Minute) * 600000000) + ((Convert(01:02.Second) * 10000000) + Convert(01:02.Millisecond)))) <= ((Convert($it.NonNullableDiscontinuedDate.Hour) * 36000000000) + ((Convert($it.NonNullableDiscontinuedDate.Minute) * 600000000) + ((Convert($it.NonNullableDiscontinuedDate.Second) * 10000000) + Convert($it.NonNullableDiscontinuedDate.Millisecond)))))"
                 }
             };
 
@@ -6847,7 +6846,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
         {
             if (MapperConfiguration == null)
             {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+                MapperConfiguration = ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
                     cfg.AddProfile<ParameterToDescriptorMappingProfile>();

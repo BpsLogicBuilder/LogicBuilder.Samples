@@ -39,7 +39,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         #endregion Fields
 
         [Fact]
-        public async void Get_students_ungrouped_with_aggregates()
+        public async Task Get_students_ungrouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -69,7 +69,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_students_grouped_with_aggregates()
+        public async Task Get_students_grouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -98,7 +98,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_departments_ungrouped_with_aggregates_and_includes()
+        public async Task Get_departments_ungrouped_with_aggregates_and_includes()
         {
             KendoGridDataRequest request = new()
             {
@@ -128,7 +128,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_departments_grouped_with_aggregates()
+        public async Task Get_departments_grouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -157,7 +157,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_instructors_ungrouped_with_aggregates()
+        public async Task Get_instructors_ungrouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -185,7 +185,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_instructors_grouped_with_aggregates_and_expansions()
+        public async Task Get_instructors_grouped_with_aggregates_and_expansions()
         {
             KendoGridDataRequest request = new()
             {
@@ -229,7 +229,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_instructors_grouped_with_aggregates_without_expansions()
+        public async Task Get_instructors_grouped_with_aggregates_without_expansions()
         {
             KendoGridDataRequest request = new()
             {
@@ -265,7 +265,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
         [MemberNotNull(nameof(MapperConfiguration))]
         private static void InitializeMapperConfiguration()
         {
-            MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration = ConfigurationHelper.GetMapperConfiguration(cfg =>
             {
                 cfg.AddExpressionMapping();
 
