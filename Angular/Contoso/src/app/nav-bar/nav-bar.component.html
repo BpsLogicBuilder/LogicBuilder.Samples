@@ -11,7 +11,7 @@
   <div [ngbCollapse]="isCollapsed" class="collapse navbar-collapse" id="navbarSupportedContent">
     @if (navBar) {
       <ul class="navbar-nav me-auto">
-        @for (item of navBar.menuItems; track item.text) {
+        @for (item of navBar.menuItems; track item.targetModule) {
           <li [ngClass]="{'active': item.targetModule === navBar.targetModule}" class="nav-item">
             <a [@itemState]="item.targetModule === navBar.currentModule ? 'active' : 'inactive'" [attr.href]="item.targetModule === navBar.currentModule ? null : '#'"
               onclick="return false;"

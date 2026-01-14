@@ -1,17 +1,35 @@
-<ng-container *ngIf="screenSettings">
-  <ng-container [ngSwitch]="screenSettings.viewType">
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Grid"><app-generic-grid [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-grid></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Create"><app-generic-create [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-create></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Edit"><app-generic-edit [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-edit></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Detail"><app-generic-detail [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-detail></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Delete"><app-generic-delete [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-delete></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Html"><app-html-page [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-html-page></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.List"><app-generic-list [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-list></div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.FlowComplete">FlowComplete</div>
-    <div [@flyIn]="'in'" *ngSwitchCase="viewType.Exception">
-      <div class="alert alert-danger">
-        <strong>{{screenSettings.settings.message}}</strong>
+@if (screenSettings) {
+  @switch (screenSettings.viewType) {
+    @case (viewType.Grid) {
+      <div [@flyIn]="'in'"><app-generic-grid [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-grid></div>
+    }
+    @case (viewType.Create) {
+      <div [@flyIn]="'in'"><app-generic-create [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-create></div>
+    }
+    @case (viewType.Edit) {
+      <div [@flyIn]="'in'"><app-generic-edit [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-edit></div>
+    }
+    @case (viewType.Detail) {
+      <div [@flyIn]="'in'"><app-generic-detail [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-detail></div>
+    }
+    @case (viewType.Delete) {
+      <div [@flyIn]="'in'"><app-generic-delete [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-delete></div>
+    }
+    @case (viewType.Html) {
+      <div [@flyIn]="'in'"><app-html-page [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-html-page></div>
+    }
+    @case (viewType.List) {
+      <div [@flyIn]="'in'"><app-generic-list [settings]="screenSettings.settings" [commandButtons]="screenSettings.commandButtons"></app-generic-list></div>
+    }
+    @case (viewType.FlowComplete) {
+      <div [@flyIn]="'in'">FlowComplete</div>
+    }
+    @case (viewType.Exception) {
+      <div [@flyIn]="'in'">
+        <div class="alert alert-danger">
+          <strong>{{screenSettings.settings.message}}</strong>
+        </div>
       </div>
-    </div>
-  </ng-container>
-</ng-container>
+    }
+  }
+}
