@@ -1,113 +1,129 @@
 <form novalidate [formGroup]="itemForm">
-  <div class="card" *ngIf='formSettings'>
-    <div class="card-header bg-primary text-white h6">
-      {{formSettings.title}}
+  @if (formSettings) {
+    <div class="card">
+      <div class="card-header bg-primary text-white h6">
+        {{formSettings.title}}
+      </div>
+      <div class="card-body">
+        @if (entity && formSettings?.fieldSettings?.length) {
+          <fieldset>
+            @for (setting of formSettings.fieldSettings; track setting) {
+              @if (itemForm.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)) {
+                <div class="mb-3 row">
+                  @if (setting.textTemplate) {
+                    <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, itemForm)">
+                    </ng-container>
+                  }
+                  @if (setting.dropDownTemplate) {
+                    <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, itemForm)">
+                    </ng-container>
+                  }
+                  @if (setting.multiSelectTemplate) {
+                    <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, itemForm)">
+                    </ng-container>
+                  }
+                </div>
+              }
+              @if (setting.abstractControlType === controlType.groupBox) {
+                @if (setting.formGroupTemplate) {
+                  <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, itemForm)">
+                  </ng-container>
+                }
+              }
+              @if (itemForm.controls[setting.field] && setting.abstractControlType === controlType.formGroup) {
+                @if (setting.formGroupTemplate) {
+                  <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, itemForm)">
+                  </ng-container>
+                }
+              }
+              @if (itemForm.controls[setting.field] && setting.abstractControlType === controlType.formGroupArray) {
+                @if (setting.formGroupTemplate) {
+                  <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormArrayContext(setting, itemForm)">
+                  </ng-container>
+                }
+              }
+            }
+          </fieldset>
+        }
+      </div>
+      <div class="card-footer">
+        @for (button of commandButtons; track button) {
+          @if (button.cancel) {
+            <button class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
+              <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+            </button>
+          }
+          @if (!button.cancel) {
+            <button class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="submitClick(button)"
+              [disabled]='!(this.itemForm.dirty && this.itemForm.valid)'>
+              <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+            </button>
+          }
+        }
+      </div>
     </div>
-    <div class="card-body">
-      <fieldset *ngIf="entity && formSettings?.fieldSettings?.length">
-        <ng-container *ngFor="let setting of formSettings.fieldSettings">
-          <div class="mb-3 row" *ngIf="itemForm.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
-            <ng-container *ngIf="setting.textTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, itemForm)">
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="setting.dropDownTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, itemForm)">
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="setting.multiSelectTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, itemForm)">
-              </ng-container>
-            </ng-container>
-          </div>
-          <ng-container *ngIf="setting.abstractControlType === controlType.groupBox">
-            <ng-container *ngIf="setting.formGroupTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, itemForm)">
-              </ng-container>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="itemForm.controls[setting.field] && setting.abstractControlType === controlType.formGroup">
-            <ng-container *ngIf="setting.formGroupTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, itemForm)">
-              </ng-container>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="itemForm.controls[setting.field] && setting.abstractControlType === controlType.formGroupArray">
-            <ng-container *ngIf="setting.formGroupTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormArrayContext(setting, itemForm)">
-              </ng-container>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-      </fieldset>
-    </div>
-    <div class="card-footer">
-      <ng-container *ngFor="let button of commandButtons">
-        <button *ngIf="button.cancel" class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
-          <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
-        </button>
-        <button *ngIf="!button.cancel" class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="submitClick(button)"
-          [disabled]='!(this.itemForm.dirty && this.itemForm.valid)'>
-          <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
-        </button>
-      </ng-container>
-    </div>
-  </div>
+  }
 </form>
 
 <ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
   #formGroupTemplate>
-  <div *ngIf="!fieldSetting.showTitle">
-    <ng-container *ngTemplateOutlet="groupTemplate">
-    </ng-container>
-  </div>
-  <div *ngIf="fieldSetting.showTitle" class="mb-3">
-    <div class="card text-dark bg-light pl-0 pr-0">
-      <div class="card-header">{{fieldSetting.title}}</div>
-      <div class="card-body">
-        <ng-container *ngTemplateOutlet="groupTemplate">
-        </ng-container>
+  @if (!fieldSetting.showTitle) {
+    <div>
+      <ng-container *ngTemplateOutlet="groupTemplate">
+      </ng-container>
+    </div>
+  }
+  @if (fieldSetting.showTitle) {
+    <div class="mb-3">
+      <div class="card text-dark bg-light pl-0 pr-0">
+        <div class="card-header">{{fieldSetting.title}}</div>
+        <div class="card-body">
+          <ng-container *ngTemplateOutlet="groupTemplate">
+          </ng-container>
+        </div>
       </div>
     </div>
-  </div>
+  }
   <ng-template #groupTemplate>
     <div [formGroup]="formGroup">
-      <ng-container *ngIf="fieldSetting?.fieldSettings?.length">
-        <ng-container *ngFor="let setting of fieldSetting.fieldSettings">
-          <div class="mb-3 row" *ngIf="formGroup.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
-            <ng-container *ngIf="setting.textTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroup, strIndex)">
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="setting.dropDownTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, formGroup, strIndex)">
-              </ng-container>
-            </ng-container>
-            <ng-container *ngIf="setting.multiSelectTemplate">
-              <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, formGroup, strIndex)">
-              </ng-container>
-            </ng-container>
-          </div>
-          <ng-container *ngIf="setting.abstractControlType === controlType.groupBox">
-            <ng-container *ngIf="setting.formGroupTemplate">
+      @if (fieldSetting?.fieldSettings?.length) {
+        @for (setting of fieldSetting.fieldSettings; track setting) {
+          @if (formGroup.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)) {
+            <div class="mb-3 row">
+              @if (setting.textTemplate) {
+                <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroup, strIndex)">
+                </ng-container>
+              }
+              @if (setting.dropDownTemplate) {
+                <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, formGroup, strIndex)">
+                </ng-container>
+              }
+              @if (setting.multiSelectTemplate) {
+                <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, formGroup, strIndex)">
+                </ng-container>
+              }
+            </div>
+          }
+          @if (setting.abstractControlType === controlType.groupBox) {
+            @if (setting.formGroupTemplate) {
               <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, formGroup, strIndex)">
               </ng-container>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="formGroup.controls[setting.field] && setting.abstractControlType === controlType.formGroup">
-            <ng-container *ngIf="setting.formGroupTemplate">
+            }
+          }
+          @if (formGroup.controls[setting.field] && setting.abstractControlType === controlType.formGroup) {
+            @if (setting.formGroupTemplate) {
               <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, formGroup, strIndex)">
               </ng-container>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="formGroup.controls[setting.field] && setting.abstractControlType === controlType.formGroupArray">
-            <ng-container *ngIf="setting.formGroupTemplate">
+            }
+          }
+          @if (formGroup.controls[setting.field] && setting.abstractControlType === controlType.formGroupArray) {
+            @if (setting.formGroupTemplate) {
               <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormArrayContext(setting, formGroup, strIndex)">
               </ng-container>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-      </ng-container>
+            }
+          }
+        }
+      }
     </div>
   </ng-template>
 </ng-template>
@@ -122,70 +138,78 @@
     </div>
   </div>
   <div [formGroup]="formGroup">
-    <div [formArrayName]="arrayName" *ngFor="let formGroupItem of arrayControl.controls; let i=index;">
-      <div *ngIf="!fieldSetting.showTitle" class="mt-3">
-        <ng-container *ngTemplateOutlet="arrayGroupTemplate">
-        </ng-container>
-      </div>
-      <div *ngIf="fieldSetting.showTitle">
-        <div class="card text-dark bg-white pl-0 pr-0 mt-3">
-          <div class="card-header">{{fieldSetting.title}}</div>
-          <div class="card-body">
+    @for (formGroupItem of arrayControl.controls; track formGroupItem; let i = $index) {
+      <div [formArrayName]="arrayName">
+        @if (!fieldSetting.showTitle) {
+          <div class="mt-3">
             <ng-container *ngTemplateOutlet="arrayGroupTemplate">
             </ng-container>
           </div>
-        </div>
-      </div>
-      <ng-template #arrayGroupTemplate>
-        <div class="row">
-          <div class="col-md-11">
-            <div [formGroup]="formGroupItem">
-              <ng-container *ngIf="fieldSetting?.fieldSettings?.length">
-                <ng-container *ngFor="let setting of fieldSetting.fieldSettings;">
-                  <div class="mb-3 row" *ngIf="formGroupItem.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)">
-                    <ng-container *ngIf="setting.textTemplate">
-                      <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
-                      </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="setting.dropDownTemplate">
-                      <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
-                      </ng-container>
-                    </ng-container>
-                    <ng-container *ngIf="setting.multiSelectTemplate">
-                      <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
-                      </ng-container>
-                    </ng-container>
-                  </div>
-                  <ng-container *ngIf="setting.abstractControlType === controlType.groupBox">
-                    <ng-container *ngIf="setting.formGroupTemplate">
-                      <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, formGroupItem, strIndex)">
-                      </ng-container>
-                    </ng-container>
-                  </ng-container>
-                  <ng-container *ngIf="formGroupItem.controls[setting.field] && setting.abstractControlType === controlType.formGroup">
-                    <ng-container *ngIf="setting.formGroupTemplate">
-                      <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, formGroupItem, getNewIndex(strIndex, i))">
-                      </ng-container>
-                    </ng-container>
-                  </ng-container>
-                  <ng-container *ngIf="formGroupItem.controls[setting.field] && setting.abstractControlType === controlType.formGroupArray">
-                    <ng-container *ngIf="setting.formGroupTemplate">
-                      <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormArrayContext(setting, formGroupItem, getNewIndex(strIndex, i))">
-                      </ng-container>
-                    </ng-container>
-                  </ng-container>
+        }
+        @if (fieldSetting.showTitle) {
+          <div>
+            <div class="card text-dark bg-white pl-0 pr-0 mt-3">
+              <div class="card-header">{{fieldSetting.title}}</div>
+              <div class="card-body">
+                <ng-container *ngTemplateOutlet="arrayGroupTemplate">
                 </ng-container>
-              </ng-container>
+              </div>
             </div>
           </div>
-          <div class="col-md-1 pl-0">
-            <button class="btn btn-secondary" type="button"  (click)="deleteFormArrayItem(arrayControl, i)">
-              <i class="fa fa-angular fa-trash"></i>
-            </button>
+        }
+        <ng-template #arrayGroupTemplate>
+          <div class="row">
+            <div class="col-md-11">
+              <div [formGroup]="formGroupItem">
+                @if (fieldSetting?.fieldSettings?.length) {
+                  @for (setting of fieldSetting.fieldSettings; track setting) {
+                    @if (formGroupItem.controls[setting.field] && (setting.abstractControlType === controlType.formControl || setting.abstractControlType === controlType.multiSelectFormControl)) {
+                      <div class="mb-3 row">
+                        @if (setting.textTemplate) {
+                          <ng-container *ngTemplateOutlet="getTemplate(setting.textTemplate.templateName); context: getFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
+                          </ng-container>
+                        }
+                        @if (setting.dropDownTemplate) {
+                          <ng-container *ngTemplateOutlet="getTemplate(setting.dropDownTemplate.templateName); context: getDropDownFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
+                          </ng-container>
+                        }
+                        @if (setting.multiSelectTemplate) {
+                          <ng-container *ngTemplateOutlet="getTemplate(setting.multiSelectTemplate.templateName); context: getMultiSelectFieldContext(setting, formGroupItem, getNewIndex(strIndex, i))">
+                          </ng-container>
+                        }
+                      </div>
+                    }
+                    @if (setting.abstractControlType === controlType.groupBox) {
+                      @if (setting.formGroupTemplate) {
+                        <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getGroupBoxContext(setting, formGroupItem, strIndex)">
+                        </ng-container>
+                      }
+                    }
+                    @if (formGroupItem.controls[setting.field] && setting.abstractControlType === controlType.formGroup) {
+                      @if (setting.formGroupTemplate) {
+                        <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormGroupContext(setting, formGroupItem, getNewIndex(strIndex, i))">
+                        </ng-container>
+                      }
+                    }
+                    @if (formGroupItem.controls[setting.field] && setting.abstractControlType === controlType.formGroupArray) {
+                      @if (setting.formGroupTemplate) {
+                        <ng-container *ngTemplateOutlet="getTemplate(setting.formGroupTemplate.templateName); context: getFormArrayContext(setting, formGroupItem, getNewIndex(strIndex, i))">
+                        </ng-container>
+                      }
+                    }
+                  }
+                }
+              </div>
+            </div>
+            <div class="col-md-1 pl-0">
+              <button class="btn btn-secondary" type="button"  (click)="deleteFormArrayItem(arrayControl, i)">
+                <i class="fa fa-angular fa-trash"></i>
+              </button>
+            </div>
           </div>
-        </div>
-      </ng-template>
-    </div>
+        </ng-template>
+      </div>
+    }
   </div>
 </ng-template>
 
@@ -195,77 +219,87 @@
   <div class="col-md-8">
     <input class="form-control" readonly name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" [type]="fieldSetting.type"
       [placeholder]="fieldSetting.placeholder" [formControl]="formGroup.controls[fieldSetting.field]" />
-  </div>
-</ng-template>
-
-<ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
-  #hiddenTemplate>
-  <input class="form-control" hidden name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" [type]="hidden"
-      [placeholder]="fieldSetting.placeholder" [formControl]="formGroup.controls[fieldSetting.field]" />
-</ng-template>
-
-<ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
-  #textTemplate>
-  <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
-  <div class="col-md-8">
-    <input class="form-control" name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" [type]="fieldSetting.type"
-      [placeholder]="fieldSetting.placeholder" [formControl]="formGroup.controls[fieldSetting.field]" />
-    <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
-      {{groupData.displayMessages[fieldSetting.field]}}
-    </small>
-  </div>
-</ng-template>
-
-<ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
-  #checkBoxTemplate>
-  <div class="col-md-8">
-    <div class="form-check">
-      <label class="form-check-label">
-        <input class="form-check-input" name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" type="checkbox"
-          [formControl]="formGroup.controls[fieldSetting.field]">{{fieldSetting.title}}
-      </label>
     </div>
-    <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
-      {{groupData.displayMessages[fieldSetting.field]}}
-    </small>
-  </div>
-</ng-template>
+  </ng-template>
 
-<ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex"
-  #dateTemplate>
-  <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
-  <div class="col-md-8">
-    <kendo-datepicker class="form-control" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
-      [formControl]="formGroup.controls[fieldSetting.field]"></kendo-datepicker>
-    <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
-      {{groupData.displayMessages[fieldSetting.field]}}
-    </small>
-  </div>
-</ng-template>
+  <ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
+    #hiddenTemplate>
+    <input class="form-control" hidden name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" [type]="hidden"
+      [placeholder]="fieldSetting.placeholder" [formControl]="formGroup.controls[fieldSetting.field]" />
+    </ng-template>
 
-<ng-template #dropDownTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex">
-  <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
-  <div class="col-md-8">
-    <app-form-field-dropdown class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [dropDownTemplate]="fieldSetting.dropDownTemplate"
-      [textField]="fieldSetting.dropDownTemplate.textField" [valueField]="fieldSetting.dropDownTemplate.valueField"
-      [formControl]="formGroup.controls[fieldSetting.field]" [reload]="fieldSetting.dropDownTemplate.reload"
-      [clear]="fieldSetting.dropDownTemplate.clear" [filterValueSourceItem]="formGroup.value" [modelType]="fieldSetting.modelType">
-    </app-form-field-dropdown>
-    <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
-      {{groupData.displayMessages[fieldSetting.field]}}
-    </small>
-  </div>
-</ng-template>
+    <ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
+      #textTemplate>
+      <label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</label>
+      <div class="col-md-8">
+        <input class="form-control" name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" [type]="fieldSetting.type"
+          [placeholder]="fieldSetting.placeholder" [formControl]="formGroup.controls[fieldSetting.field]" />
+          @if (groupData.displayMessages[fieldSetting.field]) {
+            <small class="form-text text-muted">
+              {{groupData.displayMessages[fieldSetting.field]}}
+            </small>
+          }
+        </div>
+      </ng-template>
 
-<ng-template #multiSelectTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex">
-  <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
-  <div class="col-md-8">
-    <app-form-field-multiselect class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [multiSelectTemplate]="fieldSetting.multiSelectTemplate"
-      [textField]="fieldSetting.multiSelectTemplate.textField" [valueField]="fieldSetting.multiSelectTemplate.valueField"
-      [formControl]="formGroup.controls[fieldSetting.field]" [filterValueSourceItem]="formGroup.value">
-    </app-form-field-multiselect>
-    <small class="form-text text-muted" *ngIf="groupData.displayMessages[fieldSetting.field]">
-      {{groupData.displayMessages[fieldSetting.field]}}
-    </small>
-  </div>
-</ng-template>
+      <ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex"
+        #checkBoxTemplate>
+        <div class="col-md-8">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}" type="checkbox"
+                [formControl]="formGroup.controls[fieldSetting.field]">{{fieldSetting.title}}
+              </label>
+            </div>
+            @if (groupData.displayMessages[fieldSetting.field]) {
+              <small class="form-text text-muted">
+                {{groupData.displayMessages[fieldSetting.field]}}
+              </small>
+            }
+          </div>
+        </ng-template>
+
+        <ng-template let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex"
+          #dateTemplate>
+          <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
+          <div class="col-md-8">
+            <kendo-datepicker class="form-control" attr.name="{{fieldSetting.domElementId + strIndex}}" id="{{fieldSetting.domElementId + strIndex}}"
+            [formControl]="formGroup.controls[fieldSetting.field]"></kendo-datepicker>
+            @if (groupData.displayMessages[fieldSetting.field]) {
+              <small class="form-text text-muted">
+                {{groupData.displayMessages[fieldSetting.field]}}
+              </small>
+            }
+          </div>
+        </ng-template>
+
+        <ng-template #dropDownTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting"  let-strIndex="strIndex">
+          <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
+          <div class="col-md-8">
+            <app-form-field-dropdown class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [dropDownTemplate]="fieldSetting.dropDownTemplate"
+              [textField]="fieldSetting.dropDownTemplate.textField" [valueField]="fieldSetting.dropDownTemplate.valueField"
+              [formControl]="formGroup.controls[fieldSetting.field]" [reload]="fieldSetting.dropDownTemplate.reload"
+              [clear]="fieldSetting.dropDownTemplate.clear" [filterValueSourceItem]="formGroup.value" [modelType]="fieldSetting.modelType">
+            </app-form-field-dropdown>
+            @if (groupData.displayMessages[fieldSetting.field]) {
+              <small class="form-text text-muted">
+                {{groupData.displayMessages[fieldSetting.field]}}
+              </small>
+            }
+          </div>
+        </ng-template>
+
+        <ng-template #multiSelectTemplate let-formGroup="formGroup" let-groupData="groupData" let-fieldSetting="fieldSetting" let-strIndex="strIndex">
+          <kendo-label class="col-md-3 col-form-label" attr.for="{{fieldSetting.domElementId + strIndex}}">{{fieldSetting.title}}</kendo-label>
+          <div class="col-md-8">
+            <app-form-field-multiselect class="form-control nopadding" id="{{fieldSetting.domElementId + strIndex}}" [multiSelectTemplate]="fieldSetting.multiSelectTemplate"
+              [textField]="fieldSetting.multiSelectTemplate.textField" [valueField]="fieldSetting.multiSelectTemplate.valueField"
+              [formControl]="formGroup.controls[fieldSetting.field]" [filterValueSourceItem]="formGroup.value">
+            </app-form-field-multiselect>
+            @if (groupData.displayMessages[fieldSetting.field]) {
+              <small class="form-text text-muted">
+                {{groupData.displayMessages[fieldSetting.field]}}
+              </small>
+            }
+          </div>
+        </ng-template>
