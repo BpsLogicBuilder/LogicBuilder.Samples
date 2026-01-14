@@ -1,33 +1,40 @@
-<ng-container *ngIf="settings?.contentTemplate; else message">
+@if (settings?.contentTemplate) {
   <ng-container *ngTemplateOutlet="getTemplate(settings.contentTemplate.templateName); context: getContentContext(settings.contentTemplate)">
   </ng-container>
-</ng-container>
+} @else {
+  @if (settings?.messageTemplate) {
+    <ng-container *ngTemplateOutlet="getTemplate(settings.messageTemplate.templateName); context: getMessageContext(settings.messageTemplate)">
+    </ng-container>
+  }
+}
 
 <ng-template #message>
-    <ng-container *ngIf="settings?.messageTemplate">
-        <ng-container *ngTemplateOutlet="getTemplate(settings.messageTemplate.templateName); context: getMessageContext(settings.messageTemplate)">
-        </ng-container>
-      </ng-container>
+  @if (settings?.messageTemplate) {
+    <ng-container *ngTemplateOutlet="getTemplate(settings.messageTemplate.templateName); context: getMessageContext(settings.messageTemplate)">
+    </ng-container>
+  }
 </ng-template>
 
 <ng-template let-messageTemplate #messageTemplate>
-  <div class="card" *ngIf="messageTemplate">
-    <div class="card-header bg-primary text-white h6">
-      {{messageTemplate.caption}}
-    </div>
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-12 h4">{{messageTemplate.message}}</div>
+  @if (messageTemplate) {
+    <div class="card">
+      <div class="card-header bg-primary text-white h6">
+        {{messageTemplate.caption}}
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-12 h4">{{messageTemplate.message}}</div>
+        </div>
+      </div>
+      <div class="card-footer">
+        @for (button of commandButtons; track button) {
+          <button class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
+            <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+          </button>
+        }
       </div>
     </div>
-    <div class="card-footer">
-      <ng-container *ngFor="let button of commandButtons">
-        <button class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
-          <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
-        </button>
-      </ng-container>
-    </div>
-  </div>
+  }
 </ng-template>
 
 <ng-template let-contentTemplate #welcomeTemplate>
@@ -48,7 +55,7 @@
       <p>You can build the application by following the steps in a series of tutorials.</p>
       <p>
         <a class="btn btn-default" href="https://docs.asp.net/en/latest/data/ef-mvc/intro.html">See the tutorial
-          &raquo;</a>
+        &raquo;</a>
       </p>
     </div>
     <div class="col-md-4">
@@ -56,20 +63,20 @@
       <p>You can download the completed project from GitHub.</p>
       <p>
         <a class="btn btn-default" href="https://github.com/aspnet/Docs/tree/master/aspnet/data/ef-mvc/intro/samples/cu-final">See
-          project source code &raquo;</a>
+        project source code &raquo;</a>
       </p>
     </div>
   </div>
   <div class="row">
     <div class="col-md-12">
-        <div class="card">
-          <div class="card-body"><ng-container *ngFor="let button of commandButtons">
-              <button class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
-                <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
-              </button>
-            </ng-container>
-          </div>
-        </div>
+      <div class="card">
+        <div class="card-body">@for (button of commandButtons; track button) {
+          <button class="btn {{button.classString}} ms-2 px-4 float-right" type="button" (click)="navigateNext(button)">
+            <i class="fa fa-angular {{button.buttonIcon}}"></i> {{button.longString}}
+          </button>
+        }
+      </div>
     </div>
   </div>
+</div>
 </ng-template>
