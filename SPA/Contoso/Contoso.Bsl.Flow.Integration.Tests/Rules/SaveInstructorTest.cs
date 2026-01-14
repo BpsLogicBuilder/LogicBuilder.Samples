@@ -37,7 +37,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public async void SaveValidInstructorRequest1()
+        public async Task SaveValidInstructorRequest1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -61,7 +61,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void SaveValidInstructorRequest2()
+        public async Task SaveValidInstructorRequest2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -85,7 +85,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void SaveInvalidInstructorRequest1()
+        public async Task SaveInvalidInstructorRequest1()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -112,7 +112,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void SaveInvalidInstructorRequest2()
+        public async Task SaveInvalidInstructorRequest2()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -141,7 +141,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            MapperConfiguration ??= new MapperConfiguration(cfg =>
+            MapperConfiguration ??= ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

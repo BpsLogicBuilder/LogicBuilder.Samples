@@ -112,7 +112,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 
             if (baseResponse.Success == false)
             {
-                await App.Current!.Windows[0].Page!.DisplayAlert/*App.Current.MainPage is not null here*/
+                await App.Current!.Windows[0].Page!.DisplayAlertAsync/*App.Current.MainPage is not null here*/
                 (
                     "Errors",
                     string.Join(Environment.NewLine, baseResponse.ErrorMessages),
@@ -173,7 +173,7 @@ namespace Contoso.XPlatform.ViewModels.EditForm
 
                 if (response.Success == false)
                 {
-                    await App.Current!.Windows[0].Page!.DisplayAlert/*App.Current.MainPage is not null here*/
+                    await App.Current!.Windows[0].Page!.DisplayAlertAsync/*App.Current.MainPage is not null here*/
                     (
                         "Errors",
                         string.Join(Environment.NewLine, response.ErrorMessages),

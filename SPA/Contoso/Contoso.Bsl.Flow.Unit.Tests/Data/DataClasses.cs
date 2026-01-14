@@ -1,5 +1,4 @@
 ﻿//Adapted from Microsoft.AspNet.OData.Test.Query.Expressions
-using Microsoft.OData.Edm;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,14 +32,14 @@ namespace Contoso.Bsl.Flow.Unit.Tests.Data
         public DateTimeOffset DiscontinuedOffset { get; set; }
         public TimeSpan DiscontinuedSince { get; set; }
 
-        public Date DateProperty { get; set; }
-        public Date? NullableDateProperty { get; set; }
+        public DateOnly DateProperty { get; set; }
+        public DateOnly? NullableDateProperty { get; set; }
 
         public Guid GuidProperty { get; set; }
         public Guid? NullableGuidProperty { get; set; }
 
-        public TimeOfDay TimeOfDayProperty { get; set; }
-        public TimeOfDay? NullableTimeOfDayProperty { get; set; }
+        public TimeOnly TimeOfDayProperty { get; set; }
+        public TimeOnly? NullableTimeOfDayProperty { get; set; }
 
         public ushort? UnsignedReorderLevel { get; set; }
 

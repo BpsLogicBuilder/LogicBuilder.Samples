@@ -6,6 +6,7 @@ using Contoso.Forms.Parameters;
 using Contoso.Forms.Parameters.Bindings;
 using Contoso.Forms.Parameters.ListForm;
 using Contoso.XPlatform.AutoMapperProfiles;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
@@ -60,7 +61,7 @@ namespace Contoso.XPlatform.Maui.Tests
                 cfg.AddProfile<DescriptorToOperatorMappingProfile>();
                 cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                 cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
-            });
+            }, new NullLoggerFactory());
             config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }

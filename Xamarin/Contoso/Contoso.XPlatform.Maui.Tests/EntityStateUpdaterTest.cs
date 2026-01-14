@@ -278,8 +278,6 @@ namespace Contoso.XPlatform.Maui.Tests
                 formDescriptor.FieldSettings
             );
 
-            // Assert.Equal(LogicBuilder.Domain.EntityStateType.Unchanged, currentInstructor.EntityState);
-            //Assert.Equal(LogicBuilder.Domain.EntityStateType.Unchanged, currentInstructor.OfficeAssignment.EntityState);
             Assert.Equal(LogicBuilder.Domain.EntityStateType.Modified, currentInstructor.EntityState);
             Assert.Equal(LogicBuilder.Domain.EntityStateType.Modified, currentInstructor.OfficeAssignment.EntityState);
         }

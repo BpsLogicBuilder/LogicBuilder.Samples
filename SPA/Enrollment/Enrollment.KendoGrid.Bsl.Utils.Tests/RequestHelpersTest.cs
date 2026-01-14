@@ -40,7 +40,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
         #endregion Fields
 
         [Fact]
-        public async void Get_persons_ungrouped_with_aggregates()
+        public async Task Get_persons_ungrouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -69,7 +69,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
         }
 
         [Fact]
-        public async void Get_persons_grouped_with_aggregates()
+        public async Task Get_persons_grouped_with_aggregates()
         {
             KendoGridDataRequest request = new()
             {
@@ -103,7 +103,7 @@ namespace Enrollment.KendoGrid.Bsl.Utils.Tests
         [MemberNotNull(nameof(MapperConfiguration))]
         private static void InitializeMapperConfiguration()
         {
-            MapperConfiguration = new MapperConfiguration(cfg =>
+            MapperConfiguration = ConfigurationHelper.GetMapperConfiguration(cfg =>
             {
                 cfg.AddExpressionMapping();
 

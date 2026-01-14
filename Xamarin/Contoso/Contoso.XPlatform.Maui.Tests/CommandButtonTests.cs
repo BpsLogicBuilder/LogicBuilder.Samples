@@ -3,6 +3,7 @@ using Contoso.Forms.Configuration;
 using Contoso.Forms.Parameters;
 using Contoso.XPlatform.AutoMapperProfiles;
 using LogicBuilder.Forms.Parameters;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -43,7 +44,7 @@ namespace Contoso.XPlatform.Maui.Tests
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile<CommandButtonProfile>();
-            });
+            }, new NullLoggerFactory());
             config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }

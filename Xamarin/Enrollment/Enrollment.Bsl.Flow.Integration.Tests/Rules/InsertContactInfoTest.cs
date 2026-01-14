@@ -131,7 +131,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
         {
             if (MapperConfiguration == null)
             {
-                MapperConfiguration = new MapperConfiguration(cfg =>
+                MapperConfiguration = ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

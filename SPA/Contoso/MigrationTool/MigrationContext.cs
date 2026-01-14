@@ -6,18 +6,23 @@ namespace MigrationTool
 {
     public class MigrationContext : DbContext
     {
-        public MigrationContext()
+        //public MigrationContext()
+        //{
+        //    this.EntityConfigurationHandler = new EntityConfigurationHandler(this);
+        //}
+
+        public MigrationContext(DbContextOptions<MigrationContext> options) : base(options)
         {
             this.EntityConfigurationHandler = new EntityConfigurationHandler(this);
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {//Can't use DI to create MigrationContext for dotnet ef migrations add
-            optionsBuilder.UseSqlServer(@"Server=.\SQL2016;Database=Contoso;Trusted_Connection=True;trustServerCertificate=true;");
-            //Alternatively use DI and at runtime use
-            //myDbContext.Database.Migrate(); Then context.Database.EnsureCreated();
-            //Instead of "dotnet ef database update -v" at the command line.
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{//Can't use DI to create MigrationContext for dotnet ef migrations add
+        //    optionsBuilder.UseSqlServer(@"Server=.\SQL2016;Database=Contoso;Trusted_Connection=True;trustServerCertificate=true;");
+        //    //Alternatively use DI and at runtime use
+        //    //myDbContext.Database.Migrate(); Then context.Database.EnsureCreated();
+        //    //Instead of "dotnet ef database update -v" at the command line.
+        //}
 
         public DbSet<Course> Courses { get; set; }
         public DbSet<Enrollment> Enrollments { get; set; }

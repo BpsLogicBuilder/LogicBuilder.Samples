@@ -17,7 +17,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
 
 namespace Enrollment.BSL
 {
@@ -59,7 +58,7 @@ namespace Enrollment.BSL
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Enrollment.BSL", Version = "v1" });
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.OpenApiInfo { Title = "Enrollment.BSL", Version = "v1" });
             })
             .AddDbContext<EnrollmentContext>
             (
@@ -72,7 +71,7 @@ namespace Enrollment.BSL
             .AddScoped<IEnrollmentRepository, EnrollmentRepository>()
             .AddSingleton<AutoMapper.IConfigurationProvider>
             (
-                new MapperConfiguration(cfg =>
+                ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

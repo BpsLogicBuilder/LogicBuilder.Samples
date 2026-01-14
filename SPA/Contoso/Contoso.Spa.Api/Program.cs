@@ -10,7 +10,8 @@ using Contoso.Spa.Flow.Options;
 using Contoso.Spa.Flow.Rules;
 using Contoso.Utils;
 using LogicBuilder.RulesDirector;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.OpenApi;
 using NLog;
 using NLog.Web;
 
@@ -63,7 +64,7 @@ namespace Contoso.Spa.Api
                     new MapperConfiguration(cfg => {
                         cfg.AddMaps(typeof(BaseClassMappings).Assembly);
                         cfg.AddMaps(typeof(ExpansionDescriptorToOperatorMappingProfile).Assembly);
-                    })
+                    }, new NullLoggerFactory())
                 )
                 .AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .AddScoped<IRulesLoader, RulesLoader>()

@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Contoso.Api.Web.Tests
@@ -360,7 +361,7 @@ namespace Contoso.Api.Web.Tests
 
         #region Tests
         [Fact]
-        public async void Select_Credits_AsCredits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
+        public async Task Select_Credits_AsCredits_From_Lookups_Table_In_Descending_Order_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<object>>
@@ -388,7 +389,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void Select_CourseIds_AsCourseIds_From_Course_Table_In_Ascending_Order()
+        public async Task Select_CourseIds_AsCourseIds_From_Course_Table_In_Ascending_Order()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<CourseModel>, IEnumerable<object>>
@@ -416,7 +417,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetDropDownListRequest_AdministratorLookup()
+        public async Task GetDropDownListRequest_AdministratorLookup()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<InstructorModel>, IQueryable<InstructorModel>>
@@ -446,7 +447,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetDropDownListRequest_As_LookUpsModel()
+        public async Task GetDropDownListRequest_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -476,7 +477,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetDropDownListRequest_As_LookUpsModel_Using_Object_ReturnType()
+        public async Task GetDropDownListRequest_As_LookUpsModel_Using_Object_ReturnType()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -506,7 +507,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetDropDownListRequest_As_DepartmentModel_Using_Object_ReturnType()
+        public async Task GetDropDownListRequest_As_DepartmentModel_Using_Object_ReturnType()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<DepartmentModel>, IEnumerable<DepartmentModel>>
@@ -536,7 +537,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetListRequest_As_CourseModel()
+        public async Task GetListRequest_As_CourseModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<CourseModel>, IEnumerable<CourseModel>>
@@ -566,7 +567,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetEntityRequest_As_DeopartmentModel()
+        public async Task GetEntityRequest_As_DeopartmentModel()
         {
             var result = await this.clientFactory.PostAsync<GetEntityResponse>
             (
@@ -602,7 +603,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetEntityRequest_As_DeopartmentModel_FromObjectConstant()
+        public async Task GetEntityRequest_As_DeopartmentModel_FromObjectConstant()
         {
             var result = await this.clientFactory.PostAsync<GetEntityResponse>
             (
@@ -638,7 +639,7 @@ namespace Contoso.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetAboutListRequest_StudentEnrollmentCountByEnrollmentDate_As_LookUpsModel()
+        public async Task GetAboutListRequest_StudentEnrollmentCountByEnrollmentDate_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<StudentModel>, IEnumerable<LookUpsModel>>

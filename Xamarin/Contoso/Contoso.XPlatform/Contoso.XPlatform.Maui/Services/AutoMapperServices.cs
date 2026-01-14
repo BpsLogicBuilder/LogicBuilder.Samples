@@ -2,6 +2,7 @@
 using Contoso.AutoMapperProfiles;
 using Contoso.XPlatform.AutoMapperProfiles;
 using Contoso.XPlatform.MappingProfiles;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -15,7 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     {
                         cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(CommandButtonProfile), typeof(MenuItemProfile));
                         cfg.AllowNullCollections = true;
-                    })
+                    }, new NullLoggerFactory())
                 ).AddTransient<IMapper>
                 (
                     sp => new Mapper

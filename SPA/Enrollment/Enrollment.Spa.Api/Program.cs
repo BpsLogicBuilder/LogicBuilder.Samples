@@ -10,7 +10,8 @@ using Enrollment.Spa.Flow.Options;
 using Enrollment.Spa.Flow.Rules;
 using Enrollment.Utils;
 using LogicBuilder.RulesDirector;
-using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.OpenApi;
 using NLog;
 using NLog.Web;
 
@@ -64,7 +65,7 @@ namespace Enrollment.Spa.Api
                     {
                         cfg.AddMaps(typeof(BaseClassMappings).Assembly);
                         cfg.AddMaps(typeof(ExpansionDescriptorToOperatorMappingProfile).Assembly);
-                    })
+                    }, new NullLoggerFactory())
                 )
                 .AddScoped<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
                 .AddScoped<IRulesLoader, RulesLoader>()

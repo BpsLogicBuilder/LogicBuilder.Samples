@@ -1,10 +1,13 @@
 ﻿using Akavache;
+using Akavache.Sqlite3;
+using Akavache.SystemTextJson;
 using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.Directives;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Controls.Hosting;
 using Microsoft.Maui.Devices;
 using Microsoft.Maui.Hosting;
+using Splat.Builder;
 using System;
 
 namespace Contoso.XPlatform
@@ -38,7 +41,11 @@ namespace Contoso.XPlatform
                     fonts.AddFont("OpenSans_Semibold.ttf", "OpenSansSemibold");
                 });
 
-            BlobCache.ApplicationName = AppConstants.ApplicationName;
+            AppBuilder.CreateSplatBuilder()
+                .WithAkavacheCacheDatabase<SystemJsonSerializer>(builder =>
+                    builder.WithApplicationName(AppConstants.ApplicationName)
+                           .WithSqliteProvider() // REQUIRED: Explicitly initialize SQLite provider
+                           .WithSqliteDefaults());
 
             return builder.Build();
         }

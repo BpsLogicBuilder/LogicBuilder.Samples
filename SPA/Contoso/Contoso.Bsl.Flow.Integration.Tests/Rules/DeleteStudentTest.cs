@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -34,7 +35,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public async void DeleteValidStudentRequest()
+        public async Task DeleteValidStudentRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -61,7 +62,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void DeleteInvalidStudentRequest()
+        public async Task DeleteInvalidStudentRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -91,7 +92,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void DeleteStudentNotFoundRequest()
+        public async Task DeleteStudentNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -120,7 +121,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            MapperConfiguration ??= new MapperConfiguration(cfg =>
+            MapperConfiguration ??= ConfigurationHelper.GetMapperConfiguration(cfg =>
                 {
                     cfg.AddExpressionMapping();
 

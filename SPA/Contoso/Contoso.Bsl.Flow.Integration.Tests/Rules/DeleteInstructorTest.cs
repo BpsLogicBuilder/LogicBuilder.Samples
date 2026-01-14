@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -34,7 +35,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         #endregion Fields
 
         [Fact]
-        public async void DeleteValidInstructorRequest()
+        public async Task DeleteValidInstructorRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -61,7 +62,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void DeleteInvalidInstructorRequest()
+        public async Task DeleteInvalidInstructorRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -88,7 +89,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         }
 
         [Fact]
-        public async void DeleteInstructorNotFoundRequest()
+        public async Task DeleteInstructorNotFoundRequest()
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
@@ -120,7 +121,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         static MapperConfiguration MapperConfiguration;
         private void Initialize()
         {
-            MapperConfiguration ??= new MapperConfiguration(cfg => { cfg.AddExpressionMapping(); cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(SchoolProfile)); });
+            MapperConfiguration ??= ConfigurationHelper.GetMapperConfiguration(cfg => { cfg.AddExpressionMapping(); cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile), typeof(SchoolProfile)); });
             MapperConfiguration.AssertConfigurationIsValid();
             serviceProvider = new ServiceCollection()
                 .AddDbContext<SchoolContext>

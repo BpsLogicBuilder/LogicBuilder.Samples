@@ -19,7 +19,7 @@ namespace Contoso.XPlatform.Services
         public HttpService(IHttpClientFactory factory)
         {
             this.factory = factory;
-            cache = BlobCache.LocalMachine;
+            cache = CacheDatabase.LocalMachine;
         }
 
         public async Task<BaseResponse> GetObjectDropDown(GetTypedListRequest request, string? url = null)

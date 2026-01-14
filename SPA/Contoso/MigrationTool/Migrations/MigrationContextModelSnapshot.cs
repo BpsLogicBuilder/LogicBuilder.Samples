@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MigrationTool;
 
+#nullable disable
+
 namespace MigrationTool.Migrations
 {
     [DbContext(typeof(MigrationContext))]
@@ -15,94 +17,97 @@ namespace MigrationTool.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.1.4-rtm-31024")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "10.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            modelBuilder.Entity("Contoso.Data.Automatic.VariableMetaData", b =>
-                {
-                    b.Property<int>("VariableMetaDataId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Data");
-
-                    b.Property<DateTime>("LastUpdated");
-
-                    b.HasKey("VariableMetaDataId");
-
-                    b.ToTable("VariableMetaData","Automatic");
-                });
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Contoso.Data.Entities.Course", b =>
                 {
-                    b.Property<int>("CourseID");
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
 
-                    b.Property<int>("Credits");
+                    b.Property<int>("Credits")
+                        .HasColumnType("int");
 
-                    b.Property<int>("DepartmentID");
+                    b.Property<int>("DepartmentID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("CourseID");
 
                     b.HasIndex("DepartmentID");
 
-                    b.ToTable("Course");
+                    b.ToTable("Course", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.CourseAssignment", b =>
                 {
-                    b.Property<int>("CourseID");
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
 
-                    b.Property<int>("InstructorID");
+                    b.Property<int>("InstructorID")
+                        .HasColumnType("int");
 
                     b.HasKey("CourseID", "InstructorID");
 
                     b.HasIndex("InstructorID");
 
-                    b.ToTable("CourseAssignment");
+                    b.ToTable("CourseAssignment", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Department", b =>
                 {
                     b.Property<int>("DepartmentID")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DepartmentID"));
 
                     b.Property<decimal>("Budget")
                         .HasColumnType("money");
 
-                    b.Property<int?>("InstructorID");
+                    b.Property<int?>("InstructorID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<byte[]>("RowVersion")
                         .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate();
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
-                    b.Property<DateTime>("StartDate");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("DepartmentID");
 
                     b.HasIndex("InstructorID");
 
-                    b.ToTable("Department");
+                    b.ToTable("Department", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Enrollment", b =>
                 {
                     b.Property<int>("EnrollmentID")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<int>("CourseID");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnrollmentID"));
 
-                    b.Property<int?>("Grade");
+                    b.Property<int>("CourseID")
+                        .HasColumnType("int");
 
-                    b.Property<int>("StudentID");
+                    b.Property<int?>("Grade")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StudentID")
+                        .HasColumnType("int");
 
                     b.HasKey("EnrollmentID");
 
@@ -110,131 +115,120 @@ namespace MigrationTool.Migrations
 
                     b.HasIndex("StudentID");
 
-                    b.ToTable("Enrollment");
+                    b.ToTable("Enrollment", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Instructor", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("HireDate");
+                    b.Property<DateTime>("HireDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Instructor");
+                    b.ToTable("Instructor", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.LookUps", b =>
                 {
                     b.Property<int>("LookUpsID")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<bool?>("BooleanValue");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("LookUpsID"));
+
+                    b.Property<bool?>("BooleanValue")
+                        .HasColumnType("bit");
 
                     b.Property<string>("CharValue")
-                        .HasConversion(new ValueConverter<string, string>(v => default(string), v => default(string), new ConverterMappingHints(size: 1)));
+                        .HasColumnType("nvarchar(1)");
 
-                    b.Property<DateTime?>("DateTimeValue");
+                    b.Property<DateTime?>("DateTimeValue")
+                        .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("GuidValue");
+                    b.Property<Guid?>("GuidValue")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ListName")
                         .IsRequired()
-                        .HasMaxLength(100);
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
-                    b.Property<double?>("NumericValue");
+                    b.Property<double?>("NumericValue")
+                        .HasColumnType("float");
 
-                    b.Property<int>("Order");
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
 
                     b.Property<string>("Text")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<TimeSpan?>("TimeSpanValue");
+                    b.Property<TimeSpan?>("TimeSpanValue")
+                        .HasColumnType("time");
 
                     b.Property<string>("Value")
-                        .HasMaxLength(256);
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("LookUpsID");
 
-                    b.ToTable("LookUps");
+                    b.ToTable("LookUps", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.OfficeAssignment", b =>
                 {
-                    b.Property<int>("InstructorID");
+                    b.Property<int>("InstructorID")
+                        .HasColumnType("int");
 
                     b.Property<string>("Location")
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("InstructorID");
 
-                    b.ToTable("OfficeAssignment");
+                    b.ToTable("OfficeAssignment", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Student", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("int");
 
-                    b.Property<DateTime>("EnrollmentDate");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<DateTime>("EnrollmentDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(50);
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("ID");
 
-                    b.ToTable("Student");
-                });
-
-            modelBuilder.Entity("Contoso.Data.Rules.RulesModule", b =>
-                {
-                    b.Property<int>("RulesModuleId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Application")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<DateTime>("LastUpdated");
-
-                    b.Property<string>("LoggedInUserId")
-                        .HasColumnType("varchar(256)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<byte[]>("ResourceSetFile")
-                        .IsRequired();
-
-                    b.Property<byte[]>("RuleSetFile")
-                        .IsRequired();
-
-                    b.HasKey("RulesModuleId");
-
-                    b.HasIndex("Name", "Application")
-                        .IsUnique()
-                        .HasName("uc_RulesModule");
-
-                    b.ToTable("RulesModule","Rules");
+                    b.ToTable("Student", (string)null);
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Course", b =>
@@ -242,7 +236,10 @@ namespace MigrationTool.Migrations
                     b.HasOne("Contoso.Data.Entities.Department", "Department")
                         .WithMany("Courses")
                         .HasForeignKey("DepartmentID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.CourseAssignment", b =>
@@ -250,19 +247,28 @@ namespace MigrationTool.Migrations
                     b.HasOne("Contoso.Data.Entities.Course", "Course")
                         .WithMany("Assignments")
                         .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Contoso.Data.Entities.Instructor", "Instructor")
                         .WithMany("Courses")
                         .HasForeignKey("InstructorID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Instructor");
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Department", b =>
                 {
                     b.HasOne("Contoso.Data.Entities.Instructor", "Administrator")
                         .WithMany()
-                        .HasForeignKey("InstructorID");
+                        .HasForeignKey("InstructorID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Administrator");
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.Enrollment", b =>
@@ -270,12 +276,18 @@ namespace MigrationTool.Migrations
                     b.HasOne("Contoso.Data.Entities.Course", "Course")
                         .WithMany("Enrollments")
                         .HasForeignKey("CourseID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Contoso.Data.Entities.Student", "Student")
                         .WithMany("Enrollments")
                         .HasForeignKey("StudentID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
                 });
 
             modelBuilder.Entity("Contoso.Data.Entities.OfficeAssignment", b =>
@@ -283,7 +295,34 @@ namespace MigrationTool.Migrations
                     b.HasOne("Contoso.Data.Entities.Instructor", "Instructor")
                         .WithOne("OfficeAssignment")
                         .HasForeignKey("Contoso.Data.Entities.OfficeAssignment", "InstructorID")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Instructor");
+                });
+
+            modelBuilder.Entity("Contoso.Data.Entities.Course", b =>
+                {
+                    b.Navigation("Assignments");
+
+                    b.Navigation("Enrollments");
+                });
+
+            modelBuilder.Entity("Contoso.Data.Entities.Department", b =>
+                {
+                    b.Navigation("Courses");
+                });
+
+            modelBuilder.Entity("Contoso.Data.Entities.Instructor", b =>
+                {
+                    b.Navigation("Courses");
+
+                    b.Navigation("OfficeAssignment");
+                });
+
+            modelBuilder.Entity("Contoso.Data.Entities.Student", b =>
+                {
+                    b.Navigation("Enrollments");
                 });
 #pragma warning restore 612, 618
         }

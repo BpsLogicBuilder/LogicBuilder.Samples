@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Enrollment.Api.Web.Tests
@@ -182,7 +183,7 @@ namespace Enrollment.Api.Web.Tests
         #endregion Helpers
 
         [Fact]
-        public async void GetDropDownListRequest_As_AnonymousTypes()
+        public async Task GetDropDownListRequest_As_AnonymousTypes()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<object>>
@@ -210,7 +211,7 @@ namespace Enrollment.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetDropDownListRequest_As_LookUpsModel()
+        public async Task GetDropDownListRequest_As_LookUpsModel()
         {
             //arrange
             var selectorLambdaOperatorDescriptor = GetExpressionDescriptor<IQueryable<LookUpsModel>, IEnumerable<LookUpsModel>>
@@ -240,7 +241,7 @@ namespace Enrollment.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetEntityRequest_As_ResidencyModel()
+        public async Task GetEntityRequest_As_ResidencyModel()
         {
             var result = await this.clientFactory.PostAsync<GetEntityResponse>
             (
@@ -277,7 +278,7 @@ namespace Enrollment.Api.Web.Tests
         }
 
         [Fact]
-        public async void GetEntityRequest_As_ResidencyModel_FromObjectConstant()
+        public async Task GetEntityRequest_As_ResidencyModel_FromObjectConstant()
         {
             var result = await this.clientFactory.PostAsync<GetEntityResponse>
             (

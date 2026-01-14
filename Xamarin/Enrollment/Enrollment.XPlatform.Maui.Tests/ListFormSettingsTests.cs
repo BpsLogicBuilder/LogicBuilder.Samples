@@ -6,6 +6,7 @@ using Enrollment.Forms.Parameters;
 using Enrollment.Forms.Parameters.Bindings;
 using Enrollment.Forms.Parameters.ListForm;
 using Enrollment.XPlatform.AutoMapperProfiles;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
@@ -59,7 +60,7 @@ namespace Enrollment.XPlatform.Maui.Tests
                 cfg.AddProfile<DescriptorToOperatorMappingProfile>();
                 cfg.AddProfile<ExpansionParameterToDescriptorMappingProfile>();
                 cfg.AddProfile<ExpansionDescriptorToOperatorMappingProfile>();
-            });
+            }, new NullLoggerFactory());
             config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }

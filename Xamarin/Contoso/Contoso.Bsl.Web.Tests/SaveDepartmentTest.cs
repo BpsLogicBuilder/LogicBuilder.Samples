@@ -27,7 +27,7 @@ namespace Contoso.Bsl.Web.Tests
         #endregion Fields
 
         [Fact]
-        public async void SaveDepartment()
+        public async Task SaveDepartment()
         {
             var departmentResponse = await this.clientFactory.PostAsync<GetEntityResponse>
             (

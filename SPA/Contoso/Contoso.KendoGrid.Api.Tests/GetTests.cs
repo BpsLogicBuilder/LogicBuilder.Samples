@@ -8,6 +8,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Contoso.KendoGrid.Api.Tests
@@ -38,7 +39,7 @@ namespace Contoso.KendoGrid.Api.Tests
 
 
         [Fact]
-        public async void Get_students_ungrouped_with_aggregates()
+        public async Task Get_students_ungrouped_with_aggregates()
         {
             var request = new KendoGridDataRequest
             {
