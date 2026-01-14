@@ -10,16 +10,16 @@ namespace Enrollment.MigrationTool
     {
         static void Main(string[] args)
         {
-            //IConfigurationRoot config = new ConfigurationBuilder()
-            //    .SetBasePath(Directory.GetCurrentDirectory())
-            //    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-            //    .Build();
+            IConfigurationRoot config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
 
-            //IServiceProvider serviceProvider = new ServiceCollection().AddDbContext<MigrationContext>(options =>
-            //    options.UseSqlServer(config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient)
-            //    .BuildServiceProvider();
+            IServiceProvider serviceProvider = new ServiceCollection().AddDbContext<MigrationContext>(options =>
+                options.UseSqlServer(config.GetConnectionString("DefaultConnection")), ServiceLifetime.Transient)
+                .BuildServiceProvider();
 
-            using MigrationContext context = new();
+            using MigrationContext context = serviceProvider.GetRequiredService<MigrationContext>();
             context.Database.Migrate();
             context.Database.EnsureCreated();
         }

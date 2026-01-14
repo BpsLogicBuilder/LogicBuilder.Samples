@@ -4,12 +4,12 @@ namespace Enrollment.Spa.Flow.ScreenSettings.Navigation
 {
     public class NavigationMenuItem
     {
-        public NavigationMenuItem(int targetModule, string initialModule = "initial", string Text = "menuText", List<NavigationMenuItem> SubItems = null)
+        public NavigationMenuItem(int targetModule, string initialModule = "initial", string Text = "menuText", List<NavigationMenuItem>? SubItems = null)
         {
             this.TargetModule = targetModule;
             this.InitialModule = initialModule;
             this.Text = Text;
-            this.SubItems = SubItems;
+            this.SubItems = SubItems ?? [];
         }
 
         public int TargetModule { get; set; }

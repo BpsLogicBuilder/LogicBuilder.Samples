@@ -8,7 +8,7 @@ namespace Enrollment.Spa.Flow.Cache
 {
     public class RequestedFlowStage
     {
-        public string InitialModule { get; set; }
+        public string InitialModule { get; set; } = string.Empty;
         public int TargetModule { get; set; }
     }
 }

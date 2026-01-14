@@ -4,6 +4,7 @@ using Enrollment.Forms.Parameters;
 using Enrollment.Forms.View;
 using Enrollment.Spa.AutoMapperProfiles;
 using LogicBuilder.Forms.Parameters;
+using Microsoft.Extensions.Logging.Abstractions;
 using System.Diagnostics.CodeAnalysis;
 using Xunit;
 
@@ -83,7 +84,7 @@ namespace MapperTests
             {
                 cfg.AddMaps(typeof(ConnectorProfile));
                 cfg.AddMaps(typeof(DescriptorToOperatorMappingProfile));
-            });
+            }, new NullLoggerFactory());
             config.AssertConfigurationIsValid();
             mapper = config.CreateMapper();
         }

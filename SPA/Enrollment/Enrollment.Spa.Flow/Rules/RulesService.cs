@@ -70,7 +70,7 @@ namespace Enrollment.Spa.Flow.Rules
         {
             using Stream platformStream = assembly.GetManifestResourceStream(file) ?? throw new ArgumentException($"{nameof(file)}: {{8C3D4D61-C98D-4A4A-BCF8-9AF7FD1D2547}}");
             byte[] byteArray = new byte[platformStream.Length];
-            platformStream.Read(byteArray, 0, byteArray.Length);
+            platformStream.ReadExactly(byteArray);
             return byteArray;
         }
     }
