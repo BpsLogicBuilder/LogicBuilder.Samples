@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="8.0.0" />
+    <PackageReference Include="LogicBuilder.Expressions.Utils" Version="8.0.1" />
     <PackageReference Include="System.CodeDom" Version="10.0.7" />
   </ItemGroup>
   
