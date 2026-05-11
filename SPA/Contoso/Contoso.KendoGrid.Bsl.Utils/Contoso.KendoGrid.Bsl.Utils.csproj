@@ -5,8 +5,8 @@
   </PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="7.1.0" />
-		<PackageReference Include="LogicBuilder.Kendo.ExpressionExtensions" Version="7.1.0" />
+		<PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="8.0.1-alpha.0.2" />
+		<PackageReference Include="LogicBuilder.Kendo.ExpressionExtensions" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

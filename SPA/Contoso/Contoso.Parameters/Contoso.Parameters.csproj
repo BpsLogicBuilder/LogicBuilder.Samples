@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.Attributes" Version="2.0.4" />
-    <PackageReference Include="LogicBuilder.Structures" Version="7.1.0" />
+    <PackageReference Include="LogicBuilder.Attributes" Version="2.0.6" />
+    <PackageReference Include="LogicBuilder.Structures" Version="8.0.1-alpha.0.1" />
   </ItemGroup>
 
 </Project>

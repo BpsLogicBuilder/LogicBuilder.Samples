@@ -84,12 +84,12 @@ namespace Contoso.Bsl.Controllers
                 f => f.ID == studentModel.ID,
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
-                {
-                    ExpandedItems = new List<LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem>
-                    {
-                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem { MemberName = "enrollments" }
-                    }
-                }
+                (
+                    null,
+                    [
+                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem ("enrollments")
+                    ]
+                )
             ).Result.SingleOrDefault();
 
             saveStudentResponse.Entity = studentModel;
