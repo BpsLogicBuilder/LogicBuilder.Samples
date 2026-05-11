@@ -4843,7 +4843,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
             var filter = CreateFilter<Product>();
 
             //assert
-            AssertFilterStringIsCorrect(filter, "$it => $it.Category.EnumerableProducts.OfType().Any(p => (p.ProductName == \"ProductName\"))");
+            AssertFilterStringIsCorrect(filter, "$it => $it.Category.EnumerableProducts.Cast().Any(p => (p.ProductName == \"ProductName\"))");
 
             Expression<Func<T, bool>> CreateFilter<T>()
                 => GetFilter<T>
@@ -4876,7 +4876,7 @@ namespace Contoso.Bsl.Flow.Unit.Tests
             var filter = CreateFilter<Product>();
 
             //assert
-            AssertFilterStringIsCorrect(filter, "$it => $it.Category.QueryableProducts.OfType().Any(p => (p.ProductName == \"ProductName\"))");
+            AssertFilterStringIsCorrect(filter, "$it => $it.Category.QueryableProducts.Cast().Any(p => (p.ProductName == \"ProductName\"))");
 
             Expression<Func<T, bool>> CreateFilter<T>()
                 => GetFilter<T>

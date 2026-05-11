@@ -434,7 +434,8 @@ namespace Contoso.XPlatform.Services
 
         private void ValidateSettingType(string fullPropertyName, string settingFieldType)
         {
-            if (!GetModelFieldType(fullPropertyName).AssignableFrom(Type.GetType(settingFieldType)))
+            Type fieldType = Type.GetType(settingFieldType) ?? throw new ArgumentException($"{settingFieldType}: F2C4D277-EB70-4C2B-BB42-6A4FC404314D");
+            if (!Utils.TypeHelpers.AssignableFrom(GetModelFieldType(fullPropertyName), fieldType))
                 throw new ArgumentException($"{nameof(settingFieldType)}: {{7E7749CE-96C1-4EE1-8705-75541CD7D2D8}}");
 
             Type GetModelFieldType(string fullPropertyName)

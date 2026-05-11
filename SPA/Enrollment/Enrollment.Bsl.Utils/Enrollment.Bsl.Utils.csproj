@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="7.1.0" />
+    <PackageReference Include="LogicBuilder.EntityFrameworkCore.SqlServer" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>

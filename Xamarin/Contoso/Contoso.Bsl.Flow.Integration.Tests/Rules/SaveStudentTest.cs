@@ -15,11 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Contoso.Bsl.Flow.Integration.Tests.Rules
 {
@@ -40,12 +38,12 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             (
                 s => s.FullName == "Carson Alexander",
                 selectExpandDefinition: new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
-                {
-                    ExpandedItems =
+                (
+                    null,
                     [
-                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem { MemberName = "enrollments" }
+                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem("enrollments")
                     ]
-                }
+                )
             )).Single();
             student.FirstName = "First";
             student.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
@@ -147,19 +145,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                     ),
                     ServiceLifetime.Transient
                 )
-                .AddLogging
-                (
-                    loggingBuilder =>
-                    {
-                        loggingBuilder.ClearProviders();
-                        loggingBuilder.Services.AddSingleton<ILoggerProvider>
-                        (
-                            serviceProvider => new XUnitLoggerProvider(this.output)
-                        );
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("*", LogLevel.None);
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("Contoso.Bsl.Flow", LogLevel.Trace);
-                    }
-                )
+                .AddLogging()
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>

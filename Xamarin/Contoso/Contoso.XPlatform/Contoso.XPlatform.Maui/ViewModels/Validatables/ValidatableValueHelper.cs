@@ -1,6 +1,5 @@
 ﻿using Contoso.Forms.Configuration.DataForm;
 using LogicBuilder.Expressions.Utils;
-using LogicBuilder.RulesDirector;
 using System;
 
 namespace Contoso.XPlatform.ViewModels.Validatables
@@ -13,7 +12,7 @@ namespace Contoso.XPlatform.ViewModels.Validatables
         {
             if (setting.ValidationSetting?.DefaultValue != null)
             {
-                if (!type.AssignableFrom(setting.ValidationSetting.DefaultValue.GetType()))
+                if (!Utils.TypeHelpers.AssignableFrom(type, setting.ValidationSetting.DefaultValue.GetType()))
                     throw new ArgumentException($"{nameof(setting.ValidationSetting.DefaultValue)}: {{974B3DA6-C626-4CE4-AB46-A5EDACBD2CFC}}");
 
                 return setting.ValidationSetting?.DefaultValue;

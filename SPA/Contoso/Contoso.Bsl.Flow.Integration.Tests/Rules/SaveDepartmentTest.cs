@@ -15,11 +15,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Contoso.Bsl.Flow.Integration.Tests.Rules
 {
@@ -46,17 +44,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             (
                 s => s.Name == "Mathematics",
                 selectExpandDefinition: new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
-                {
-                    ExpandedItems =
+                (
+                    null,
                     [//Need expansion because RowVersion is not a literal type (included without explicit expansion)
                      //Or use GetItemsAsync which does not use projection.
                      //Todo include check for typeof(byte[]) in LogicBuilder.Expressions.Utils.TypeExtension.GetValueTypeMembers()
-                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
-                        {
-                            MemberName = "RowVersion"
-                        }
+                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem("RowVersion")
                     ]
-                }
+                )
             )).Single();
             department.Budget = 1000.1m;
             department.EntityState = LogicBuilder.Domain.EntityStateType.Modified;
@@ -78,7 +73,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = (await flowManager.SchoolRepository.GetItemsAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
             )).Single();
@@ -106,17 +101,14 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
             (
                 s => s.Name == "Mathematics",
                 selectExpandDefinition: new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
-                {
-                    ExpandedItems =
+                (
+                    null,
                     [//Need expansion because RowVersion is not a literal type (included without explicit expansion)
                      //Or use GetItemsAsync which does not use projection.
                      //Todo include check for typeof(byte[]) in LogicBuilder.Expressions.Utils.TypeExtension.GetValueTypeMembers()
-                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
-                        {
-                            MemberName = "RowVersion"
-                        }
+                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem("RowVersion")
                     ]
-                }
+                )
             )).Single();
             department.DepartmentID = 0;
             department.InstructorID = null;
@@ -141,7 +133,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
         {
             //arrange
             IFlowManager flowManager = serviceProvider.GetRequiredService<IFlowManager>();
-            var department = (await flowManager.SchoolRepository.GetItemsAsync<DepartmentModel, Department>
+            var department = (await flowManager.SchoolRepository.GetAsync<DepartmentModel, Department>
             (
                 s => s.Name == "Mathematics"
             )).Single();
@@ -188,19 +180,7 @@ namespace Contoso.Bsl.Flow.Integration.Tests.Rules
                     ),
                     ServiceLifetime.Transient
                 )
-                .AddLogging
-                (
-                    loggingBuilder =>
-                    {
-                        loggingBuilder.ClearProviders();
-                        loggingBuilder.Services.AddSingleton<ILoggerProvider>
-                        (
-                            serviceProvider => new XUnitLoggerProvider(this.output)
-                        );
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("*", LogLevel.None);
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("Contoso.Bsl.Flow", LogLevel.Trace);
-                    }
-                )
+                .AddLogging()
                 .AddTransient<ISchoolStore, SchoolStore>()
                 .AddTransient<ISchoolRepository, SchoolRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>

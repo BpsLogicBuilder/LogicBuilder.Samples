@@ -15,7 +15,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
 {
@@ -135,19 +134,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     ),
                     ServiceLifetime.Transient
                 )
-                .AddLogging
-                (
-                    loggingBuilder =>
-                    {
-                        loggingBuilder.ClearProviders();
-                        loggingBuilder.Services.AddSingleton<ILoggerProvider>
-                        (
-                            serviceProvider => new XUnitLoggerProvider(this.output)
-                        );
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("*", LogLevel.None);
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("Enrollment.Bsl.Flow", LogLevel.Trace);
-                    }
-                )
+                .AddLogging()
                 .AddTransient<IEnrollmentStore, EnrollmentStore>()
                 .AddTransient<IEnrollmentRepository, EnrollmentRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>

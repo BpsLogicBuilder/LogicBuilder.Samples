@@ -10,7 +10,6 @@ using Enrollment.XPlatform.ViewModels.Factories;
 using Enrollment.XPlatform.ViewModels.Validatables;
 using Enrollment.XPlatform.ViewModels.Validatables.Factories;
 using LogicBuilder.Expressions.Utils;
-using LogicBuilder.RulesDirector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -434,7 +433,8 @@ namespace Enrollment.XPlatform.Services
 
         private void ValidateSettingType(string fullPropertyName, string settingFieldType)
         {
-            if (!GetModelFieldType(fullPropertyName).AssignableFrom(Type.GetType(settingFieldType)))
+            Type fieldType = Type.GetType(settingFieldType) ?? throw new ArgumentException($"{nameof(settingFieldType)}: {{679B15AF-0B74-4FDC-8C37-5112635992DB}}");
+            if (!Utils.TypeHelpers.AssignableFrom(GetModelFieldType(fullPropertyName), fieldType))
                 throw new ArgumentException($"{nameof(settingFieldType)}: {{7E7749CE-96C1-4EE1-8705-75541CD7D2D8}}");
 
             Type GetModelFieldType(string fullPropertyName)

@@ -6,7 +6,6 @@ using Enrollment.Bsl.Business.Responses;
 using Enrollment.Bsl.Flow.Cache;
 using Enrollment.BSL.AutoMapperProfiles;
 using Enrollment.Contexts;
-using Enrollment.Data.Entities;
 using Enrollment.Domain.Entities;
 using Enrollment.Repositories;
 using Enrollment.Stores;
@@ -15,9 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Linq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
 {
@@ -107,19 +104,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     ),
                     ServiceLifetime.Transient
                 )
-                .AddLogging
-                (
-                    loggingBuilder =>
-                    {
-                        loggingBuilder.ClearProviders();
-                        loggingBuilder.Services.AddSingleton<ILoggerProvider>
-                        (
-                            serviceProvider => new XUnitLoggerProvider(this.output)
-                        );
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("*", LogLevel.None);
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("Enrollment.Bsl.Flow", LogLevel.Trace);
-                    }
-                )
+                .AddLogging()
                 .AddTransient<IEnrollmentStore, EnrollmentStore>()
                 .AddTransient<IEnrollmentRepository, EnrollmentRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>

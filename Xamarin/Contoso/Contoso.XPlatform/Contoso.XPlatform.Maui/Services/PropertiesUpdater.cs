@@ -3,7 +3,6 @@ using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Constants;
 using Contoso.XPlatform.ViewModels.Validatables;
 using LogicBuilder.Expressions.Utils;
-using LogicBuilder.RulesDirector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +33,7 @@ namespace Contoso.XPlatform.Services
                     {
                         IValidatable multiSelectValidatable = propertiesDictionary[GetFieldName(multiSelectFormControlSetting.Field)];
 
-                        if (!multiSelectValidatable.Type.GetUnderlyingElementType().AssignableFrom(@value.GetType().GetUnderlyingElementType()))
+                        if (!Utils.TypeHelpers.AssignableFrom(multiSelectValidatable.Type.GetUnderlyingElementType(), @value.GetType().GetUnderlyingElementType()))
                             throw new ArgumentException($"{nameof(multiSelectFormControlSetting)}: 74B8794A-9C00-4A25-8089-10957DF0A5EC");
 
                         multiSelectValidatable.Value = Activator.CreateInstance
@@ -48,7 +47,7 @@ namespace Contoso.XPlatform.Services
                 {//must stay after MultiSelect because MultiSelect extends FormControl
                     if (existingValues.TryGetValue(controlSetting.Field, out object? @value) && @value != null)
                     {
-                        if (!propertiesDictionary[GetFieldName(controlSetting.Field)].Type.AssignableFrom(@value.GetType()))
+                        if (!Utils.TypeHelpers.AssignableFrom(propertiesDictionary[GetFieldName(controlSetting.Field)].Type, @value.GetType()))
                             throw new ArgumentException($"{nameof(controlSetting)}: F4B014E4-B04C-455D-8AE5-1F2551BEC190");
 
                         propertiesDictionary[GetFieldName(controlSetting.Field)].Value = @value;
@@ -65,7 +64,7 @@ namespace Contoso.XPlatform.Services
                             UpdateValidatables(properties, @value, formGroupSetting.FieldSettings, GetFieldName(formGroupSetting.Field));
                         else if (formGroupSetting.FormGroupTemplate.TemplateName == FromGroupTemplateNames.PopupFormGroupTemplate)
                         {
-                            if (!propertiesDictionary[GetFieldName(formGroupSetting.Field)].Type.AssignableFrom(@value.GetType()))
+                            if (!Utils.TypeHelpers.AssignableFrom(propertiesDictionary[GetFieldName(formGroupSetting.Field)].Type, @value.GetType()))
                                 throw new ArgumentException($"{nameof(formGroupSetting)}: 83ADA1B9-5951-4643-BE40-E9BB6DB45C06");
 
                             propertiesDictionary[GetFieldName(formGroupSetting.Field)].Value = @value;
@@ -80,7 +79,7 @@ namespace Contoso.XPlatform.Services
                     {
                         IValidatable forArrayValidatable = propertiesDictionary[GetFieldName(formGroupArraySetting.Field)];
 
-                        if (!forArrayValidatable.Type.GetUnderlyingElementType().AssignableFrom(@value.GetType().GetUnderlyingElementType()))
+                        if (!Utils.TypeHelpers.AssignableFrom(forArrayValidatable.Type.GetUnderlyingElementType(), @value.GetType().GetUnderlyingElementType()))
                             throw new ArgumentException($"{nameof(multiSelectFormControlSetting)}: CCB454D1-8119-475B-9A2B-1EB10E513959");
 
                         forArrayValidatable.Value = Activator.CreateInstance

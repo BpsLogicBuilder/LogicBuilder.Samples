@@ -170,10 +170,10 @@ namespace Enrollment.AutoMapperProfiles
 
 			CreateMap<HasOperatorDescriptor, HasOperator>();
 			CreateMap<HourOperatorDescriptor, HourOperator>();
-			CreateMap<IEnumerableSelectorLambdaOperatorDescriptor, IEnumerableSelectorLambdaOperator>()
+			CreateMap<IEnumerableSelectorLambdaOperatorDescriptor, EnumerableSelectorLambdaOperator>()
 				.ConstructUsing
 				(
-					(src, context) => new IEnumerableSelectorLambdaOperator
+					(src, context) => new EnumerableSelectorLambdaOperator
 					(
 						(IDictionary<string, ParameterExpression>)context.Items[PARAMETERS_KEY],
 						context.Mapper.Map<IExpressionPart>(src.Selector),
@@ -446,7 +446,7 @@ namespace Enrollment.AutoMapperProfiles
 				.Include<GroupByOperatorDescriptor, GroupByOperator>()
 				.Include<HasOperatorDescriptor, HasOperator>()
 				.Include<HourOperatorDescriptor, HourOperator>()
-				.Include<IEnumerableSelectorLambdaOperatorDescriptor, IEnumerableSelectorLambdaOperator>()
+				.Include<IEnumerableSelectorLambdaOperatorDescriptor, EnumerableSelectorLambdaOperator>()
 				.Include<IndexOfOperatorDescriptor, IndexOfOperator>()
 				.Include<InOperatorDescriptor, InOperator>()
 				.Include<IsOfOperatorDescriptor, IsOfOperator>()

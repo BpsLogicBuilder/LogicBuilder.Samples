@@ -1,17 +1,13 @@
-﻿using AutoMapper;
-using Contoso.Forms.Configuration.DataForm;
+﻿using Contoso.Forms.Configuration.DataForm;
 using Contoso.XPlatform.Constants;
-using Contoso.XPlatform.Directives.Factories;
 using Contoso.XPlatform.Utils;
 using Contoso.XPlatform.ViewModels;
 using Contoso.XPlatform.ViewModels.Factories;
 using Contoso.XPlatform.ViewModels.ReadOnlys;
 using Contoso.XPlatform.ViewModels.ReadOnlys.Factories;
 using LogicBuilder.Expressions.Utils;
-using LogicBuilder.RulesDirector;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Contoso.XPlatform.Services
@@ -302,7 +298,8 @@ namespace Contoso.XPlatform.Services
 
         private void ValidateSettingType(string fullPropertyName, string settingFieldType)
         {
-            if (!GetModelFieldType(fullPropertyName).AssignableFrom(Type.GetType(settingFieldType)))
+            Type fieldType = Type.GetType(settingFieldType) ?? throw new ArgumentException($"{nameof(settingFieldType)}: B94582CE-8AE6-4A6F-A844-414C6DB836B3");
+            if (!Utils.TypeHelpers.AssignableFrom(GetModelFieldType(fullPropertyName), fieldType))
                 throw new ArgumentException($"{nameof(settingFieldType)}: 049B3B17-154F-4A06-B6B3-863F85FDBB50");
 
             Type GetModelFieldType(string fullPropertyName)

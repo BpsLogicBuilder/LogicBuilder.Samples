@@ -1,5 +1,4 @@
 ﻿using Enrollment.Forms.Configuration.DataForm;
-using LogicBuilder.RulesDirector;
 using System;
 using System.Reflection;
 
@@ -43,7 +42,7 @@ namespace Enrollment.XPlatform.ViewModels.Validatables
         private static T _GetValue<T>(FormControlSettingsDescriptor setting, object defaultValue)
         {
             if (setting.ValidationSetting?.DefaultValue != null
-                && !typeof(T).AssignableFrom(setting.ValidationSetting.DefaultValue.GetType()))
+                && !Utils.TypeHelpers.AssignableFrom(typeof(T), setting.ValidationSetting.DefaultValue.GetType()))
                 throw new ArgumentException($"{nameof(setting.ValidationSetting.DefaultValue)}: 323DA51E-BCA1-4017-A32F-A9FEF6477393");
 
             return (T)(setting.ValidationSetting?.DefaultValue ?? defaultValue);
