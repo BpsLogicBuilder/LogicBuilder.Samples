@@ -13,13 +13,11 @@ using Enrollment.Stores;
 using LogicBuilder.RulesDirector;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
 {
@@ -46,15 +44,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                 s => s.UserId == 1,
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
-                {
-                    ExpandedItems =
+                (
+                    null,
                     [
-                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
-                        {
-                            MemberName = "StatesLivedIn"
-                        }
+                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem("StatesLivedIn")
                     ]
-                }
+                )
             )).Single();
 
             residency.DriversLicenseNumber = "NC54321";
@@ -89,15 +84,12 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                 s => s.User.UserName == "DomesticStudent01",
                 null,
                 new LogicBuilder.Expressions.Utils.Expansions.SelectExpandDefinition
-                {
-                    ExpandedItems =
+                (
+                    null,
                     [
-                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem
-                        {
-                            MemberName = "StatesLivedIn"
-                        }
+                        new LogicBuilder.Expressions.Utils.Expansions.SelectExpandItem("StatesLivedIn")
                     ]
-                }
+                )
             )).Single();
             residency.CitizenshipStatus = null;
             residency.StatesLivedIn = new List<StateLivedInModel>();
@@ -143,19 +135,7 @@ namespace Enrollment.Bsl.Flow.Integration.Tests.Rules
                     ),
                     ServiceLifetime.Transient
                 )
-                .AddLogging
-                (
-                    loggingBuilder =>
-                    {
-                        loggingBuilder.ClearProviders();
-                        loggingBuilder.Services.AddSingleton<ILoggerProvider>
-                        (
-                            serviceProvider => new XUnitLoggerProvider(this.output)
-                        );
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("*", LogLevel.None);
-                        loggingBuilder.AddFilter<XUnitLoggerProvider>("Enrollment.Bsl.Flow", LogLevel.Trace);
-                    }
-                )
+                .AddLogging()
                 .AddTransient<IEnrollmentStore, EnrollmentStore>()
                 .AddTransient<IEnrollmentRepository, EnrollmentRepository>()
                 .AddSingleton<AutoMapper.IConfigurationProvider>
