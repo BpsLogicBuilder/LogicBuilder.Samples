@@ -284,7 +284,7 @@ namespace Contoso.KendoGrid.Bsl.Utils.Tests
                 (
                     options => options.UseSqlServer
                     (
-                        @"Server=(localdb)\mssqllocaldb;Database=RequestHelpersTest;ConnectRetryCount=0"
+                        @"Server=(localdb)\mssqllocaldb;Database=KendoRequestHelpersTest;ConnectRetryCount=0"
                     ),
                     ServiceLifetime.Transient
                 )
