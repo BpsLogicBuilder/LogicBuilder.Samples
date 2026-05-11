@@ -84,13 +84,13 @@ namespace Enrollment.XPlatform.Maui.Tests
             {
                 Out
                 (
-                    GetOutString(GetConstantValue())
+                    GetOutString(GetConstantValue() ?? "")
                 );
             }
 
             return node;
 
-            object GetConstantValue()
+            object? GetConstantValue()
                 => node.Value is ConstantContainer constantContainer
                     ? constantContainer.Property
                     : node.Value;

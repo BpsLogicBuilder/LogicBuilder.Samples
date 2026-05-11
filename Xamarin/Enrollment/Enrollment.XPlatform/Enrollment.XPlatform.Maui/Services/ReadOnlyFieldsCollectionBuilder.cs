@@ -1,17 +1,13 @@
-﻿using AutoMapper;
-using Enrollment.Forms.Configuration.DataForm;
+﻿using Enrollment.Forms.Configuration.DataForm;
 using Enrollment.XPlatform.Constants;
-using Enrollment.XPlatform.Directives.Factories;
 using Enrollment.XPlatform.Utils;
 using Enrollment.XPlatform.ViewModels;
 using Enrollment.XPlatform.ViewModels.Factories;
 using Enrollment.XPlatform.ViewModels.ReadOnlys;
 using Enrollment.XPlatform.ViewModels.ReadOnlys.Factories;
 using LogicBuilder.Expressions.Utils;
-using LogicBuilder.RulesDirector;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Enrollment.XPlatform.Services
@@ -302,7 +298,8 @@ namespace Enrollment.XPlatform.Services
 
         private void ValidateSettingType(string fullPropertyName, string settingFieldType)
         {
-            if (!GetModelFieldType(fullPropertyName).AssignableFrom(Type.GetType(settingFieldType)))
+            Type fieldType = Type.GetType(settingFieldType) ?? throw new ArgumentException($"{nameof(settingFieldType)}: 96B45C01-0150-4C5A-AE38-A5073C8BE7BC");
+            if (!Utils.TypeHelpers.AssignableFrom(GetModelFieldType(fullPropertyName), fieldType))
                 throw new ArgumentException($"{nameof(settingFieldType)}: 049B3B17-154F-4A06-B6B3-863F85FDBB50");
 
             Type GetModelFieldType(string fullPropertyName)
