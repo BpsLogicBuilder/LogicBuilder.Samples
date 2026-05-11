@@ -42,10 +42,12 @@ namespace Contoso.XPlatform
                 });
 
             AppBuilder.CreateSplatBuilder()
-                .WithAkavacheCacheDatabase<SystemJsonSerializer>(builder =>
-                    builder.WithApplicationName(AppConstants.ApplicationName)
-                           .WithSqliteProvider() // REQUIRED: Explicitly initialize SQLite provider
-                           .WithSqliteDefaults());
+                .WithAkavacheCacheDatabase<SystemJsonSerializer>
+                (
+                    builder => builder.WithSqliteProvider() // REQUIRED: Explicitly initialize SQLite provider
+                           .WithSqliteDefaults(),
+                        AppConstants.ApplicationName
+                );
 
             return builder.Build();
         }
