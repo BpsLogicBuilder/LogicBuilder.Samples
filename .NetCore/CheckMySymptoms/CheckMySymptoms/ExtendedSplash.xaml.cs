@@ -12,6 +12,7 @@ using CheckMySymptoms.WindowsStore;
 using LogicBuilder.RulesDirector;
 using LogicBuilder.Workflow.Activities.Rules;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -147,7 +148,7 @@ namespace CheckMySymptoms
                 {
                     cfg.AddMaps(typeof(BaseClassMappings).Assembly);
                     cfg.AllowNullCollections = true;
-                })
+                }, NullLoggerFactory.Instance)
             )
             .AddSingleton<IMapper>(sp => new Mapper(sp.GetRequiredService<AutoMapper.IConfigurationProvider>(), sp.GetService))
             .AddSingleton<IRulesLoader, RulesLoader>()
