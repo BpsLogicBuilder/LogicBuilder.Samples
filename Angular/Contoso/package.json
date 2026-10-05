@@ -19,7 +19,7 @@
     "@angular/localize": "^21.2.10",
     "@angular/platform-browser": "^21.2.10",
     "@angular/platform-browser-dynamic": "^21.2.10",
-    "@angular/router": "^21.2.10",
+    "@angular/router": "^21.2.24",
     "@fortawesome/angular-fontawesome": "^0.10.2",
     "@ng-bootstrap/ng-bootstrap": "^20.0.0",
     "@popperjs/core": "^2.11.6",
